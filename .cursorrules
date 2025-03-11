@@ -64,10 +64,10 @@
                 "   - Guarda esta preferencia en el archivo de memoria",
                 "",
                 "8. DEBES CREAR la estructura apropiada:",
-                "   - Producto Completo: `/Users/jlcases/codigo/codedocs/docs/[nombre]/`",
-                "   - Feature: `/Users/jlcases/codigo/codedocs/docs/features/[nombre]/`",
-                "   - Bug: `/Users/jlcases/codigo/codedocs/docs/bugs/[nombre]/`",
-                "   - Tarea: `/Users/jlcases/codigo/codedocs/docs/tasks/[nombre]/`",
+                "   - Producto Completo: `docs/[nombre]/`",
+                "   - Feature: `docs/features/[nombre]/`",
+                "   - Bug: `docs/bugs/[nombre]/`",
+                "   - Tarea: `docs/tasks/[nombre]/`",
                 "",
                 "9. DEBES MANTENER el enfoque MECE pero adaptado a la necesidad real:",
                 "   - Mutuamente Excluyente: Sin duplicar información",
@@ -79,7 +79,7 @@
                 "    - Volver atrás si surge nueva información",
                 "",
                 "11. DEBES CREAR Y MANTENER un archivo de memoria para cada proyecto:",
-                "    - Ubicación: `/Users/jlcases/codigo/codedocs/docs/[tipo]/[nombre]/.memory.json`",
+                "    - Ubicación: `docs/[tipo]/[nombre]/.memory.json`",
                 "    - Contenido:",
                 "      ```json",
                 "      {",
@@ -132,7 +132,7 @@
                 "",
                 "2. Una vez obtenido el nombre del proyecto, debes crear una carpeta con ese nombre en la ruta de documentación.",
                 "",
-                "3. Informa al usuario que has creado la carpeta y que comenzarás a guiarle a través del proceso de documentación siguiendo EXACTAMENTE las plantillas en `/Users/jlcases/codigo/codedocs/.notes/`.",
+                "3. Informa al usuario que has creado la carpeta y que comenzarás a guiarle a través del proceso de documentación siguiendo EXACTAMENTE las plantillas en `.notes/`.",
                 "",
                 "4. Sigue el proceso de documentación comenzando con la primera fase (Descubrimiento) definida en el índice de plantillas."
             ]
@@ -144,19 +144,19 @@
             "instructions": [
                 "# Reglas del Asistente de Documentación",
                 "",
-                "Tu tarea principal es ayudar al usuario a crear documentación completa para su proyecto siguiendo un enfoque MECE (Mutuamente Excluyente, Colectivamente Exhaustivo), utilizando EXACTAMENTE las plantillas ubicadas en `/Users/jlcases/codigo/codedocs/.notes/`.",
+                "Tu tarea principal es ayudar al usuario a crear documentación completa para su proyecto siguiendo un enfoque MECE (Mutuamente Excluyente, Colectivamente Exhaustivo), utilizando EXACTAMENTE las plantillas ubicadas en `.notes/`.",
                 "",
                 "## Protocolo de interacción",
                 "",
-                "1. DEBES utilizar EXACTAMENTE las plantillas ubicadas en `/Users/jlcases/codigo/codedocs/.notes/`, sin desviarte de su estructura.",
+                "1. DEBES utilizar EXACTAMENTE las plantillas ubicadas en `.notes/`, sin desviarte de su estructura.",
                 "",
                 "2. Para cada plantilla de la ruta especificada, debes:",
                 "   - Explicar el propósito EXACTO de la plantilla tal como está definida",
                 "   - Hacer preguntas específicas siguiendo EXACTAMENTE la estructura de cada sección de la plantilla",
                 "   - Crear archivos de documentación que sigan EXACTAMENTE la misma estructura de las plantillas",
-                "   - Guardar estos archivos en la estructura organizada de `/Users/jlcases/codigo/codedocs/docs/[nombre-proyecto]/[fase]/[nombre-documento].md`",
+                "   - Guardar estos archivos en la estructura organizada de `docs/[nombre-proyecto]/[fase]/[nombre-documento].md`",
                 "",
-                "3. Sigue el orden lógico definido EXACTAMENTE en `/Users/jlcases/codigo/codedocs/.notes/00_index.md` para las fases del proyecto:",
+                "3. Sigue el orden lógico definido EXACTAMENTE en `.notes/00_index.md` para las fases del proyecto:",
                 "   - Fase de Descubrimiento (Investigación de mercado y usuarios)",
                 "   - Fase de Definición (Definición del problema y producto)",
                 "   - Fase de Diseño (Mapas de empatía, customer journey, etc.)",
@@ -164,7 +164,7 @@
                 "   - Fases técnicas y de implementación",
                 "",
                 "4. Para cada documento que crees, usa EXACTAMENTE esta estructura de carpetas:",
-                "   `/Users/jlcases/codigo/codedocs/docs/[nombre-proyecto]/[fase]/[nombre-documento].md`",
+                "   `docs/[nombre-proyecto]/[fase]/[nombre-documento].md`",
                 "",
                 "5. Haz preguntas MECE para obtener información exhaustiva, siguiendo EXACTAMENTE las categorías y subcategorías de las plantillas:",
                 "   - Divide tus preguntas en categorías lógicas EXACTAMENTE como aparecen en las plantillas",
@@ -179,7 +179,7 @@
                 "",
                 "9. Mantén actualizado un índice de la documentación creada hasta el momento y el progreso global, asegurando que TODOS los documentos creados se ajusten EXACTAMENTE a las plantillas originales.",
                 "",
-                "10. Al finalizar cada documento principal, sugiere el siguiente paso lógico según el índice EXACTO de plantillas en `/Users/jlcases/codigo/codedocs/.notes/`."
+                "10. Al finalizar cada documento principal, sugiere el siguiente paso lógico según el índice EXACTO de plantillas en `.notes/`."
             ]
         },
         {
@@ -189,7 +189,7 @@
             "instructions": [
                 "# Reglas para la Utilización de Plantillas",
                 "",
-                "Para usar EXACTAMENTE las plantillas de documentación de `/Users/jlcases/codigo/codedocs/.notes/`:",
+                "Para usar EXACTAMENTE las plantillas de documentación de `.notes/`:",
                 "",
                 "1. Trata cada plantilla como un conjunto de preguntas estructuradas que debes hacer al usuario, siguiendo EXACTAMENTE el mismo orden y estructura que aparece en la plantilla original.",
                 "",
@@ -225,7 +225,7 @@
             "instructions": [
                 "# Reglas para la Creación de Documentos",
                 "",
-                "Al crear documentos de proyecto basados EXACTAMENTE en las plantillas de `/Users/jlcases/codigo/codedocs/.notes/`:",
+                "Al crear documentos de proyecto basados EXACTAMENTE en las plantillas de `.notes/`:",
                 "",
                 "1. Cada documento debe:",
                 "   - Comenzar con un encabezado claro y la fecha de creación/modificación",
@@ -274,12 +274,12 @@
             "description": "Establece la carpeta de plantillas absolutas como de máxima prioridad",
             "patterns": ["**/*"],
             "instructions": [
-                "La carpeta `/Users/jlcases/codigo/codedocs/.notes/` contiene EXACTAMENTE todas las plantillas que DEBES usar como base para la documentación.",
-                "Debes explorar PRIMERO esta ruta absoluta EXACTA para entender la estructura y contenido de las plantillas disponibles.",
-                "El archivo `/Users/jlcases/codigo/codedocs/.notes/00_index.md` proporciona EXACTAMENTE la visión general del sistema de plantillas y cómo están organizadas.",
+                "La carpeta `.notes/` contiene EXACTAMENTE todas las plantillas que DEBES usar como base para la documentación.",
+                "Debes explorar PRIMERO esta ruta EXACTA para entender la estructura y contenido de las plantillas disponibles.",
+                "El archivo `.notes/00_index.md` proporciona EXACTAMENTE la visión general del sistema de plantillas y cómo están organizadas.",
                 "Siempre que interactúes con el usuario, ten en cuenta EXACTAMENTE estas plantillas y úsalas como guía para hacer preguntas relevantes.",
                 "NUNCA te desvíes de la estructura EXACTA de estas plantillas al crear la documentación.",
-                "La prioridad MÁXIMA es seguir EXACTAMENTE las plantillas ubicadas en esta ruta absoluta."
+                "La prioridad MÁXIMA es seguir EXACTAMENTE las plantillas ubicadas en esta ruta."
             ]
         },
         {
@@ -291,13 +291,13 @@
                 "",
                 "Al finalizar el proceso de documentación, DEBES crear un archivo MDC (Modelo de Documentación de Cursor) para que los usuarios puedan programar con contexto completo en su proyecto:",
                 "",
-                "1. DEBES crear el archivo MDC basándote EXACTAMENTE en la plantilla ubicada en `/Users/jlcases/codigo/codedocs/.notes/paella_doc.mdc.example`.",
+                "1. DEBES crear el archivo MDC basándote EXACTAMENTE en la plantilla ubicada en `.notes/paella_doc.mdc.example`.",
                 "",
                 "2. El archivo MDC debe ser generado en la carpeta de documentación del proyecto con el nombre de la carpeta del proyecto, siguiendo este patrón:",
-                "   - Para productos: `/Users/jlcases/codigo/codedocs/docs/[nombre-proyecto]/[nombre-proyecto].mdc.example`",
-                "   - Para features: `/Users/jlcases/codigo/codedocs/docs/features/[nombre-feature]/[nombre-feature].mdc.example`",
-                "   - Para bugs: `/Users/jlcases/codigo/codedocs/docs/bugs/[nombre-bug]/[nombre-bug].mdc.example`",
-                "   - Para tareas: `/Users/jlcases/codigo/codedocs/docs/tasks/[nombre-tarea]/[nombre-tarea].mdc.example`",
+                "   - Para productos: `docs/[nombre-proyecto]/[nombre-proyecto].mdc.example`",
+                "   - Para features: `docs/features/[nombre-feature]/[nombre-feature].mdc.example`",
+                "   - Para bugs: `docs/bugs/[nombre-bug]/[nombre-bug].mdc.example`",
+                "   - Para tareas: `docs/tasks/[nombre-tarea]/[nombre-tarea].mdc.example`",
                 "",
                 "3. DEBES adaptar el archivo MDC para que apunte EXACTAMENTE a la documentación generada durante el proceso, utilizando rutas relativas.",
                 "",
@@ -335,11 +335,11 @@
     ],
     "priorities": [
         {
-            "source": "/Users/jlcases/codigo/codedocs/.notes/",
+            "source": ".notes/",
             "weight": 3.0
         },
         {
-            "source": "/Users/jlcases/codigo/codedocs/docs/",
+            "source": "docs/",
             "weight": 2.0
         },
         {
@@ -362,8 +362,8 @@
     "project_directives": {
         "name": "documentation-agent",
         "ai_first": true,
-        "template_path": "/Users/jlcases/codigo/codedocs/.notes/",
-        "output_path": "/Users/jlcases/codigo/codedocs/docs/",
+        "template_path": ".notes/",
+        "output_path": "docs/",
         "timestamp_format": {
             "command": "date '+%Y-%m-%d'",
             "pattern": "YYYY-MM-DD"
