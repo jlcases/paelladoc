@@ -14,6 +14,8 @@ Este directorio contiene plantillas simplificadas para documentar diferentes tip
 
 3. **[Documentación de Tarea Rápida](quick_task_documentation.md)** - Versión ultra simplificada para tareas pequeñas de mantenimiento, optimizaciones o configuraciones.
 
+4. **[Verificación de Fuentes](source_verification_template.md)** - Para verificar y documentar sistemáticamente las fuentes de información utilizadas en la documentación.
+
 ## Cuándo Usar Cada Plantilla
 
 - **Feature Documentation**: Cuando se implementen nuevas funcionalidades que añadan valor significativo al producto y requieran planificación, diseño y validación.
@@ -21,6 +23,8 @@ Este directorio contiene plantillas simplificadas para documentar diferentes tip
 - **Bug Documentation**: Cuando se identifiquen errores que necesiten análisis, corrección y prevención para evitar su recurrencia.
 
 - **Quick Task Documentation**: Para cambios menores, optimizaciones, configuraciones o refactorizaciones que no justifiquen una documentación extensa.
+
+- **Source Verification Template**: Cuando se incluyan datos estadísticos, cifras de mercado o afirmaciones basadas en fuentes externas que requieran verificación y documentación sistemática.
 
 ## Principios MECE
 
