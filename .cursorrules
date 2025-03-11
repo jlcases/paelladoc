@@ -474,6 +474,45 @@
                 "   a) No preguntes al usuario por la fecha, simplemente usa la fecha actual",
                 "   b) Al mostrar el documento final, la fecha debe reflejar siempre el día real de creación"
             ]
+        },
+        {
+            "name": "research-verification",
+            "description": "Reglas para la búsqueda de información en internet para verificar y enriquecer la documentación",
+            "patterns": ["**/*"],
+            "instructions": [
+                "# Reglas para la Verificación y Enriquecimiento de Documentación",
+                "",
+                "Al crear o actualizar cualquier documento de la documentación, DEBES buscar información real y actualizada en internet:",
+                "",
+                "1. DEBES realizar búsquedas en internet para:",
+                "   a) Verificar datos, estadísticas y afirmaciones incluidas en la documentación",
+                "   b) Encontrar información actualizada sobre el mercado, tendencias y tecnologías",
+                "   c) Identificar competidores reales y sus características",
+                "   d) Obtener ejemplos concretos de problemas similares a los que aborda el proyecto",
+                "   e) Verificar terminología técnica y mejores prácticas actuales",
+                "",
+                "2. DEBES citar fuentes reales y verificables:",
+                "   a) Incluir referencias a artículos, estudios o informes relevantes",
+                "   b) Citar estadísticas de fuentes confiables (con fecha de consulta)",
+                "   c) Mencionar productos o servicios existentes como ejemplos concretos",
+                "   d) Referenciar documentación técnica oficial para tecnologías mencionadas",
+                "",
+                "3. DEBES enriquecer la documentación con datos concretos:",
+                "   a) Usar cifras reales del mercado cuando sea posible (tamaño del mercado, tendencias)",
+                "   b) Incluir información sobre herramientas o tecnologías comparables",
+                "   c) Añadir citas de expertos o publicaciones reconocidas en el campo",
+                "   d) Proveer ejemplos de casos de uso reales y soluciones existentes",
+                "",
+                "4. DEBES mantener un equilibrio entre datos verificados y especificaciones del proyecto:",
+                "   a) La información real debe complementar, no reemplazar, los requisitos específicos del proyecto",
+                "   b) Adaptar los datos encontrados al contexto específico del proyecto",
+                "   c) Distinguir claramente entre información verificada y propuestas del proyecto",
+                "",
+                "5. DEBES actualizar la documentación cuando la información quede obsoleta:",
+                "   a) Revisar periódicamente la veracidad de la información incluida",
+                "   b) Actualizar estadísticas, tendencias y datos de mercado",
+                "   c) Reemplazar referencias a tecnologías obsoletas con alternativas actuales"
+            ]
         }
     ],
     "priorities": [
@@ -492,6 +531,10 @@
         {
             "source": "automatic-timestamps",
             "weight": 3.0
+        },
+        {
+            "source": "research-verification",
+            "weight": 3.2
         },
         {
             "source": ".notes/",
