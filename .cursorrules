@@ -441,6 +441,39 @@
                 "   b) Actualizar todas las referencias a estos documentos en otros archivos",
                 "   c) Informar al usuario sobre estos cambios y su justificación"
             ]
+        },
+        {
+            "name": "automatic-timestamps",
+            "description": "Reglas para la generación automática de timestamps en documentos",
+            "patterns": ["**/*"],
+            "instructions": [
+                "# Reglas para la Generación Automática de Timestamps",
+                "",
+                "Al crear o actualizar cualquier documento de la documentación:",
+                "",
+                "1. DEBES SIEMPRE usar la fecha actual en formato YYYY-MM-DD para el campo 'fecha' en los metadatos:",
+                "   a) Al crear un nuevo documento, usa la fecha del día en que se está creando",
+                "   b) Al actualizar un documento existente, actualiza la fecha a la fecha actual",
+                "   c) Nunca uses fechas futuras o plantillas estáticas como [YYYY-MM-DD]",
+                "",
+                "2. DEBES obtener la fecha actual usando el siguiente método:",
+                "   a) Utilizando la función JavaScript `new Date().toISOString().slice(0, 10)` mentalmente",
+                "   b) El resultado será una cadena en formato 'YYYY-MM-DD' correspondiente al día actual",
+                "   c) Este formato es compatible con todas las plantillas de documentación",
+                "",
+                "3. DEBES aplicar este timestamp automático en:",
+                "   a) Los metadatos frontmatter al inicio del documento",
+                "   b) Cualquier referencia a la fecha de creación o actualización dentro del documento",
+                "   c) Nombres de archivo que incluyan fecha, si es aplicable según las convenciones",
+                "",
+                "4. DEBES incluir una nota sobre la última actualización al final de documentos extensos:",
+                "   a) Formato: 'Última actualización: YYYY-MM-DD'",
+                "   b) Esto proporciona trazabilidad para documentos que evolucionan con el tiempo",
+                "",
+                "5. RECUERDA que este sistema es automático y no requiere intervención del usuario:",
+                "   a) No preguntes al usuario por la fecha, simplemente usa la fecha actual",
+                "   b) Al mostrar el documento final, la fecha debe reflejar siempre el día real de creación"
+            ]
         }
     ],
     "priorities": [
@@ -455,6 +488,10 @@
         {
             "source": "structure-mdc-coherence",
             "weight": 3.5
+        },
+        {
+            "source": "automatic-timestamps",
+            "weight": 3.0
         },
         {
             "source": ".notes/",
