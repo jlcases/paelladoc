@@ -1,566 +1,1457 @@
 {
-    "version": 1,
-    "name": "documentation-agent-rules",
-    "description": "Reglas para el agente de documentación del proyecto",
-    "patterns": ["**/*"],
-    "rules": [
-        {
-            "name": "paella-procedure",
-            "description": "Procedimiento de inicio cuando el usuario diga 'PAELLA'",
-            "patterns": ["**/*"],
-            "instructions": [
-                "# Procedimiento de Inicio con PAELLA",
-                "",
-                "Cuando el usuario escriba 'PAELLA':",
-                "",
-                "1. DEBES preguntar PRIMERO: '¿Qué quieres hacer?' o '¿Qué necesitas documentar?'",
-                "   Deja que el usuario describa libremente su necesidad.",
-                "",
-                "2. Basado en la respuesta del usuario, DEBES ANALIZAR:",
-                "   - La complejidad del proyecto",
-                "   - El alcance necesario",
-                "   - El contexto de uso",
-                "   - Los usuarios finales",
-                "   - El tiempo disponible",
-                "",
-                "3. DEBES CLASIFICAR el proyecto en una de estas categorías:",
-                "   a) Producto Completo con Necesidades Completas:",
-                "      - Requiere investigación de mercado completa",
-                "      - Necesita análisis de usuario detallado",
-                "      - Precisa documentación exhaustiva",
-                "",
-                "   b) Producto Completo con Necesidades Específicas:",
-                "      - Enfoque en aspectos técnicos",
-                "      - Documentación centrada en implementación",
-                "      - Análisis de mercado simplificado",
-                "",
-                "   c) Nueva Feature:",
-                "      - Documentación basada en feature_documentation.md",
-                "      - Enfoque en integración con producto existente",
-                "",
-                "   d) Bug Fix:",
-                "      - Documentación basada en bug_documentation.md",
-                "      - Enfoque en resolución y prevención",
-                "",
-                "   e) Tarea Rápida:",
-                "      - Documentación ultra simplificada",
-                "      - Enfoque en implementación directa",
-                "",
-                "4. DEBES SELECCIONAR las plantillas relevantes:",
-                "   - NO uses todas las plantillas por defecto",
-                "   - Selecciona solo las que aportan valor real al proyecto",
-                "   - Adapta el nivel de detalle según necesidad",
-                "",
-                "5. DEBES EXPLICAR al usuario:",
-                "   - Por qué has elegido esa categoría",
-                "   - Qué plantillas vas a usar y por qué",
-                "   - Qué secciones son opcionales",
-                "",
-                "6. DEBES PREGUNTAR el nombre del proyecto/feature/bug/tarea.",
-                "",
-                "7. DEBES PREGUNTAR en qué idioma desea la documentación:",
-                "   - Ofrece opciones como Español, Inglés, etc.",
-                "   - Adapta todas las plantillas y preguntas al idioma seleccionado",
-                "   - Guarda esta preferencia en el archivo de memoria",
-                "",
-                "8. DEBES CREAR la estructura apropiada:",
-                "   - Producto Completo: `docs/[nombre]/`",
-                "   - Feature: `docs/features/[nombre]/`",
-                "   - Bug: `docs/bugs/[nombre]/`",
-                "   - Tarea: `docs/tasks/[nombre]/`",
-                "",
-                "9. DEBES MANTENER el enfoque MECE pero adaptado a la necesidad real:",
-                "   - Mutuamente Excluyente: Sin duplicar información",
-                "   - Colectivamente Exhaustivo: Cubriendo todo lo NECESARIO (no todo lo posible)",
-                "",
-                "10. DEBES PERMITIR al usuario:",
-                "    - Saltar secciones no relevantes",
-                "    - Profundizar en áreas importantes",
-                "    - Volver atrás si surge nueva información",
-                "",
-                "11. DEBES CREAR Y MANTENER un archivo de memoria para cada proyecto:",
-                "    - Ubicación: `docs/[tipo]/[nombre]/.memory.json`",
-                "    - Contenido:",
-                "      ```json",
-                "      {",
-                "        \"project_name\": \"[nombre]\",",
-                "        \"project_type\": \"[producto/feature/bug/tarea]\",",
-                "        \"language\": \"[idioma-seleccionado]\",",
-                "        \"created_at\": \"[fecha-creación]\",",
-                "        \"last_updated\": \"[fecha-última-actualización]\",",
-                "        \"category\": \"[categoría-seleccionada]\",",
-                "        \"templates\": [\"lista-de-plantillas-seleccionadas\"],",
-                "        \"progress\": {",
-                "          \"current_phase\": \"[fase-actual]\",",
-                "          \"completed_sections\": [\"secciones-completadas\"],",
-                "          \"pending_sections\": [\"secciones-pendientes\"]",
-                "        },",
-                "        \"collected_info\": {",
-                "          \"[sección-1]\": {",
-                "            \"[campo-1]\": \"[valor]\",",
-                "            \"[campo-2]\": \"[valor]\"",
-                "          },",
-                "          \"[sección-2]\": {",
-                "            \"[campo-1]\": \"[valor]\"",
-                "          }",
-                "        }",
-                "      }",
-                "      ```",
-                "",
-                "12. DEBES ACTUALIZAR el archivo de memoria después de cada interacción significativa:",
-                "    - Cuando se complete una sección",
-                "    - Cuando se recopile información importante",
-                "    - Cuando se cambie de fase",
-                "",
-                "13. DEBES VERIFICAR la existencia del archivo de memoria al inicio:",
-                "    - Si existe, preguntar si desea continuar donde lo dejó",
-                "    - Si no existe, iniciar el proceso normalmente",
-                "",
-                "14. RECUERDA: El objetivo es documentación útil y práctica, no exhaustividad innecesaria."
+    "version": "2.0.0",
+    "name": "paelladoc-generator",
+    "description": "PAELLADOC Interactive Chat-Based Documentation Generator System",
+    "cursor_version": "0.47",
+    "min_cursor_version": "0.47.0",
+    "system_type": "interactive_chat",
+    "core_protection": {
+        "prevent_self_documentation": true,
+        "protected_names": ["paelladoc", "PAELLADOC", "PaellaDoc"],
+        "error_message": "PAELLADOC is the core system and cannot be documented"
+    },
+    "template_definitions": {
+        "Research and Definition": [
+            "00_index.md",
+            "01_market_research.md",
+            "01_project_definition.md",
+            "02_user_research.md",
+            "03_problem_definition.md"
+        ],
+        "Product Planning": [
+            "00_index.md",
+            "05_product_roadmap.md",
+            "05_api_specification.md",
+            "05a_empathy_map.md",
+            "05b_customer_journey_map.md",
+            "05c_user_stories.md"
+        ],
+        "Technical Implementation": [
+            "00_index.md",
+            "02_technical_architecture.md",
+            "03_component_specification.md",
+            "04_database_design.md",
+            "04a_architecture_decision_record.md",
+            "06_frontend_architecture.md",
+            "07_testing_strategy.md"
+        ],
+        "Project Management": [
+            "00_index.md",
+            "11_task_management.md",
+            "12_meeting_notes.md",
+            "13_project_progress.md"
+        ],
+        "Quick Documentation": [
+            "00_index.md",
+            "bug_documentation.md",
+            "feature_documentation.md",
+            "quick_task_documentation.md"
+        ]
+    },
+    "commands": {
+        "PAELLA": {
+            "description": "Initiates an interactive documentation chat session",
+            "action": "start_documentation_chat",
+            "interactive": true,
+            "requires_args": false,
+            "workflow": {
+                "steps": [
+                    {
+                        "id": "welcome",
+                        "type": "message",
+                        "content": "Welcome to PAELLADOC - Interactive Documentation System",
+                        "next": "project_name_input"
+                    },
+                    {
+                        "id": "project_name_input",
+                        "type": "input",
+                        "prompt": "Enter the name of the project you want to document:",
+                        "store_as": "project_name",
+                        "next": "validate_project_name"
+                    },
+                    {
+                        "id": "validate_project_name",
+                        "type": "validation",
+                        "field": "project_name",
+                        "not_allowed": ["paelladoc", "PAELLADOC", "PaellaDoc"],
+                        "error_message": "ERROR: PAELLADOC is the core system and cannot be documented.",
+                        "on_success": "language_selection",
+                        "on_error": "end_error"
+                    },
+                    {
+                        "id": "language_selection",
+                        "type": "choice",
+                        "prompt": "What language do you use to chat?",
+                        "options": ["English", "Español"],
+                        "store_as": "communication_language",
+                        "next": "check_memory"
+                    },
+                    {
+                        "id": "check_memory",
+                        "type": "file_check",
+                        "path": ".memory.json",
+                        "exists": "verify_project",
+                        "not_exists": "documentation_languages"
+                    },
+                    {
+                        "id": "verify_project",
+                        "type": "memory_check",
+                        "project": "${project_name}",
+                        "exists": "project_exists",
+                        "not_exists": "documentation_languages"
+                    },
+                    {
+                        "id": "project_exists",
+                        "type": "choice",
+                        "prompt": "Project found in memory. Would you like to continue with existing documentation?",
+                        "options": ["Yes", "No"],
+                        "on_select": {
+                            "Yes": "continue_existing",
+                            "No": "documentation_languages"
+                        }
+                    },
+                    {
+                        "id": "documentation_languages",
+                        "type": "multi_choice",
+                        "prompt": "Select documentation language(s):",
+                        "options": ["English", "Español"],
+                        "store_as": "doc_languages",
+                        "next": "project_description"
+                    },
+                    {
+                        "id": "project_description",
+                        "type": "input",
+                        "prompt": "Describe what you want to document (what problem does it solve, what is it for, who is it for):",
+                        "multiline": true,
+                        "store_as": "project_description",
+                        "next": "select_template_category"
+                    },
+                    {
+                        "id": "select_template_category",
+                        "type": "choice",
+                        "prompt": "Select the template category that best fits your project:",
+                        "options": [
+                            "Product Templates", 
+                            "Simplified Templates"
+                        ],
+                        "store_as": "template_category",
+                        "on_select": {
+                            "Product Templates": "select_product_template",
+                            "Simplified Templates": "select_simplified_template"
+                        }
+                    },
+                    {
+                        "id": "select_product_template",
+                        "type": "choice",
+                        "prompt": "Select the specific template:",
+                        "options": [
+                            "Research and Definition",
+                            "Product Planning",
+                            "Technical Implementation",
+                            "Project Management"
+                        ],
+                        "store_as": "template_type",
+                        "next": "generate_file_list"
+                    },
+                    {
+                        "id": "select_simplified_template",
+                        "type": "choice",
+                        "prompt": "Select the specific template:",
+                        "options": [
+                            "Quick Documentation"
+                        ],
+                        "store_as": "template_type",
+                        "next": "generate_file_list"
+                    },
+                    {
+                        "id": "generate_file_list",
+                        "type": "action",
+                        "action": "get_template_files",
+                        "params": {
+                            "template_type": "${template_type}"
+                        },
+                        "store_result_as": "template_files",
+                        "next": "show_file_list"
+                    },
+                    {
+                        "id": "show_file_list",
+                        "type": "message",
+                        "content": "Based on your selection of '${template_type}', the following files will be created:\n\n${template_files}",
+                        "next": "confirm_file_list"
+                    },
+                    {
+                        "id": "confirm_file_list",
+                        "type": "choice",
+                        "prompt": "Do you want to proceed with this file structure?",
+                        "options": ["Yes, create these files", "No, select a different template"],
+                        "on_select": {
+                            "Yes, create these files": "create_project_structure",
+                            "No, select a different template": "select_template_category"
+                        }
+                    },
+                    {
+                        "id": "create_project_structure",
+                        "type": "action",
+                        "action": "create_project_structure",
+                        "params": {
+                            "project_name": "${project_name}",
+                            "file_list": "${template_files}",
+                            "output_path": "docs/${project_name}"
+                        },
+                        "next": "save_to_memory"
+                    },
+                    {
+                        "id": "save_to_memory",
+                        "type": "action",
+                        "action": "save_to_memory",
+                        "params": {
+                            "path": ".memory.json",
+                            "project_name": "${project_name}",
+                            "communication_language": "${communication_language}",
+                            "documentation_languages": "${doc_languages}",
+                            "project_description": "${project_description}",
+                            "template_category": "${template_category}",
+                            "template_type": "${template_type}",
+                            "file_list": "${template_files}"
+                        },
+                        "next": "end_success"
+                    },
+                    {
+                        "id": "continue_existing",
+                        "type": "action",
+                        "action": "load_project",
+                        "params": {
+                            "project_name": "${project_name}"
+                        },
+                        "next": "end_success"
+                    },
+                    {
+                        "id": "end_success",
+                        "type": "message",
+                        "content": "Project structure initialized. Now you can run 'CONTINUE ${project_name}' to create each document interactively. You'll be guided through a series of questions specific to each document.",
+                        "terminate": true
+                    },
+                    {
+                        "id": "end_error",
+                        "type": "message",
+                        "content": "Process terminated. PAELLADOC cannot document itself as it is the core system.",
+                        "terminate": true
+                    }
+                ]
+            }
+        },
+        "CONTINUE": {
+            "description": "Continues with an existing project documentation",
+            "action": "continue_documentation",
+            "requires_args": true,
+            "args": [
+                {
+                    "name": "project_name",
+                    "type": "string",
+                    "description": "Name of the project to continue with",
+                    "required": true
+                }
+            ],
+            "workflow": {
+                "steps": [
+                    {
+                        "id": "start",
+                        "type": "action",
+                        "action": "load_project_info",
+                        "params": {
+                            "project_name": "${project_name}"
+                        },
+                        "store_result_as": "project_info",
+                        "next": "select_document"
+                    },
+                    {
+                        "id": "select_document",
+                        "type": "choice",
+                        "prompt": "Which document would you like to work on for ${project_name}?",
+                        "options_from": "project_info.documents",
+                        "store_as": "selected_document",
+                        "next": "document_info_gather"
+                    },
+                    {
+                        "id": "document_info_gather",
+                        "type": "action",
+                        "action": "prepare_document_questions",
+                        "params": {
+                            "document": "${selected_document}",
+                            "project_info": "${project_info}"
+                        },
+                        "store_result_as": "document_questions",
+                        "next": "check_for_market_research"
+                    },
+                    {
+                        "id": "check_for_market_research",
+                        "type": "conditional",
+                        "condition": {
+                            "field": "selected_document",
+                            "contains": ["market_research", "Market_Research", "market-research"]
+                        },
+                        "true": "auto_market_research",
+                        "false": "start_questions"
+                    },
+                    {
+                        "id": "auto_market_research",
+                        "type": "action",
+                        "action": "perform_deep_research",
+                        "params": {
+                            "topics": [
+                                "market size ${project_info.collected_info.project_overview.description}",
+                                "direct competitors ${project_info.collected_info.project_overview.description}",
+                                "indirect competitors ${project_info.collected_info.project_overview.description}",
+                                "user demographics ${project_info.collected_info.project_overview.target_users}",
+                                "monetization models ${project_info.collected_info.project_overview.description}",
+                                "market trends ${project_info.collected_info.project_overview.description}"
+                            ],
+                            "depth": "exhaustive",
+                            "verify_sources": true,
+                            "prevent_hallucinations": true,
+                            "require_references": true,
+                            "cross_validate": true
+                        },
+                        "store_result_as": "market_research_data",
+                        "next": "generate_market_document"
+                    },
+                    {
+                        "id": "generate_market_document",
+                        "type": "action",
+                        "action": "generate_document",
+                        "params": {
+                            "document_type": "market_research",
+                            "research_data": "${market_research_data}",
+                            "project_info": "${project_info}",
+                            "include_references": true,
+                            "reference_format": "academic",
+                            "confidence_threshold": 80,
+                            "add_timestamp": true,
+                            "timestamp_format": "YYYY-MM-DD"
+                        },
+                        "store_result_as": "document_content",
+                        "next": "enhanced_preview"
+                    },
+                    {
+                        "id": "start_questions",
+                        "type": "message",
+                        "content": "I'll help you create the ${selected_document} document. I'll ask a series of questions to gather the necessary information.",
+                        "next": "question_loop"
+                    },
+                    {
+                        "id": "question_loop",
+                        "type": "action",
+                        "action": "ask_document_questions",
+                        "params": {
+                            "document": "${selected_document}",
+                            "questions": "${document_questions}",
+                            "project_info": "${project_info}",
+                            "auto_research": true,
+                            "research_depth": "exhaustive"
+                        },
+                        "store_result_as": "document_content",
+                        "next": "check_document_type"
+                    },
+                    {
+                        "id": "check_document_type",
+                        "type": "conditional",
+                        "condition": {
+                            "field": "selected_document",
+                            "contains": ["market_research", "Market_Research", "market-research"]
+                        },
+                        "true": "deep_market_validation",
+                        "false": "preview_document"
+                    },
+                    {
+                        "id": "deep_market_validation",
+                        "type": "action",
+                        "action": "validate_market_research",
+                        "params": {
+                            "content": "${document_content}",
+                            "verification_mode": "deep",
+                            "add_references": true,
+                            "cross_validate": true,
+                            "verify_statistics": true,
+                            "check_competitors": true,
+                            "update_trends": true
+                        },
+                        "store_result_as": "validated_content",
+                        "next": "enhanced_preview"
+                    },
+                    {
+                        "id": "enhanced_preview",
+                        "type": "message",
+                        "content": "EXHAUSTIVE RESEARCH COMPLETED automatically for your market research document.\n\nBased on comprehensive research about ${project_info.collected_info.project_overview.description}, we have:\n- Analyzed the market size and growth trends\n- Identified and evaluated direct competitors\n- Assessed indirect competitors and alternative solutions\n- Segmented potential customers with demographic data\n- Evaluated monetization models used in similar products\n\nFinal document:\n\n${document_content.preview}\n\nSources used (all cross-validated):\n${document_content.sources}\n\nInformation confidence score: ${document_content.confidence_score}%",
+                        "next": "confirm_enhanced_document"
+                    },
+                    {
+                        "id": "confirm_enhanced_document",
+                        "type": "choice",
+                        "prompt": "Would you like to save this validated and enhanced market document?",
+                        "options": ["Yes, save validated version", "No, needs more revisions"],
+                        "on_select": {
+                            "Yes, save validated version": "save_validated_document",
+                            "No, needs more revisions": "question_loop"
+                        }
+                    },
+                    {
+                        "id": "save_validated_document",
+                        "type": "action",
+                        "action": "save_document",
+                        "params": {
+                            "project_name": "${project_name}",
+                            "document": "${selected_document}",
+                            "content": "${validated_content}",
+                            "project_info": "${project_info}",
+                            "include_references": true,
+                            "reference_format": "academic",
+                            "add_timestamp": true,
+                            "timestamp_format": "YYYY-MM-DD",
+                            "frontmatter": true,
+                            "process_variables": true,
+                            "replace_date_variables": true
+                        },
+                        "next": "check_documentation_completion"
+                    },
+                    {
+                        "id": "preview_document",
+                        "type": "message",
+                        "content": "Based on your answers and automated research, I've prepared the ${selected_document} document:\n\n${document_content.preview}\n\nThe research sources used:\n${document_content.research_sources}",
+                        "next": "confirm_document"
+                    },
+                    {
+                        "id": "confirm_document",
+                        "type": "choice",
+                        "prompt": "Would you like to save this document?",
+                        "options": ["Yes, save it", "No, let's revise it"],
+                        "on_select": {
+                            "Yes, save it": "save_document",
+                            "No, let's revise it": "question_loop"
+                        }
+                    },
+                    {
+                        "id": "save_document",
+                        "type": "action",
+                        "action": "save_document",
+                        "params": {
+                            "project_name": "${project_name}",
+                            "document": "${selected_document}",
+                            "content": "${document_content}",
+                            "project_info": "${project_info}",
+                            "add_timestamp": true,
+                            "timestamp_format": "YYYY-MM-DD",
+                            "frontmatter": true,
+                            "process_variables": true,
+                            "replace_date_variables": true
+                        },
+                        "next": "check_documentation_completion"
+                    },
+                    {
+                        "id": "check_documentation_completion",
+                        "type": "action",
+                        "action": "check_documentation_completeness",
+                        "params": {
+                            "project_name": "${project_name}",
+                            "required_docs": ["00_index.md"],
+                            "completeness_threshold": 60
+                        },
+                        "store_result_as": "docs_status",
+                        "next": "evaluate_docs_completion"
+                    },
+                    {
+                        "id": "evaluate_docs_completion",
+                        "type": "conditional",
+                        "condition": {
+                            "field": "docs_status.is_complete",
+                            "equals": true
+                        },
+                        "true": "offer_generate_mdc",
+                        "false": "continue_documenting"
+                    },
+                    {
+                        "id": "offer_generate_mdc",
+                        "type": "message",
+                        "content": "🎉 Congratulations! Your project documentation is ${docs_status.completeness_percentage}% complete.\n\nThis is sufficient to start development with AI assistance.",
+                        "next": "ask_generate_mdc"
+                    },
+                    {
+                        "id": "ask_generate_mdc",
+                        "type": "choice",
+                        "prompt": "Would you like to generate a Cursor MDC file now to start development?",
+                        "options": ["Yes, generate MDC for development", "No, continue with documentation", "Show me what's missing first"],
+                        "on_select": {
+                            "Yes, generate MDC for development": "initiate_mdc_generation",
+                            "No, continue with documentation": "continue_documenting",
+                            "Show me what's missing first": "show_missing_docs"
+                        }
+                    },
+                    {
+                        "id": "show_missing_docs",
+                        "type": "message",
+                        "content": "Documentation status for '${project_name}':\n\n✅ Completed documents (${docs_status.completed_docs_count}):\n${docs_status.completed_docs}\n\n❌ Missing or incomplete documents (${docs_status.missing_docs_count}):\n${docs_status.missing_docs}\n\nCompletion percentage: ${docs_status.completeness_percentage}%",
+                        "next": "ask_generate_mdc"
+                    },
+                    {
+                        "id": "initiate_mdc_generation",
+                        "type": "action",
+                        "action": "extract_development_info",
+                        "params": {
+                            "project_name": "${project_name}",
+                            "include_architecture": true,
+                            "include_components": true,
+                            "include_api": true,
+                            "include_database": true,
+                            "include_rules": true,
+                            "extract_mode": "references_only"
+                        },
+                        "store_result_as": "development_info",
+                        "next": "generate_mdc_file_from_continue"
+                    },
+                    {
+                        "id": "generate_mdc_file_from_continue",
+                        "type": "action",
+                        "action": "generate_mdc",
+                        "params": {
+                            "project_name": "${project_name}",
+                            "development_info": "${development_info}",
+                            "output_path": "docs/${project_name}/",
+                            "filename": "${project_name}.mdc.example",
+                            "include_templates": true,
+                            "include_globs": true,
+                            "include_instructions": true,
+                            "include_rules": true,
+                            "mode": "orchestrator",
+                            "reference_docs": true,
+                            "avoid_duplication": true,
+                            "documentation_root": "docs/${project_name}/",
+                            "structure_type": "reference"
+                        },
+                        "store_result_as": "mdc_result",
+                        "next": "confirm_mdc_generation"
+                    },
+                    {
+                        "id": "confirm_mdc_generation",
+                        "type": "message",
+                        "content": "✅ MDC for project '${project_name}' successfully generated!\n\nFile created in the docs folder: ${mdc_result.file_path}\n\nThe MDC acts as an ORCHESTRATOR and includes:\n- ${mdc_result.rule_count} development rules that REFERENCE your documentation\n- ${mdc_result.pattern_count} file patterns to organize code\n- ${mdc_result.instruction_count} development instructions\n\nIMPORTANT: This MDC file does NOT CONTAIN the complete documentation, but REFERENCES to it.\n\nTO USE IN YOUR DEVELOPMENT PROJECT:\n\n1. Create a new project/repository for your actual development\n2. Create a .cursor directory in that project\n3. Copy the complete docs/${project_name}/ folder to .cursor/rules/ in your development project\n4. Copy the ${project_name}.mdc.example file from docs/${project_name}/ to your development project\n5. Rename it to ${project_name}.mdc (without .example extension) and place it in the .cursor/ directory\n\nThe structure in your development project should be:\n```\nyour-development-project/\n├── .cursor/\n│   ├── ${project_name}.mdc  (renamed from .mdc.example)\n│   └── rules/\n│       └── ${project_name}/  (copied from docs/${project_name}/)\n│           ├── 00_index.md\n│           ├── feature_documentation.md\n│           └── other documentation files...\n├── src/\n├── other project files...\n```\n\nWith this structure, Cursor will be able to access the documentation referenced by the MDC during development.",
+                        "next": "ask_open_mdc"
+                    },
+                    {
+                        "id": "ask_open_mdc",
+                        "type": "choice",
+                        "prompt": "Would you like to view the generated MDC file?",
+                        "options": ["Yes, open MDC file", "No, I'll check it later"],
+                        "on_select": {
+                            "Yes, open MDC file": "open_mdc_file",
+                            "No, I'll check it later": "end_with_mdc"
+                        }
+                    },
+                    {
+                        "id": "open_mdc_file",
+                        "type": "action",
+                        "action": "open_file",
+                        "params": {
+                            "file_path": "${mdc_result.file_path}"
+                        },
+                        "next": "end_with_mdc"
+                    },
+                    {
+                        "id": "end_with_mdc",
+                        "type": "message",
+                        "content": "Documentation session completed. The MDC file is ready for development. Use 'CONTINUE ${project_name}' anytime to continue working on your documentation.",
+                        "terminate": true
+                    },
+                    {
+                        "id": "continue_documenting",
+                        "type": "choice",
+                        "prompt": "Do you want to work on another document?",
+                        "options": ["Yes", "No, I'm done for now", "MARK DOCUMENTATION AS COMPLETE"],
+                        "on_select": {
+                            "Yes": "select_document",
+                            "No, I'm done for now": "check_final_completion",
+                            "MARK DOCUMENTATION AS COMPLETE": "mark_as_complete"
+                        }
+                    },
+                    {
+                        "id": "mark_as_complete",
+                        "type": "action",
+                        "action": "update_project_status",
+                        "params": {
+                            "project_name": "${project_name}",
+                            "status": "DOCUMENTATION_COMPLETE",
+                            "set_timestamp": true
+                        },
+                        "next": "documentation_complete_message"
+                    },
+                    {
+                        "id": "documentation_complete_message",
+                        "type": "message",
+                        "content": "🎉 DOCUMENTATION MARKED AS COMPLETE for project '${project_name}'!\n\nYour documentation is now ready for development. Proceeding to generate the MDC file automatically...",
+                        "next": "auto_generate_mdc"
+                    },
+                    {
+                        "id": "check_final_completion",
+                        "type": "action",
+                        "action": "check_documentation_completeness",
+                        "params": {
+                            "project_name": "${project_name}",
+                            "required_docs": ["00_index.md"],
+                            "completeness_threshold": 60
+                        },
+                        "store_result_as": "final_docs_status",
+                        "next": "evaluate_final_completion"
+                    },
+                    {
+                        "id": "evaluate_final_completion",
+                        "type": "conditional",
+                        "condition": {
+                            "field": "final_docs_status.is_complete",
+                            "equals": true
+                        },
+                        "true": "final_completion_message",
+                        "false": "incomplete_but_finish"
+                    },
+                    {
+                        "id": "final_completion_message",
+                        "type": "message",
+                        "content": "🎉 Congratulations! Your documentation for '${project_name}' is now ${final_docs_status.completeness_percentage}% complete.\n\nThis is sufficient to generate an MDC file and start development.",
+                        "next": "auto_generate_mdc"
+                    },
+                    {
+                        "id": "auto_generate_mdc",
+                        "type": "action",
+                        "action": "extract_development_info",
+                        "params": {
+                            "project_name": "${project_name}",
+                            "include_architecture": true,
+                            "include_components": true,
+                            "include_api": true,
+                            "include_database": true,
+                            "include_rules": true,
+                            "extract_mode": "references_only"
+                        },
+                        "store_result_as": "final_development_info",
+                        "next": "final_generate_mdc"
+                    },
+                    {
+                        "id": "final_generate_mdc",
+                        "type": "action",
+                        "action": "generate_mdc",
+                        "params": {
+                            "project_name": "${project_name}",
+                            "development_info": "${final_development_info}",
+                            "output_path": "docs/${project_name}/",
+                            "filename": "${project_name}.mdc.example",
+                            "include_templates": true,
+                            "include_globs": true,
+                            "include_instructions": true,
+                            "include_rules": true,
+                            "mode": "orchestrator",
+                            "reference_docs": true,
+                            "avoid_duplication": true,
+                            "documentation_root": "docs/${project_name}/",
+                            "structure_type": "reference"
+                        },
+                        "store_result_as": "final_mdc_result",
+                        "next": "final_mdc_generated"
+                    },
+                    {
+                        "id": "final_mdc_generated",
+                        "type": "message",
+                        "content": "✅ MDC for project '${project_name}' successfully generated!\n\nFile created in the docs folder: ${final_mdc_result.file_path}\n\nThe MDC acts as an ORCHESTRATOR and includes:\n- ${final_mdc_result.rule_count} development rules that REFERENCE your documentation\n- ${final_mdc_result.pattern_count} file patterns to organize code\n- ${final_mdc_result.instruction_count} development instructions\n\nIMPORTANT: This MDC file does NOT CONTAIN the complete documentation, but REFERENCES to it.",
+                        "next": "documentation_system_summary"
+                    },
+                    {
+                        "id": "documentation_system_summary",
+                        "type": "message",
+                        "content": "📚 DOCUMENTATION COMPLETE - READY FOR DEVELOPMENT 🚀\n\nThe Documentation System for ${project_name} is now fully prepared!\n\nWe've created:\n\n1. Detailed documentation in the docs/${project_name}/ folder\n2. An MDC file (${project_name}.mdc.example) in the docs/${project_name}/ folder\n\nThe MDC does NOT DUPLICATE the documentation, but REFERENCES the specific documents for each file type or component.\n\nTO USE IN YOUR DEVELOPMENT PROJECT:\n\n1. Create a new project/repository for your actual development\n2. Create a .cursor directory in that project\n3. Copy the complete docs/${project_name}/ folder to .cursor/rules/ in your development project\n4. Copy the ${project_name}.mdc.example file from docs/${project_name}/ to your development project\n5. Rename it to ${project_name}.mdc (without .example extension) and place it in the .cursor/ directory\n\nThe structure in your development project should be:\n```\nyour-development-project/\n├── .cursor/\n│   ├── ${project_name}.mdc  (renamed from .mdc.example)\n│   └── rules/\n│       └── ${project_name}/  (copied from docs/${project_name}/)\n│           ├── 00_index.md\n│           ├── feature_documentation.md\n│           └── other documentation files...\n├── src/\n├── other project files...\n```\n\nWith this structure, Cursor will be able to access the documentation referenced by the MDC during development.",
+                        "next": "end_with_success"
+                    },
+                    {
+                        "id": "end_with_success",
+                        "type": "message",
+                        "content": "🏁 DOCUMENTATION GENERATION COMPLETE! Remember to copy both the MDC file and documentation folder to your development project as explained above.",
+                        "terminate": true
+                    }
+                ]
+            }
+        },
+        "FORCE_RESEARCH": {
+            "description": "Forces automatic deep research for a document without asking any questions",
+            "action": "force_document_research",
+            "requires_args": true,
+            "args": [
+                {
+                    "name": "project_name",
+                    "type": "string",
+                    "description": "Name of the project",
+                    "required": true
+                },
+                {
+                    "name": "document",
+                    "type": "string",
+                    "description": "Document to research (e.g., 01_market_research.md)",
+                    "required": true
+                },
+                {
+                    "name": "force_level",
+                    "type": "string",
+                    "description": "Level of force to apply to research",
+                    "enum": ["normal", "high", "maximum"],
+                    "default": "high"
+                }
+            ],
+            "workflow": {
+                "steps": [
+                    {
+                        "id": "start_forced_research",
+                        "type": "message",
+                        "content": "Starting FORCED AUTOMATIC RESEARCH for ${document} in project ${project_name} with ${force_level} priority. This process will be completely automatic and requires no user input.",
+                        "next": "load_project_for_research"
+                    },
+                    {
+                        "id": "load_project_for_research",
+                        "type": "action",
+                        "action": "load_project_info",
+                        "params": {
+                            "project_name": "${project_name}"
+                        },
+                        "store_result_as": "project_info",
+                        "next": "determine_research_topics"
+                    },
+                    {
+                        "id": "determine_research_topics",
+                        "type": "action",
+                        "action": "extract_research_topics",
+                        "params": {
+                            "document": "${document}",
+                            "project_info": "${project_info}",
+                            "depth": "comprehensive"
+                        },
+                        "store_result_as": "research_topics",
+                        "next": "execute_forced_research"
+                    },
+                    {
+                        "id": "execute_forced_research",
+                        "type": "action",
+                        "action": "perform_deep_research",
+                        "params": {
+                            "topics": "${research_topics}",
+                            "depth": "exhaustive",
+                            "verify_sources": true,
+                            "prevent_hallucinations": true,
+                            "require_references": true,
+                            "force_level": "${force_level}",
+                            "priority": "maximum",
+                            "skip_user_input": true
+                        },
+                        "store_result_as": "document_research_data",
+                        "next": "generate_research_document"
+                    },
+                    {
+                        "id": "generate_research_document",
+                        "type": "action",
+                        "action": "generate_document",
+                        "params": {
+                            "document": "${document}",
+                            "research_data": "${document_research_data}",
+                            "project_info": "${project_info}",
+                            "include_references": true,
+                            "reference_format": "academic",
+                            "confidence_threshold": 80,
+                            "comprehensive": true,
+                            "add_timestamp": true,
+                            "timestamp_format": "YYYY-MM-DD"
+                        },
+                        "store_result_as": "generated_document",
+                        "next": "save_forced_document"
+                    },
+                    {
+                        "id": "save_forced_document",
+                        "type": "action",
+                        "action": "save_document",
+                        "params": {
+                            "project_name": "${project_name}",
+                            "document": "${document}",
+                            "content": "${generated_document}",
+                            "project_info": "${project_info}",
+                            "override": true,
+                            "add_timestamp": true,
+                            "timestamp_format": "YYYY-MM-DD",
+                            "frontmatter": true,
+                            "process_variables": true,
+                            "replace_date_variables": true
+                        },
+                        "next": "research_complete"
+                    },
+                    {
+                        "id": "research_complete",
+                        "type": "message",
+                        "content": "FORCED RESEARCH COMPLETE. Document ${document} for project ${project_name} has been automatically generated with exhaustive research.\n\nNo user input was required in this process. All data was automatically collected, verified with multiple sources, and formatted with academic references.\n\nSummary of research:\n${generated_document.summary}\n\nTotal sources used: ${generated_document.source_count}\nConfidence score: ${generated_document.confidence_score}%\n\nDocument has been saved successfully.",
+                        "terminate": true
+                    }
+                ]
+            }
+        },
+        "ACHIEVEMENT": {
+            "description": "Records an achievement in the project memory",
+            "action": "record_achievement",
+            "requires_args": true,
+            "args": [
+                {
+                    "name": "description",
+                    "type": "string",
+                    "description": "Description of the achievement",
+                    "required": true
+                },
+                {
+                    "name": "category",
+                    "type": "string",
+                    "description": "Category of the achievement",
+                    "enum": ["architecture", "development", "documentation", "testing", "security", "performance", "product", "design", "research"],
+                    "required": true
+                },
+                {
+                    "name": "impact_level",
+                    "type": "string",
+                    "description": "Level of impact of the achievement",
+                    "enum": ["high", "medium", "low"],
+                    "default": "medium"
+                }
             ]
         },
-        {
-            "name": "sequential-document-creation",
-            "description": "Procedimiento para crear documentos largos de manera secuencial",
-            "patterns": ["**/*"],
-            "instructions": [
-                "# Procedimiento para Crear Documentos Largos de Manera Secuencial",
-                "",
-                "Cuando necesites crear documentos largos basados en plantillas extensas:",
-                "",
-                "1. DEBES SIEMPRE seguir un enfoque secuencial y estructurado:",
-                "   a) PRIMERO crea la estructura básica del documento con:",
-                "      - Metadatos completos (título, fecha, autor, estado, versión)",
-                "      - Encabezados de todas las secciones principales",
-                "      - Marcadores de posición '[Contenido pendiente]' para cada sección",
-                "   b) LUEGO completa cada sección una por una, en orden secuencial",
-                "   c) FINALMENTE revisa el documento completo para asegurar coherencia",
-                "",
-                "2. Para cada sección principal del documento:",
-                "   a) Reemplaza el marcador '[Contenido pendiente]' con el contenido real",
-                "   b) Asegúrate de que la sección esté completa antes de pasar a la siguiente",
-                "   c) Actualiza el archivo de memoria después de completar cada sección importante",
-                "",
-                "3. Si una sección es particularmente extensa:",
-                "   a) Divídela en subsecciones manejables",
-                "   b) Completa cada subsección por separado",
-                "   c) Integra las subsecciones en la sección principal",
-                "",
-                "4. Para documentos extremadamente largos:",
-                "   a) Considera dividirlos en múltiples archivos relacionados",
-                "   b) Crea un documento principal que enlace a los documentos secundarios",
-                "   c) Mantén la coherencia entre todos los documentos relacionados",
-                "",
-                "5. SIEMPRE mantén al usuario informado sobre el progreso:",
-                "   a) Indica qué secciones has completado",
-                "   b) Indica qué secciones faltan por completar",
-                "   c) Ofrece la opción de revisar secciones específicas si es necesario",
-                "",
-                "6. NUNCA intentes crear un documento extenso completo en una sola operación:",
-                "   a) Esto puede sobrecargar al modelo y resultar en contenido incompleto o incoherente",
-                "   b) Siempre es preferible un enfoque iterativo y secuencial",
-                "   c) La calidad y coherencia son prioritarias sobre la velocidad"
+        "ISSUE": {
+            "description": "Records an issue in the project memory",
+            "action": "record_problem",
+            "requires_args": true,
+            "args": [
+                {
+                    "name": "description",
+                    "type": "string",
+                    "description": "Description of the issue",
+                    "required": true
+                },
+                {
+                    "name": "severity",
+                    "type": "string",
+                    "description": "Severity level of the issue",
+                    "enum": ["critical", "high", "medium", "low"],
+                    "required": true
+                },
+                {
+                    "name": "area",
+                    "type": "string",
+                    "description": "Area affected by the issue",
+                    "enum": ["product", "technical", "process", "security", "performance"],
+                    "required": true
+                }
             ]
         },
-        {
-            "name": "start-procedure",
-            "description": "Procedimiento de inicio cuando el usuario diga 'empecemos'",
-            "patterns": ["**/*"],
-            "instructions": [
-                "# Procedimiento de Inicio",
-                "",
-                "Cuando el usuario escriba 'empecemos' o una frase similar que indique el inicio del proceso:",
-                "",
-                "1. DEBES preguntar PRIMERO cuál es el nombre del proyecto.",
-                "",
-                "2. Una vez obtenido el nombre del proyecto, debes crear una carpeta con ese nombre en la ruta de documentación.",
-                "",
-                "3. Informa al usuario que has creado la carpeta y que comenzarás a guiarle a través del proceso de documentación siguiendo EXACTAMENTE las plantillas en `.notes/`.",
-                "",
-                "4. Sigue el proceso de documentación comenzando con la primera fase (Descubrimiento) definida en el índice de plantillas."
+        "MEMORY": {
+            "description": "Shows the development record",
+            "action": "show_memory",
+            "requires_args": false,
+            "args": [
+                {
+                    "name": "filter",
+                    "type": "string",
+                    "description": "Filter memory by category",
+                    "enum": ["all", "achievements", "issues", "decisions", "product", "technical"],
+                    "default": "all"
+                },
+                {
+                    "name": "format",
+                    "type": "string",
+                    "description": "Output format",
+                    "enum": ["detailed", "summary", "timeline"],
+                    "default": "detailed"
+                }
             ]
         },
-        {
-            "name": "documentation-assistant",
-            "description": "Asistente para la creación de documentación del proyecto",
-            "patterns": ["**/*"],
-            "instructions": [
-                "# Reglas del Asistente de Documentación",
-                "",
-                "Tu tarea principal es ayudar al usuario a crear documentación completa para su proyecto siguiendo un enfoque MECE (Mutuamente Excluyente, Colectivamente Exhaustivo), utilizando EXACTAMENTE las plantillas ubicadas en `.notes/`.",
-                "",
-                "## Protocolo de interacción",
-                "",
-                "1. DEBES utilizar EXACTAMENTE las plantillas ubicadas en `.notes/`, sin desviarte de su estructura.",
-                "",
-                "2. Para cada plantilla de la ruta especificada, debes:",
-                "   - Explicar el propósito EXACTO de la plantilla tal como está definida",
-                "   - Hacer preguntas específicas siguiendo EXACTAMENTE la estructura de cada sección de la plantilla",
-                "   - Crear archivos de documentación que sigan EXACTAMENTE la misma estructura de las plantillas",
-                "   - Guardar estos archivos en la estructura organizada de `docs/[nombre-proyecto]/[fase]/[nombre-documento].md`",
-                "",
-                "3. Sigue el orden lógico definido EXACTAMENTE en `.notes/00_index.md` para las fases del proyecto:",
-                "   - Fase de Descubrimiento (Investigación de mercado y usuarios)",
-                "   - Fase de Definición (Definición del problema y producto)",
-                "   - Fase de Diseño (Mapas de empatía, customer journey, etc.)",
-                "   - Fase de Planificación (Roadmap, decisiones arquitectónicas, reglas)",
-                "   - Fases técnicas y de implementación",
-                "",
-                "4. Para cada documento que crees, usa EXACTAMENTE esta estructura de carpetas:",
-                "   `docs/[nombre-proyecto]/[fase]/[nombre-documento].md`",
-                "",
-                "5. Haz preguntas MECE para obtener información exhaustiva, siguiendo EXACTAMENTE las categorías y subcategorías de las plantillas:",
-                "   - Divide tus preguntas en categorías lógicas EXACTAMENTE como aparecen en las plantillas",
-                "   - Asegúrate de que las preguntas no se superpongan",
-                "   - Asegúrate de que las preguntas cubran EXACTAMENTE todos los aspectos definidos en las plantillas",
-                "",
-                "6. Recuerda que el usuario puede no tener toda la información de inmediato, permite proceder por etapas y revisar/completar documentos posteriormente, pero siempre siguiendo EXACTAMENTE las plantillas.",
-                "",
-                "7. Si el usuario parece confundido o abrumado, sugiere centrarse primero en los documentos más críticos para su fase actual del proyecto, pero siempre respetando EXACTAMENTE la estructura de las plantillas.",
-                "",
-                "8. Documenta las decisiones y razonamientos detrás de ellas, no solo las conclusiones, siguiendo EXACTAMENTE los formatos de las plantillas.",
-                "",
-                "9. Mantén actualizado un índice de la documentación creada hasta el momento y el progreso global, asegurando que TODOS los documentos creados se ajusten EXACTAMENTE a las plantillas originales.",
-                "",
-                "10. Al finalizar cada documento principal, sugiere el siguiente paso lógico según el índice EXACTO de plantillas en `.notes/`."
+        "RESEARCH": {
+            "description": "Performs automatic research for a specific topic",
+            "action": "perform_research",
+            "requires_args": true,
+            "args": [
+                {
+                    "name": "topic",
+                    "type": "string",
+                    "description": "Topic to research",
+                    "required": true
+                },
+                {
+                    "name": "depth",
+                    "type": "string",
+                    "description": "Research depth level",
+                    "enum": ["basic", "standard", "exhaustive"],
+                    "default": "standard"
+                },
+                {
+                    "name": "project_name",
+                    "type": "string",
+                    "description": "Project to associate research with",
+                    "required": true
+                }
+            ],
+            "workflow": {
+                "steps": [
+                    {
+                        "id": "start_research",
+                        "type": "message",
+                        "content": "Starting research on '${topic}' with ${depth} depth. This may take a few moments...",
+                        "next": "perform_search"
+                    },
+                    {
+                        "id": "perform_search",
+                        "type": "action",
+                        "action": "web_research",
+                        "params": {
+                            "query": "${topic}",
+                            "depth": "${depth}",
+                            "verify_sources": true,
+                            "max_results": 8
+                        },
+                        "store_result_as": "research_results",
+                        "next": "display_results"
+                    },
+                    {
+                        "id": "display_results",
+                        "type": "message",
+                        "content": "Research results for '${topic}':\n\n${research_results.summary}\n\nSources:\n${research_results.sources}",
+                        "next": "save_results"
+                    },
+                    {
+                        "id": "save_results",
+                        "type": "action",
+                        "action": "save_research",
+                        "params": {
+                            "project_name": "${project_name}",
+                            "topic": "${topic}",
+                            "results": "${research_results}"
+                        },
+                        "next": "end"
+                    },
+                    {
+                        "id": "end",
+                        "type": "message",
+                        "content": "Research completed and saved to project '${project_name}'. You can access these results during document creation.",
+                        "terminate": true
+                    }
+                ]
+            }
+        },
+        "VERIFY": {
+            "description": "Verifies an information source",
+            "action": "verify_source",
+            "requires_args": true,
+            "args": [
+                {
+                    "name": "source",
+                    "type": "string",
+                    "description": "URL or reference of the source to verify",
+                    "required": true
+                },
+                {
+                    "name": "type",
+                    "type": "string",
+                    "description": "Type of source",
+                    "enum": ["academic", "technical", "blog", "documentation", "market_research", "user_research"],
+                    "required": true
+                },
+                {
+                    "name": "reliability",
+                    "type": "string",
+                    "description": "Required reliability level",
+                    "enum": ["high", "medium", "low"],
+                    "default": "high"
+                }
             ]
         },
-        {
-            "name": "template-utilization",
-            "description": "Reglas para la utilización de plantillas",
-            "patterns": ["**/*"],
-            "instructions": [
-                "# Reglas para la Utilización de Plantillas",
-                "",
-                "Para usar EXACTAMENTE las plantillas de documentación de `.notes/`:",
-                "",
-                "1. Trata cada plantilla como un conjunto de preguntas estructuradas que debes hacer al usuario, siguiendo EXACTAMENTE el mismo orden y estructura que aparece en la plantilla original.",
-                "",
-                "2. Para secciones MECE dentro de las plantillas:",
-                "   - Presenta EXACTAMENTE todas las categorías al usuario tal como aparecen en la plantilla",
-                "   - Explica por qué es importante considerar cada categoría, según se define en la plantilla",
-                "   - Haz preguntas específicas para cada subcategoría, manteniendo EXACTAMENTE la misma estructura",
-                "",
-                "3. Usa siempre ejemplos relevantes al dominio del proyecto para ilustrar el tipo de información solicitada, pero manteniendo EXACTAMENTE las mismas secciones y estructura.",
-                "",
-                "4. Cuando una plantilla contenga múltiples secciones complejas:",
-                "   - Divide el proceso en múltiples interacciones, pero respetando EXACTAMENTE la estructura original",
-                "   - Completa una sección antes de pasar a la siguiente, siguiendo EXACTAMENTE el orden de la plantilla",
-                "   - Recapitula lo ya documentado antes de continuar, verificando que se ajusta EXACTAMENTE a la plantilla",
-                "",
-                "5. Adapta el nivel de detalle pero NUNCA modifiques la estructura de las plantillas, basado en:",
-                "   - La fase actual del proyecto",
-                "   - La complejidad del proyecto",
-                "   - La familiaridad del usuario con los conceptos",
-                "",
-                "6. Cuando el usuario proporcione información incompleta:",
-                "   - Señala amablemente las áreas que faltan según la estructura EXACTA de la plantilla",
-                "   - Explica por qué esa información es valiosa para completar EXACTAMENTE la plantilla",
-                "   - Sugiere enfoques para obtener o desarrollar esa información, pero siempre para ajustarse EXACTAMENTE a la plantilla",
-                "",
-                "7. Mantén el contexto entre sesiones recordando documentos ya creados y asegurando que todos sigan EXACTAMENTE las plantillas originales."
-            ]
+        "UPDATE_ADR": {
+            "description": "Updates the Architecture Decision Record based on recent changes",
+            "action": "update_adr",
+            "requires_args": true,
+            "args": [
+                {
+                    "name": "project_name",
+                    "type": "string",
+                    "description": "Name of the project to update ADR for",
+                    "required": true
+                },
+                {
+                    "name": "auto_detect",
+                    "type": "boolean",
+                    "description": "Whether to automatically detect architectural changes",
+                    "default": true
+                },
+                {
+                    "name": "update_status",
+                    "type": "boolean",
+                    "description": "Whether to update status of existing decisions",
+                    "default": true
+                }
+            ],
+            "workflow": {
+                "steps": [
+                    {
+                        "id": "start_adr_update",
+                        "type": "message",
+                        "content": "Starting Architecture Decision Record update for project '${project_name}'...",
+                        "next": "load_project_for_adr"
+                    },
+                    {
+                        "id": "load_project_for_adr",
+                        "type": "action",
+                        "action": "load_project_info",
+                        "params": {
+                            "project_name": "${project_name}"
+                        },
+                        "store_result_as": "project_info",
+                        "next": "check_adr_existence"
+                    },
+                    {
+                        "id": "check_adr_existence",
+                        "type": "file_check",
+                        "path": "docs/${project_name}/04a_architecture_decision_record.md",
+                        "exists": "analyze_recent_changes",
+                        "not_exists": "create_initial_adr"
+                    },
+                    {
+                        "id": "create_initial_adr",
+                        "type": "action",
+                        "action": "generate_document",
+                        "params": {
+                            "document_type": "adr",
+                            "project_info": "${project_info}",
+                            "include_template": true,
+                            "initial_decisions": true
+                        },
+                        "store_result_as": "adr_document",
+                        "next": "save_initial_adr"
+                    },
+                    {
+                        "id": "save_initial_adr",
+                        "type": "action",
+                        "action": "save_document",
+                        "params": {
+                            "project_name": "${project_name}",
+                            "document": "04a_architecture_decision_record.md",
+                            "content": "${adr_document}",
+                            "project_info": "${project_info}"
+                        },
+                        "next": "end_adr_creation"
+                    },
+                    {
+                        "id": "end_adr_creation",
+                        "type": "message",
+                        "content": "Initial Architecture Decision Record created for '${project_name}'. Use 'UPDATE_ADR ${project_name}' to keep it updated as your project evolves.",
+                        "terminate": true
+                    },
+                    {
+                        "id": "analyze_recent_changes",
+                        "type": "action",
+                        "action": "detect_architectural_changes",
+                        "params": {
+                            "project_name": "${project_name}",
+                            "auto_detect": "${auto_detect}",
+                            "analysis_depth": "comprehensive",
+                            "check_sources": [
+                                "code_changes",
+                                "technical_docs",
+                                "commit_messages",
+                                "issues",
+                                "decisions"
+                            ]
+                        },
+                        "store_result_as": "detected_changes",
+                        "next": "review_existing_decisions"
+                    },
+                    {
+                        "id": "review_existing_decisions",
+                        "type": "action",
+                        "action": "review_adr_decisions",
+                        "params": {
+                            "project_name": "${project_name}",
+                            "detected_changes": "${detected_changes}",
+                            "update_status": "${update_status}",
+                            "validation_criteria": [
+                                "still_relevant",
+                                "superseded",
+                                "deprecated",
+                                "needs_revision"
+                            ]
+                        },
+                        "store_result_as": "decision_reviews",
+                        "next": "present_adr_updates"
+                    },
+                    {
+                        "id": "present_adr_updates",
+                        "type": "message",
+                        "content": "Architecture Decision Record Analysis Complete:\n\n${decision_reviews.summary}\n\nNew decisions detected: ${decision_reviews.new_count}\nExisting decisions updated: ${decision_reviews.updated_count}\nDeprecated decisions: ${decision_reviews.deprecated_count}\n\nRecommended actions: ${decision_reviews.recommendations}",
+                        "next": "confirm_adr_updates"
+                    },
+                    {
+                        "id": "confirm_adr_updates",
+                        "type": "choice",
+                        "prompt": "Would you like to apply these updates to the Architecture Decision Record?",
+                        "options": ["Yes, update ADR", "No, skip for now"],
+                        "on_select": {
+                            "Yes, update ADR": "update_adr_document",
+                            "No, skip for now": "end_adr_review"
+                        }
+                    },
+                    {
+                        "id": "update_adr_document",
+                        "type": "action",
+                        "action": "update_adr_document",
+                        "params": {
+                            "project_name": "${project_name}",
+                            "decision_reviews": "${decision_reviews}",
+                            "add_timestamp": true,
+                            "update_cross_references": true,
+                            "add_revision_history": true
+                        },
+                        "store_result_as": "updated_adr",
+                        "next": "save_updated_adr"
+                    },
+                    {
+                        "id": "save_updated_adr",
+                        "type": "action",
+                        "action": "save_document",
+                        "params": {
+                            "project_name": "${project_name}",
+                            "document": "04a_architecture_decision_record.md",
+                            "content": "${updated_adr}",
+                            "project_info": "${project_info}",
+                            "update_memory": true
+                        },
+                        "next": "end_adr_update"
+                    },
+                    {
+                        "id": "end_adr_review",
+                        "type": "message",
+                        "content": "ADR review completed. No changes were made to the document.",
+                        "terminate": true
+                    },
+                    {
+                        "id": "end_adr_update",
+                        "type": "message",
+                        "content": "Architecture Decision Record successfully updated with latest decisions and statuses. Remember to review this document periodically as your project evolves.",
+                        "terminate": true
+                    }
+                ]
+            }
         },
-        {
-            "name": "document-creation",
-            "description": "Reglas para la creación de documentos",
-            "patterns": ["**/*"],
-            "instructions": [
-                "# Reglas para la Creación de Documentos",
-                "",
-                "Al crear documentos de proyecto basados EXACTAMENTE en las plantillas de `.notes/`:",
-                "",
-                "1. Cada documento debe:",
-                "   - Comenzar con un encabezado claro y la fecha de creación/modificación",
-                "   - Incluir una breve descripción de su propósito",
-                "   - Seguir EXACTAMENTE la estructura MECE de la plantilla correspondiente",
-                "   - Terminar con una sección de 'Próximos Pasos' cuando sea aplicable en la plantilla",
-                "",
-                "2. Usa Markdown para formatear los documentos con:",
-                "   - Encabezados jerárquicos (# para principales, ## para secundarios, etc.) EXACTAMENTE como aparecen en la plantilla",
-                "   - Listas con viñetas para elementos no ordenados, siguiendo EXACTAMENTE la estructura de la plantilla",
-                "   - Listas numeradas para secuencias o prioridades, según aparezca EXACTAMENTE en la plantilla",
-                "   - Tablas para información estructurada, si así lo indica EXACTAMENTE la plantilla",
-                "   - Bloques de código para ejemplos técnicos, según la estructura EXACTA de la plantilla",
-                "   - Enlaces a otros documentos del proyecto cuando sea relevante, manteniendo la estructura EXACTA",
-                "",
-                "3. Para diagramas y visualizaciones, sugiere según lo indicado EXACTAMENTE en la plantilla:",
-                "   - Herramientas apropiadas (Draw.io, Miro, Lucidchart, etc.)",
-                "   - Formato del diagrama (flujo, entidad-relación, etc.)",
-                "   - Elementos clave a incluir",
-                "",
-                "4. Implementa referencias cruzadas entre documentos relacionados, siguiendo EXACTAMENTE lo que indique la plantilla.",
-                "",
-                "5. Mantén un glosario de términos específicos del proyecto, si así lo requiere EXACTAMENTE la plantilla.",
-                "",
-                "6. Usa convenciones de nomenclatura consistentes, siguiendo EXACTAMENTE lo definido en las plantillas:",
-                "   - `YYYY-MM-DD_fase_tipo-documento_nombre.md` para archivos",
-                "   - CamelCase para títulos de secciones",
-                "   - kebab-case para nombres de archivo",
-                "",
-                "7. Destaca claramente áreas que requieran revisión o más información con: `[PENDIENTE: descripción]`, pero manteniendo EXACTAMENTE la estructura de la plantilla",
-                "",
-                "8. Incluye metadatos al principio de cada documento EXACTAMENTE como indica la plantilla:",
-                "   ```",
-                "   ---",
-                "   título: [Título del documento]",
-                "   fecha: [YYYY-MM-DD]",
-                "   autor: [Nombre del usuario]",
-                "   estado: [Borrador/En revisión/Finalizado]",
-                "   versión: [X.Y]",
-                "   ---",
-                "   ```"
-            ]
-        },
-        {
-            "name": "notes-priority",
-            "description": "Establece la carpeta de plantillas absolutas como de máxima prioridad",
-            "patterns": ["**/*"],
-            "instructions": [
-                "La carpeta `.notes/` contiene EXACTAMENTE todas las plantillas que DEBES usar como base para la documentación.",
-                "Debes explorar PRIMERO esta ruta EXACTA para entender la estructura y contenido de las plantillas disponibles.",
-                "El archivo `.notes/00_index.md` proporciona EXACTAMENTE la visión general del sistema de plantillas y cómo están organizadas.",
-                "Siempre que interactúes con el usuario, ten en cuenta EXACTAMENTE estas plantillas y úsalas como guía para hacer preguntas relevantes.",
-                "NUNCA te desvíes de la estructura EXACTA de estas plantillas al crear la documentación.",
-                "La prioridad MÁXIMA es seguir EXACTAMENTE las plantillas ubicadas en esta ruta."
-            ]
-        },
-        {
-            "name": "mdc-creation",
-            "description": "Reglas para la creación del archivo MDC para Cursor al finalizar la documentación",
-            "patterns": ["**/*"],
-            "instructions": [
-                "# Reglas para la Creación del Archivo MDC para Cursor",
-                "",
-                "Al finalizar el proceso de documentación, DEBES crear un archivo MDC (Modelo de Documentación de Cursor) para que los usuarios puedan programar con contexto completo en su proyecto:",
-                "",
-                "1. DEBES crear el archivo MDC basándote EXACTAMENTE en la plantilla ubicada en `.notes/paella_doc.mdc.example`.",
-                "",
-                "2. El archivo MDC debe ser generado en la carpeta de documentación del proyecto con el nombre de la carpeta del proyecto, siguiendo este patrón:",
-                "   - Para productos: `docs/[nombre-proyecto]/[nombre-proyecto].mdc.example`",
-                "   - Para features: `docs/features/[nombre-feature]/[nombre-feature].mdc.example`",
-                "   - Para bugs: `docs/bugs/[nombre-bug]/[nombre-bug].mdc.example`",
-                "   - Para tareas: `docs/tasks/[nombre-tarea]/[nombre-tarea].mdc.example`",
-                "",
-                "3. DEBES adaptar el archivo MDC para que apunte EXACTAMENTE a la documentación generada durante el proceso, utilizando rutas relativas.",
-                "",
-                "4. DEBES verificar y refactorizar la estructura de documentos ANTES de generar el MDC:",
-                "   a) Revisar que la ubicación de los archivos sea coherente con la estructura referenciada en el MDC",
-                "   b) Mover documentos a las carpetas correctas si es necesario (ej: documentos de arquitectura deben estar en la carpeta de arquitectura)",
-                "   c) Renombrar documentos si es necesario para mantener una nomenclatura consistente",
-                "   d) Asegurarte de que todos los documentos importantes están referenciados en el MDC",
-                "   e) Detectar y resolver inconsistencias entre la estructura real y la estructura referenciada",
-                "",
-                "5. DEBES garantizar la coherencia estructural durante todo el proceso de documentación:",
-                "   a) Al crear nuevos documentos, ubicarlos inmediatamente en la carpeta correcta según la estructura del MDC",
-                "   b) Mantener una lista actualizada de todos los documentos creados y su ubicación",
-                "   c) Seguir una convención de nomenclatura consistente para archivos y carpetas",
-                "   d) Verificar periódicamente que la estructura real coincide con la estructura esperada en el MDC",
-                "   e) Actualizar el MDC si se realizan cambios en la estructura de documentación",
-                "",
-                "6. El archivo MDC debe incluir:",
-                "   - Configuración general del sistema PAELLA DOC",
-                "   - Estructura de carpetas que define la organización de archivos y directorios",
-                "   - Comandos y activación que explica cómo interactuar con PAELLA DOC",
-                "   - Flujo de trabajo que detalla el proceso paso a paso",
-                "   - Integración con instrucciones para incorporar PAELLA DOC en cualquier proyecto",
-                "   - Ejemplos de uso que muestran casos prácticos",
-                "   - Memoria y persistencia que explica cómo se guarda el progreso",
-                "   - Memoria de desarrollo para registrar avances durante la implementación",
-                "",
-                "7. DEBES explicar al usuario que el propósito principal del MDC es proporcionar contexto completo a Cursor AI cuando programa:",
-                "   a) El archivo MDC contiene toda la información sobre la estructura, arquitectura, decisiones de diseño y reglas del proyecto",
-                "   b) Cuando programa con Cursor AI, el asistente tendrá acceso a este contexto y podrá ofrecer respuestas más relevantes",
-                "   c) Esto elimina la necesidad de explicar repetidamente el contexto del proyecto al asistente",
-                "   d) El resultado es un desarrollo más eficiente con un asistente que realmente entiende la visión global del proyecto",
-                "",
-                "8. DEBES informar al usuario que debe copiar el archivo MDC generado a la carpeta `.cursor/rules/` de su proyecto para que Cursor AI tenga acceso al contexto completo:",
-                "   a) Puede usar un comando como: `mkdir -p .cursor/rules/ && cp [ruta-al-archivo-mdc] .cursor/rules/`",
-                "   b) Una vez copiado, Cursor AI automáticamente tendrá acceso al contexto completo del proyecto en cada conversación",
-                "",
-                "9. DEBES explicar al usuario cómo utilizar la memoria de desarrollo durante la implementación:",
-                "   a) Puede registrar logros con el comando `LOGRO [descripción]`",
-                "   b) Puede registrar problemas con el comando `PROBLEMA [descripción]`",
-                "   c) Puede registrar decisiones técnicas con el comando `DECISIÓN [descripción]`",
-                "   d) Puede ver todos los registros con el comando `MEMORIA`",
-                "   e) Toda esta información se guarda automáticamente en un archivo `dev_memory.json`",
-                "   f) Esta memoria ayuda a mantener un registro de los avances y decisiones durante el desarrollo",
-                "",
-                "10. El archivo MDC debe permitir al usuario especificar dónde quiere guardar la documentación en su proyecto, ya sea usando rutas relativas o absolutas."
-            ]
-        },
-        {
-            "name": "structure-mdc-coherence",
-            "description": "Reglas para garantizar la coherencia entre la estructura de documentos y el MDC",
-            "patterns": ["**/*"],
-            "instructions": [
-                "# Reglas para la Coherencia entre Estructura de Documentos y MDC",
-                "",
-                "Durante todo el proceso de documentación, DEBES garantizar la coherencia entre la estructura de documentos y el archivo MDC (Modelo de Documentación de Cursor):",
-                "",
-                "1. DEBES planificar la estructura de carpetas desde el inicio:",
-                "   a) Definir una estructura clara y lógica de carpetas antes de comenzar a crear documentos",
-                "   b) Asegurarte de que la estructura refleja todas las fases del proyecto (descubrimiento, definición, diseño, etc.)",
-                "   c) Documentar esta estructura para que sirva como referencia durante todo el proceso",
-                "",
-                "2. DEBES seguir convenciones de nomenclatura consistentes:",
-                "   a) Para carpetas: nombres en minúsculas, sin espacios (ej: 'definicion', 'arquitectura')",
-                "   b) Para archivos: snake_case para nombres descriptivos (ej: 'definicion_problema.md', 'arquitectura_tecnica.md')",
-                "   c) Aplicar estas convenciones de manera uniforme en todos los documentos",
-                "",
-                "3. DEBES ubicar correctamente cada documento:",
-                "   a) Documentos de definición del problema en la carpeta 'definicion/'",
-                "   b) Documentos de arquitectura en la carpeta 'arquitectura/'",
-                "   c) Documentos de diseño en la carpeta 'diseno/'",
-                "   d) Documentos de configuración en la carpeta 'configuracion/'",
-                "   e) Documentos de implementación en la carpeta 'implementacion/'",
-                "   f) Guías y manuales en la carpeta 'guias/'",
-                "",
-                "4. DEBES mantener un registro de todos los documentos creados:",
-                "   a) Tras crear cada documento, actualizar una lista maestra de documentos",
-                "   b) Incluir ruta, propósito y relación con otros documentos",
-                "   c) Usar esta lista para verificar la coherencia con el MDC",
-                "",
-                "5. DEBES corregir inconsistencias inmediatamente:",
-                "   a) Si detectas que un documento está en la carpeta incorrecta, moverlo a la ubicación adecuada",
-                "   b) Si un documento no sigue la convención de nomenclatura, renombrarlo",
-                "   c) Si la estructura de carpetas debe cambiar, actualizar todos los documentos afectados",
-                "",
-                "6. DEBES considerar el MDC como la fuente de verdad para la estructura:",
-                "   a) Si hay conflicto entre la estructura real y la definida en el MDC, adaptar la estructura real",
-                "   b) Mantener actualizado el MDC si la estructura evoluciona por razones válidas",
-                "   c) Verificar periódicamente que todos los documentos están correctamente referenciados en el MDC",
-                "",
-                "7. DEBES evitar duplicación o fragmentación innecesaria:",
-                "   a) No crear múltiples documentos para el mismo propósito",
-                "   b) Consolidar información relacionada en un solo documento cuando sea apropiado",
-                "   c) Dividir documentos grandes en componentes lógicos cuando sea necesario",
-                "",
-                "8. DEBES documentar cualquier refactorización estructural:",
-                "   a) Si mueves documentos o cambias la estructura, registrar estos cambios",
-                "   b) Actualizar todas las referencias a estos documentos en otros archivos",
-                "   c) Informar al usuario sobre estos cambios y su justificación"
-            ]
-        },
-        {
-            "name": "automatic-timestamps",
-            "description": "Reglas para la generación automática de timestamps en documentos",
-            "patterns": ["**/*"],
-            "instructions": [
-                "# Reglas para la Generación Automática de Timestamps",
-                "",
-                "Al crear o actualizar cualquier documento de la documentación:",
-                "",
-                "1. DEBES SIEMPRE usar la fecha actual en formato YYYY-MM-DD para el campo 'fecha' en los metadatos:",
-                "   a) Al crear un nuevo documento, usa la fecha del día en que se está creando",
-                "   b) Al actualizar un documento existente, actualiza la fecha a la fecha actual",
-                "   c) Nunca uses fechas futuras o plantillas estáticas como [YYYY-MM-DD]",
-                "",
-                "2. DEBES obtener la fecha actual usando el siguiente método:",
-                "   a) Utilizando la función JavaScript `new Date().toISOString().slice(0, 10)` mentalmente",
-                "   b) El resultado será una cadena en formato 'YYYY-MM-DD' correspondiente al día actual",
-                "   c) Este formato es compatible con todas las plantillas de documentación",
-                "",
-                "3. DEBES aplicar este timestamp automático en:",
-                "   a) Los metadatos frontmatter al inicio del documento",
-                "   b) Cualquier referencia a la fecha de creación o actualización dentro del documento",
-                "   c) Nombres de archivo que incluyan fecha, si es aplicable según las convenciones",
-                "",
-                "4. DEBES incluir una nota sobre la última actualización al final de documentos extensos:",
-                "   a) Formato: 'Última actualización: YYYY-MM-DD'",
-                "   b) Esto proporciona trazabilidad para documentos que evolucionan con el tiempo",
-                "",
-                "5. RECUERDA que este sistema es automático y no requiere intervención del usuario:",
-                "   a) No preguntes al usuario por la fecha, simplemente usa la fecha actual",
-                "   b) Al mostrar el documento final, la fecha debe reflejar siempre el día real de creación"
-            ]
-        },
-        {
-            "name": "research-verification",
-            "description": "Reglas para la búsqueda de información en internet para verificar y enriquecer la documentación",
-            "patterns": ["**/*"],
-            "instructions": [
-                "# Reglas para la Verificación y Enriquecimiento de Documentación",
-                "",
-                "Al crear o actualizar cualquier documento de la documentación, DEBES buscar información real y actualizada en internet:",
-                "",
-                "1. DEBES realizar búsquedas en internet para:",
-                "   a) Verificar datos, estadísticas y afirmaciones incluidas en la documentación",
-                "   b) Encontrar información actualizada sobre el mercado, tendencias y tecnologías",
-                "   c) Identificar competidores reales y sus características",
-                "   d) Obtener ejemplos concretos de problemas similares a los que aborda el proyecto",
-                "   e) Verificar terminología técnica y mejores prácticas actuales",
-                "",
-                "2. DEBES citar fuentes reales y verificables:",
-                "   a) Incluir referencias a artículos, estudios o informes relevantes",
-                "   b) Citar estadísticas de fuentes confiables (con fecha de consulta)",
-                "   c) Mencionar productos o servicios existentes como ejemplos concretos",
-                "   d) Referenciar documentación técnica oficial para tecnologías mencionadas",
-                "",
-                "3. DEBES enriquecer la documentación con datos concretos:",
-                "   a) Usar cifras reales del mercado cuando sea posible (tamaño del mercado, tendencias)",
-                "   b) Incluir información sobre herramientas o tecnologías comparables",
-                "   c) Añadir citas de expertos o publicaciones reconocidas en el campo",
-                "   d) Proveer ejemplos de casos de uso reales y soluciones existentes",
-                "",
-                "4. DEBES mantener un equilibrio entre datos verificados y especificaciones del proyecto:",
-                "   a) La información real debe complementar, no reemplazar, los requisitos específicos del proyecto",
-                "   b) Adaptar los datos encontrados al contexto específico del proyecto",
-                "   c) Distinguir claramente entre información verificada y propuestas del proyecto",
-                "",
-                "5. DEBES actualizar la documentación cuando la información quede obsoleta:",
-                "   a) Revisar periódicamente la veracidad de la información incluida",
-                "   b) Actualizar estadísticas, tendencias y datos de mercado",
-                "   c) Reemplazar referencias a tecnologías obsoletas con alternativas actuales"
-            ]
-        }
-    ],
-    "priorities": [
-        {
-            "source": ".notes/",
-            "weight": 3.0
-        },
-        {
-            "source": "docs/",
-            "weight": 2.0
-        },
-        {
-            "source": "structure-mdc-coherence",
-            "weight": 3.5
-        },
-        {
-            "source": "automatic-timestamps",
-            "weight": 3.0
-        },
-        {
-            "source": "research-verification",
-            "weight": 3.2
-        },
-        {
-            "source": ".notes/",
-            "weight": 2.0
-        },
-        {
-            "source": "docs/",
-            "weight": 1.5
-        }
-    ],
-    "modes": {
-        "base": {
-            "description": "Modo base para documentación rutinaria siguiendo EXACTAMENTE las plantillas"
-        },
-        "enhanced": {
-            "description": "Modo mejorado para documentación compleja siguiendo EXACTAMENTE las plantillas"
+        "GENERATE_MDC": {
+            "description": "Generates a Cursor MDC file from project documentation for development",
+            "action": "generate_cursor_mdc",
+            "requires_args": true,
+            "args": [
+                {
+                    "name": "project_name",
+                    "type": "string",
+                    "description": "Name of the project to generate MDC for",
+                    "required": true
+                },
+                {
+                    "name": "output_path",
+                    "type": "string",
+                    "description": "Path where to save the MDC file",
+                    "default": "docs/${project_name}/"
+                },
+                {
+                    "name": "include_rules",
+                    "type": "boolean",
+                    "description": "Whether to extract development rules from documentation",
+                    "default": true
+                }
+            ],
+            "workflow": {
+                "steps": [
+                    {
+                        "id": "start_mdc_generation",
+                        "type": "message",
+                        "content": "Starting MDC generation for project '${project_name}'...",
+                        "next": "check_documentation_status"
+                    },
+                    {
+                        "id": "check_documentation_status",
+                        "type": "action",
+                        "action": "check_documentation_completeness",
+                        "params": {
+                            "project_name": "${project_name}",
+                            "required_docs": ["00_index.md"],
+                            "completeness_threshold": 80
+                        },
+                        "store_result_as": "docs_status",
+                        "next": "evaluate_completeness"
+                    },
+                    {
+                        "id": "evaluate_completeness",
+                        "type": "conditional",
+                        "condition": {
+                            "field": "docs_status.is_complete",
+                            "equals": true
+                        },
+                        "true": "extract_project_info",
+                        "false": "documentation_incomplete"
+                    },
+                    {
+                        "id": "documentation_incomplete",
+                        "type": "message",
+                        "content": "Documentation for project '${project_name}' is incomplete (${docs_status.completeness_percentage}%). Please complete at least the following documents before generating MDC:\n\n${docs_status.missing_critical_docs}",
+                        "next": "ask_force_generation"
+                    },
+                    {
+                        "id": "ask_force_generation",
+                        "type": "choice",
+                        "prompt": "Would you like to generate the MDC anyway?",
+                        "options": ["Yes, generate MDC", "No, complete documentation first"],
+                        "on_select": {
+                            "Yes, generate MDC": "extract_project_info",
+                            "No, complete documentation first": "end_incomplete"
+                        }
+                    },
+                    {
+                        "id": "end_incomplete",
+                        "type": "message",
+                        "content": "MDC generation cancelled. Complete the documentation and then run 'GENERATE_MDC ${project_name}' again.",
+                        "terminate": true
+                    },
+                    {
+                        "id": "extract_project_info",
+                        "type": "action",
+                        "action": "extract_development_info",
+                        "params": {
+                            "project_name": "${project_name}",
+                            "include_architecture": true,
+                            "include_components": true,
+                            "include_api": true,
+                            "include_database": true,
+                            "include_rules": "${include_rules}",
+                            "extract_mode": "references_only"
+                        },
+                        "store_result_as": "development_info",
+                        "next": "generate_mdc_file"
+                    },
+                    {
+                        "id": "generate_mdc_file",
+                        "type": "action",
+                        "action": "generate_mdc",
+                        "params": {
+                            "project_name": "${project_name}",
+                            "development_info": "${development_info}",
+                            "output_path": "${output_path}",
+                            "filename": "${project_name}.mdc.example",
+                            "include_templates": true,
+                            "include_globs": true,
+                            "include_instructions": true,
+                            "include_rules": "${include_rules}",
+                            "mode": "orchestrator",
+                            "reference_docs": true,
+                            "avoid_duplication": true,
+                            "documentation_root": "docs/${project_name}/",
+                            "structure_type": "reference",
+                            "copy_to_root": true
+                        },
+                        "store_result_as": "mdc_result",
+                        "next": "notify_generation_complete"
+                    },
+                    {
+                        "id": "notify_generation_complete",
+                        "type": "message",
+                        "content": "✅ MDC for project '${project_name}' successfully generated!\n\nFile created in the docs folder: ${mdc_result.file_path}\n\nThe MDC acts as an ORCHESTRATOR and includes:\n- ${mdc_result.rule_count} development rules that REFERENCE your documentation\n- ${mdc_result.pattern_count} file patterns to organize code\n- ${mdc_result.instruction_count} development instructions\n\nIMPORTANT: This MDC file does NOT CONTAIN the complete documentation, but REFERENCES to it.\n\nTO USE IN YOUR DEVELOPMENT PROJECT:\n\n1. Create a new project/repository for your actual development\n2. Create a .cursor directory in that project\n3. Copy the complete docs/${project_name}/ folder to .cursor/rules/ in your development project\n4. Copy the ${project_name}.mdc.example file from docs/${project_name}/ to your development project\n5. Rename it to ${project_name}.mdc (without .example extension) and place it in the .cursor/ directory\n\nThe structure in your development project should be:\n```\nyour-development-project/\n├── .cursor/\n│   ├── ${project_name}.mdc  (renamed from .mdc.example)\n│   └── rules/\n│       └── ${project_name}/  (copied from docs/${project_name}/)\n│           ├── 00_index.md\n│           ├── feature_documentation.md\n│           └── other documentation files...\n├── src/\n├── other project files...\n```\n\nWith this structure, Cursor will be able to access the documentation referenced by the MDC during development.",
+                        "next": "ask_open_mdc"
+                    },
+                    {
+                        "id": "ask_open_mdc",
+                        "type": "choice",
+                        "prompt": "Would you like to view the generated MDC file?",
+                        "options": ["Yes, open MDC file", "No, I'll check it later"],
+                        "on_select": {
+                            "Yes, open MDC file": "open_mdc_file",
+                            "No, I'll check it later": "end_with_mdc"
+                        }
+                    },
+                    {
+                        "id": "open_mdc_file",
+                        "type": "action",
+                        "action": "open_file",
+                        "params": {
+                            "file_path": "${mdc_result.file_path}"
+                        },
+                        "next": "end_with_mdc"
+                    },
+                    {
+                        "id": "end_with_mdc",
+                        "type": "message",
+                        "content": "Documentation session completed. The MDC file is ready for development. Use 'CONTINUE ${project_name}' anytime to continue working on your documentation.",
+                        "terminate": true
+                    }
+                ]
+            }
         }
     },
-    "project_directives": {
-        "name": "documentation-agent",
-        "ai_first": true,
-        "template_path": ".notes/",
-        "output_path": "docs/",
-        "timestamp_format": {
-            "command": "date '+%Y-%m-%d'",
-            "pattern": "YYYY-MM-DD"
+    "rules": [
+        {
+            "name": "paelladoc-generator",
+            "description": "Interactive documentation generator configuration",
+            "patterns": [".memory.json"],
+            "source": ".cursor/rules/paelladoc.mdc",
+            "dynamic_load": true,
+            "priority": 0,
+            "exclude_patterns": ["paelladoc/**/*", ".cursor/**/*", ".cursorrules"]
+        }
+    ],
+    "integration": {
+        "paelladoc": {
+            "enabled": true,
+            "memory_file": ".memory.json",
+            "documentation_root": "docs/",
+            "interaction_mode": "chat_based",
+            "template_paths": {
+                "source": ".cursor/rules/templates/",
+                "output": "docs/"
+            },
+            "memory_management": {
+                "validation": true,
+                "auto_backup": true,
+                "backup_interval": "1h"
+            },
+            "interactive_workflow": {
+                "enabled": true,
+                "auto_start": true,
+                "conversation_mode": true,
+                "start_with_language_selection": true,
+                "chat_features": {
+                    "natural_language": true,
+                    "context_aware": true,
+                    "continuous_memory": true,
+                    "interactive_qa": true,
+                    "web_research": {
+                        "enabled": true,
+                        "auto_search": true,
+                        "verify_sources": true,
+                        "include_citations": true,
+                        "search_engines": ["google", "bing", "scholar"],
+                        "max_results_per_query": 5,
+                        "max_depth": 2
+                    }
+                },
+                "project_check": {
+                    "only_check_memory": true,
+                    "memory_path": ".memory.json",
+                    "ignore_system_files": true,
+                    "validate_integrity": true,
+                    "prevent_self_documentation": true
+                }
+            }
+        }
+    },
+    "research_settings": {
+        "auto_research": {
+            "market_data": true,
+            "competitors": true,
+            "user_segments": true,
+            "monetization": true,
+            "technology_trends": true,
+            "verify_all_sources": true,
+            "include_citations": true,
+            "deep_validation": {
+                "enabled": true,
+                "market_research_docs": true,
+                "min_sources_per_claim": 3,
+                "require_statistical_validation": true,
+                "verification_levels": ["primary", "secondary", "tertiary"],
+                "prevent_hallucinations": true,
+                "source_types": ["academic", "market_research", "industry_reports", "competitor_data", "statistical_data"]
+            }
+        },
+        "global_priorities": {
+            "auto_research_first": true,
+            "skip_user_questions_for_market_research": true,
+            "always_research_before_asking": true,
+            "research_priority": "high",
+            "use_web_search_always": true,
+            "max_sources_to_consult": 25,
+            "citation_required": true
+        },
+        "source_types": {
+            "academic": {
+                "priority": "high",
+                "verification_level": "strict"
+            },
+            "market_research": {
+                "priority": "high",
+                "verification_level": "standard"
+            },
+            "technical": {
+                "priority": "medium",
+                "verification_level": "standard"
+            },
+            "blogs": {
+                "priority": "low",
+                "verification_level": "basic"
+            }
+        }
+    },
+    "adr_settings": {
+        "auto_update": {
+            "enabled": true,
+            "frequency": "weekly",
+            "on_architectural_changes": true,
+            "on_component_changes": true
+        },
+        "content_structure": {
+            "include_status": true,
+            "status_types": ["Proposed", "Accepted", "Implemented", "Deprecated", "Superseded"],
+            "decision_format": {
+                "title": true,
+                "date": true,
+                "status": true,
+                "context": true,
+                "decision": true,
+                "consequences": true,
+                "alternatives_considered": true,
+                "related_decisions": true
+            },
+            "revision_history": true
+        },
+        "integrations": {
+            "link_to_code": true,
+            "link_to_diagrams": true,
+            "link_to_requirements": true,
+            "notify_on_changes": true
+        }
+    },
+    "document_settings": {
+        "default_formats": {
+            "timestamp": "YYYY-MM-DD",
+            "frontmatter": true,
+            "metadata": {
+                "include_author": true,
+                "include_version": true,
+                "include_last_updated": true,
+                "include_tags": true
+            }
+        },
+        "markdown_format": {
+            "frontmatter_style": "yaml",
+            "required_fields": [
+                "title",
+                "date",
+                "status",
+                "version"
+            ],
+            "default_status": "Draft"
+        },
+        "template_variables": {
+            "DATE": "{{current_date}}",
+            "AUTHOR": "{{user_name}}",
+            "VERSION": "1.0",
+            "PROJECT": "{{project_name}}",
+            "UPDATED": "{{current_date}}",
+            "STATUS": "Draft",
+            "AUTO_REPLACE": true
         }
     }
 } 

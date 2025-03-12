@@ -1,3 +1,13 @@
+---
+title: "Market Research"
+date: {{DATE}}
+author: {{AUTHOR}}
+status: "Draft"
+version: "1.0"
+last_updated: {{DATE}}
+tags: ["market", "research", "analysis"]
+---
+
 # Plantilla de Investigación de Mercado
 
 ## Información General
