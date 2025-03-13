@@ -1,0 +1,14 @@
+# Jekyll build files
+_site/
+.sass-cache/
+.jekyll-cache/
+.jekyll-metadata
+
+# Bundle config
+.bundle/
+vendor/
+
+# System files
+.DS_Store
+*.swp
+*~ 

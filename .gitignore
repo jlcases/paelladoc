@@ -1,3 +1,3 @@
 .DS_Store
-/docs
+# /docs - Uncommenting this as docs/ is needed for GitHub Pages
 .memory.json
