@@ -1,0 +1,550 @@
+---
+description: "PAELLADOC is an AI-powered interactive documentation system that uses natural language conversations to gather, generate and maintain project documentation."
+globs: [".memory.json"]
+alwaysApply: true
+---
+---
+description: PAELLA DOC - MECE Documentation System
+globs: ["**/*"]
+alwaysApply: true
+commands:
+  PAELLA:
+    description: "Initiates the documentation process and generates Cursor rules"
+    action: "initiate_documentation"
+    args:
+      - name: "project_name"
+        type: "string"
+        description: "Name of the project to document"
+        required: true
+      - name: "generate_rules"
+        type: "boolean"
+        description: "Whether to generate Cursor rules from documentation"
+        default: true
+      - name: "ai_mode"
+        type: "string"
+        description: "AI operation mode"
+        enum: ["autonomous", "collaborative", "advisory"]
+        default: "collaborative"
+  CONTINUE:
+    description: "Continues with an existing project documentation"
+    action: "continue_documentation"
+    args:
+      - name: "project_name"
+        type: "string"
+        description: "Name of the project to continue with"
+        required: true
+      - name: "update_rules"
+        type: "boolean"
+        description: "Whether to update Cursor rules from documentation"
+        default: true
+      - name: "sync_templates"
+        type: "boolean"
+        description: "Whether to synchronize templates with current state"
+        default: true
+  ACHIEVEMENT:
+    description: "Records an achievement in the project memory"
+    action: "record_achievement"
+    args:
+      - name: "description"
+        type: "string"
+        description: "Description of the achievement"
+        required: true
+      - name: "category"
+        type: "string"
+        description: "Category of the achievement"
+        enum: ["architecture", "development", "documentation", "testing", "security", "performance", "product", "design", "research"]
+        required: true
+      - name: "impact_level"
+        type: "string"
+        description: "Level of impact of the achievement"
+        enum: ["high", "medium", "low"]
+        default: "medium"
+  ISSUE:
+    description: "Records an issue in the project memory"
+    action: "record_problem"
+    args:
+      - name: "description"
+        type: "string"
+        description: "Description of the issue"
+        required: true
+      - name: "severity"
+        type: "string"
+        description: "Severity level of the issue"
+        enum: ["critical", "high", "medium", "low"]
+        required: true
+      - name: "area"
+        type: "string"
+        description: "Area affected by the issue"
+        enum: ["product", "technical", "process", "security", "performance"]
+        required: true
+  DECISION:
+    description: "Records a technical decision in the project memory"
+    action: "record_decision"
+    args:
+      - name: "description"
+        type: "string"
+        description: "Description of the decision"
+        required: true
+      - name: "impact"
+        type: "array"
+        description: "Areas impacted by the decision"
+        items:
+          type: "string"
+          enum: ["architecture", "development", "documentation", "testing", "security", "performance", "product", "design", "process"]
+        required: true
+      - name: "rationale"
+        type: "string"
+        description: "Reasoning behind the decision"
+        required: true
+  MEMORY:
+    description: "Shows the development record"
+    action: "show_memory"
+    args:
+      - name: "filter"
+        type: "string"
+        description: "Filter memory by category"
+        enum: ["all", "achievements", "issues", "decisions", "product", "technical"]
+        default: "all"
+      - name: "format"
+        type: "string"
+        description: "Output format"
+        enum: ["detailed", "summary", "timeline"]
+        default: "detailed"
+  VERIFY:
+    description: "Verifies an information source"
+    action: "verify_source"
+    args:
+      - name: "source"
+        type: "string"
+        description: "URL or reference of the source to verify"
+        required: true
+      - name: "type"
+        type: "string"
+        description: "Type of source"
+        enum: ["academic", "technical", "blog", "documentation", "market_research", "user_research"]
+        required: true
+      - name: "reliability"
+        type: "string"
+        description: "Required reliability level"
+        enum: ["high", "medium", "low"]
+        default: "high"
+  GENERATE_RULES:
+    description: "Generates or updates Cursor rules from documentation"
+    action: "generate_cursor_rules"
+    args:
+      - name: "project_name"
+        type: "string"
+        description: "Name of the project"
+        required: true
+      - name: "rule_type"
+        type: "array"
+        description: "Types of rules to generate"
+        items:
+          type: "string"
+          enum: ["product", "technical", "process", "security", "all"]
+        default: ["all"]
+  TEMPLATE:
+    description: "Manages documentation templates"
+    action: "manage_templates"
+    args:
+      - name: "operation"
+        type: "string"
+        description: "Template operation to perform"
+        enum: ["create", "update", "delete", "list", "sync"]
+        required: true
+      - name: "template_type"
+        type: "string"
+        description: "Type of template"
+        enum: ["product", "technical", "process", "simplified"]
+        required: true
+      - name: "template_name"
+        type: "string"
+        description: "Name of the template"
+        required: false
+---
+{
+    "version": 1,
+    "name": "PAELLADOC-rules",
+    "description": "PAELLA DOC Documentation System with Dynamic Cursor Rules Generation",
+    "patterns": ["**/*"],
+    "template_system": {
+        "base_paths": {
+            "product": ".cursor/rules/templates/Product",
+            "simplified": ".cursor/rules/templates/simplified_templates",
+            "generated": ".cursor/rules/templates/generated"
+        },
+        "product_templates": {
+            "research_and_definition": {
+                "00_index.md": "Project index and overview",
+                "01_market_research.md": "Market research template",
+                "01_project_definition.md": "Initial project definition",
+                "02_user_research.md": "User research methodology",
+                "02_technical_architecture.md": "Technical architecture overview",
+                "03_problem_definition.md": "Problem space analysis",
+                "03_component_specification.md": "Component detailed specification",
+                "04_product_definition.md": "Product definition and strategy",
+                "04_database_design.md": "Database architecture and design",
+                "04a_architecture_decision_record.md": "Architecture decisions tracking"
+            },
+            "product_planning": {
+                "05_product_roadmap.md": "Product roadmap and timeline",
+                "05_api_specification.md": "API design and specification",
+                "05a_empathy_map.md": "User empathy mapping",
+                "05b_customer_journey_map.md": "Customer journey analysis",
+                "05c_user_stories.md": "User stories template",
+                "05d_service_blueprint.md": "Service design blueprint",
+                "05e_project_rules.md": "Project-specific rules"
+            },
+            "technical_implementation": {
+                "06_frontend_architecture.md": "Frontend architecture design",
+                "07_testing_strategy.md": "Testing approach and strategy",
+                "08_devops_pipeline.md": "DevOps and CI/CD pipeline",
+                "09_security_framework.md": "Security framework design",
+                "10_documentation_framework.md": "Documentation structure"
+            },
+            "project_management": {
+                "11_task_management.md": "Task tracking and management",
+                "12_meeting_notes.md": "Meeting documentation",
+                "13_project_progress.md": "Progress tracking template"
+            }
+        },
+        "simplified_templates": {
+            "quick_documentation": {
+                "00_index.md": "Quick documentation index",
+                "bug_documentation.md": "Bug report template",
+                "feature_documentation.md": "Feature specification",
+                "quick_task_documentation.md": "Quick task template",
+                "source_verification_template.md": "Source verification"
+            }
+        },
+        "template_hooks": {
+            "pre_creation": ["validate_structure", "check_dependencies"],
+            "post_creation": ["update_index", "notify_stakeholders"],
+            "on_update": ["sync_related_docs", "update_memory"]
+        }
+    },
+    "rules": [
+        {
+            "name": "project-overview",
+            "description": "Project overview and structure",
+            "patterns": ["**/*"],
+            "instructions": [
+                "# PAELLA DOC Documentation System",
+                "",
+                "PAELLA DOC is a documentation system that follows a MECE approach (Mutually Exclusive, Collectively Exhaustive) to ensure complete and non-redundant documentation.",
+                "",
+                "## Project Structure",
+                "",
+                "Documentation is organized in the following folders:",
+                "```",
+                "docs/[project-name]/",
+                "├── definition/",
+                "│   ├── problem_definition.md",
+                "│   └── functional_requirements.md",
+                "├── architecture/",
+                "│   ├── technical_architecture.md",
+                "│   └── security_architecture.md",
+                "├── design/",
+                "│   ├── workflow.md",
+                "│   └── interface_design.md",
+                "├── configuration/",
+                "│   ├── configuration.md",
+                "│   └── environment_setup.md",
+                "├── guides/",
+                "│   ├── development_guide.md",
+                "│   ├── user_guide.md",
+                "│   └── quickstart.md",
+                "├── api/",
+                "│   ├── api_reference.md",
+                "│   └── api_guidelines.md",
+                "├── quality/",
+                "│   ├── test_plan.md",
+                "│   └── quality_standards.md",
+                "├── security/",
+                "│   ├── security_requirements.md",
+                "│   └── security_guidelines.md",
+                "├── assets/",
+                "├── references.md",
+                "└── .memory.json",
+                "```"
+            ]
+        },
+        {
+            "name": "documentation-phases",
+            "description": "Documentation phases and processes",
+            "patterns": ["**/*"],
+            "instructions": [
+                "# Documentation Phases",
+                "",
+                "1. Discovery Phase:",
+                "   - Market research",
+                "   - User research",
+                "   - Competitive analysis",
+                "   - Technology assessment",
+                "",
+                "2. Definition Phase:",
+                "   - Problem definition",
+                "   - Functional requirements",
+                "   - Non-functional requirements",
+                "   - Project scope",
+                "   - Security requirements",
+                "",
+                "3. Design Phase:",
+                "   - Technical architecture",
+                "   - Security architecture",
+                "   - Workflow design",
+                "   - Interface design",
+                "   - API design",
+                "",
+                "4. Implementation Phase:",
+                "   - Development guides",
+                "   - API documentation",
+                "   - Test plans",
+                "   - Security guidelines",
+                "   - Quality standards",
+                "",
+                "5. Maintenance Phase:",
+                "   - Documentation updates",
+                "   - Version control",
+                "   - Change management",
+                "   - Security updates"
+            ]
+        },
+        {
+            "name": "documentation-conventions",
+            "description": "Documentation conventions and standards",
+            "patterns": ["**/*"],
+            "instructions": [
+                "# Documentation Conventions",
+                "",
+                "1. File names:",
+                "   - snake_case for markdown files",
+                "   - .md extension for documents",
+                "   - YYYY-MM-DD prefix for versioned documents",
+                "",
+                "2. Metadata:",
+                "   ```yaml",
+                "   ---",
+                "   title: Document Title",
+                "   date: YYYY-MM-DD",
+                "   author: Author Name",
+                "   status: [Draft/In Review/Final]",
+                "   version: X.Y",
+                "   security_level: [Public/Internal/Confidential]",
+                "   last_reviewed: YYYY-MM-DD",
+                "   next_review: YYYY-MM-DD",
+                "   tags: [array of relevant tags]",
+                "   ---",
+                "   ```",
+                "",
+                "3. References:",
+                "   - APA format for citations",
+                "   - Relative links between documents",
+                "   - References section at the end",
+                "   - Version control references",
+                "",
+                "4. Code Examples:",
+                "   - Syntax highlighting",
+                "   - Clear comments",
+                "   - Version information",
+                "   - Dependencies listed",
+                "",
+                "5. Security:",
+                "   - No sensitive data",
+                "   - Proper redaction",
+                "   - Access levels marked"
+            ]
+        },
+        {
+            "name": "memory-system",
+            "description": "Memory system for documentation process",
+            "patterns": ["**/*"],
+            "instructions": [
+                "# Memory System",
+                "",
+                "Project memory is maintained in `.memory.json` with the following structure:",
+                "",
+                "```json",
+                "{",
+                "  \"project_name\": \"string\",",
+                "  \"project_type\": \"string\",",
+                "  \"language\": \"string\",",
+                "  \"created_at\": \"YYYY-MM-DD\",",
+                "  \"last_updated\": \"YYYY-MM-DD\",",
+                "  \"category\": \"string\",",
+                "  \"templates\": [\"array\"],",
+                "  \"security_level\": \"string\",",
+                "  \"progress\": {",
+                "    \"current_phase\": \"string\",",
+                "    \"completed_sections\": [\"array\"],",
+                "    \"pending_sections\": [\"array\"],",
+                "    \"blocked_sections\": [\"array\"]",
+                "  },",
+                "  \"collected_info\": {",
+                "    \"section_name\": {",
+                "      \"subsection\": [\"array\"],",
+                "      \"security_requirements\": [\"array\"],",
+                "      \"dependencies\": [\"array\"]",
+                "    }",
+                "  },",
+                "  \"cursor_rules\": {",
+                "    \"last_generated\": \"YYYY-MM-DD\",",
+                "    \"rules_version\": \"string\",",
+                "    \"active_rules\": [\"array\"],",
+                "    \"custom_rules\": [\"array\"]",
+                "  }",
+                "}",
+                "```"
+            ]
+        },
+        {
+            "name": "cursor-rules-generation",
+            "description": "Rules for generating Cursor rules from documentation",
+            "patterns": ["**/*"],
+            "instructions": [
+                "# Cursor Rules Generation",
+                "",
+                "1. Rule Sources:",
+                "   - Architecture documents",
+                "   - Quality standards",
+                "   - Security guidelines",
+                "   - Development guides",
+                "   - Test plans",
+                "",
+                "2. Generation Process:",
+                "   - Extract rules from documentation",
+                "   - Validate rule consistency",
+                "   - Apply security constraints",
+                "   - Generate rule priorities",
+                "   - Update existing rules",
+                "",
+                "3. Rule Categories:",
+                "   - Architecture rules",
+                "   - Development standards",
+                "   - Security requirements",
+                "   - Testing guidelines",
+                "   - Documentation standards",
+                "",
+                "4. Rule Validation:",
+                "   - Syntax check",
+                "   - Conflict detection",
+                "   - Security compliance",
+                "   - Performance impact",
+                "",
+                "5. Rule Application:",
+                "   - Project-wide rules",
+                "   - Directory-specific rules",
+                "   - File-type rules",
+                "   - Security-level rules"
+            ]
+        }
+    ],
+    "priorities": [
+        {
+            "source": "docs/*/architecture/",
+            "weight": 3.0,
+            "description": "Core technical and security architecture"
+        },
+        {
+            "source": "docs/*/security/",
+            "weight": 3.0,
+            "description": "Security requirements and guidelines"
+        },
+        {
+            "source": "docs/*/design/",
+            "weight": 2.8,
+            "description": "Workflow and interface design"
+        },
+        {
+            "source": "docs/*/api/",
+            "weight": 2.7,
+            "description": "API documentation and guidelines"
+        },
+        {
+            "source": "docs/*/definition/",
+            "weight": 2.6,
+            "description": "Problem and requirements definition"
+        },
+        {
+            "source": "docs/*/quality/",
+            "weight": 2.5,
+            "description": "Testing and quality standards"
+        },
+        {
+            "source": "docs/*/guides/",
+            "weight": 2.3,
+            "description": "Development and user guides"
+        },
+        {
+            "source": "docs/*/configuration/",
+            "weight": 2.0,
+            "description": "System configuration and setup"
+        },
+        {
+            "source": "docs/*/assets/",
+            "weight": 1.5,
+            "description": "Supporting assets and resources"
+        },
+        {
+            "source": ".notes/",
+            "weight": 3.0,
+            "description": "Template and meta-documentation"
+        }
+    ],
+    "project_directives": {
+        "name": "PAELLADOC",
+        "ai_first": true,
+        "template_path": ".cursor/rules/templates/",
+        "output_path": "docs/",
+        "rules_path": ".cursor/rules/generated/",
+        "timestamp_format": {
+            "command": "date '+%Y-%m-%d'",
+            "pattern": "YYYY-MM-DD"
+        },
+        "security": {
+            "default_level": "internal",
+            "check_secrets": true,
+            "validate_access": true,
+            "ai_security_review": true
+        },
+        "validation": {
+            "check_links": true,
+            "verify_metadata": true,
+            "enforce_conventions": true,
+            "documentation_structure": {
+                "validate_mece": true,
+                "check_completeness": true,
+                "verify_links": true,
+                "ensure_consistency": true
+            }
+        },
+        "ai_agent": {
+            "role": "software_construction_and_product_management",
+            "capabilities": [
+                "code_generation",
+                "architecture_design",
+                "product_strategy",
+                "user_experience",
+                "documentation",
+                "quality_assurance"
+            ],
+            "learning": {
+                "enabled": true,
+                "feedback_loop": true,
+                "pattern_recognition": true,
+                "knowledge_base_update": true
+            },
+            "documentation_focus": {
+                "architecture": 3.0,
+                "security": 3.0,
+                "design": 2.8,
+                "api": 2.7,
+                "definition": 2.6,
+                "quality": 2.5,
+                "guides": 2.3,
+                "configuration": 2.0,
+                "assets": 1.5
+            }
+        }
+    }
+}

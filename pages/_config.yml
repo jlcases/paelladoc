@@ -1,0 +1,31 @@
+remote_theme: pages-themes/primer@v0.6.0
+title: Paella Doc
+description: AI-powered interactive documentation generator
+baseurl: /paelladoc
+url: https://jlcases.github.io
+show_downloads: true
+
+plugins:
+  - jekyll-remote-theme
+  - jekyll-seo-tag
+
+# Build settings
+markdown: kramdown
+kramdown:
+  input: GFM
+  syntax_highlighter: rouge
+  math_engine: mathjax
+
+sass:
+  style: compressed
+  sass_dir: _sass
+  load_paths:
+    - _sass
+    - assets/css
+
+# Exclude from processing
+exclude:
+  - Gemfile
+  - Gemfile.lock
+  - node_modules
+  - vendor 

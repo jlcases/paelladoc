@@ -1,0 +1,1457 @@
+{
+    "version": "2.0.0",
+    "name": "paelladoc-generator",
+    "description": "PAELLADOC Interactive Chat-Based Documentation Generator System",
+    "cursor_version": "0.47",
+    "min_cursor_version": "0.47.0",
+    "system_type": "interactive_chat",
+    "core_protection": {
+        "prevent_self_documentation": true,
+        "protected_names": ["paelladoc", "PAELLADOC", "PaellaDoc"],
+        "error_message": "PAELLADOC is the core system and cannot be documented"
+    },
+    "template_definitions": {
+        "Research and Definition": [
+            "00_index.md",
+            "01_market_research.md",
+            "01_project_definition.md",
+            "02_user_research.md",
+            "03_problem_definition.md"
+        ],
+        "Product Planning": [
+            "00_index.md",
+            "05_product_roadmap.md",
+            "05_api_specification.md",
+            "05a_empathy_map.md",
+            "05b_customer_journey_map.md",
+            "05c_user_stories.md"
+        ],
+        "Technical Implementation": [
+            "00_index.md",
+            "02_technical_architecture.md",
+            "03_component_specification.md",
+            "04_database_design.md",
+            "04a_architecture_decision_record.md",
+            "06_frontend_architecture.md",
+            "07_testing_strategy.md"
+        ],
+        "Project Management": [
+            "00_index.md",
+            "11_task_management.md",
+            "12_meeting_notes.md",
+            "13_project_progress.md"
+        ],
+        "Quick Documentation": [
+            "00_index.md",
+            "bug_documentation.md",
+            "feature_documentation.md",
+            "quick_task_documentation.md"
+        ]
+    },
+    "commands": {
+        "PAELLA": {
+            "description": "Initiates an interactive documentation chat session",
+            "action": "start_documentation_chat",
+            "interactive": true,
+            "requires_args": false,
+            "workflow": {
+                "steps": [
+                    {
+                        "id": "welcome",
+                        "type": "message",
+                        "content": "Welcome to PAELLADOC - Interactive Documentation System",
+                        "next": "project_name_input"
+                    },
+                    {
+                        "id": "project_name_input",
+                        "type": "input",
+                        "prompt": "Enter the name of the project you want to document:",
+                        "store_as": "project_name",
+                        "next": "validate_project_name"
+                    },
+                    {
+                        "id": "validate_project_name",
+                        "type": "validation",
+                        "field": "project_name",
+                        "not_allowed": ["paelladoc", "PAELLADOC", "PaellaDoc"],
+                        "error_message": "ERROR: PAELLADOC is the core system and cannot be documented.",
+                        "on_success": "language_selection",
+                        "on_error": "end_error"
+                    },
+                    {
+                        "id": "language_selection",
+                        "type": "choice",
+                        "prompt": "What language do you use to chat?",
+                        "options": ["English", "Español"],
+                        "store_as": "communication_language",
+                        "next": "check_memory"
+                    },
+                    {
+                        "id": "check_memory",
+                        "type": "file_check",
+                        "path": ".memory.json",
+                        "exists": "verify_project",
+                        "not_exists": "documentation_languages"
+                    },
+                    {
+                        "id": "verify_project",
+                        "type": "memory_check",
+                        "project": "${project_name}",
+                        "exists": "project_exists",
+                        "not_exists": "documentation_languages"
+                    },
+                    {
+                        "id": "project_exists",
+                        "type": "choice",
+                        "prompt": "Project found in memory. Would you like to continue with existing documentation?",
+                        "options": ["Yes", "No"],
+                        "on_select": {
+                            "Yes": "continue_existing",
+                            "No": "documentation_languages"
+                        }
+                    },
+                    {
+                        "id": "documentation_languages",
+                        "type": "multi_choice",
+                        "prompt": "Select documentation language(s):",
+                        "options": ["English", "Español"],
+                        "store_as": "doc_languages",
+                        "next": "project_description"
+                    },
+                    {
+                        "id": "project_description",
+                        "type": "input",
+                        "prompt": "Describe what you want to document (what problem does it solve, what is it for, who is it for):",
+                        "multiline": true,
+                        "store_as": "project_description",
+                        "next": "select_template_category"
+                    },
+                    {
+                        "id": "select_template_category",
+                        "type": "choice",
+                        "prompt": "Select the template category that best fits your project:",
+                        "options": [
+                            "Product Templates", 
+                            "Simplified Templates"
+                        ],
+                        "store_as": "template_category",
+                        "on_select": {
+                            "Product Templates": "select_product_template",
+                            "Simplified Templates": "select_simplified_template"
+                        }
+                    },
+                    {
+                        "id": "select_product_template",
+                        "type": "choice",
+                        "prompt": "Select the specific template:",
+                        "options": [
+                            "Research and Definition",
+                            "Product Planning",
+                            "Technical Implementation",
+                            "Project Management"
+                        ],
+                        "store_as": "template_type",
+                        "next": "generate_file_list"
+                    },
+                    {
+                        "id": "select_simplified_template",
+                        "type": "choice",
+                        "prompt": "Select the specific template:",
+                        "options": [
+                            "Quick Documentation"
+                        ],
+                        "store_as": "template_type",
+                        "next": "generate_file_list"
+                    },
+                    {
+                        "id": "generate_file_list",
+                        "type": "action",
+                        "action": "get_template_files",
+                        "params": {
+                            "template_type": "${template_type}"
+                        },
+                        "store_result_as": "template_files",
+                        "next": "show_file_list"
+                    },
+                    {
+                        "id": "show_file_list",
+                        "type": "message",
+                        "content": "Based on your selection of '${template_type}', the following files will be created:\n\n${template_files}",
+                        "next": "confirm_file_list"
+                    },
+                    {
+                        "id": "confirm_file_list",
+                        "type": "choice",
+                        "prompt": "Do you want to proceed with this file structure?",
+                        "options": ["Yes, create these files", "No, select a different template"],
+                        "on_select": {
+                            "Yes, create these files": "create_project_structure",
+                            "No, select a different template": "select_template_category"
+                        }
+                    },
+                    {
+                        "id": "create_project_structure",
+                        "type": "action",
+                        "action": "create_project_structure",
+                        "params": {
+                            "project_name": "${project_name}",
+                            "file_list": "${template_files}",
+                            "output_path": "docs/${project_name}"
+                        },
+                        "next": "save_to_memory"
+                    },
+                    {
+                        "id": "save_to_memory",
+                        "type": "action",
+                        "action": "save_to_memory",
+                        "params": {
+                            "path": ".memory.json",
+                            "project_name": "${project_name}",
+                            "communication_language": "${communication_language}",
+                            "documentation_languages": "${doc_languages}",
+                            "project_description": "${project_description}",
+                            "template_category": "${template_category}",
+                            "template_type": "${template_type}",
+                            "file_list": "${template_files}"
+                        },
+                        "next": "end_success"
+                    },
+                    {
+                        "id": "continue_existing",
+                        "type": "action",
+                        "action": "load_project",
+                        "params": {
+                            "project_name": "${project_name}"
+                        },
+                        "next": "end_success"
+                    },
+                    {
+                        "id": "end_success",
+                        "type": "message",
+                        "content": "Project structure initialized. Now you can run 'CONTINUE ${project_name}' to create each document interactively. You'll be guided through a series of questions specific to each document.",
+                        "terminate": true
+                    },
+                    {
+                        "id": "end_error",
+                        "type": "message",
+                        "content": "Process terminated. PAELLADOC cannot document itself as it is the core system.",
+                        "terminate": true
+                    }
+                ]
+            }
+        },
+        "CONTINUE": {
+            "description": "Continues with an existing project documentation",
+            "action": "continue_documentation",
+            "requires_args": true,
+            "args": [
+                {
+                    "name": "project_name",
+                    "type": "string",
+                    "description": "Name of the project to continue with",
+                    "required": true
+                }
+            ],
+            "workflow": {
+                "steps": [
+                    {
+                        "id": "start",
+                        "type": "action",
+                        "action": "load_project_info",
+                        "params": {
+                            "project_name": "${project_name}"
+                        },
+                        "store_result_as": "project_info",
+                        "next": "select_document"
+                    },
+                    {
+                        "id": "select_document",
+                        "type": "choice",
+                        "prompt": "Which document would you like to work on for ${project_name}?",
+                        "options_from": "project_info.documents",
+                        "store_as": "selected_document",
+                        "next": "document_info_gather"
+                    },
+                    {
+                        "id": "document_info_gather",
+                        "type": "action",
+                        "action": "prepare_document_questions",
+                        "params": {
+                            "document": "${selected_document}",
+                            "project_info": "${project_info}"
+                        },
+                        "store_result_as": "document_questions",
+                        "next": "check_for_market_research"
+                    },
+                    {
+                        "id": "check_for_market_research",
+                        "type": "conditional",
+                        "condition": {
+                            "field": "selected_document",
+                            "contains": ["market_research", "Market_Research", "market-research"]
+                        },
+                        "true": "auto_market_research",
+                        "false": "start_questions"
+                    },
+                    {
+                        "id": "auto_market_research",
+                        "type": "action",
+                        "action": "perform_deep_research",
+                        "params": {
+                            "topics": [
+                                "market size ${project_info.collected_info.project_overview.description}",
+                                "direct competitors ${project_info.collected_info.project_overview.description}",
+                                "indirect competitors ${project_info.collected_info.project_overview.description}",
+                                "user demographics ${project_info.collected_info.project_overview.target_users}",
+                                "monetization models ${project_info.collected_info.project_overview.description}",
+                                "market trends ${project_info.collected_info.project_overview.description}"
+                            ],
+                            "depth": "exhaustive",
+                            "verify_sources": true,
+                            "prevent_hallucinations": true,
+                            "require_references": true,
+                            "cross_validate": true
+                        },
+                        "store_result_as": "market_research_data",
+                        "next": "generate_market_document"
+                    },
+                    {
+                        "id": "generate_market_document",
+                        "type": "action",
+                        "action": "generate_document",
+                        "params": {
+                            "document_type": "market_research",
+                            "research_data": "${market_research_data}",
+                            "project_info": "${project_info}",
+                            "include_references": true,
+                            "reference_format": "academic",
+                            "confidence_threshold": 80,
+                            "add_timestamp": true,
+                            "timestamp_format": "YYYY-MM-DD"
+                        },
+                        "store_result_as": "document_content",
+                        "next": "enhanced_preview"
+                    },
+                    {
+                        "id": "start_questions",
+                        "type": "message",
+                        "content": "I'll help you create the ${selected_document} document. I'll ask a series of questions to gather the necessary information.",
+                        "next": "question_loop"
+                    },
+                    {
+                        "id": "question_loop",
+                        "type": "action",
+                        "action": "ask_document_questions",
+                        "params": {
+                            "document": "${selected_document}",
+                            "questions": "${document_questions}",
+                            "project_info": "${project_info}",
+                            "auto_research": true,
+                            "research_depth": "exhaustive"
+                        },
+                        "store_result_as": "document_content",
+                        "next": "check_document_type"
+                    },
+                    {
+                        "id": "check_document_type",
+                        "type": "conditional",
+                        "condition": {
+                            "field": "selected_document",
+                            "contains": ["market_research", "Market_Research", "market-research"]
+                        },
+                        "true": "deep_market_validation",
+                        "false": "preview_document"
+                    },
+                    {
+                        "id": "deep_market_validation",
+                        "type": "action",
+                        "action": "validate_market_research",
+                        "params": {
+                            "content": "${document_content}",
+                            "verification_mode": "deep",
+                            "add_references": true,
+                            "cross_validate": true,
+                            "verify_statistics": true,
+                            "check_competitors": true,
+                            "update_trends": true
+                        },
+                        "store_result_as": "validated_content",
+                        "next": "enhanced_preview"
+                    },
+                    {
+                        "id": "enhanced_preview",
+                        "type": "message",
+                        "content": "EXHAUSTIVE RESEARCH COMPLETED automatically for your market research document.\n\nBased on comprehensive research about ${project_info.collected_info.project_overview.description}, we have:\n- Analyzed the market size and growth trends\n- Identified and evaluated direct competitors\n- Assessed indirect competitors and alternative solutions\n- Segmented potential customers with demographic data\n- Evaluated monetization models used in similar products\n\nFinal document:\n\n${document_content.preview}\n\nSources used (all cross-validated):\n${document_content.sources}\n\nInformation confidence score: ${document_content.confidence_score}%",
+                        "next": "confirm_enhanced_document"
+                    },
+                    {
+                        "id": "confirm_enhanced_document",
+                        "type": "choice",
+                        "prompt": "Would you like to save this validated and enhanced market document?",
+                        "options": ["Yes, save validated version", "No, needs more revisions"],
+                        "on_select": {
+                            "Yes, save validated version": "save_validated_document",
+                            "No, needs more revisions": "question_loop"
+                        }
+                    },
+                    {
+                        "id": "save_validated_document",
+                        "type": "action",
+                        "action": "save_document",
+                        "params": {
+                            "project_name": "${project_name}",
+                            "document": "${selected_document}",
+                            "content": "${validated_content}",
+                            "project_info": "${project_info}",
+                            "include_references": true,
+                            "reference_format": "academic",
+                            "add_timestamp": true,
+                            "timestamp_format": "YYYY-MM-DD",
+                            "frontmatter": true,
+                            "process_variables": true,
+                            "replace_date_variables": true
+                        },
+                        "next": "check_documentation_completion"
+                    },
+                    {
+                        "id": "preview_document",
+                        "type": "message",
+                        "content": "Based on your answers and automated research, I've prepared the ${selected_document} document:\n\n${document_content.preview}\n\nThe research sources used:\n${document_content.research_sources}",
+                        "next": "confirm_document"
+                    },
+                    {
+                        "id": "confirm_document",
+                        "type": "choice",
+                        "prompt": "Would you like to save this document?",
+                        "options": ["Yes, save it", "No, let's revise it"],
+                        "on_select": {
+                            "Yes, save it": "save_document",
+                            "No, let's revise it": "question_loop"
+                        }
+                    },
+                    {
+                        "id": "save_document",
+                        "type": "action",
+                        "action": "save_document",
+                        "params": {
+                            "project_name": "${project_name}",
+                            "document": "${selected_document}",
+                            "content": "${document_content}",
+                            "project_info": "${project_info}",
+                            "add_timestamp": true,
+                            "timestamp_format": "YYYY-MM-DD",
+                            "frontmatter": true,
+                            "process_variables": true,
+                            "replace_date_variables": true
+                        },
+                        "next": "check_documentation_completion"
+                    },
+                    {
+                        "id": "check_documentation_completion",
+                        "type": "action",
+                        "action": "check_documentation_completeness",
+                        "params": {
+                            "project_name": "${project_name}",
+                            "required_docs": ["00_index.md"],
+                            "completeness_threshold": 60
+                        },
+                        "store_result_as": "docs_status",
+                        "next": "evaluate_docs_completion"
+                    },
+                    {
+                        "id": "evaluate_docs_completion",
+                        "type": "conditional",
+                        "condition": {
+                            "field": "docs_status.is_complete",
+                            "equals": true
+                        },
+                        "true": "offer_generate_mdc",
+                        "false": "continue_documenting"
+                    },
+                    {
+                        "id": "offer_generate_mdc",
+                        "type": "message",
+                        "content": "🎉 Congratulations! Your project documentation is ${docs_status.completeness_percentage}% complete.\n\nThis is sufficient to start development with AI assistance.",
+                        "next": "ask_generate_mdc"
+                    },
+                    {
+                        "id": "ask_generate_mdc",
+                        "type": "choice",
+                        "prompt": "Would you like to generate a Cursor MDC file now to start development?",
+                        "options": ["Yes, generate MDC for development", "No, continue with documentation", "Show me what's missing first"],
+                        "on_select": {
+                            "Yes, generate MDC for development": "initiate_mdc_generation",
+                            "No, continue with documentation": "continue_documenting",
+                            "Show me what's missing first": "show_missing_docs"
+                        }
+                    },
+                    {
+                        "id": "show_missing_docs",
+                        "type": "message",
+                        "content": "Documentation status for '${project_name}':\n\n✅ Completed documents (${docs_status.completed_docs_count}):\n${docs_status.completed_docs}\n\n❌ Missing or incomplete documents (${docs_status.missing_docs_count}):\n${docs_status.missing_docs}\n\nCompletion percentage: ${docs_status.completeness_percentage}%",
+                        "next": "ask_generate_mdc"
+                    },
+                    {
+                        "id": "initiate_mdc_generation",
+                        "type": "action",
+                        "action": "extract_development_info",
+                        "params": {
+                            "project_name": "${project_name}",
+                            "include_architecture": true,
+                            "include_components": true,
+                            "include_api": true,
+                            "include_database": true,
+                            "include_rules": true,
+                            "extract_mode": "references_only"
+                        },
+                        "store_result_as": "development_info",
+                        "next": "generate_mdc_file_from_continue"
+                    },
+                    {
+                        "id": "generate_mdc_file_from_continue",
+                        "type": "action",
+                        "action": "generate_mdc",
+                        "params": {
+                            "project_name": "${project_name}",
+                            "development_info": "${development_info}",
+                            "output_path": "docs/${project_name}/",
+                            "filename": "${project_name}.mdc.example",
+                            "include_templates": true,
+                            "include_globs": true,
+                            "include_instructions": true,
+                            "include_rules": true,
+                            "mode": "orchestrator",
+                            "reference_docs": true,
+                            "avoid_duplication": true,
+                            "documentation_root": "docs/${project_name}/",
+                            "structure_type": "reference"
+                        },
+                        "store_result_as": "mdc_result",
+                        "next": "confirm_mdc_generation"
+                    },
+                    {
+                        "id": "confirm_mdc_generation",
+                        "type": "message",
+                        "content": "✅ MDC for project '${project_name}' successfully generated!\n\nFile created in the docs folder: ${mdc_result.file_path}\n\nThe MDC acts as an ORCHESTRATOR and includes:\n- ${mdc_result.rule_count} development rules that REFERENCE your documentation\n- ${mdc_result.pattern_count} file patterns to organize code\n- ${mdc_result.instruction_count} development instructions\n\nIMPORTANT: This MDC file does NOT CONTAIN the complete documentation, but REFERENCES to it.\n\nTO USE IN YOUR DEVELOPMENT PROJECT:\n\n1. Create a new project/repository for your actual development\n2. Create a .cursor directory in that project\n3. Copy the complete docs/${project_name}/ folder to .cursor/rules/ in your development project\n4. Copy the ${project_name}.mdc.example file from docs/${project_name}/ to your development project\n5. Rename it to ${project_name}.mdc (without .example extension) and place it in the .cursor/ directory\n\nThe structure in your development project should be:\n```\nyour-development-project/\n├── .cursor/\n│   ├── ${project_name}.mdc  (renamed from .mdc.example)\n│   └── rules/\n│       └── ${project_name}/  (copied from docs/${project_name}/)\n│           ├── 00_index.md\n│           ├── feature_documentation.md\n│           └── other documentation files...\n├── src/\n├── other project files...\n```\n\nWith this structure, Cursor will be able to access the documentation referenced by the MDC during development.",
+                        "next": "ask_open_mdc"
+                    },
+                    {
+                        "id": "ask_open_mdc",
+                        "type": "choice",
+                        "prompt": "Would you like to view the generated MDC file?",
+                        "options": ["Yes, open MDC file", "No, I'll check it later"],
+                        "on_select": {
+                            "Yes, open MDC file": "open_mdc_file",
+                            "No, I'll check it later": "end_with_mdc"
+                        }
+                    },
+                    {
+                        "id": "open_mdc_file",
+                        "type": "action",
+                        "action": "open_file",
+                        "params": {
+                            "file_path": "${mdc_result.file_path}"
+                        },
+                        "next": "end_with_mdc"
+                    },
+                    {
+                        "id": "end_with_mdc",
+                        "type": "message",
+                        "content": "Documentation session completed. The MDC file is ready for development. Use 'CONTINUE ${project_name}' anytime to continue working on your documentation.",
+                        "terminate": true
+                    },
+                    {
+                        "id": "continue_documenting",
+                        "type": "choice",
+                        "prompt": "Do you want to work on another document?",
+                        "options": ["Yes", "No, I'm done for now", "MARK DOCUMENTATION AS COMPLETE"],
+                        "on_select": {
+                            "Yes": "select_document",
+                            "No, I'm done for now": "check_final_completion",
+                            "MARK DOCUMENTATION AS COMPLETE": "mark_as_complete"
+                        }
+                    },
+                    {
+                        "id": "mark_as_complete",
+                        "type": "action",
+                        "action": "update_project_status",
+                        "params": {
+                            "project_name": "${project_name}",
+                            "status": "DOCUMENTATION_COMPLETE",
+                            "set_timestamp": true
+                        },
+                        "next": "documentation_complete_message"
+                    },
+                    {
+                        "id": "documentation_complete_message",
+                        "type": "message",
+                        "content": "🎉 DOCUMENTATION MARKED AS COMPLETE for project '${project_name}'!\n\nYour documentation is now ready for development. Proceeding to generate the MDC file automatically...",
+                        "next": "auto_generate_mdc"
+                    },
+                    {
+                        "id": "check_final_completion",
+                        "type": "action",
+                        "action": "check_documentation_completeness",
+                        "params": {
+                            "project_name": "${project_name}",
+                            "required_docs": ["00_index.md"],
+                            "completeness_threshold": 60
+                        },
+                        "store_result_as": "final_docs_status",
+                        "next": "evaluate_final_completion"
+                    },
+                    {
+                        "id": "evaluate_final_completion",
+                        "type": "conditional",
+                        "condition": {
+                            "field": "final_docs_status.is_complete",
+                            "equals": true
+                        },
+                        "true": "final_completion_message",
+                        "false": "incomplete_but_finish"
+                    },
+                    {
+                        "id": "final_completion_message",
+                        "type": "message",
+                        "content": "🎉 Congratulations! Your documentation for '${project_name}' is now ${final_docs_status.completeness_percentage}% complete.\n\nThis is sufficient to generate an MDC file and start development.",
+                        "next": "auto_generate_mdc"
+                    },
+                    {
+                        "id": "auto_generate_mdc",
+                        "type": "action",
+                        "action": "extract_development_info",
+                        "params": {
+                            "project_name": "${project_name}",
+                            "include_architecture": true,
+                            "include_components": true,
+                            "include_api": true,
+                            "include_database": true,
+                            "include_rules": true,
+                            "extract_mode": "references_only"
+                        },
+                        "store_result_as": "final_development_info",
+                        "next": "final_generate_mdc"
+                    },
+                    {
+                        "id": "final_generate_mdc",
+                        "type": "action",
+                        "action": "generate_mdc",
+                        "params": {
+                            "project_name": "${project_name}",
+                            "development_info": "${final_development_info}",
+                            "output_path": "docs/${project_name}/",
+                            "filename": "${project_name}.mdc.example",
+                            "include_templates": true,
+                            "include_globs": true,
+                            "include_instructions": true,
+                            "include_rules": true,
+                            "mode": "orchestrator",
+                            "reference_docs": true,
+                            "avoid_duplication": true,
+                            "documentation_root": "docs/${project_name}/",
+                            "structure_type": "reference"
+                        },
+                        "store_result_as": "final_mdc_result",
+                        "next": "final_mdc_generated"
+                    },
+                    {
+                        "id": "final_mdc_generated",
+                        "type": "message",
+                        "content": "✅ MDC for project '${project_name}' successfully generated!\n\nFile created in the docs folder: ${final_mdc_result.file_path}\n\nThe MDC acts as an ORCHESTRATOR and includes:\n- ${final_mdc_result.rule_count} development rules that REFERENCE your documentation\n- ${final_mdc_result.pattern_count} file patterns to organize code\n- ${final_mdc_result.instruction_count} development instructions\n\nIMPORTANT: This MDC file does NOT CONTAIN the complete documentation, but REFERENCES to it.",
+                        "next": "documentation_system_summary"
+                    },
+                    {
+                        "id": "documentation_system_summary",
+                        "type": "message",
+                        "content": "📚 DOCUMENTATION COMPLETE - READY FOR DEVELOPMENT 🚀\n\nThe Documentation System for ${project_name} is now fully prepared!\n\nWe've created:\n\n1. Detailed documentation in the docs/${project_name}/ folder\n2. An MDC file (${project_name}.mdc.example) in the docs/${project_name}/ folder\n\nThe MDC does NOT DUPLICATE the documentation, but REFERENCES the specific documents for each file type or component.\n\nTO USE IN YOUR DEVELOPMENT PROJECT:\n\n1. Create a new project/repository for your actual development\n2. Create a .cursor directory in that project\n3. Copy the complete docs/${project_name}/ folder to .cursor/rules/ in your development project\n4. Copy the ${project_name}.mdc.example file from docs/${project_name}/ to your development project\n5. Rename it to ${project_name}.mdc (without .example extension) and place it in the .cursor/ directory\n\nThe structure in your development project should be:\n```\nyour-development-project/\n├── .cursor/\n│   ├── ${project_name}.mdc  (renamed from .mdc.example)\n│   └── rules/\n│       └── ${project_name}/  (copied from docs/${project_name}/)\n│           ├── 00_index.md\n│           ├── feature_documentation.md\n│           └── other documentation files...\n├── src/\n├── other project files...\n```\n\nWith this structure, Cursor will be able to access the documentation referenced by the MDC during development.",
+                        "next": "end_with_success"
+                    },
+                    {
+                        "id": "end_with_success",
+                        "type": "message",
+                        "content": "🏁 DOCUMENTATION GENERATION COMPLETE! Remember to copy both the MDC file and documentation folder to your development project as explained above.",
+                        "terminate": true
+                    }
+                ]
+            }
+        },
+        "FORCE_RESEARCH": {
+            "description": "Forces automatic deep research for a document without asking any questions",
+            "action": "force_document_research",
+            "requires_args": true,
+            "args": [
+                {
+                    "name": "project_name",
+                    "type": "string",
+                    "description": "Name of the project",
+                    "required": true
+                },
+                {
+                    "name": "document",
+                    "type": "string",
+                    "description": "Document to research (e.g., 01_market_research.md)",
+                    "required": true
+                },
+                {
+                    "name": "force_level",
+                    "type": "string",
+                    "description": "Level of force to apply to research",
+                    "enum": ["normal", "high", "maximum"],
+                    "default": "high"
+                }
+            ],
+            "workflow": {
+                "steps": [
+                    {
+                        "id": "start_forced_research",
+                        "type": "message",
+                        "content": "Starting FORCED AUTOMATIC RESEARCH for ${document} in project ${project_name} with ${force_level} priority. This process will be completely automatic and requires no user input.",
+                        "next": "load_project_for_research"
+                    },
+                    {
+                        "id": "load_project_for_research",
+                        "type": "action",
+                        "action": "load_project_info",
+                        "params": {
+                            "project_name": "${project_name}"
+                        },
+                        "store_result_as": "project_info",
+                        "next": "determine_research_topics"
+                    },
+                    {
+                        "id": "determine_research_topics",
+                        "type": "action",
+                        "action": "extract_research_topics",
+                        "params": {
+                            "document": "${document}",
+                            "project_info": "${project_info}",
+                            "depth": "comprehensive"
+                        },
+                        "store_result_as": "research_topics",
+                        "next": "execute_forced_research"
+                    },
+                    {
+                        "id": "execute_forced_research",
+                        "type": "action",
+                        "action": "perform_deep_research",
+                        "params": {
+                            "topics": "${research_topics}",
+                            "depth": "exhaustive",
+                            "verify_sources": true,
+                            "prevent_hallucinations": true,
+                            "require_references": true,
+                            "force_level": "${force_level}",
+                            "priority": "maximum",
+                            "skip_user_input": true
+                        },
+                        "store_result_as": "document_research_data",
+                        "next": "generate_research_document"
+                    },
+                    {
+                        "id": "generate_research_document",
+                        "type": "action",
+                        "action": "generate_document",
+                        "params": {
+                            "document": "${document}",
+                            "research_data": "${document_research_data}",
+                            "project_info": "${project_info}",
+                            "include_references": true,
+                            "reference_format": "academic",
+                            "confidence_threshold": 80,
+                            "comprehensive": true,
+                            "add_timestamp": true,
+                            "timestamp_format": "YYYY-MM-DD"
+                        },
+                        "store_result_as": "generated_document",
+                        "next": "save_forced_document"
+                    },
+                    {
+                        "id": "save_forced_document",
+                        "type": "action",
+                        "action": "save_document",
+                        "params": {
+                            "project_name": "${project_name}",
+                            "document": "${document}",
+                            "content": "${generated_document}",
+                            "project_info": "${project_info}",
+                            "override": true,
+                            "add_timestamp": true,
+                            "timestamp_format": "YYYY-MM-DD",
+                            "frontmatter": true,
+                            "process_variables": true,
+                            "replace_date_variables": true
+                        },
+                        "next": "research_complete"
+                    },
+                    {
+                        "id": "research_complete",
+                        "type": "message",
+                        "content": "FORCED RESEARCH COMPLETE. Document ${document} for project ${project_name} has been automatically generated with exhaustive research.\n\nNo user input was required in this process. All data was automatically collected, verified with multiple sources, and formatted with academic references.\n\nSummary of research:\n${generated_document.summary}\n\nTotal sources used: ${generated_document.source_count}\nConfidence score: ${generated_document.confidence_score}%\n\nDocument has been saved successfully.",
+                        "terminate": true
+                    }
+                ]
+            }
+        },
+        "ACHIEVEMENT": {
+            "description": "Records an achievement in the project memory",
+            "action": "record_achievement",
+            "requires_args": true,
+            "args": [
+                {
+                    "name": "description",
+                    "type": "string",
+                    "description": "Description of the achievement",
+                    "required": true
+                },
+                {
+                    "name": "category",
+                    "type": "string",
+                    "description": "Category of the achievement",
+                    "enum": ["architecture", "development", "documentation", "testing", "security", "performance", "product", "design", "research"],
+                    "required": true
+                },
+                {
+                    "name": "impact_level",
+                    "type": "string",
+                    "description": "Level of impact of the achievement",
+                    "enum": ["high", "medium", "low"],
+                    "default": "medium"
+                }
+            ]
+        },
+        "ISSUE": {
+            "description": "Records an issue in the project memory",
+            "action": "record_problem",
+            "requires_args": true,
+            "args": [
+                {
+                    "name": "description",
+                    "type": "string",
+                    "description": "Description of the issue",
+                    "required": true
+                },
+                {
+                    "name": "severity",
+                    "type": "string",
+                    "description": "Severity level of the issue",
+                    "enum": ["critical", "high", "medium", "low"],
+                    "required": true
+                },
+                {
+                    "name": "area",
+                    "type": "string",
+                    "description": "Area affected by the issue",
+                    "enum": ["product", "technical", "process", "security", "performance"],
+                    "required": true
+                }
+            ]
+        },
+        "MEMORY": {
+            "description": "Shows the development record",
+            "action": "show_memory",
+            "requires_args": false,
+            "args": [
+                {
+                    "name": "filter",
+                    "type": "string",
+                    "description": "Filter memory by category",
+                    "enum": ["all", "achievements", "issues", "decisions", "product", "technical"],
+                    "default": "all"
+                },
+                {
+                    "name": "format",
+                    "type": "string",
+                    "description": "Output format",
+                    "enum": ["detailed", "summary", "timeline"],
+                    "default": "detailed"
+                }
+            ]
+        },
+        "RESEARCH": {
+            "description": "Performs automatic research for a specific topic",
+            "action": "perform_research",
+            "requires_args": true,
+            "args": [
+                {
+                    "name": "topic",
+                    "type": "string",
+                    "description": "Topic to research",
+                    "required": true
+                },
+                {
+                    "name": "depth",
+                    "type": "string",
+                    "description": "Research depth level",
+                    "enum": ["basic", "standard", "exhaustive"],
+                    "default": "standard"
+                },
+                {
+                    "name": "project_name",
+                    "type": "string",
+                    "description": "Project to associate research with",
+                    "required": true
+                }
+            ],
+            "workflow": {
+                "steps": [
+                    {
+                        "id": "start_research",
+                        "type": "message",
+                        "content": "Starting research on '${topic}' with ${depth} depth. This may take a few moments...",
+                        "next": "perform_search"
+                    },
+                    {
+                        "id": "perform_search",
+                        "type": "action",
+                        "action": "web_research",
+                        "params": {
+                            "query": "${topic}",
+                            "depth": "${depth}",
+                            "verify_sources": true,
+                            "max_results": 8
+                        },
+                        "store_result_as": "research_results",
+                        "next": "display_results"
+                    },
+                    {
+                        "id": "display_results",
+                        "type": "message",
+                        "content": "Research results for '${topic}':\n\n${research_results.summary}\n\nSources:\n${research_results.sources}",
+                        "next": "save_results"
+                    },
+                    {
+                        "id": "save_results",
+                        "type": "action",
+                        "action": "save_research",
+                        "params": {
+                            "project_name": "${project_name}",
+                            "topic": "${topic}",
+                            "results": "${research_results}"
+                        },
+                        "next": "end"
+                    },
+                    {
+                        "id": "end",
+                        "type": "message",
+                        "content": "Research completed and saved to project '${project_name}'. You can access these results during document creation.",
+                        "terminate": true
+                    }
+                ]
+            }
+        },
+        "VERIFY": {
+            "description": "Verifies an information source",
+            "action": "verify_source",
+            "requires_args": true,
+            "args": [
+                {
+                    "name": "source",
+                    "type": "string",
+                    "description": "URL or reference of the source to verify",
+                    "required": true
+                },
+                {
+                    "name": "type",
+                    "type": "string",
+                    "description": "Type of source",
+                    "enum": ["academic", "technical", "blog", "documentation", "market_research", "user_research"],
+                    "required": true
+                },
+                {
+                    "name": "reliability",
+                    "type": "string",
+                    "description": "Required reliability level",
+                    "enum": ["high", "medium", "low"],
+                    "default": "high"
+                }
+            ]
+        },
+        "UPDATE_ADR": {
+            "description": "Updates the Architecture Decision Record based on recent changes",
+            "action": "update_adr",
+            "requires_args": true,
+            "args": [
+                {
+                    "name": "project_name",
+                    "type": "string",
+                    "description": "Name of the project to update ADR for",
+                    "required": true
+                },
+                {
+                    "name": "auto_detect",
+                    "type": "boolean",
+                    "description": "Whether to automatically detect architectural changes",
+                    "default": true
+                },
+                {
+                    "name": "update_status",
+                    "type": "boolean",
+                    "description": "Whether to update status of existing decisions",
+                    "default": true
+                }
+            ],
+            "workflow": {
+                "steps": [
+                    {
+                        "id": "start_adr_update",
+                        "type": "message",
+                        "content": "Starting Architecture Decision Record update for project '${project_name}'...",
+                        "next": "load_project_for_adr"
+                    },
+                    {
+                        "id": "load_project_for_adr",
+                        "type": "action",
+                        "action": "load_project_info",
+                        "params": {
+                            "project_name": "${project_name}"
+                        },
+                        "store_result_as": "project_info",
+                        "next": "check_adr_existence"
+                    },
+                    {
+                        "id": "check_adr_existence",
+                        "type": "file_check",
+                        "path": "docs/${project_name}/04a_architecture_decision_record.md",
+                        "exists": "analyze_recent_changes",
+                        "not_exists": "create_initial_adr"
+                    },
+                    {
+                        "id": "create_initial_adr",
+                        "type": "action",
+                        "action": "generate_document",
+                        "params": {
+                            "document_type": "adr",
+                            "project_info": "${project_info}",
+                            "include_template": true,
+                            "initial_decisions": true
+                        },
+                        "store_result_as": "adr_document",
+                        "next": "save_initial_adr"
+                    },
+                    {
+                        "id": "save_initial_adr",
+                        "type": "action",
+                        "action": "save_document",
+                        "params": {
+                            "project_name": "${project_name}",
+                            "document": "04a_architecture_decision_record.md",
+                            "content": "${adr_document}",
+                            "project_info": "${project_info}"
+                        },
+                        "next": "end_adr_creation"
+                    },
+                    {
+                        "id": "end_adr_creation",
+                        "type": "message",
+                        "content": "Initial Architecture Decision Record created for '${project_name}'. Use 'UPDATE_ADR ${project_name}' to keep it updated as your project evolves.",
+                        "terminate": true
+                    },
+                    {
+                        "id": "analyze_recent_changes",
+                        "type": "action",
+                        "action": "detect_architectural_changes",
+                        "params": {
+                            "project_name": "${project_name}",
+                            "auto_detect": "${auto_detect}",
+                            "analysis_depth": "comprehensive",
+                            "check_sources": [
+                                "code_changes",
+                                "technical_docs",
+                                "commit_messages",
+                                "issues",
+                                "decisions"
+                            ]
+                        },
+                        "store_result_as": "detected_changes",
+                        "next": "review_existing_decisions"
+                    },
+                    {
+                        "id": "review_existing_decisions",
+                        "type": "action",
+                        "action": "review_adr_decisions",
+                        "params": {
+                            "project_name": "${project_name}",
+                            "detected_changes": "${detected_changes}",
+                            "update_status": "${update_status}",
+                            "validation_criteria": [
+                                "still_relevant",
+                                "superseded",
+                                "deprecated",
+                                "needs_revision"
+                            ]
+                        },
+                        "store_result_as": "decision_reviews",
+                        "next": "present_adr_updates"
+                    },
+                    {
+                        "id": "present_adr_updates",
+                        "type": "message",
+                        "content": "Architecture Decision Record Analysis Complete:\n\n${decision_reviews.summary}\n\nNew decisions detected: ${decision_reviews.new_count}\nExisting decisions updated: ${decision_reviews.updated_count}\nDeprecated decisions: ${decision_reviews.deprecated_count}\n\nRecommended actions: ${decision_reviews.recommendations}",
+                        "next": "confirm_adr_updates"
+                    },
+                    {
+                        "id": "confirm_adr_updates",
+                        "type": "choice",
+                        "prompt": "Would you like to apply these updates to the Architecture Decision Record?",
+                        "options": ["Yes, update ADR", "No, skip for now"],
+                        "on_select": {
+                            "Yes, update ADR": "update_adr_document",
+                            "No, skip for now": "end_adr_review"
+                        }
+                    },
+                    {
+                        "id": "update_adr_document",
+                        "type": "action",
+                        "action": "update_adr_document",
+                        "params": {
+                            "project_name": "${project_name}",
+                            "decision_reviews": "${decision_reviews}",
+                            "add_timestamp": true,
+                            "update_cross_references": true,
+                            "add_revision_history": true
+                        },
+                        "store_result_as": "updated_adr",
+                        "next": "save_updated_adr"
+                    },
+                    {
+                        "id": "save_updated_adr",
+                        "type": "action",
+                        "action": "save_document",
+                        "params": {
+                            "project_name": "${project_name}",
+                            "document": "04a_architecture_decision_record.md",
+                            "content": "${updated_adr}",
+                            "project_info": "${project_info}",
+                            "update_memory": true
+                        },
+                        "next": "end_adr_update"
+                    },
+                    {
+                        "id": "end_adr_review",
+                        "type": "message",
+                        "content": "ADR review completed. No changes were made to the document.",
+                        "terminate": true
+                    },
+                    {
+                        "id": "end_adr_update",
+                        "type": "message",
+                        "content": "Architecture Decision Record successfully updated with latest decisions and statuses. Remember to review this document periodically as your project evolves.",
+                        "terminate": true
+                    }
+                ]
+            }
+        },
+        "GENERATE_MDC": {
+            "description": "Generates a Cursor MDC file from project documentation for development",
+            "action": "generate_cursor_mdc",
+            "requires_args": true,
+            "args": [
+                {
+                    "name": "project_name",
+                    "type": "string",
+                    "description": "Name of the project to generate MDC for",
+                    "required": true
+                },
+                {
+                    "name": "output_path",
+                    "type": "string",
+                    "description": "Path where to save the MDC file",
+                    "default": "docs/${project_name}/"
+                },
+                {
+                    "name": "include_rules",
+                    "type": "boolean",
+                    "description": "Whether to extract development rules from documentation",
+                    "default": true
+                }
+            ],
+            "workflow": {
+                "steps": [
+                    {
+                        "id": "start_mdc_generation",
+                        "type": "message",
+                        "content": "Starting MDC generation for project '${project_name}'...",
+                        "next": "check_documentation_status"
+                    },
+                    {
+                        "id": "check_documentation_status",
+                        "type": "action",
+                        "action": "check_documentation_completeness",
+                        "params": {
+                            "project_name": "${project_name}",
+                            "required_docs": ["00_index.md"],
+                            "completeness_threshold": 80
+                        },
+                        "store_result_as": "docs_status",
+                        "next": "evaluate_completeness"
+                    },
+                    {
+                        "id": "evaluate_completeness",
+                        "type": "conditional",
+                        "condition": {
+                            "field": "docs_status.is_complete",
+                            "equals": true
+                        },
+                        "true": "extract_project_info",
+                        "false": "documentation_incomplete"
+                    },
+                    {
+                        "id": "documentation_incomplete",
+                        "type": "message",
+                        "content": "Documentation for project '${project_name}' is incomplete (${docs_status.completeness_percentage}%). Please complete at least the following documents before generating MDC:\n\n${docs_status.missing_critical_docs}",
+                        "next": "ask_force_generation"
+                    },
+                    {
+                        "id": "ask_force_generation",
+                        "type": "choice",
+                        "prompt": "Would you like to generate the MDC anyway?",
+                        "options": ["Yes, generate MDC", "No, complete documentation first"],
+                        "on_select": {
+                            "Yes, generate MDC": "extract_project_info",
+                            "No, complete documentation first": "end_incomplete"
+                        }
+                    },
+                    {
+                        "id": "end_incomplete",
+                        "type": "message",
+                        "content": "MDC generation cancelled. Complete the documentation and then run 'GENERATE_MDC ${project_name}' again.",
+                        "terminate": true
+                    },
+                    {
+                        "id": "extract_project_info",
+                        "type": "action",
+                        "action": "extract_development_info",
+                        "params": {
+                            "project_name": "${project_name}",
+                            "include_architecture": true,
+                            "include_components": true,
+                            "include_api": true,
+                            "include_database": true,
+                            "include_rules": "${include_rules}",
+                            "extract_mode": "references_only"
+                        },
+                        "store_result_as": "development_info",
+                        "next": "generate_mdc_file"
+                    },
+                    {
+                        "id": "generate_mdc_file",
+                        "type": "action",
+                        "action": "generate_mdc",
+                        "params": {
+                            "project_name": "${project_name}",
+                            "development_info": "${development_info}",
+                            "output_path": "${output_path}",
+                            "filename": "${project_name}.mdc.example",
+                            "include_templates": true,
+                            "include_globs": true,
+                            "include_instructions": true,
+                            "include_rules": "${include_rules}",
+                            "mode": "orchestrator",
+                            "reference_docs": true,
+                            "avoid_duplication": true,
+                            "documentation_root": "docs/${project_name}/",
+                            "structure_type": "reference",
+                            "copy_to_root": true
+                        },
+                        "store_result_as": "mdc_result",
+                        "next": "notify_generation_complete"
+                    },
+                    {
+                        "id": "notify_generation_complete",
+                        "type": "message",
+                        "content": "✅ MDC for project '${project_name}' successfully generated!\n\nFile created in the docs folder: ${mdc_result.file_path}\n\nThe MDC acts as an ORCHESTRATOR and includes:\n- ${mdc_result.rule_count} development rules that REFERENCE your documentation\n- ${mdc_result.pattern_count} file patterns to organize code\n- ${mdc_result.instruction_count} development instructions\n\nIMPORTANT: This MDC file does NOT CONTAIN the complete documentation, but REFERENCES to it.\n\nTO USE IN YOUR DEVELOPMENT PROJECT:\n\n1. Create a new project/repository for your actual development\n2. Create a .cursor directory in that project\n3. Copy the complete docs/${project_name}/ folder to .cursor/rules/ in your development project\n4. Copy the ${project_name}.mdc.example file from docs/${project_name}/ to your development project\n5. Rename it to ${project_name}.mdc (without .example extension) and place it in the .cursor/ directory\n\nThe structure in your development project should be:\n```\nyour-development-project/\n├── .cursor/\n│   ├── ${project_name}.mdc  (renamed from .mdc.example)\n│   └── rules/\n│       └── ${project_name}/  (copied from docs/${project_name}/)\n│           ├── 00_index.md\n│           ├── feature_documentation.md\n│           └── other documentation files...\n├── src/\n├── other project files...\n```\n\nWith this structure, Cursor will be able to access the documentation referenced by the MDC during development.",
+                        "next": "ask_open_mdc"
+                    },
+                    {
+                        "id": "ask_open_mdc",
+                        "type": "choice",
+                        "prompt": "Would you like to view the generated MDC file?",
+                        "options": ["Yes, open MDC file", "No, I'll check it later"],
+                        "on_select": {
+                            "Yes, open MDC file": "open_mdc_file",
+                            "No, I'll check it later": "end_with_mdc"
+                        }
+                    },
+                    {
+                        "id": "open_mdc_file",
+                        "type": "action",
+                        "action": "open_file",
+                        "params": {
+                            "file_path": "${mdc_result.file_path}"
+                        },
+                        "next": "end_with_mdc"
+                    },
+                    {
+                        "id": "end_with_mdc",
+                        "type": "message",
+                        "content": "Documentation session completed. The MDC file is ready for development. Use 'CONTINUE ${project_name}' anytime to continue working on your documentation.",
+                        "terminate": true
+                    }
+                ]
+            }
+        }
+    },
+    "rules": [
+        {
+            "name": "paelladoc-generator",
+            "description": "Interactive documentation generator configuration",
+            "patterns": [".memory.json"],
+            "source": ".cursor/rules/paelladoc.mdc",
+            "dynamic_load": true,
+            "priority": 0,
+            "exclude_patterns": ["paelladoc/**/*", ".cursor/**/*", ".cursorrules"]
+        }
+    ],
+    "integration": {
+        "paelladoc": {
+            "enabled": true,
+            "memory_file": ".memory.json",
+            "documentation_root": "docs/",
+            "interaction_mode": "chat_based",
+            "template_paths": {
+                "source": ".cursor/rules/templates/",
+                "output": "docs/"
+            },
+            "memory_management": {
+                "validation": true,
+                "auto_backup": true,
+                "backup_interval": "1h"
+            },
+            "interactive_workflow": {
+                "enabled": true,
+                "auto_start": true,
+                "conversation_mode": true,
+                "start_with_language_selection": true,
+                "chat_features": {
+                    "natural_language": true,
+                    "context_aware": true,
+                    "continuous_memory": true,
+                    "interactive_qa": true,
+                    "web_research": {
+                        "enabled": true,
+                        "auto_search": true,
+                        "verify_sources": true,
+                        "include_citations": true,
+                        "search_engines": ["google", "bing", "scholar"],
+                        "max_results_per_query": 5,
+                        "max_depth": 2
+                    }
+                },
+                "project_check": {
+                    "only_check_memory": true,
+                    "memory_path": ".memory.json",
+                    "ignore_system_files": true,
+                    "validate_integrity": true,
+                    "prevent_self_documentation": true
+                }
+            }
+        }
+    },
+    "research_settings": {
+        "auto_research": {
+            "market_data": true,
+            "competitors": true,
+            "user_segments": true,
+            "monetization": true,
+            "technology_trends": true,
+            "verify_all_sources": true,
+            "include_citations": true,
+            "deep_validation": {
+                "enabled": true,
+                "market_research_docs": true,
+                "min_sources_per_claim": 3,
+                "require_statistical_validation": true,
+                "verification_levels": ["primary", "secondary", "tertiary"],
+                "prevent_hallucinations": true,
+                "source_types": ["academic", "market_research", "industry_reports", "competitor_data", "statistical_data"]
+            }
+        },
+        "global_priorities": {
+            "auto_research_first": true,
+            "skip_user_questions_for_market_research": true,
+            "always_research_before_asking": true,
+            "research_priority": "high",
+            "use_web_search_always": true,
+            "max_sources_to_consult": 25,
+            "citation_required": true
+        },
+        "source_types": {
+            "academic": {
+                "priority": "high",
+                "verification_level": "strict"
+            },
+            "market_research": {
+                "priority": "high",
+                "verification_level": "standard"
+            },
+            "technical": {
+                "priority": "medium",
+                "verification_level": "standard"
+            },
+            "blogs": {
+                "priority": "low",
+                "verification_level": "basic"
+            }
+        }
+    },
+    "adr_settings": {
+        "auto_update": {
+            "enabled": true,
+            "frequency": "weekly",
+            "on_architectural_changes": true,
+            "on_component_changes": true
+        },
+        "content_structure": {
+            "include_status": true,
+            "status_types": ["Proposed", "Accepted", "Implemented", "Deprecated", "Superseded"],
+            "decision_format": {
+                "title": true,
+                "date": true,
+                "status": true,
+                "context": true,
+                "decision": true,
+                "consequences": true,
+                "alternatives_considered": true,
+                "related_decisions": true
+            },
+            "revision_history": true
+        },
+        "integrations": {
+            "link_to_code": true,
+            "link_to_diagrams": true,
+            "link_to_requirements": true,
+            "notify_on_changes": true
+        }
+    },
+    "document_settings": {
+        "default_formats": {
+            "timestamp": "YYYY-MM-DD",
+            "frontmatter": true,
+            "metadata": {
+                "include_author": true,
+                "include_version": true,
+                "include_last_updated": true,
+                "include_tags": true
+            }
+        },
+        "markdown_format": {
+            "frontmatter_style": "yaml",
+            "required_fields": [
+                "title",
+                "date",
+                "status",
+                "version"
+            ],
+            "default_status": "Draft"
+        },
+        "template_variables": {
+            "DATE": "{{current_date}}",
+            "AUTHOR": "{{user_name}}",
+            "VERSION": "1.0",
+            "PROJECT": "{{project_name}}",
+            "UPDATED": "{{current_date}}",
+            "STATUS": "Draft",
+            "AUTO_REPLACE": true
+        }
+    }
+} 

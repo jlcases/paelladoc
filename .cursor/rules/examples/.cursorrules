@@ -1,0 +1,112 @@
+{
+    "version": 1,
+    "name": "paelladoc-dynamic-rules",
+    "description": "Dynamic rules generated from PAELLADOC documentation",
+    "rules": [
+        {
+            "name": "architecture-rules",
+            "description": "Architecture patterns and principles derived from documentation",
+            "patterns": ["**/*"],
+            "source": "docs/*/architecture/technical_architecture.md",
+            "dynamic_load": true,
+            "priority": 1
+        },
+        {
+            "name": "quality-rules",
+            "description": "Quality standards and testing requirements",
+            "patterns": ["**/*"],
+            "source": "docs/*/quality/test_plan.md",
+            "dynamic_load": true,
+            "priority": 1
+        },
+        {
+            "name": "security-rules",
+            "description": "Security protocols and requirements",
+            "patterns": ["**/*"],
+            "source": "docs/*/security/security_requirements.md",
+            "dynamic_load": true,
+            "priority": 1
+        },
+        {
+            "name": "development-rules",
+            "description": "Development guidelines and standards",
+            "patterns": ["**/*"],
+            "source": "docs/*/guides/development_guide.md",
+            "dynamic_load": true,
+            "priority": 2
+        },
+        {
+            "name": "api-rules",
+            "description": "API design and implementation standards",
+            "patterns": ["**/*"],
+            "source": "docs/*/api/api_reference.md",
+            "dynamic_load": true,
+            "priority": 2
+        },
+        {
+            "name": "workflow-rules",
+            "description": "Project workflow and processes",
+            "patterns": ["**/*"],
+            "source": "docs/*/design/workflow.md",
+            "dynamic_load": true,
+            "priority": 2
+        },
+        {
+            "name": "base-rules",
+            "description": "Core project rules that always apply",
+            "patterns": ["**/*"],
+            "instructions": [
+                "### Core Rules",
+                "",
+                "1. Language: Use English for all code and documentation",
+                "2. Package Management: Use Poetry exclusively",
+                "3. SOLID Principles:",
+                "   - Single Responsibility Principle (SRP)",
+                "   - Open/Closed Principle (OCP)",
+                "   - Liskov Substitution Principle (LSP)",
+                "   - Interface Segregation Principle (ISP)",
+                "   - Dependency Inversion Principle (DIP)",
+                "",
+                "4. Code Quality:",
+                "   - Write clean, self-documenting code",
+                "   - Include comprehensive unit tests",
+                "   - Run test suite before commits",
+                "   - No --no-verify commits allowed",
+                "",
+                "5. Version Control:",
+                "   - Make atomic, focused commits",
+                "   - Follow project commit message conventions",
+                "   - Review changes before committing",
+                "",
+                "6. Dependencies:",
+                "   - Use Pydantic v2",
+                "   - Avoid reserved words (e.g., 'metadata' except for SQLAlchemy)",
+                "   - No UUIDs unless specified",
+                "",
+                "7. Testing Priority:",
+                "   - Prefer updating tests for naming/import changes",
+                "   - Prefer updating code for logic changes",
+                "",
+                "8. Documentation:",
+                "   - Keep documentation up-to-date",
+                "   - Follow PAELLADOC structure",
+                "   - Document all architectural decisions"
+            ],
+            "priority": 0
+        }
+    ],
+    "dynamic_rules_config": {
+        "update_interval": "on_documentation_change",
+        "source_path": "docs/",
+        "rules_output": ".cursor/rules/generated/",
+        "template_path": ".cursor/rules/templates/"
+    },
+    "integration": {
+        "paelladoc": {
+            "enabled": true,
+            "memory_file": ".memory.json",
+            "documentation_root": "docs/",
+            "sync_rules": true
+        }
+    }
+}

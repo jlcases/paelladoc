@@ -1,0 +1,107 @@
+{
+    "version": 1,
+    "name": "PROJECT_NAME-docs",
+    "description": "Documentación completa del proyecto PROJECT_NAME",
+    "patterns": ["**/*"],
+    "rules": [
+        {
+            "name": "project-overview",
+            "description": "Visión general del proyecto",
+            "patterns": ["**/*"],
+            "instructions": [
+                "# Proyecto: PROJECT_NAME",
+                "",
+                "## Descripción general",
+                "PROJECT_DESCRIPTION",
+                "",
+                "## Tipo de proyecto",
+                "PROJECT_TYPE (Producto completo / Feature / Bug Fix / Tarea)",
+                "",
+                "## Documentación disponible",
+                "Esta regla proporciona acceso a toda la documentación del proyecto, incluyendo la fase de descubrimiento, definición, diseño y planificación."
+            ]
+        },
+        {
+            "name": "project-documentation",
+            "description": "Documentación específica del proyecto",
+            "patterns": ["**/*"],
+            "instructions": [
+                "# Documentación del Proyecto",
+                "",
+                "## Estructura de carpetas",
+                "```",
+                "PROJECT_FOLDER_STRUCTURE",
+                "```",
+                "",
+                "## Documentos principales",
+                "",
+                "### Fase de Descubrimiento",
+                "DISCOVERY_PHASE_DOCS",
+                "",
+                "### Fase de Definición",
+                "DEFINITION_PHASE_DOCS",
+                "",
+                "### Fase de Diseño",
+                "DESIGN_PHASE_DOCS",
+                "",
+                "### Fase de Planificación",
+                "PLANNING_PHASE_DOCS",
+                "",
+                "### Documentación Técnica",
+                "TECHNICAL_DOCS"
+            ]
+        },
+        {
+            "name": "project-decisions",
+            "description": "Decisiones importantes del proyecto",
+            "patterns": ["**/*"],
+            "instructions": [
+                "# Decisiones del Proyecto",
+                "",
+                "## Decisiones principales",
+                "PROJECT_DECISIONS",
+                "",
+                "## Reglas del proyecto",
+                "PROJECT_RULES",
+                "",
+                "## Arquitectura",
+                "PROJECT_ARCHITECTURE"
+            ]
+        },
+        {
+            "name": "development-memory",
+            "description": "Memoria de desarrollo del proyecto",
+            "patterns": ["**/*"],
+            "instructions": [
+                "# Memoria de Desarrollo",
+                "",
+                "## Logros",
+                "ACHIEVEMENTS",
+                "",
+                "## Problemas",
+                "PROBLEMS",
+                "",
+                "## Decisiones técnicas",
+                "TECHNICAL_DECISIONS",
+                "",
+                "## Comandos disponibles",
+                "- `LOGRO [descripción]`: Registra un nuevo logro en el proyecto",
+                "- `PROBLEMA [descripción]`: Registra un nuevo problema encontrado",
+                "- `DECISIÓN [descripción]`: Registra una nueva decisión técnica",
+                "- `MEMORIA`: Muestra el registro completo de la memoria de desarrollo"
+            ]
+        }
+    ],
+    "priorities": [
+        {
+            "source": "DOCS_PATH",
+            "weight": 3.0
+        }
+    ],
+    "project_directives": {
+        "name": "PROJECT_NAME-documentation",
+        "ai_first": true,
+        "documentation_path": "DOCS_PATH",
+        "memory_file_path": "MEMORY_FILE_PATH"
+    }
+}
