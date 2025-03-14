@@ -1,33 +1,38 @@
 # Basic settings
 title: PAELLA DOC
 description: Sistema de documentación interactivo impulsado por IA
-baseurl: ""
-url: "http://localhost:4000"
-
-# Uncomment these for GitHub Pages deployment
-# baseurl: "/paelladoc"
-# url: "https://jlcases.github.io"
 
 # Build settings
 markdown: kramdown
+kramdown:
+  input: GFM
+  syntax_highlighter: rouge
 theme: minima
 
 # Plugins
 plugins:
   - jekyll-redirect-from
+  - kramdown-parser-gfm
 
 # Language settings
 languages: ["es", "en"]
 default_lang: "es"
+exclude_from_localization: ["javascript", "images", "css", "public"]
+parallel_localization: true
 
 # Exclude from processing
 exclude:
   - Gemfile
   - Gemfile.lock
-  - vendor
-  - README.md
-  - LICENSE
-  - "*.log"
+  - node_modules
+  - vendor/bundle/
+  - vendor/cache/
+  - vendor/gems/
+  - vendor/ruby/
+  - .sass-cache/
+  - .jekyll-cache/
+  - .git/
+  - .github/
 
 # Default configuration
 defaults:
@@ -35,14 +40,6 @@ defaults:
       path: ""
     values:
       layout: "default"
-
-# Redirecciones principales
-redirect_from:
-  - /index.html
-  - /home
-
-# Configuración de Analytics (opcional)
-# google_analytics: UA-XXXXXXXX-X
 
 # Sass configuration
 sass:
@@ -57,18 +54,9 @@ compress_html:
   clippings: all
   comments: ["<!-- ", " -->"]
   endings: all
-  ignore:
-    envs: [development]
   blanklines: false
   profile: false
   startings: [html, head, body]
-
-# Sitemap configuration
-sitemap:
-  enabled: true
-  change_frequency_default: "weekly"
-  priority_default: 0.5
-  filename: "sitemap.xml"
 
 # Custom colors
 colors:
@@ -77,6 +65,26 @@ colors:
   accent: "#D64045"
   text: "#1E1E24"
   background: "#F5F5F5"
+
+# Redirect settings
+redirect_from:
+  enabled: true
+  json: false
+  redirects:
+    - from: /index.html
+      to: /es/
+    - from: /home
+      to: /es/
+
+# Configuración de Analytics (opcional)
+# google_analytics: UA-XXXXXXXX-X
+
+# Sitemap configuration
+sitemap:
+  enabled: true
+  change_frequency_default: "weekly"
+  priority_default: 0.5
+  filename: "sitemap.xml"
 
 # SEO and Social
 social:

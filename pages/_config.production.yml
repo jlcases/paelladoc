@@ -1,0 +1,34 @@
+# Production specific settings
+url: "https://jlcases.github.io"
+baseurl: "/paelladoc"
+
+# Environment specific
+environment: production
+
+# Production optimizations
+compress_html:
+  ignore:
+    envs: []
+
+# Analytics enabled in production
+google_analytics: UA-XXXXXXXX-X
+
+# Redirect settings for production
+redirect_from:
+  enabled: true
+  json: false
+  redirects:
+    - from: /index.html
+      to: /es/
+    - from: /home
+      to: /es/
+
+# Additional production settings
+future: false
+unpublished: false
+safe: true
+
+# Cache settings
+cache:
+  enabled: true
+  directory: .jekyll-cache 
