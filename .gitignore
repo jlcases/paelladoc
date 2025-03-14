@@ -1,3 +1,39 @@
+# Jekyll specific
+_site/
+.sass-cache/
+.jekyll-cache/
+.jekyll-metadata
+.jekyll-redirect-cache/
+
+# Ruby specific
+.bundle/
+vendor/
+Gemfile.lock
+
+# IDE and Editor files
+.idea/
+.vscode/
+*.swp
+*.swo
+*~
+
+# OS specific
 .DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+Thumbs.db
+
+# Project specific
+_site/
+node_modules/
+dist/
+tmp/
+.env
+*.log
+.cache/
+
 /docs
 .memory.json

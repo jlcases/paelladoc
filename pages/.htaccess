@@ -1,0 +1,20 @@
+---
+permalink: /.htaccess
+---
+
+RewriteEngine On
+RewriteBase /
+
+# Redirect root to language-specific version based on browser language
+RewriteCond %{HTTP:Accept-Language} ^es [NC]
+RewriteRule ^$ /es/ [L,R=301]
+
+# Default to English for all other languages
+RewriteRule ^$ /en/ [L,R=301]
+
+# Ensure trailing slashes
+RewriteRule ^(es|en)$ /$1/ [L,R=301]
+
+# Redirect old URLs to new language-specific ones
+RewriteRule ^index\.html$ / [L,R=301]
+RewriteRule ^home$ / [L,R=301] 
