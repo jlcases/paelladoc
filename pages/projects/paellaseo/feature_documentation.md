@@ -1,22 +1,24 @@
 ---
 layout: project-layout
-title: "Documentación de Funcionalidades de paellaSEO"
-description: "paellaSEO está construido con un stack tecnológico moderno que prioriza la eficiencia y el rendimiento:"
+title: "paellaSEO Feature Documentation"
+description: "paellaSEO is built with a modern technology stack that prioritizes efficiency and performance"
 project: "paellaSEO"
 date: 2025-03-15
 order: 50
+permalink: /projects/paellaseo/feature_documentation/
+sidebar_nav: true
 ---
 
 
-## Arquitectura Técnica y Entorno de Desarrollo
+## Technical Architecture and Development Environment
 
-paellaSEO está construido con un stack tecnológico moderno que prioriza la eficiencia y el rendimiento:
+paellaSEO is built with a modern technology stack that prioritizes efficiency and performance:
 
-### Stack de Desarrollo
-- **Bun**: Utilizado como gestor de paquetes y runtime de JavaScript, reemplazando completamente a npm.
-- **Vite**: Framework de compilación ultrarrápido para el bundling del proyecto, en lugar de Webpack.
-- **TypeScript**: Implementado para tipado estático y mejor mantenibilidad.
-- **ESM (ECMAScript Modules)**: Utilizado para una mejor organización y modularidad del código.
+### Development Stack
+- **Bun**: Used as a package manager and JavaScript runtime, completely replacing npm.
+- **Vite**: Ultra-fast build framework for project bundling, instead of Webpack.
+- **TypeScript**: Implemented for static typing and better maintainability.
+- **ESM (ECMAScript Modules)**: Used for better organization and code modularity.
 
 ### Ventajas del Stack Técnico
 - **Rendimiento Superior**: Bun ofrece tiempos de instalación y compilación hasta 10x más rápidos que npm.

@@ -1,401 +1,403 @@
 ---
 layout: project-layout
-title: "Registro de Errores - paellaSEO"
-description: "Esta documentación mantiene un registro detallado de los errores conocidos en la extensión paellaSEO, su estado actual, planes de resolución y el historial de problemas solucionados. Este documento sirve como referencia central para el seguimiento de problemas durante el desarrollo y mantenimiento de la extensión."
+title: "Bug Registry - paellaSEO"
+description: "This documentation maintains a detailed record of known bugs in the paellaSEO extension, their current status, resolution plans, and the history of solved issues. This document serves as a central reference for tracking problems during the development and maintenance of the extension."
 project: "paellaSEO"
 date: 2025-03-15
 order: 50
+permalink: /projects/paellaseo/bug_documentation/
+sidebar_nav: true
 ---
 
 
-Esta documentación mantiene un registro detallado de los errores conocidos en la extensión paellaSEO, su estado actual, planes de resolución y el historial de problemas solucionados. Este documento sirve como referencia central para el seguimiento de problemas durante el desarrollo y mantenimiento de la extensión.
+This documentation maintains a detailed record of known bugs in the paellaSEO extension, their current status, resolution plans, and the history of solved issues. This document serves as a central reference for tracking problems during the development and maintenance of the extension.
 
-## Sistema de Seguimiento de Errores
+## Bug Tracking System
 
-### Convención de Nombrado
-Todos los errores deben tener un ID único siguiendo el formato:
-- `BUG-YYYYMMDD-XX` donde:
-  - `YYYYMMDD` es la fecha de identificación del error
-  - `XX` es un número secuencial de dos dígitos (comenzando en 01) para errores reportados el mismo día
+### Naming Convention
+All bugs must have a unique ID following the format:
+- `BUG-YYYYMMDD-XX` where:
+  - `YYYYMMDD` is the date the bug was identified
+  - `XX` is a two-digit sequential number (starting at 01) for bugs reported on the same day
 
-### Ciclo de Vida de un Error
-1. **Identificación**: Se detecta y documenta el error
-2. **Análisis**: Se investiga la causa raíz y posibles soluciones
-3. **Priorización**: Se asigna una prioridad y se programa su resolución
-4. **Resolución**: Se implementa la solución
-5. **Verificación**: Se prueba que el error ha sido resuelto correctamente
-6. **Cierre**: Se documenta la solución y se cierra el error
+### Cycle of a Bug
+1. **Identification**: The bug is detected and documented
+2. **Analysis**: The root cause is investigated and possible solutions are evaluated
+3. **Prioritization**: The bug is assigned a priority and its resolution is scheduled
+4. **Resolution**: The solution is implemented
+5. **Verification**: It is verified that the bug has been resolved correctly
+6. **Closure**: The solution is documented and the bug is closed
 
-### Niveles de Prioridad
-- **Crítica**: Impide el funcionamiento básico de la extensión, afecta a la seguridad, o puede causar pérdida de datos
-- **Alta**: Afecta significativamente la funcionalidad principal de la extensión
-- **Media**: Afecta funcionalidades secundarias o tiene soluciones alternativas
-- **Baja**: Errores menores, problemas de UI/UX no críticos
+### Priority Levels
+- **Critical**: Prevents basic functionality of the extension, affects security, or may cause data loss
+- **High**: Significantly affects the main functionality of the extension
+- **Medium**: Affects secondary functionalities or has alternative solutions
+- **Low**: Minor errors, UI/UX non-critical issues
 
-### Categorías de Errores
-- **Funcional**: Relacionado con la lógica de las funcionalidades principales
-- **UI/UX**: Problemas de interfaz y experiencia de usuario
-- **Rendimiento**: Problemas de velocidad, memoria o recursos
-- **Seguridad**: Vulnerabilidades o exposición de datos
-- **Compatibilidad**: Problemas específicos de ciertos navegadores o sistemas
-- **Datos**: Errores en el procesamiento, almacenamiento o análisis de datos
-- **Entorno**: Problemas relacionados con el entorno de desarrollo o despliegue
+### Bug Categories
+- **Functional**: Related to the logic of main functionalities
+- **UI/UX**: Problems with interface and user experience
+- **Performance**: Speed, memory, or resource problems
+- **Security**: Vulnerabilities or data exposure
+- **Compatibility**: Problems specific to certain browsers or systems
+- **Data**: Errors in processing, storage, or data analysis
+- **Environment**: Problems related to development or deployment environment
 
-## Plantilla para Nuevos Errores
+## Template for New Bugs
 
 ```markdown
-## [BUG-YYYYMMDD-XX] Título descriptivo del error
+## [BUG-YYYYMMDD-XX] Descriptive Title of the Bug
 
-### Descripción
-Descripción detallada del error.
+### Description
+Detailed description of the bug.
 
-### Pasos para Reproducir
-1. Paso 1
-2. Paso 2
-3. Paso 3
+### Steps to Reproduce
+1. Step 1
+2. Step 2
+3. Step 3
 
-### Comportamiento Esperado
-Descripción de cómo debería funcionar correctamente.
+### Expected Behavior
+Description of how it should work correctly.
 
-### Comportamiento Actual
-Descripción de cómo está funcionando actualmente (incorrectamente).
+### Actual Behavior
+Description of how it is currently working (incorrectly).
 
-### Capturas de Pantalla/Videos
-(Si aplica)
+### Screenshots/Videos
+(If applicable)
 
-### Información del Entorno
-- Versión de Chrome: X.X.X
-- Sistema Operativo: Windows/Mac/Linux
-- Versión de paellaSEO: X.X.X
+### Environment Information
+- Chrome Version: X.X.X
+- Operating System: Windows/Mac/Linux
+- paellaSEO Version: X.X.X
 
-### Categoría
-Funcional/UI/UX/Rendimiento/Seguridad/Compatibilidad/Datos
+### Category
+Functional/UI/UX/Performance/Security/Compatibility/Data
 
-### Prioridad
-Crítica/Alta/Media/Baja
+### Priority
+Critical/High/Medium/Low
 
-### Estado
-Abierto/En Análisis/En Desarrollo/En Verificación/Resuelto/Cerrado
+### Status
+Open/In Analysis/In Development/In Verification/Resolved/Closed
 
-### Asignado a
-Nombre del desarrollador
+### Assigned To
+Developer's Name
 
-### Fecha de Identificación
+### Identification Date
 YYYY-MM-DD
 
-### Fecha de Resolución
-YYYY-MM-DD (o pendiente)
+### Resolution Date
+YYYY-MM-DD (or pending)
 
-### Solución Implementada
-Descripción de la solución implementada (cuando el error esté resuelto).
+### Implemented Solution
+Description of the implemented solution (when the bug is resolved).
 
 ### Commit/PR
-Enlace al commit o Pull Request que resuelve el error.
+Link to the commit or Pull Request that resolves the bug.
 
-### Notas Adicionales
-Información relevante adicional sobre el error.
+### Additional Notes
+Relevant additional information about the bug.
 ```
 
-## Proceso de Reporte de Errores
+## Reporting Bugs Process
 
-### Para Desarrolladores
-1. Documentar el error utilizando la plantilla anterior
-2. Asignar un ID único siguiendo la convención establecida
-3. Categorizar y priorizar el error
-4. Añadir el error a la sección "Errores Abiertos" de este documento
-5. Notificar al equipo a través del canal de comunicación establecido
+### For Developers
+1. Document the bug using the template above
+2. Assign a unique ID following the established convention
+3. Categorize and prioritize the bug
+4. Add the bug to the "Open Bugs" section of this document
+5. Notify the team through the established communication channel
 
-### Para Usuarios y Testers
-1. Utilizar la función "Reportar un problema" desde la interfaz de la extensión
-2. Proporcionar una descripción clara del problema
-3. Incluir pasos de reproducción detallados
-4. Adjuntar capturas de pantalla si es posible
-5. Incluir información del entorno (navegador, sistema operativo)
+### For Users and Testers
+1. Use the "Report a Problem" function from the extension interface
+2. Provide a clear description of the problem
+3. Include detailed reproduction steps
+4. Attach screenshots if possible
+5. Include environment information (browser, operating system)
 
-## Errores Abiertos
+## Open Bugs
 
-### Funcionales
+### Functional
 
-#### [BUG-20240617-01] El analizador no detecta correctamente las etiquetas H1 múltiples
+#### [BUG-20240617-01] The analyzer does not detect multiple H1 tags correctly
 
-**Descripción**: El analizador de estructura de contenido no marca como error cuando una página tiene múltiples etiquetas H1, lo cual es una práctica no recomendada para SEO.
+**Description**: The content structure analyzer does not mark as an error when a page has multiple H1 tags, which is not recommended for SEO.
 
-**Pasos para Reproducir**:
-1. Abrir la extensión en una página que contenga múltiples etiquetas H1
-2. Ejecutar el análisis completo
-3. Revisar la sección de "Estructura de Contenido" en los resultados
+**Steps to Reproduce**:
+1. Open the extension on a page with multiple H1 tags
+2. Run the full analysis
+3. Review the "Content Structure" section in the results
 
-**Comportamiento Esperado**: El sistema debería identificar y marcar como error la presencia de múltiples etiquetas H1, sugiriendo conservar solo una.
+**Expected Behavior**: The system should identify and mark as error the presence of multiple H1 tags, suggesting to keep only one.
 
-**Comportamiento Actual**: El sistema no detecta el problema y no muestra ninguna advertencia sobre las múltiples etiquetas H1.
+**Actual Behavior**: The system does not detect the problem and does not show any warning about multiple H1 tags.
 
-**Información del Entorno**:
-- Versión de Chrome: 114.0.5735.198
-- Sistema Operativo: Windows 11
-- Versión de paellaSEO: 0.1.0 (desarrollo)
+**Environment Information**:
+- Chrome Version: 114.0.5735.198
+- Operating System: Windows 11
+- paellaSEO Version: 0.1.0 (development)
 
-**Categoría**: Funcional
+**Category**: Functional
 
-**Prioridad**: Alta
+**Priority**: High
 
-**Estado**: En Análisis
+**Status**: In Analysis
 
-**Asignado a**: Por asignar
+**Assigned To**: To be assigned
 
-**Fecha de Identificación**: 2024-06-17
+**Identification Date**: 2024-06-17
 
-**Fecha de Resolución**: Pendiente
+**Resolution Date**: Pending
 
-**Notas Adicionales**: Este problema afecta directamente a la precisión del análisis SEO, ya que tener múltiples H1 es considerado una mala práctica que puede afectar negativamente al posicionamiento.
+**Additional Notes**: This problem directly affects the accuracy of SEO analysis, as having multiple H1s is considered a bad practice that can negatively affect positioning.
 
 ### UI/UX
 
-#### [BUG-20240617-02] Interfaz de recomendaciones no se ajusta correctamente en pantallas pequeñas
+#### [BUG-20240617-02] Recommendations interface does not adjust correctly on small screens
 
-**Descripción**: La interfaz que muestra las recomendaciones de mejora SEO no se adapta correctamente a pantallas de resolución menor a 1280x800px, causando que algunos elementos queden fuera de la vista o se superpongan.
+**Description**: The interface that shows SEO improvement recommendations does not adapt correctly to screens with resolution less than 1280x800px, causing some elements to be outside the view or overlap.
 
-**Pasos para Reproducir**:
-1. Abrir la extensión en un navegador con resolución de pantalla inferior a 1280x800px
-2. Navegar a la pestaña de "Recomendaciones"
-3. Observar cómo se muestran los elementos de la interfaz
+**Steps to Reproduce**:
+1. Open the extension on a browser with screen resolution below 1280x800px
+2. Navigate to the "Recommendations" tab
+3. Observe how the elements of the interface are displayed
 
-**Comportamiento Esperado**: La interfaz debería adaptarse de forma responsiva, mostrando correctamente todos los elementos sin solapamiento o pérdida de contenido.
+**Expected Behavior**: The interface should adapt responsively, showing all elements correctly without overlap or content loss.
 
-**Comportamiento Actual**: Los elementos del panel de recomendaciones se superponen y algunos botones quedan parcialmente fuera de la vista.
+**Actual Behavior**: The elements of the recommendations panel overlap and some buttons are partially outside the view.
 
-**Capturas de Pantalla**: [Pendiente de incluir]
+**Screenshots**: [Pending to include]
 
-**Información del Entorno**:
-- Versión de Chrome: 115.0.5790.102
-- Sistema Operativo: macOS Monterey
-- Versión de paellaSEO: 0.1.0 (desarrollo)
+**Environment Information**:
+- Chrome Version: 115.0.5790.102
+- Operating System: macOS Monterey
+- paellaSEO Version: 0.1.0 (development)
 
-**Categoría**: UI/UX
+**Category**: UI/UX
 
-**Prioridad**: Media
+**Priority**: Medium
 
-**Estado**: Abierto
+**Status**: Open
 
-**Asignado a**: Por asignar
+**Assigned To**: To be assigned
 
-**Fecha de Identificación**: 2024-06-17
+**Identification Date**: 2024-06-17
 
-**Fecha de Resolución**: Pendiente
+**Resolution Date**: Pending
 
-### Rendimiento
+### Performance
 
-#### [BUG-20240617-03] Tiempo excesivo de análisis en páginas con muchas imágenes
+#### [BUG-20240617-03] Excessive analysis time on pages with many images
 
-**Descripción**: El tiempo de análisis se incrementa exponencialmente en páginas con más de 50 imágenes, llegando a tardar más de 20 segundos en completarse o incluso bloquearse.
+**Description**: Analysis time increases exponentially on pages with more than 50 images, taking more than 20 seconds to complete or even blocking.
 
-**Pasos para Reproducir**:
-1. Visitar una página con gran cantidad de imágenes (ej. galería fotográfica)
-2. Iniciar el análisis SEO completo
-3. Medir el tiempo que tarda en completarse
+**Steps to Reproduce**:
+1. Visit a page with a large number of images (e.g., a photo gallery)
+2. Start the full SEO analysis
+3. Measure the time it takes to complete
 
-**Comportamiento Esperado**: El análisis debería completarse en un tiempo razonable (menos de 5 segundos) independientemente del número de imágenes, posiblemente implementando análisis por lotes.
+**Expected Behavior**: The analysis should complete in a reasonable time (less than 5 seconds) regardless of the number of images, possibly implementing batch analysis.
 
-**Comportamiento Actual**: El análisis tarda más de 20 segundos, y en algunos casos la interfaz se bloquea temporalmente.
+**Actual Behavior**: The analysis takes more than 20 seconds, and in some cases the interface temporarily freezes.
 
-**Información del Entorno**:
-- Versión de Chrome: 114.0.5735.198
-- Sistema Operativo: Linux Ubuntu 22.04
-- Versión de paellaSEO: 0.1.0 (desarrollo)
+**Environment Information**:
+- Chrome Version: 114.0.5735.198
+- Operating System: Linux Ubuntu 22.04
+- paellaSEO Version: 0.1.0 (development)
 
-**Categoría**: Rendimiento
+**Category**: Performance
 
-**Prioridad**: Alta
+**Priority**: High
 
-**Estado**: En Análisis
+**Status**: In Analysis
 
-**Asignado a**: Por asignar
+**Assigned To**: To be assigned
 
-**Fecha de Identificación**: 2024-06-17
+**Identification Date**: 2024-06-17
 
-**Fecha de Resolución**: Pendiente
+**Resolution Date**: Pending
 
-**Notas Adicionales**: La investigación inicial sugiere que el problema puede estar relacionado con la forma en que se procesan los atributos alt y las dimensiones de las imágenes. Se está considerando implementar un procesamiento por lotes o asíncrono.
+**Additional Notes**: Initial investigation suggests that the problem may be related to how alt attributes and image dimensions are processed. Batch processing or asynchronous processing is being considered.
 
-## Errores Resueltos
+## Resolved Bugs
 
-### Funcionales
+### Functional
 
-#### [BUG-20240615-01] El analizador de meta etiquetas falla con caracteres especiales
+#### [BUG-20240615-01] Meta tag analyzer fails with special characters
 
-**Descripción**: El analizador de meta etiquetas produce un error cuando el título o la descripción contienen ciertos caracteres especiales (como emojis o caracteres chinos).
+**Description**: The meta tag analyzer produces an error when the title or description contains certain special characters (like emojis or Chinese characters).
 
-**Pasos para Reproducir**:
-1. Visitar una página con emojis o caracteres especiales en las meta etiquetas
-2. Ejecutar el análisis de meta etiquetas
-3. Observar el error en la consola
+**Steps to Reproduce**:
+1. Visit a page with emojis or special characters in the meta tags
+2. Run the meta tag analysis
+3. Observe the error in the console
 
-**Comportamiento Esperado**: El analizador debería procesar correctamente cualquier tipo de caracteres en las meta etiquetas.
+**Expected Behavior**: The analyzer should process any type of characters in the meta tags correctly.
 
-**Comportamiento Actual**: El análisis falla mostrando un error de codificación en la consola y no muestra los resultados para las meta etiquetas.
+**Actual Behavior**: The analysis fails showing an encoding error in the console and not showing results for the meta tags.
 
-**Información del Entorno**:
-- Versión de Chrome: 114.0.5735.90
-- Sistema Operativo: Windows 10
-- Versión de paellaSEO: 0.1.0 (desarrollo)
+**Environment Information**:
+- Chrome Version: 114.0.5735.90
+- Operating System: Windows 10
+- paellaSEO Version: 0.1.0 (development)
 
-**Categoría**: Funcional
+**Category**: Functional
 
-**Prioridad**: Media
+**Priority**: Medium
 
-**Estado**: Resuelto
+**Status**: Resolved
 
-**Asignado a**: María González
+**Assigned To**: María González
 
-**Fecha de Identificación**: 2024-06-15
+**Identification Date**: 2024-06-15
 
-**Fecha de Resolución**: 2024-06-16
+**Resolution Date**: 2024-06-16
 
-**Solución Implementada**: Se actualizó el parser de meta etiquetas para utilizar `TextDecoder` con soporte UTF-8 completo y se implementó un manejo más robusto de caracteres especiales. Además, se añadieron pruebas unitarias con casos que incluyen emojis y caracteres de diferentes lenguajes.
+**Implemented Solution**: Updated the meta tag parser to use `TextDecoder` with full UTF-8 support and implemented a more robust handling of special characters. Additionally, unit tests were added with cases including emojis and characters from different languages.
 
 **Commit/PR**: https://github.com/ejemplo/paellaSEO/pull/42
 
-## Estadísticas de Errores
+## Error Statistics
 
-### Distribución por Categoría
-- Funcionales: 2 (2 abiertos, 0 resueltos)
-- UI/UX: 1 (1 abierto, 0 resueltos)
-- Rendimiento: 1 (1 abierto, 0 resueltos)
-- Seguridad: 0
-- Compatibilidad: 0
-- Datos: 0
+### Distribution by Category
+- Functional: 2 (2 open, 0 resolved)
+- UI/UX: 1 (1 open, 0 resolved)
+- Performance: 1 (1 open, 0 resolved)
+- Security: 0
+- Compatibility: 0
+- Data: 0
 
-### Distribución por Prioridad
-- Crítica: 0
-- Alta: 2
-- Media: 2
-- Baja: 0
+### Distribution by Priority
+- Critical: 0
+- High: 2
+- Medium: 2
+- Low: 0
 
-### Tiempo Promedio de Resolución
-- Todos los errores: 1 día
-- Errores Alta Prioridad: N/A
-- Errores Media Prioridad: 1 día
+### Average Resolution Time
+- All bugs: 1 day
+- High Priority Bugs: N/A
+- Medium Priority Bugs: 1 day
 
-## Flujo de Trabajo para la Resolución de Errores
+## Bug Resolution Workflow
 
-### 1. Triaje Inicial
-- Verificar si el error es reproducible
-- Determinar la severidad y el impacto en los usuarios
-- Asignar categoría y prioridad inicial
+### 1. Initial Triage
+- Verify if the bug is reproducible
+- Determine the severity and impact on users
+- Assign initial category and priority
 
-### 2. Asignación
-- Asignar el error a un desarrollador según experticia y disponibilidad
-- Confirmar que el desarrollador asignado tiene los recursos necesarios
+### 2. Assignment
+- Assign the bug to a developer based on expertise and availability
+- Confirm that the assigned developer has the necessary resources
 
-### 3. Investigación
-- Identificar la causa raíz del problema
-- Evaluar las posibles soluciones y su impacto
-- Actualizar el estado a "En Análisis"
+### 3. Investigation
+- Identify the root cause of the problem
+- Evaluate possible solutions and their impact
+- Update the status to "In Analysis"
 
-### 4. Implementación de Solución
-- Desarrollar la solución siguiendo las mejores prácticas
-- Crear pruebas que verifiquen la corrección del error
-- Actualizar el estado a "En Desarrollo"
+### 4. Solution Implementation
+- Develop the solution following best practices
+- Create tests to verify the correction of the bug
+- Update the status to "In Development"
 
-### 5. Verificación
-- Realizar pruebas funcionales completas
-- Verificar que no se han introducido nuevos errores
-- Actualizar el estado a "En Verificación"
+### 5. Verification
+- Perform full functional tests
+- Verify that no new bugs have been introduced
+- Update the status to "In Verification"
 
-### 6. Cierre
-- Documentar detalladamente la solución implementada
-- Actualizar la documentación si es necesario
-- Mover el error a la sección "Errores Resueltos"
-- Actualizar el estado a "Resuelto" o "Cerrado"
+### 6. Closure
+- Document the implemented solution in detail
+- Update the documentation if necessary
+- Move the bug to the "Resolved Bugs" section
+- Update the status to "Resolved" or "Closed"
 
-## Notas Importantes
+## Important Notes
 
-- Los errores con prioridad Crítica o Alta deben abordarse antes del próximo lanzamiento.
-- Todos los errores deben tener un ID único siguiendo el formato BUG-YYYYMMDD-XX donde XX es un número secuencial.
-- Cualquier error que afecte la seguridad o privacidad del usuario debe marcarse como prioridad Crítica automáticamente.
-- Las estadísticas de errores deben actualizarse semanalmente.
-- Al cerrar un error, se debe incluir siempre una referencia al commit o PR que implementa la solución.
-- Los errores que permanezcan abiertos por más de 30 días deben ser revisados y repriorizados.
+- Bugs with Critical or High priority must be addressed before the next release.
+- All bugs must have a unique ID following the format BUG-YYYYMMDD-XX where XX is a sequential number.
+- Any bug that affects user security or privacy must be marked as Critical automatically.
+- Error statistics must be updated weekly.
+- When closing a bug, always include a reference to the commit or PR that implements the solution.
+- Bugs that remain open for more than 30 days must be reviewed and reprioritized.
 
-## Herramientas de Soporte
+## Support Tools
 
-### Plugins de Chrome para Depuración
+### Chrome Plugins for Debugging
 - Chrome DevTools
-- React Developer Tools (para componentes de UI)
-- Redux DevTools (para gestión de estado)
+- React Developer Tools (for UI components)
+- Redux DevTools (for state management)
 
-### Herramientas de Registro y Monitoreo
-- Console Logging mejorado (activado en modo desarrollo)
-- Servicio de reporte de errores anónimos (activado en modo producción)
-- Análisis de rendimiento para identificar cuellos de botella
+### Logging and Monitoring Tools
+- Improved Console Logging (enabled in development mode)
+- Anonymous error reporting service (enabled in production mode)
+- Performance analysis to identify bottlenecks
 
-## Errores Actuales
+## Current Bugs
 
-### [BUG-20240617-01] Incompatibilidad de plugin de Vite con Bun 1.0.15
+### [BUG-20240617-01] Plugin Vite compatibility with Bun 1.0.15
 
-#### Descripción
-El plugin `vite-plugin-webext` presenta incompatibilidades ocasionales con Bun 1.0.15 durante el proceso de build, causando que los manifiestos no se generen correctamente.
+#### Description
+The `vite-plugin-webext` plugin presents occasional incompatibilities with Bun 1.0.15 during the build process, causing the manifests not to be generated correctly.
 
-#### Información Técnica
-- **Entorno**: Bun 1.0.15, Vite 5.0.8, vite-plugin-webext 3.1.0
-- **Archivo(s) afectado(s)**: 
+#### Technical Information
+- **Environment**: Bun 1.0.15, Vite 5.0.8, vite-plugin-webext 3.1.0
+- **Affected File(s)**: 
   - `vite.config.ts`
   - `/dist/manifest.json`
-- **Error observado**: `Cannot read properties of undefined (reading 'mkdirSync')`
+- **Observed Error**: `Cannot read properties of undefined (reading 'mkdirSync')`
 
-#### Impacto
-- **Prioridad**: Media
-- **Categoría**: Entorno
-- **Componentes afectados**: Proceso de build para producción
-- **Usuarios afectados**: Solo desarrolladores, no usuarios finales
+#### Impact
+- **Priority**: Medium
+- **Category**: Environment
+- **Affected Components**: Build process for production
+- **Affected Users**: Only developers, not end users
 
-#### Estado
-- **Estado actual**: En análisis
-- **Asignado a**: Javier Moreno
-- **Fecha prevista de resolución**: 2024-06-25
+#### Status
+- **Current Status**: In analysis
+- **Assigned To**: Javier Moreno
+- **Planned Resolution Date**: 2024-06-25
 
-#### Solución temporal
-Utilizar la versión 1.0.13 de Bun como solución temporal:
+#### Temporary Solution
+Use version 1.0.13 of Bun as a temporary solution:
 ```bash
 bun upgrade --to 1.0.13
 ```
 
-#### Plan de acción
-1. Investigar la causa exacta de la incompatibilidad
-2. Determinar si el problema es del plugin o de Bun
-3. Crear un parche local o actualizar dependencias
-4. Probar en diferentes versiones de Bun para verificar solución
+#### Action Plan
+1. Investigate the exact cause of the incompatibility
+2. Determine if the problem is with the plugin or Bun
+3. Create a local patch or update dependencies
+4. Test in different versions of Bun to verify solution
 
-### [BUG-20240617-02] Hot Module Replacement (HMR) de Vite ocasionalmente lento con componentes anidados
+### [BUG-20240617-02] Hot Module Replacement (HMR) of Vite occasionally slow with deeply nested components
 
-#### Descripción
-Al trabajar con componentes UI anidados profundamente, el HMR de Vite ocasionalmente tarda más de 2 segundos en reflejar los cambios, lo que impacta negativamente en la experiencia de desarrollo.
+#### Description
+When working with deeply nested UI components, Vite's HMR occasionally takes more than 2 seconds to reflect changes, negatively impacting the development experience.
 
-#### Información Técnica
-- **Entorno**: Bun 1.0.15, Vite 5.0.8
-- **Archivo(s) afectado(s)**: 
+#### Technical Information
+- **Environment**: Bun 1.0.15, Vite 5.0.8
+- **Affected File(s)**: 
   - `popup/components/*.ts`
   - `content/components/*.ts`
-- **Comportamiento observado**: Retraso significativo en la actualización de cambios en desarrollo
+- **Observed Behavior**: Significant delay in change updates in development
 
-#### Impacto
-- **Prioridad**: Baja
-- **Categoría**: Rendimiento
-- **Componentes afectados**: Flujo de desarrollo
-- **Usuarios afectados**: Solo desarrolladores
+#### Impact
+- **Priority**: Low
+- **Category**: Performance
+- **Affected Components**: Development flow
+- **Affected Users**: Only developers
 
-#### Estado
-- **Estado actual**: Pendiente
-- **Asignado a**: No asignado
-- **Fecha prevista de resolución**: No programada
+#### Status
+- **Current Status**: Pending
+- **Assigned To**: Not assigned
+- **Planned Resolution Date**: Not scheduled
 
-#### Solución temporal
-Dividir componentes complejos en archivos más pequeños para mejorar el rendimiento del HMR.
+#### Temporary Solution
+Divide complex components into smaller files to improve HMR performance.
 
-#### Plan de acción
-1. Evaluar si una actualización de Vite resuelve el problema
-2. Investigar posibles optimizaciones en la configuración de Vite
-3. Considerar refactorizar la estructura de componentes para mejor compatibilidad con HMR
+#### Action Plan
+1. Evaluate if an update of Vite resolves the problem
+2. Investigate possible optimizations in Vite configuration
+3. Consider refactoring component structure for better compatibility with HMR
 
 ---
 
-*Última actualización de este documento: 2024-06-17* 
+*Last updated of this document: 2024-06-17* 

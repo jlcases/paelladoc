@@ -1,316 +1,318 @@
 ---
 layout: project-layout
-title: "Documentación de Tareas Rápidas - paellaSEO"
-description: "Este documento mantiene un registro estructurado de las tareas en curso, pendientes y completadas para el desarrollo de la extensión paellaSEO. Sirve como hoja de ruta para el proyecto y ayuda a coordinar los esfuerzos del equipo de desarrollo."
+title: "Quick Task Documentation - paellaSEO"
+description: "This document maintains a structured record of ongoing, pending, and completed tasks for the development of the paellaSEO extension. It serves as a roadmap for the project and helps coordinate the efforts of the development team."
 project: "paellaSEO"
 date: 2025-03-15
 order: 50
+permalink: /projects/paellaseo/quick_task_documentation/
+sidebar_nav: true
 ---
 
 
-Este documento mantiene un registro estructurado de las tareas en curso, pendientes y completadas para el desarrollo de la extensión paellaSEO. Sirve como hoja de ruta para el proyecto y ayuda a coordinar los esfuerzos del equipo de desarrollo.
+This document maintains a structured record of ongoing, pending, and completed tasks for the development of the paellaSEO extension. It serves as a roadmap for the project and helps coordinate the efforts of the development team.
 
-## Sistema de Gestión de Tareas
+## Task Management System
 
-### Identificación de Tareas
-Cada tarea tiene un identificador único con el formato:
-- `TASK-[Categoría]-[Número]` donde:
-  - `Categoría` es un código de 3 letras para el tipo de tarea (DEV, UI, TEST, DOC, etc.)
-  - `Número` es un valor secuencial para la categoría
+### Task Identification
+Each task has a unique identifier with the format:
+- `TASK-[Category]-[Number]` where:
+  - `Category` is a 3-letter code for the task type (DEV, UI, TEST, DOC, etc.)
+  - `Number` is a sequential value for the category
 
-### Estados de Tareas
-- **Pendiente**: Tarea identificada pero no iniciada
-- **En Análisis**: Evaluando requisitos y enfoque
-- **En Desarrollo**: Trabajo activo en progreso
-- **En Prueba**: Verificación de funcionamiento
-- **Bloqueada**: Esperando dependencias externas
-- **Completada**: Implementada y verificada
+### Task States
+- **Pending**: Task identified but not started
+- **In Analysis**: Evaluating requirements and approach
+- **In Development**: Active work in progress
+- **In Testing**: Functionality verification
+- **Blocked**: Waiting for external dependencies
+- **Completed**: Implemented and verified
 
-### Niveles de Prioridad
-- **Crítica**: Esencial para el funcionamiento básico, bloquea otras tareas
-- **Alta**: Importante para las funcionalidades principales
-- **Media**: Útil pero no bloquea el progreso general
-- **Baja**: Deseable pero puede posponerse
+### Task Priorities
+- **Critical**: Essential for basic functionality, blocks other tasks
+- **High**: Important for main functionalities
+- **Medium**: Useful but does not block general progress
+- **Low**: Desirable but can be postponed
 
-### Estimación de Esfuerzo
-Utilizamos una escala de puntos para estimar el esfuerzo necesario:
-- **XS**: Menos de 2 horas (1 punto)
-- **S**: Medio día (2 puntos)
-- **M**: 1 día (3 puntos)
-- **L**: 2-3 días (5 puntos)
-- **XL**: 1 semana (8 puntos)
-- **XXL**: Más de 1 semana (13 puntos)
+### Task Estimation
+We use a point scale to estimate the necessary effort:
+- **XS**: Less than 2 hours (1 point)
+- **S**: Half day (2 points)
+- **M**: 1 day (3 points)
+- **L**: 2-3 days (5 points)
+- **XL**: 1 week (8 points)
+- **XXL**: More than 1 week (13 points)
 
-## Planificación de Sprints
+## Sprint Planning
 
-### Sprint Actual: Sprint 1 (17/06/2024 - 30/06/2024)
-**Objetivo**: Implementar la estructura básica y el analizador de SEO principal
+### Current Sprint: Sprint 1 (17/06/2024 - 30/06/2024)
+**Objective**: Implement basic structure and main SEO analyzer
 
-**Capacidad del equipo**: 35 puntos
-**Puntos planificados**: 30 puntos
-**Puntos completados**: 0 puntos
+**Team Capacity**: 35 points
+**Planned Points**: 30 points
+**Completed Points**: 0 points
 
-## Tareas del Sprint Actual
+## Current Sprint Tasks
 
-### Configuración del Entorno de Desarrollo
+### Development Environment Setup
 
-#### TASK-DEV-001: Configuración inicial del entorno con Bun y Vite
-- **Estado**: Completada
-- **Prioridad**: Crítica
-- **Responsable**: Alex Martínez
-- **Esfuerzo**: M (3 puntos)
-- **Descripción**: Configurar el entorno de desarrollo utilizando Bun como gestor de paquetes y runtime, junto con Vite para el bundling, evitando explícitamente el uso de npm y Webpack para mejor rendimiento.
-- **Entregables**:
-  - Estructura de proyecto inicial
-  - Archivo `bun.lockb` generado
-  - Configuración de Vite en `vite.config.ts`
-  - Scripts de desarrollo en `package.json` compatibles con Bun
-- **Notas**: El proyecto está configurado para utilizar exclusivamente Bun y Vite para optimizar el rendimiento. Los contribuidores deben instalar Bun antes de colaborar.
+#### TASK-DEV-001: Initial environment setup with Bun and Vite
+- **State**: Completed
+- **Priority**: Critical
+- **Responsible**: Alex Martínez
+- **Effort**: M (3 points)
+- **Description**: Configure development environment using Bun as package manager and runtime, along with Vite for bundling, avoiding explicitly using npm and Webpack for better performance.
+- **Deliverables**:
+  - Initial project structure
+  - Generated `bun.lockb` file
+  - Vite configuration in `vite.config.ts`
+  - Development scripts in `package.json` compatible with Bun
+- **Notes**: The project is configured to use exclusively Bun and Vite for optimization. Contributors must install Bun before collaborating.
 
-#### TASK-DEV-002: Documentación del flujo de desarrollo con Bun
-- **Estado**: Pendiente
-- **Prioridad**: Alta
-- **Responsable**: Laura González
-- **Esfuerzo**: S (2 puntos)
-- **Descripción**: Crear documentación detallada sobre el flujo de desarrollo utilizando Bun y Vite, incluyendo comandos comunes, prácticas recomendadas y solución de problemas comunes.
-- **Entregables**:
-  - Archivo DEVELOPMENT.md con instrucciones
-  - Ejemplos de comandos específicos de Bun
-  - Guía de migración para desarrolladores acostumbrados a npm/Webpack
-- **Notas**: Documentar claramente los beneficios de rendimiento y las diferencias clave respecto a npm y Webpack.
+#### TASK-DEV-002: Document development flow with Bun
+- **State**: Pending
+- **Priority**: High
+- **Responsible**: Laura González
+- **Effort**: S (2 points)
+- **Description**: Create detailed documentation about development flow using Bun and Vite, including common commands, recommended practices, and common problem solutions.
+- **Deliverables**:
+  - DEVELOPMENT.md with instructions
+  - Specific Bun command examples
+  - Migration guide for developers accustomed to npm/Webpack
+- **Notes**: Clearly document the performance benefits and key differences compared to npm and Webpack.
 
-#### TASK-DEV-003: Optimización de build para producción con Bun
-- **Estado**: Pendiente
-- **Prioridad**: Media
-- **Responsable**: Carlos Rodríguez
-- **Esfuerzo**: M (3 puntos)
-- **Descripción**: Configurar el proceso de build para producción utilizando las capacidades de Bun y Vite, optimizando el tamaño de la extensión y el rendimiento en producción.
-- **Entregables**:
-  - Script de build optimizado
-  - Análisis comparativo de rendimiento vs soluciones tradicionales
-  - Documentación del proceso de build para el equipo
-- **Notas**: Buscar oportunidades para utilizar características específicas de Bun que mejoren el rendimiento.
+#### TASK-DEV-003: Optimize build for production with Bun
+- **State**: Pending
+- **Priority**: Medium
+- **Responsible**: Carlos Rodríguez
+- **Effort**: M (3 points)
+- **Description**: Configure build process for production using Bun and Vite capabilities, optimizing extension size and production performance.
+- **Deliverables**:
+  - Optimized build script
+  - Comparative performance analysis vs traditional solutions
+  - Build process documentation for the team
+- **Notes**: Look for opportunities to use specific Bun features that improve performance.
 
-## Tareas Pendientes
+## Pending Tasks
 
-### Crítica Prioridad
-- [ ] **TASK-DEV-001**: Crear y configurar el proyecto base de la extensión de Chrome
-  - **Descripción**: Configurar la estructura básica del proyecto, incluyendo manifest.json y los archivos principales
-  - **Responsable**: [Por asignar]
-  - **Esfuerzo**: S (2 puntos)
-  - **Dependencias**: Ninguna
-  - **Criterios de Aceptación**:
-    - Estructura básica creada y documentada
-    - Extensión cargable en modo desarrollo
-    - Ícono básico implementado
-  - **Notas técnicas**: Utilizar Manifest V3 para compatibilidad futura
+### Critical Priority
+- [ ] **TASK-DEV-001**: Create and configure the base project of the Chrome extension
+  - **Description**: Configure basic project structure, including manifest.json and main files
+  - **Responsible**: [To be assigned]
+  - **Effort**: S (2 points)
+  - **Dependencies**: None
+  - **Acceptance Criteria**:
+    - Basic structure created and documented
+    - Extension loadable in development mode
+    - Basic icon implemented
+  - **Technical Notes**: Use Manifest V3 for future compatibility
 
-- [ ] **TASK-DEV-002**: Implementar el analizador de DOM para extraer elementos HTML relevantes para SEO
-  - **Descripción**: Crear la clase principal para analizar el DOM y extraer metadatos, encabezados, y otros elementos relevantes
-  - **Responsable**: [Por asignar]
-  - **Esfuerzo**: M (3 puntos)
-  - **Dependencias**: TASK-DEV-001
-  - **Criterios de Aceptación**:
-    - Extracción correcta de meta etiquetas
-    - Extracción de encabezados H1-H6
-    - Extracción de atributos alt de imágenes
-    - Pruebas unitarias que verifican la extracción
+- [ ] **TASK-DEV-002**: Implement DOM analyzer to extract HTML relevant for SEO
+  - **Description**: Create main class to analyze DOM and extract metadata, headers, and other relevant elements
+  - **Responsible**: [To be assigned]
+  - **Effort**: M (3 points)
+  - **Dependencies**: TASK-DEV-001
+  - **Acceptance Criteria**:
+    - Correct extraction of meta tags
+    - Extraction of H1-H6 headers
+    - Extraction of image alt attributes
+    - Unit tests verifying extraction
 
-### Alta Prioridad
-- [ ] **TASK-DEV-003**: Desarrollar el algoritmo de puntuación SEO
-  - **Descripción**: Implementar el sistema que evalúa los elementos extraídos y asigna puntuaciones según las mejores prácticas
-  - **Responsable**: [Por asignar]
-  - **Esfuerzo**: L (5 puntos)
-  - **Dependencias**: TASK-DEV-002
-  - **Criterios de Aceptación**:
-    - Evaluación correcta de meta título y descripción
-    - Evaluación de estructura de encabezados
-    - Puntuación global calculada de 0-100
-    - Identificación de al menos 10 factores críticos
+### High Priority
+- [ ] **TASK-DEV-003**: Develop SEO scoring algorithm
+  - **Description**: Implement system that evaluates extracted elements and assigns scores based on best practices
+  - **Responsible**: [To be assigned]
+  - **Effort**: L (5 points)
+  - **Dependencies**: TASK-DEV-002
+  - **Acceptance Criteria**:
+    - Correct evaluation of title and description meta
+    - Evaluation of header structure
+    - Global score calculated from 0-100
+    - Identification of at least 10 critical factors
 
-- [ ] **TASK-UI-001**: Diseñar e implementar la interfaz de usuario básica
-  - **Descripción**: Crear la interfaz principal que mostrará el análisis SEO al usuario
-  - **Responsable**: [Por asignar]
-  - **Esfuerzo**: L (5 puntos)
-  - **Dependencias**: TASK-DEV-001
-  - **Criterios de Aceptación**:
-    - Diseño responsivo para el popup de la extensión
-    - Visualización clara de la puntuación global
-    - Sección para mostrar problemas detectados
-    - Paleta de colores y estilo visual definido
+- [ ] **TASK-UI-001**: Design and implement basic user interface
+  - **Description**: Create main interface to show SEO analysis to user
+  - **Responsible**: [To be assigned]
+  - **Effort**: L (5 points)
+  - **Dependencies**: TASK-DEV-001
+  - **Acceptance Criteria**:
+    - Responsive design for extension popup
+    - Clear visualization of global score
+    - Section to show detected issues
+    - Defined color palette and visual style
 
-- [ ] **TASK-DEV-004**: Implementar la conexión entre el analizador y la interfaz de usuario
-  - **Descripción**: Conectar el motor de análisis con la UI para mostrar resultados en tiempo real
-  - **Responsable**: [Por asignar]
-  - **Esfuerzo**: M (3 puntos)
-  - **Dependencias**: TASK-DEV-003, TASK-UI-001
-  - **Criterios de Aceptación**:
-    - Actualización en tiempo real de la UI con los resultados
-    - Manejo de estados de carga y error
-    - Optimización de rendimiento para análisis rápido
+- [ ] **TASK-DEV-004**: Implement connection between analyzer and user interface
+  - **Description**: Connect analysis engine with UI to show results in real time
+  - **Responsible**: [To be assigned]
+  - **Effort**: M (3 points)
+  - **Dependencies**: TASK-DEV-003, TASK-UI-001
+  - **Acceptance Criteria**:
+    - Real-time UI update with results
+    - Handling of load and error states
+    - Performance optimization for quick analysis
 
-### Media Prioridad
-- [ ] **TASK-DEV-005**: Desarrollar el sistema de recomendaciones de mejora
-  - **Descripción**: Implementar el sistema que genera recomendaciones específicas basadas en los problemas detectados
-  - **Responsable**: [Por asignar]
-  - **Esfuerzo**: L (5 puntos)
-  - **Dependencias**: TASK-DEV-003
-  - **Criterios de Aceptación**:
-    - Generación de recomendaciones relevantes y accionables
-    - Priorización de recomendaciones por impacto
-    - Ejemplos de código o correcciones sugeridas
-    - Al menos 15 tipos de recomendaciones implementadas
+### Medium Priority
+- [ ] **TASK-DEV-005**: Develop improvement recommendation system
+  - **Description**: Implement system that generates specific recommendations based on detected issues
+  - **Responsible**: [To be assigned]
+  - **Effort**: L (5 points)
+  - **Dependencies**: TASK-DEV-003
+  - **Acceptance Criteria**:
+    - Generation of relevant and actionable recommendations
+    - Recommendation prioritization by impact
+    - Example code or suggested corrections
+    - At least 15 types of recommendations implemented
 
-- [ ] **TASK-DEV-006**: Implementar el analizador avanzado de meta etiquetas
-  - **Descripción**: Extender el analizador para evaluar etiquetas Open Graph, Twitter, y datos estructurados
-  - **Responsable**: [Por asignar]
-  - **Esfuerzo**: M (3 puntos)
-  - **Dependencias**: TASK-DEV-002
-  - **Criterios de Aceptación**:
-    - Análisis completo de etiquetas OG y Twitter Cards
-    - Validación de datos estructurados (Schema.org)
-    - Recomendaciones específicas para mejorar metadatos
+- [ ] **TASK-DEV-006**: Implement advanced meta tag analyzer
+  - **Description**: Extend analyzer to evaluate Open Graph, Twitter, and structured data tags
+  - **Responsible**: [To be assigned]
+  - **Effort**: M (3 points)
+  - **Dependencies**: TASK-DEV-002
+  - **Acceptance Criteria**:
+    - Complete analysis of OG and Twitter Cards
+    - Data structured validation (Schema.org)
+    - Specific recommendations for improving metadata
   
-- [ ] **TASK-DEV-007**: Crear la función de exportación de informes
-  - **Descripción**: Permitir exportar los resultados del análisis en formato PDF o HTML
-  - **Responsable**: [Por asignar]
-  - **Esfuerzo**: M (3 puntos)
-  - **Dependencias**: TASK-UI-001, TASK-DEV-004
-  - **Criterios de Aceptación**:
-    - Exportación a PDF funcional
-    - Diseño limpio y profesional del informe
-    - Inclusión de todos los problemas y recomendaciones
-    - Opción para personalizar el informe
+- [ ] **TASK-DEV-007**: Create reporting export function
+  - **Description**: Allow results analysis to be exported in PDF or HTML format
+  - **Responsible**: [To be assigned]
+  - **Effort**: M (3 points)
+  - **Dependencies**: TASK-UI-001, TASK-DEV-004
+  - **Acceptance Criteria**:
+    - Functional PDF export
+    - Clean and professional report design
+    - Inclusion of all issues and recommendations
+    - Option to customize report
 
-- [ ] **TASK-DEV-008**: Desarrollar el analizador de estructura de contenido
-  - **Descripción**: Implementar análisis avanzado de párrafos, listas, y estructura general del contenido
-  - **Responsable**: [Por asignar]
-  - **Esfuerzo**: L (5 puntos)
-  - **Dependencias**: TASK-DEV-002
-  - **Criterios de Aceptación**:
-    - Análisis de densidad de palabras clave
-    - Evaluación de legibilidad (Flesch-Kincaid u otra métrica)
-    - Recomendaciones para mejorar la estructura
-    - Visualización gráfica de la distribución de contenido
+- [ ] **TASK-DEV-008**: Develop content structure analysis
+  - **Description**: Implement advanced analysis of paragraphs, lists, and general content structure
+  - **Responsible**: [To be assigned]
+  - **Effort**: L (5 points)
+  - **Dependencies**: TASK-DEV-002
+  - **Acceptance Criteria**:
+    - Word density analysis
+    - Legibility evaluation (Flesch-Kincaid or other metric)
+    - Recommendations for improving structure
+    - Visualized distribution of content
 
-### Baja Prioridad
-- [ ] **TASK-DEV-009**: Implementar análisis de rendimiento y velocidad de carga
-  - **Descripción**: Añadir métricas de rendimiento y su impacto en SEO
-  - **Responsable**: [Por asignar]
-  - **Esfuerzo**: L (5 puntos)
-  - **Dependencias**: TASK-DEV-003
-  - **Criterios de Aceptación**:
-    - Medición de tiempos de carga
-    - Evaluación de Core Web Vitals
-    - Recomendaciones específicas para mejorar rendimiento
-    - Integración con la puntuación global SEO
+### Low Priority
+- [ ] **TASK-DEV-009**: Implement performance and load analysis
+  - **Description**: Add performance metrics and their impact on SEO
+  - **Responsible**: [To be assigned]
+  - **Effort**: L (5 points)
+  - **Dependencies**: TASK-DEV-003
+  - **Acceptance Criteria**:
+    - Load time measurement
+    - Core Web Vitals evaluation
+    - Specific recommendations for improving performance
+    - Integration with global SEO score
 
-- [ ] **TASK-DEV-010**: Añadir soporte para análisis avanzado de imágenes
-  - **Descripción**: Extender el análisis para evaluar optimización de imágenes y accesibilidad
-  - **Responsable**: [Por asignar]
-  - **Esfuerzo**: M (3 puntos)
-  - **Dependencias**: TASK-DEV-002
-  - **Criterios de Aceptación**:
-    - Evaluación de atributos alt
-    - Análisis de tamaño y formato de imágenes
-    - Recomendaciones para optimización de imágenes
-    - Detección de imágenes sin texto alternativo
+- [ ] **TASK-DEV-010**: Add support for advanced image analysis
+  - **Description**: Extend analysis to evaluate image optimization and accessibility
+  - **Responsible**: [To be assigned]
+  - **Effort**: M (3 points)
+  - **Dependencies**: TASK-DEV-002
+  - **Acceptance Criteria**:
+    - Evaluation of alt attributes
+    - Image size and format analysis
+    - Recommendations for image optimization
+    - Detection of images without text alternative
 
-- [ ] **TASK-DEV-011**: Desarrollar función de comparación con competidores
-  - **Descripción**: Permitir comparar métricas SEO con otros sitios web
-  - **Responsable**: [Por asignar]
-  - **Esfuerzo**: XL (8 puntos)
-  - **Dependencias**: TASK-DEV-003, TASK-DEV-004
-  - **Criterios de Aceptación**:
-    - Interfaz para añadir URLs de competidores
-    - Análisis comparativo de métricas clave
-    - Visualización clara de diferencias
-    - Recomendaciones basadas en prácticas de competidores
+- [ ] **TASK-DEV-011**: Develop competitor comparison function
+  - **Description**: Allow comparing SEO metrics with other websites
+  - **Responsible**: [To be assigned]
+  - **Effort**: XL (8 points)
+  - **Dependencies**: TASK-DEV-003, TASK-DEV-004
+  - **Acceptance Criteria**:
+    - Interface to add competitor URLs
+    - Comparative analysis of key metrics
+    - Clear visualization of differences
+    - Recommendations based on competitor practices
 
-- [ ] **TASK-DEV-012**: Crear sistema de seguimiento de cambios y mejoras
-  - **Descripción**: Implementar historial de análisis para seguir mejoras a lo largo del tiempo
-  - **Responsable**: [Por asignar]
-  - **Esfuerzo**: M (3 puntos)
-  - **Dependencias**: TASK-DEV-003, TASK-UI-001
-  - **Criterios de Aceptación**:
-    - Almacenamiento local de históricos de análisis
-    - Gráficos de evolución de puntuación
-    - Comparativa antes/después para cambios implementados
+- [ ] **TASK-DEV-012**: Develop change tracking and improvement system
+  - **Description**: Implement analysis history to track improvements over time
+  - **Responsible**: [To be assigned]
+  - **Effort**: M (3 points)
+  - **Dependencies**: TASK-DEV-003, TASK-UI-001
+  - **Acceptance Criteria**:
+    - Local storage of analysis history
+    - Evolution graphics of score
+    - Before/after comparison for implemented changes
 
-## Tareas en Progreso
+## Tasks in Progress
 
-- [ ] **TASK-DOC-001**: Completar la documentación inicial del proyecto
-  - **Descripción**: Finalizar la documentación de requisitos, arquitectura y plan de trabajo
-  - **Responsable**: Equipo PAELLADOC
-  - **Esfuerzo**: M (3 puntos)
-  - **Estado**: En Desarrollo (70% completado)
-  - **Dependencias**: Ninguna
-  - **Fecha de Inicio**: 2024-06-17
-  - **Fecha Estimada de Finalización**: 2024-06-19
+- [ ] **TASK-DOC-001**: Complete initial project documentation
+  - **Description**: Finalize requirements, architecture, and work plan documentation
+  - **Responsible**: PAELLADOC Team
+  - **Effort**: M (3 points)
+  - **State**: In Development (70% completed)
+  - **Dependencies**: None
+  - **Start Date**: 2024-06-17
+  - **Estimated Completion Date**: 2024-06-19
 
-## Tareas Completadas
+## Completed Tasks
 
-- [x] **TASK-PLAN-001**: Definir el alcance y funcionalidades principales del proyecto
-  - **Descripción**: Establecer los requisitos básicos y el alcance de la versión 1.0
-  - **Responsable**: Equipo PAELLADOC
-  - **Esfuerzo**: S (2 puntos)
-  - **Completada**: 2024-06-17
-  - **Notas**: Se definieron 4 funcionalidades principales y 4 secundarias para la primera versión
+- [x] **TASK-PLAN-001**: Define main project scope and functionalities
+  - **Description**: Establish basic requirements and scope of version 1.0
+  - **Responsible**: PAELLADOC Team
+  - **Effort**: S (2 points)
+  - **Completed**: 2024-06-17
+  - **Notes**: 4 main functionalities and 4 secondary ones were defined for the first version
 
-## Proceso de Gestión de Tareas
+## Task Management Process
 
-### Asignación de Tareas
-1. Las tareas son asignadas durante la planificación del sprint
-2. Se considera la experiencia y disponibilidad del desarrollador
-3. El desarrollador confirma la estimación de esfuerzo antes de aceptar
-4. Las tareas bloqueantes son asignadas con mayor prioridad
+### Task Assignment
+1. Tasks are assigned during sprint planning
+2. Consider developer experience and availability
+3. Developer confirms effort estimation before accepting
+4. Blocking tasks are assigned with higher priority
 
-### Actualización de Estado
-1. El estado de las tareas debe actualizarse diariamente
-2. Los bloqueos deben comunicarse inmediatamente al equipo
-3. Los cambios significativos en la estimación deben notificarse
-4. Las tareas completadas deben pasar por revisión de código
+### State Update
+1. Task states must be updated daily
+2. Blockers must be communicated immediately to the team
+3. Significant changes in estimation must be notified
+4. Completed tasks must pass code review
 
-### Definición de "Completado"
-Una tarea se considera completada cuando:
-1. La implementación cumple todos los criterios de aceptación
-2. El código ha pasado la revisión por pares
-3. Se han añadido pruebas unitarias y de integración
-4. La documentación ha sido actualizada
-5. Los cambios han sido fusionados en la rama principal
+### "Completed" Definition
+A task is considered completed when:
+1. Implementation meets all acceptance criteria
+2. Code has passed peer review
+3. Unit and integration tests have been added
+4. Documentation has been updated
+5. Changes have been merged into main branch
 
-## Planificación de Versiones
+## Version Planning
 
-### Versión 1.0 (Prevista para Agosto 2024)
-- **Funcionalidades Principales**:
-  - Análisis básico de factores SEO on-page
-  - Sistema de puntuación SEO
-  - Recomendaciones de mejora
-  - Interfaz de usuario básica
-- **Hitos Clave**:
-  - Finalización del analizador principal: 30/06/2024
-  - Finalización de la interfaz de usuario: 15/07/2024
-  - Pruebas beta internas: 30/07/2024
-  - Lanzamiento v1.0: 15/08/2024
+### Version 1.0 (Scheduled for August 2024)
+- **Main Functionalities**:
+  - Basic SEO on-page factor analysis
+  - SEO scoring system
+  - Improvement recommendations
+  - Basic user interface
+- **Key Milestones**:
+  - Main analyzer completion: 30/06/2024
+  - User interface completion: 15/07/2024
+  - Internal beta tests: 30/07/2024
+  - v1.0 release: 15/08/2024
 
-### Versión 1.5 (Prevista para Octubre 2024)
-- **Funcionalidades Adicionales**:
-  - Análisis de rendimiento
-  - Exportación avanzada de informes
-  - Comparativa de competidores
-  - Seguimiento de mejoras
-- **Hitos Clave**:
-  - Finalización del analizador de rendimiento: 15/09/2024
-  - Finalización del sistema de comparativas: 30/09/2024
-  - Pruebas beta internas: 15/10/2024
-  - Lanzamiento v1.5: 30/10/2024
+### Version 1.5 (Scheduled for October 2024)
+- **Additional Functionalities**:
+  - Performance analysis
+  - Advanced reporting export
+  - Competitor comparison
+  - Improvement tracking
+- **Key Milestones**:
+  - Performance analyzer completion: 15/09/2024
+  - Competitor comparison system completion: 30/09/2024
+  - Internal beta tests: 15/10/2024
+  - v1.5 release: 30/10/2024
 
 ---
 
-## Notas para el Desarrollo
+## Development Notes
 
-### Estructura del Proyecto
-La extensión debe seguir la estructura estándar de las extensiones de Chrome:
+### Project Structure
+The extension must follow the standard structure of Chrome extensions:
 ```
 paellaSEO/
 |-- manifest.json
@@ -345,49 +347,49 @@ paellaSEO/
 |-- README.md
 ```
 
-### Tecnologías a Utilizar
+### Technologies to Use
 - **Frontend**: HTML5, CSS3, JavaScript (ES6+)
-- **Frameworks**: React para la interfaz de usuario
-- **Estilo**: Tailwind CSS para diseño responsivo
-- **Runtime y Gestor de Paquetes**: Bun (en lugar de npm)
-- **Empaquetado**: Vite para bundling (en lugar de Webpack)
-- **Pruebas**: Jest para pruebas unitarias
+- **Frameworks**: React for user interface
+- **Style**: Tailwind CSS for responsive design
+- **Runtime and Package Manager**: Bun (instead of npm)
+- **Packaging**: Vite for bundling (instead of Webpack)
+- **Tests**: Jest for unit tests
 - **APIs**:
   - Chrome Extension API
-  - Chrome Storage API para almacenamiento local
-  - Chrome Tabs API para acceso al DOM
+  - Chrome Storage API for local storage
+  - Chrome Tabs API for DOM access
 
-### Estándares de Código
-- Seguir guía de estilo de Airbnb para JavaScript
-- Usar ESLint para verificación de estilo
-- Documentar funciones y clases con JSDoc
-- Mantener cobertura de pruebas mínima del 80%
-- Realizar revisiones de código para todas las tareas
+### Code Standards
+- Follow Airbnb style guide for JavaScript
+- Use ESLint for style verification
+- Document functions and classes with JSDoc
+- Maintain minimum 80% test coverage
+- Perform code reviews for all tasks
 
-### Entornos de Desarrollo
-1. **Desarrollo**: Para implementación y pruebas locales
-2. **Staging**: Para pruebas integradas y QA
-3. **Producción**: Versión estable en Chrome Web Store
+### Development Environments
+1. **Development**: For implementation and local testing
+2. **Staging**: For integrated tests and QA
+3. **Production**: Stable version in Chrome Web Store
 
-### Plazos Estimados
-- Estructura básica y análisis simple: 2 semanas (30/06/2024)
-- Sistema de recomendaciones: 2 semanas (15/07/2024)
-- Interfaz de usuario completa: 2 semanas (30/07/2024)
-- Pruebas y refinamiento: 2 semanas (15/08/2024)
+### Estimated Timelines
+- Basic structure and simple analysis: 2 weeks (30/06/2024)
+- Recommendation system: 2 weeks (15/07/2024)
+- Complete user interface: 2 weeks (30/07/2024)
+- Tests and refinement: 2 weeks (15/08/2024)
 
-### Objetivos de la Versión 1.0
-- Análisis básico de factores SEO on-page
-- Interfaz simple pero efectiva con puntuación visual
-- Mínimo 15 tipos de recomendaciones implementadas
-- Capacidad de exportar resultados en formato PDF
-- Compatibilidad garantizada con Chrome 90+
+### Version 1.0 Objectives
+- Basic SEO on-page factor analysis
+- Simple but effective interface with visual score
+- Minimum 15 types of recommendations implemented
+- Ability to export results in PDF format
+- Guaranteed compatibility with Chrome 90+
 
-### Métricas de Éxito
-- Tiempo de análisis promedio < 3 segundos
-- Precisión de análisis > 90% (validado con herramientas profesionales)
-- Satisfacción de usuario > 4/5 en pruebas de usabilidad
-- < 5 errores críticos reportados en primer mes post-lanzamiento
+### Success Metrics
+- Average analysis time < 3 seconds
+- Analysis accuracy > 90% (validated with professional tools)
+- User satisfaction > 4/5 in usability tests
+- < 5 critical errors reported in first month post-release
 
 ---
 
-*Última actualización de este documento: 2024-06-17* 
+*Last updated this document: 2024-06-17* 

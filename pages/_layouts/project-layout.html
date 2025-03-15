@@ -8,7 +8,9 @@ layout: default
       <h2>{{ page.project | capitalize }}</h2>
     </div>
     <nav class="sidebar-nav">
-      {% assign project_files = site.pages | where_exp: "item", "item.path contains page.project" | sort: "order" %}
+      {% assign project_path = page.path | split: "/" | first %}
+      {% assign project_name = page.project | downcase %}
+      {% assign project_files = site.pages | where_exp: "item", "item.path contains project_name" | sort: "order" %}
       <ul class="nav-list">
         {% for doc in project_files %}
           <li class="nav-item {% if page.url == doc.url %}active{% endif %}">
