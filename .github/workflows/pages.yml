@@ -33,7 +33,7 @@ jobs:
           cd pages
           bundle install
           bundle exec jekyll build \
-            --config _config.yml,_config.production.yml \
+            --config _config.yml \
             --baseurl "${{ steps.pages.outputs.base_path }}"
         env:
           JEKYLL_ENV: production
