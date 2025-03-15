@@ -12,8 +12,8 @@ plugins:
 title: PAELLADOC
 tagline: Interactive Documentation System
 description: An AI-powered interactive documentation system that uses natural language conversations to gather, generate and maintain project documentation.
-baseurl: ""
-url: "http://localhost:4000"
+baseurl: "/paelladoc"
+url: "https://jlcases.github.io"
 show_downloads: true
 author: jlcases
 logo: /assets/images/paelladoc-logo.png
