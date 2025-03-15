@@ -9,7 +9,6 @@ permalink: /projects/paellaseo/feature_documentation/
 sidebar_nav: true
 ---
 
-
 ## Technical Architecture and Development Environment
 
 paellaSEO is built with a modern technology stack that prioritizes efficiency and performance:
@@ -20,37 +19,37 @@ paellaSEO is built with a modern technology stack that prioritizes efficiency an
 - **TypeScript**: Implemented for static typing and better maintainability.
 - **ESM (ECMAScript Modules)**: Used for better organization and code modularity.
 
-### Ventajas del Stack Técnico
-- **Rendimiento Superior**: Bun ofrece tiempos de instalación y compilación hasta 10x más rápidos que npm.
-- **Desarrollo Eficiente**: Hot Module Replacement (HMR) instantáneo gracias a Vite.
-- **Menor Huella de Memoria**: Optimización de recursos durante el desarrollo y en producción.
-- **Compatibilidad Moderna**: Enfoque en estándares web actuales y futuros.
+### Technical Stack Advantages
+- **Superior Performance**: Bun offers installation and compilation times up to 10x faster than npm.
+- **Efficient Development**: Instant Hot Module Replacement (HMR) thanks to Vite.
+- **Lower Memory Footprint**: Resource optimization during development and in production.
+- **Modern Compatibility**: Focus on current and future web standards.
 
-Este enfoque técnico permite que el equipo de desarrollo itere rápidamente y que la extensión mantenga un rendimiento óptimo para los usuarios finales.
+This technical approach allows the development team to iterate quickly and ensures that the extension maintains optimal performance for end users.
 
-## 1. Análisis SEO de la Página Actual
+## 1. Current Page SEO Analysis
 
-### Descripción
-Esta funcionalidad analiza la estructura HTML de la página web actual y proporciona un informe detallado sobre su optimización SEO. El análisis se realiza en tiempo real, evaluando más de 30 factores críticos de SEO on-page que afectan directamente el posicionamiento en motores de búsqueda.
+### Description
+This functionality analyzes the HTML structure of the current webpage and provides a detailed report on its SEO optimization. The analysis is performed in real-time, evaluating more than 30 critical on-page SEO factors that directly affect search engine positioning.
 
-### Características
-- Escaneo automático al cargar la página
-- Análisis de etiquetas HTML relevantes para SEO
-- Puntuación general de optimización SEO (0-100)
-- Identificación de elementos críticos faltantes
-- Tiempo de escaneo optimizado (<2 segundos para la mayoría de páginas)
-- Categorización de problemas por gravedad (Crítico, Importante, Sugerencia)
-- Historial de análisis para comparar mejoras
+### Features
+- Automatic scanning when loading the page
+- Analysis of SEO-relevant HTML tags
+- Overall SEO optimization score (0-100)
+- Identification of missing critical elements
+- Optimized scanning time (<2 seconds for most pages)
+- Categorization of issues by severity (Critical, Important, Suggestion)
+- Analysis history to compare improvements
 
-### Componentes de la Interfaz de Usuario
-- **Panel de Resumen**: Muestra la puntuación general y un resumen visual del estado SEO
-- **Lista de Problemas**: Organizada por categorías y severidad
-- **Detalles Técnicos**: Panel expandible con información técnica detallada
-- **Historial de Análisis**: Gráfico de evolución de la puntuación SEO con el tiempo
+### User Interface Components
+- **Summary Panel**: Displays the overall score and a visual summary of SEO status
+- **Issue List**: Organized by categories and severity
+- **Technical Details**: Expandable panel with detailed technical information
+- **Analysis History**: Graph showing the evolution of SEO score over time
 
-### Implementación Técnica
+### Technical Implementation
 ```javascript
-// Ejemplo simplificado del analizador SEO
+// Simplified example of the SEO analyzer
 class SEOAnalyzer {
   constructor(domContent) {
     this.dom = domContent;
@@ -73,79 +72,79 @@ class SEOAnalyzer {
     };
   }
   
-  // Métodos específicos de análisis
+  // Specific analysis methods
   analyzeMetaTags() { /* ... */ }
   analyzeHeadings() { /* ... */ }
   // ...
 }
 ```
 
-### Factores Evaluados
-1. **Metadatos Básicos**:
-   - Título de la página (presencia, longitud, palabras clave)
-   - Meta descripción (presencia, longitud, persuasión)
-   - Meta viewport para dispositivos móviles
-   - Idioma declarado
+### Evaluated Factors
+1. **Basic Metadata**:
+   - Page title (presence, length, keywords)
+   - Meta description (presence, length, persuasiveness)
+   - Meta viewport for mobile devices
+   - Declared language
 
-2. **Estructura de Encabezados**:
-   - Presencia de H1 único
-   - Jerarquía correcta de encabezados
-   - Distribución de palabras clave en encabezados
-   - Longitud apropiada de encabezados
+2. **Heading Structure**:
+   - Presence of unique H1
+   - Correct heading hierarchy
+   - Keyword distribution in headings
+   - Appropriate heading length
 
-3. **Contenido Textual**:
-   - Longitud del contenido
-   - Densidad de palabras clave
-   - Legibilidad del texto
-   - Párrafos y estructura de lectura
+3. **Text Content**:
+   - Content length
+   - Keyword density
+   - Text readability
+   - Paragraphs and reading structure
 
-4. **Enlaces**:
-   - Enlaces internos (cantidad y relevancia)
-   - Enlaces externos (autoridad y relevancia)
-   - Textos ancla descriptivos
-   - Enlaces rotos
+4. **Links**:
+   - Internal links (quantity and relevance)
+   - External links (authority and relevance)
+   - Descriptive anchor texts
+   - Broken links
 
-5. **Imágenes**:
-   - Atributos alt
-   - Tamaño y optimización
-   - Nombres de archivo descriptivos
+5. **Images**:
+   - Alt attributes
+   - Size and optimization
+   - Descriptive file names
 
-### Requisitos Técnicos
-- Acceso al DOM de la página actual a través de content scripts
-- Permisos de extensión para analizar contenido completo de la página
-- Algoritmo de evaluación basado en reglas ponderadas para criterios SEO
-- Almacenamiento local para guardar historial de análisis
-- Optimización de rendimiento para no afectar la experiencia de navegación
+### Technical Requirements
+- Access to the DOM of the current page through content scripts
+- Extension permissions to analyze the complete content of the page
+- Algorithm based on weighted rules for SEO criteria
+- Local storage for saving analysis history
+- Performance optimization to not affect navigation experience
 
-### Casos de Uso
-1. **Desarrollo Web**: Un desarrollador verifica rápidamente si las páginas nuevas cumplen con los estándares SEO antes de publicarlas.
-2. **Auditoría SEO**: Un especialista en SEO realiza una primera evaluación para identificar problemas críticos.
-3. **Educación**: Un estudiante aprende sobre SEO viendo en tiempo real cómo afectan sus cambios a la puntuación.
+### Use Cases
+1. **Web Development**: A developer quickly verifies if new pages meet SEO standards before publishing.
+2. **SEO Audit**: A specialist performs an initial evaluation to identify critical issues.
+3. **Education**: A student learns about SEO by seeing in real time how changes affect the score.
 
-## 2. Recomendaciones de Mejora
+## 2. Improvement Recommendations
 
-### Descripción
-Basándose en el análisis realizado, la extensión proporciona recomendaciones específicas y accionables para mejorar la optimización SEO de la página. Cada recomendación está priorizada por su impacto potencial en el posicionamiento y viene acompañada de una explicación detallada y ejemplos de implementación.
+### Description
+Based on the analysis, the extension provides specific and actionable recommendations to improve page SEO. Each recommendation is prioritized by its potential impact on positioning and is accompanied by a detailed explanation and implementation examples.
 
-### Características
-- Sugerencias priorizadas por impacto potencial (Alto, Medio, Bajo)
-- Instrucciones paso a paso para implementar mejoras
-- Ejemplos de código para modificaciones recomendadas
-- Explicación del impacto esperado de cada mejora
-- Estimación del esfuerzo de implementación
-- Referencias a recursos educativos relevantes
-- Función de marcar recomendaciones como "implementadas" o "ignoradas"
+### Features
+- Prioritized suggestions by potential impact (High, Medium, Low)
+- Step-by-step instructions to implement improvements
+- Code examples for recommended modifications
+- Explanation of expected impact of each improvement
+- Implementation effort estimation
+- References to relevant educational resources
+- Function to mark recommendations as "implemented" or "ignored"
 
-### Componentes de la Interfaz de Usuario
-- **Lista de Recomendaciones**: Ordenada por prioridad con código de colores
-- **Detalles de Recomendación**: Vista expandible con instrucciones detalladas
-- **Editor de Código**: Para mostrar el código actual y el propuesto
-- **Recursos Educativos**: Enlaces a artículos y documentación relevante
-- **Panel de Progreso**: Seguimiento de recomendaciones implementadas
+### User Interface Components
+- **Suggestion List**: Ordered by priority with color codes
+- **Suggestion Details**: Expandable view with detailed instructions
+- **Code Editor**: To show current code and proposed
+- **Educational Resources**: Links to articles and relevant documentation
+- **Progress Panel**: Tracking of implemented recommendations
 
-### Implementación Técnica
+### Technical Implementation
 ```javascript
-// Ejemplo simplificado del sistema de recomendaciones
+// Simplified example of the recommendation system
 class SEORecommender {
   constructor(analysisResults) {
     this.analysis = analysisResults;
@@ -162,7 +161,7 @@ class SEORecommender {
     return this.recommendations;
   }
   
-  // Ejemplo de método específico de recomendación
+  // Example of specific recommendation method
   checkMetaTagsRecommendations() {
     const title = this.analysis.metaTags.title;
     
@@ -171,73 +170,73 @@ class SEORecommender {
         priority: 'high',
         impact: 'critical',
         category: 'metaTags',
-        title: 'Añadir etiqueta de título',
-        description: 'La página no tiene una etiqueta de título definida...',
+        title: 'Add title tag',
+        description: 'The page does not have a defined title tag...',
         currentCode: '<!-- No title tag found -->',
-        suggestedCode: '<title>Título descriptivo con palabras clave principales</title>',
+        suggestedCode: '<title>Descriptive title with main keywords</title>',
         effort: 'low',
         resources: ['https://ejemplo.com/seo-title-best-practices']
       });
     } else if (title.length < 10 || title.length > 60) {
-      // Recomendación de longitud de título
+      // Recommendation for title length
       // ...
     }
     
-    // Más comprobaciones y recomendaciones...
+    // More checks and recommendations...
   }
 }
 ```
 
-### Tipos de Recomendaciones
-1. **Correcciones Críticas**: Problemas que deben solucionarse inmediatamente (ej. falta de título).
-2. **Mejoras Importantes**: Cambios que tendrán un impacto significativo (ej. mejorar meta descripciones).
-3. **Optimizaciones Avanzadas**: Ajustes para perfeccionar páginas ya bien optimizadas.
-4. **Mejores Prácticas**: Sugerencias que siguen las últimas tendencias de SEO.
+### Suggestion Types
+1. **Critical Corrections**: Problems that must be solved immediately (e.g., missing title).
+2. **Significant Improvements**: Changes that will have a significant impact (e.g., improve meta descriptions).
+3. **Advanced Optimizations**: Adjustments to perfect already well-optimized pages.
+4. **Best Practices**: Suggestions following the latest SEO trends.
 
-### Algoritmo de Priorización
-Las recomendaciones se priorizan considerando:
-- Impacto potencial en el posicionamiento
-- Facilidad de implementación
-- Visibilidad para los motores de búsqueda
-- Relevancia para el tipo de página analizada
-- Tendencias actuales de los algoritmos de búsqueda
+### Prioritization Algorithm
+Recommendations are prioritized considering:
+- Potential impact on positioning
+- Implementation ease
+- Visibility for search engines
+- Relevance for the type of analyzed page
+- Current trends in search algorithms
 
-### Requisitos Técnicos
-- Sistema de puntuación para priorizar recomendaciones basado en múltiples factores
-- Base de conocimiento actualizada de mejores prácticas SEO
-- Generador de ejemplos de código HTML contextualizado a la página
-- Sistema de seguimiento para recomendaciones implementadas
-- Mecanismo de actualización de la base de conocimiento SEO
+### Technical Requirements
+- Score system to prioritize recommendations based on multiple factors
+- Updated knowledge base of SEO best practices
+- Code generator for HTML contextualized to the page
+- Tracking system for implemented recommendations
+- SEO knowledge base update mechanism
 
-### Casos de Uso
-1. **Optimización Iterativa**: Un propietario de sitio web implementa mejoras progresivamente, empezando por las más críticas.
-2. **Capacitación**: Un equipo de marketing aprende sobre SEO mientras implementa las recomendaciones.
-3. **Consultoría SEO**: Un consultor utiliza las recomendaciones como base para su propuesta de servicios.
+### Use Cases
+1. **Iterative Optimization**: A site owner implements improvements progressively, starting with the most critical.
+2. **Training**: A marketing team learns about SEO while implementing recommendations.
+3. **SEO Consulting**: A consultant uses recommendations as a basis for their service proposal.
 
-## 3. Análisis de Meta Etiquetas
+## 3. Meta Tag Analysis
 
-### Descripción
-Evaluación detallada de las meta etiquetas presentes en la página y su efectividad para SEO. Esta funcionalidad examina no solo las meta etiquetas básicas sino también las específicas para redes sociales, búsqueda móvil, y directivas para robots de búsqueda.
+### Description
+Detailed evaluation of meta tags present in the page and their effectiveness for SEO. This functionality examines not only basic meta tags but also specific ones for social media, mobile search, and search engine robot directives.
 
-### Características
-- Verificación de meta título y descripción
-- Análisis de etiquetas Open Graph para compartir en redes sociales
-- Evaluación de meta etiquetas de robots y directivas de indexación
-- Análisis de etiquetas Twitter Card
-- Verificación de etiquetas canónicas
-- Comprobación de etiquetas hreflang para contenido multilingüe
-- Análisis de schema.org y datos estructurados
-- Sugerencias para optimización de meta etiquetas
+### Features
+- Verification of title and description meta tags
+- Analysis of Open Graph tags for sharing on social media
+- Evaluation of meta tags for robots and indexation directives
+- Analysis of Twitter Card tags
+- Verification of canonical tags
+- Check for hreflang tags for multilingual content
+- Analysis of schema.org and structured data
+- Suggestions for meta tag optimization
 
-### Componentes de la Interfaz de Usuario
-- **Vista General de Meta Etiquetas**: Resumen visual de todas las meta etiquetas
-- **Previsualizaciones**: Simulación de cómo se verá la página en resultados de búsqueda y redes sociales
-- **Editor de Meta Etiquetas**: Interfaz para editar y ver cambios en tiempo real
-- **Validador de Datos Estructurados**: Herramienta para verificar la correcta implementación
+### User Interface Components
+- **General Meta Tags View**: Visual summary of all meta tags
+- **Previews**: Simulation of how the page will look in search results and social media
+- **Meta Tag Editor**: Interface for editing and seeing changes in real time
+- **Structured Data Validator**: Tool for verifying correct implementation
 
-### Implementación Técnica
+### Technical Implementation
 ```javascript
-// Ejemplo simplificado del analizador de meta etiquetas
+// Simplified example of the meta tag analyzer
 class MetaTagAnalyzer {
   constructor(headContent) {
     this.head = headContent;
@@ -246,7 +245,7 @@ class MetaTagAnalyzer {
   }
   
   extractAllMetaTags() {
-    // Extraer todas las etiquetas meta, title, link[rel] relevantes
+    // Extract all relevant meta, title, link[rel] tags
     return {
       title: this.extractTitle(),
       description: this.extractMetaByName('description'),
@@ -268,77 +267,77 @@ class MetaTagAnalyzer {
     return this.results;
   }
   
-  // Métodos específicos para cada tipo de meta etiqueta
+  // Specific methods for each type of meta tag
   analyzeTitleTag() { /* ... */ }
   // ...
 }
 ```
 
-### Factores Evaluados en Meta Etiquetas
-1. **Título de la Página**:
-   - Longitud óptima (50-60 caracteres)
-   - Inclusión de palabras clave principales
-   - Unicidad en el sitio web
-   - Estructura persuasiva
+### Evaluated Factors in Meta Tags
+1. **Page Title**:
+   - Optimal length (50-60 characters)
+   - Inclusion of main keywords
+   - Uniqueness in the website
+   - Persuasive structure
 
-2. **Meta Descripción**:
-   - Longitud adecuada (120-158 caracteres)
-   - Llamada a la acción
-   - Inclusión natural de palabras clave
-   - Descripción precisa del contenido
+2. **Meta Description**:
+   - Appropriate length (120-158 characters)
+   - Call to action
+   - Natural inclusion of keywords
+   - Precise description
 
-3. **Etiquetas Open Graph y Twitter**:
-   - Título, descripción e imagen específicos
-   - Dimensiones correctas de imágenes
-   - URL canónica definida
-   - Tipo de contenido especificado
+3. **Open Graph and Twitter Tags**:
+   - Specific title, description, and image
+   - Correct image dimensions
+   - Defined canonical URL
+   - Specified content type
 
-4. **Directivas para Robots**:
-   - Configuración apropiada de indexación
-   - Directivas de seguimiento de enlaces
-   - Uso adecuado de noindex/nofollow cuando corresponde
+4. **Robots Directives**:
+   - Appropriate indexation configuration
+   - Link tracking directives
+   - Appropriate use of noindex/nofollow when appropriate
 
-5. **Datos Estructurados**:
-   - Implementación correcta de schema.org
-   - Relevancia del tipo de datos estructurados
-   - Validez del formato JSON-LD o microdata
+5. **Structured Data**:
+   - Correct implementation of schema.org
+   - Relevance of structured data type
+   - Validity of JSON-LD or microdata format
 
-### Requisitos Técnicos
-- Extractor completo de meta etiquetas del DOM
-- Algoritmo de evaluación de calidad y relevancia de meta datos
-- Generador de sugerencias contextualizado para meta etiquetas optimizadas
-- Validador de sintaxis para datos estructurados
-- Simulador de apariencia en resultados de búsqueda (SERP)
+### Technical Requirements
+- Complete meta tag extractor from the DOM
+- Quality and relevance evaluation algorithm for meta data
+- Generator of contextualized suggestions for optimized meta tags
+- Syntax validator for structured data
+- SERP appearance simulator
 
-### Casos de Uso
-1. **Optimización de CTR**: Un editor mejora sus meta descripciones para aumentar la tasa de clics.
-2. **Presencia en Redes Sociales**: Un equipo de marketing optimiza las etiquetas Open Graph para mejorar la presentación en redes sociales.
-3. **Indexación Selectiva**: Un webmaster configura correctamente las directivas de robots para páginas específicas.
+### Use Cases
+1. **CTR Optimization**: An editor improves meta descriptions to increase click-through rate.
+2. **Social Media Presence**: A marketing team optimizes Open Graph tags for better presentation on social media.
+3. **Selective Indexing**: A webmaster correctly configures robots directives for specific pages.
 
-## 4. Análisis de Estructura de Contenido
+## 4. Content Structure Analysis
 
-### Descripción
-Evaluación de la jerarquía de encabezados, párrafos, y estructura general del contenido desde una perspectiva SEO. Esta funcionalidad analiza cómo está organizada la información en la página para maximizar la comprensión por parte de los motores de búsqueda y mejorar la experiencia del usuario.
+### Description
+Evaluation of heading hierarchy, paragraphs, and general content structure from a SEO perspective. This functionality analyzes how information is organized in the page to maximize understanding by search engines and improve user experience.
 
-### Características
-- Análisis de jerarquía de encabezados (H1-H6)
-- Evaluación de longitud y densidad de contenido
-- Identificación de párrafos mal estructurados
-- Análisis de legibilidad del texto
-- Evaluación de la densidad de palabras clave
-- Detección de contenido duplicado interno
-- Análisis de la estructura de enlaces internos
-- Sugerencias para mejorar la jerarquía de contenido
+### Features
+- Analysis of heading hierarchy (H1-H6)
+- Evaluation of content length and density
+- Identification of poorly structured paragraphs
+- Analysis of text readability
+- Evaluation of keyword density
+- Detection of internal content duplication
+- Analysis of internal link structure
+- Suggestions for improving content hierarchy
 
-### Componentes de la Interfaz de Usuario
-- **Mapa Visual de Estructura**: Representación gráfica de la jerarquía de contenido
-- **Analizador de Legibilidad**: Métricas de facilidad de lectura
-- **Resaltador de Palabras Clave**: Visualización de la distribución de palabras clave
-- **Editor de Estructura**: Sugerencias interactivas para reorganización
+### User Interface Components
+- **Structure Map**: Visual representation of content hierarchy
+- **Readability Analyzer**: Readability metrics
+- **Keyword Highlighter**: Visualization of keyword distribution
+- **Structure Editor**: Interactive suggestions for reorganization
 
-### Implementación Técnica
+### Technical Implementation
 ```javascript
-// Ejemplo simplificado del analizador de estructura de contenido
+// Simplified example of the content structure analyzer
 class ContentStructureAnalyzer {
   constructor(bodyContent) {
     this.body = bodyContent;
@@ -353,7 +352,7 @@ class ContentStructureAnalyzer {
   }
   
   extractHeadings() {
-    // Extraer todos los encabezados H1-H6
+    // Extract all H1-H6 headings
     return {
       h1: this.extractElementsByTag('h1'),
       h2: this.extractElementsByTag('h2'),
@@ -365,89 +364,89 @@ class ContentStructureAnalyzer {
   }
   
   analyzeHeadingStructure() {
-    // Verificar jerarquía correcta (H1 > H2 > H3...)
-    // Verificar presencia de H1 único
-    // Verificar distribución adecuada
+    // Verify correct hierarchy (H1 > H2 > H3...)
+    // Verify presence of unique H1
+    // Verify appropriate distribution
     // ...
   }
   
   analyzeContentReadability() {
-    // Calcular puntuaciones de legibilidad (Flesch-Kincaid, etc.)
-    // Evaluar longitud de párrafos y oraciones
+    // Calculate readability scores (Flesch-Kincaid, etc.)
+    // Evaluate paragraph length and sentence
     // ...
   }
   
   analyzeKeywordDistribution() {
-    // Identificar palabras clave principales
-    // Evaluar densidad y posicionamiento
+    // Identify main keywords
+    // Evaluate density and positioning
     // ...
   }
   
-  // Métodos adicionales para análisis específicos
+  // Additional methods for specific analyses
   // ...
 }
 ```
 
-### Factores Evaluados en la Estructura de Contenido
-1. **Jerarquía de Encabezados**:
-   - Presencia de un único H1 relacionado con la temática principal
-   - Secuencia lógica de encabezados sin saltar niveles
-   - Distribución equilibrada de encabezados en el contenido
-   - Relevancia de palabras clave en los encabezados
+### Evaluated Factors in Content Structure
+1. **Heading Hierarchy**:
+   - Presence of a single H1 related to the main topic
+   - Logical sequence of headings without skipping levels
+   - Balanced distribution of headings in the content
+   - Relevance of keywords in headings
 
-2. **Párrafos y Texto**:
-   - Longitud adecuada de párrafos (idealmente 3-5 oraciones)
-   - Uso de listas para mejorar la legibilidad
-   - Presencia de introducción y conclusión claras
-   - Uso de negrita para destacar conceptos importantes
+2. **Paragraphs and Text**:
+   - Appropriate paragraph length (ideal 3-5 sentences)
+   - Use of lists for better readability
+   - Presence of introduction and conclusion
+   - Use of bold for highlighting important concepts
 
-3. **Palabras Clave**:
-   - Densidad natural (evitando keyword stuffing)
-   - Distribución a lo largo del contenido
-   - Variaciones semánticas y términos relacionados
-   - Posicionamiento estratégico (inicio de párrafos, encabezados)
+3. **Keywords**:
+   - Natural density (avoiding keyword stuffing)
+   - Distribution throughout the content
+   - Semantic variations and related terms
+   - Strategic positioning (paragraph start, headings)
 
-4. **Legibilidad**:
-   - Puntuación de legibilidad (Flesch-Kincaid, SMOG)
-   - Longitud de oraciones y complejidad sintáctica
-   - Uso de voz activa vs. pasiva
-   - Consistencia en tiempo verbal y persona gramatical
+4. **Readability**:
+   - Readability score (Flesch-Kincaid, SMOG)
+   - Sentence length and syntactic complexity
+   - Use of active voice vs. passive voice
+   - Consistency in verbal and grammatical person
 
-### Requisitos Técnicos
-- Analizador de estructura DOM para extraer y clasificar elementos de contenido
-- Algoritmos de evaluación de jerarquía y relaciones entre elementos
-- Analizador de legibilidad con soporte para español y otros idiomas
-- Sistema de detección de palabras clave y frases relevantes
-- Base de conocimiento sobre mejores prácticas de estructuración
+### Technical Requirements
+- DOM structure analyzer to extract and classify content elements
+- Algorithms for evaluating hierarchy and relationships between elements
+- Readability analyzer with support for Spanish and other languages
+- System for detecting relevant keywords and phrases
+- Knowledge base for SEO best practices
 
-### Casos de Uso
-1. **Creación de Contenido**: Un redactor utiliza el análisis para mejorar la estructura antes de publicar.
-2. **Optimización de Páginas Existentes**: Un especialista en SEO reorganiza el contenido para mejor jerarquía.
-3. **Auditoría de Contenido**: Un editor analiza múltiples páginas para detectar patrones de mejora.
+### Use Cases
+1. **Content Creation**: A writer uses analysis to improve structure before publishing.
+2. **Existing Page Optimization**: A specialist in SEO reorganizes content for better hierarchy.
+3. **Content Audit**: A writer analyzes multiple pages to detect improvement patterns.
 
-## 5. Análisis de Rendimiento SEO
+## 5. SEO Performance Analysis
 
-### Descripción
-Evaluación de factores técnicos relacionados con el rendimiento que afectan directamente al SEO, como la velocidad de carga, elementos que bloquean el renderizado, y optimización para dispositivos móviles. Esta funcionalidad conecta métricas de experiencia del usuario con su impacto en el posicionamiento.
+### Description
+Evaluation of technical factors related to performance that directly affect SEO, such as loading speed, elements blocking rendering, and mobile optimization. This functionality connects user experience metrics with their impact on positioning.
 
-### Características
-- Análisis de tiempo de carga de la página
-- Detección de recursos que bloquean el renderizado
-- Evaluación de tamaño de recursos (HTML, CSS, JS, imágenes)
-- Comprobación de optimización para dispositivos móviles
-- Análisis de Core Web Vitals (LCP, FID, CLS)
-- Identificación de scripts y recursos innecesarios
-- Recomendaciones para mejorar el rendimiento
+### Features
+- Analysis of page loading time
+- Detection of resources blocking rendering
+- Evaluation of resource size (HTML, CSS, JS, images)
+- Check for mobile optimization
+- Analysis of Core Web Vitals (LCP, FID, CLS)
+- Identification of unnecessary scripts and resources
+- Recommendations for improving performance
 
-### Componentes de la Interfaz de Usuario
-- **Dashboard de Rendimiento**: Resumen visual de métricas clave
-- **Cascada de Carga**: Visualización del orden y tiempo de carga de recursos
-- **Simulador Móvil**: Vista previa de cómo se ve la página en diferentes dispositivos
-- **Comparador de Métricas**: Contraste con estándares de la industria
+### User Interface Components
+- **Performance Dashboard**: Visual summary of key metrics
+- **Load Cascade**: Visualization of resource loading order and time
+- **Mobile Simulator**: Preview of how the page looks on different devices
+- **Metric Comparator**: Contrast with industry standards
 
-### Implementación Técnica
+### Technical Implementation
 ```javascript
-// Ejemplo simplificado del analizador de rendimiento
+// Simplified example of the performance analyzer
 class PerformanceAnalyzer {
   constructor() {
     this.metrics = this.collectPerformanceMetrics();
@@ -463,7 +462,7 @@ class PerformanceAnalyzer {
   }
   
   collectPerformanceMetrics() {
-    // Recopilar métricas de la API de Performance
+    // Collect performance metrics from the browser API
     return {
       loadTime: this.calculateLoadTime(),
       domContentLoaded: this.calculateDOMContentLoaded(),
@@ -473,75 +472,75 @@ class PerformanceAnalyzer {
   }
   
   analyzePageResources() {
-    // Analizar tamaño, tipo y tiempo de carga de recursos
+    // Analyze resource size, type, and loading time
     // ...
   }
   
-  // Métodos adicionales para evaluaciones específicas
+  // Additional methods for specific evaluations
   // ...
 }
 ```
 
-### Factores Evaluados en Rendimiento
-1. **Velocidad de Carga**:
-   - Tiempo hasta el primer byte (TTFB)
+### Evaluated Factors in Performance
+1. **Loading Speed**:
+   - Time to first byte (TTFB)
    - First Contentful Paint (FCP)
    - Largest Contentful Paint (LCP)
    - Time to Interactive (TTI)
 
-2. **Optimización de Recursos**:
-   - Compresión de imágenes, CSS y JavaScript
-   - Minificación de código
-   - Carga diferida de recursos no críticos
-   - Uso adecuado de caché del navegador
+2. **Resource Optimization**:
+   - Image, CSS, and JavaScript compression
+   - Code minification
+   - Lazy loading of non-critical resources
+   - Appropriate use of browser cache
 
-3. **Experiencia Móvil**:
-   - Diseño responsivo
-   - Tamaño de fuente y elementos táctiles
-   - Ausencia de contenido horizontal con scroll
-   - Viewport configurado correctamente
+3. **Mobile Experience**:
+   - Responsive design
+   - Font size and touch elements
+   - Absence of horizontal scroll with content
+   - Correctly configured viewport
 
 4. **Core Web Vitals**:
-   - Cumplimiento de umbrales recomendados por Google
-   - Estabilidad visual (CLS)
-   - Interactividad (FID)
-   - Velocidad de carga percibida (LCP)
+   - Compliance with Google recommended thresholds
+   - Visual stability (CLS)
+   - Interactivity (FID)
+   - Perceived loading speed (LCP)
 
-### Requisitos Técnicos
-- Acceso a la API de Performance del navegador
-- Capacidad para evaluar recursos cargados y su impacto
-- Algoritmos para simular métricas de Core Web Vitals
-- Sistema de generación de recomendaciones de optimización
-- Interfaz para visualizar datos de rendimiento de forma comprensible
+### Technical Requirements
+- Access to browser performance API
+- Ability to evaluate loaded resources and their impact
+- Algorithms for simulating Core Web Vitals metrics
+- Optimization recommendation generator
+- Interface for visually displaying performance data
 
-### Casos de Uso
-1. **Optimización Técnica**: Un desarrollador identifica y elimina scripts que bloquean el renderizado.
-2. **Mejora de Experiencia Móvil**: Un diseñador web ajusta elementos para mejorar la usabilidad en dispositivos móviles.
-3. **Preparación para Actualizaciones de Algoritmos**: Un equipo se prepara para cambios en los factores de clasificación basados en experiencia de usuario.
+### Use Cases
+1. **Technical Optimization**: A developer identifies and eliminates scripts blocking rendering.
+2. **Mobile Experience Improvement**: A web designer adjusts elements for better usability on mobile devices.
+3. **Preparation for Algorithm Updates**: A team prepares for changes in ranking factors based on user experience.
 
-## 6. Exportación e Informes
+## 6. Export and Reports
 
-### Descripción
-Funcionalidad para generar, guardar y compartir informes detallados del análisis SEO realizado. Permite documentar el estado actual, las recomendaciones y seguir el progreso de optimización a lo largo del tiempo.
+### Description
+Functionality to generate, save, and share detailed SEO analysis reports. Allows documenting current state, recommendations, and following optimization progress over time.
 
-### Características
-- Generación de informes en formato PDF, HTML y CSV
-- Personalización de contenido y secciones del informe
-- Inclusión de capturas de pantalla comparativas
-- Historial de análisis para seguimiento de mejoras
-- Informes ejecutivos para presentaciones a clientes
-- Informes técnicos detallados para implementación
-- Opción para compartir directamente por email o enlace
+### Features
+- Report generation in PDF, HTML, and CSV formats
+- Customizable report content and sections
+- Inclusion of comparison screenshots
+- Analysis history for tracking improvements
+- Executive reports for client presentations
+- Detailed technical reports for implementation
+- Option to share directly by email or link
 
-### Componentes de la Interfaz de Usuario
-- **Generador de Informes**: Interfaz para seleccionar opciones y formato
-- **Plantillas de Informes**: Diferentes diseños según el propósito
-- **Visor de Historial**: Gráficos de progreso y comparativas
-- **Opciones de Compartir**: Integración con email y servicios de almacenamiento
+### User Interface Components
+- **Report Generator**: Interface for selecting options and format
+- **Report Templates**: Different designs based on purpose
+- **History Viewer**: Progress and comparison graphs
+- **Share Options**: Integration with email and storage services
 
-### Implementación Técnica
+### Technical Implementation
 ```javascript
-// Ejemplo simplificado del generador de informes
+// Simplified example of the report generator
 class ReportGenerator {
   constructor(analysisData, options) {
     this.data = analysisData;
@@ -558,77 +557,77 @@ class ReportGenerator {
       case 'csv':
         return this.generateCSVReport();
       default:
-        throw new Error('Formato no soportado');
+        throw new Error('Unsupported format');
     }
   }
   
   generatePDFReport() {
-    // Crear estructura del informe
-    // Aplicar estilo y formateo
-    // Generar visualizaciones
-    // Incluir recomendaciones
+    // Create report structure
+    // Apply style and formatting
+    // Generate visualizations
+    // Include recommendations
     // ...
   }
   
-  // Métodos para diferentes formatos y opciones
+  // Methods for different formats and options
   // ...
 }
 ```
 
-### Tipos de Informes
-1. **Informe Ejecutivo**:
-   - Resumen conciso para gestores y clientes
-   - Puntuación general y comparativas
-   - Principales hallazgos y recomendaciones
-   - Gráficos de progreso
+### Report Types
+1. **Executive Report**:
+   - Concise summary for managers and clients
+   - Overall score and comparisons
+   - Main findings and recommendations
+   - Progress graphs
 
-2. **Informe Técnico**:
-   - Análisis detallado de todos los factores
-   - Código HTML con problemas y soluciones
-   - Instrucciones paso a paso para implementación
-   - Referencias a documentación técnica
+2. **Technical Report**:
+   - Detailed analysis of all factors
+   - HTML code with issues and solutions
+   - Step-by-step implementation instructions
+   - References to technical documentation
 
-3. **Informe de Progreso**:
-   - Comparativa con análisis anteriores
-   - Mejoras implementadas y su impacto
-   - Tareas pendientes priorizadas
-   - Estimación de beneficio potencial restante
+3. **Progress Report**:
+   - Comparison with previous analyses
+   - Implemented improvements and their impact
+   - Prioritized pending tasks
+   - Potential benefit estimation
 
-### Requisitos Técnicos
-- Generador de documentos PDF con soporte para estilos y gráficos
-- Sistema de plantillas HTML para informes web
-- Mecanismo de exportación de datos estructurados
-- Almacenamiento seguro de históricos de análisis
-- API para compartir informes (email, enlace, etc.)
+### Technical Requirements
+- PDF document generator with support for styles and graphics
+- HTML template system for web reports
+- Data export mechanism for structured data
+- Secure storage of analysis history
+- API for sharing reports (email, link, etc.)
 
-### Casos de Uso
-1. **Informes para Clientes**: Una agencia SEO genera informes profesionales para sus clientes.
-2. **Documentación Interna**: Un equipo de desarrollo mantiene un registro de mejoras SEO implementadas.
-3. **Demostración de Valor**: Un freelance utiliza los informes para mostrar el impacto de su trabajo.
+### Use Cases
+1. **Client Reports**: An SEO agency generates professional reports for their clients.
+2. **Internal Documentation**: A development team maintains a record of implemented SEO improvements.
+3. **Value Demonstration**: A freelance uses reports to show the impact of their work.
 
-## 7. Análisis de Competencia SEO
+## 7. Competitor SEO Analysis
 
-### Descripción
-Funcionalidad que permite analizar y comparar el desempeño SEO de la página actual con competidores directos. Proporciona insights sobre estrategias exitosas, brechas de optimización y oportunidades para superar a la competencia.
+### Description
+Functionality that allows analyzing and comparing the SEO performance of the current page with direct competitors. Provides insights on successful strategies, optimization gaps, and opportunities to outperform competitors.
 
-### Características
-- Identificación automática de competidores potenciales
-- Análisis comparativo de factores SEO clave
-- Detección de palabras clave utilizadas por competidores
-- Evaluación de estrategias de contenido y estructura
-- Comparativa de rendimiento y experiencia de usuario
-- Recomendaciones basadas en análisis competitivo
-- Seguimiento de cambios en sitios de competidores
+### Features
+- Automatic identification of potential competitors
+- Comparative analysis of key SEO factors
+- Detection of keywords used by competitors
+- Evaluation of content and structure strategies
+- Comparative performance and user experience
+- Recommendations based on competitive analysis
+- Tracking of changes in competitor sites
 
-### Componentes de la Interfaz de Usuario
-- **Selector de Competidores**: Interfaz para añadir y gestionar sitios a comparar
-- **Dashboard Comparativo**: Visualización lado a lado de métricas clave
-- **Análisis de Brecha**: Identificación de áreas donde los competidores superan al sitio actual
-- **Rastreador de Palabras Clave**: Palabras clave utilizadas por competidores no presentes en el sitio actual
+### User Interface Components
+- **Competitor Selector**: Interface for adding and managing sites to compare
+- **Comparative Dashboard**: Visual side-by-side comparison of key metrics
+- **Gap Analysis**: Identification of areas where competitors outperform the current site
+- **Keyword Tracker**: Keywords used by competitors not present in the current site
 
-### Implementación Técnica
+### Technical Implementation
 ```javascript
-// Ejemplo simplificado del analizador de competencia
+// Simplified example of the competitor analyzer
 class CompetitorAnalyzer {
   constructor(currentSiteData) {
     this.currentSite = currentSiteData;
@@ -637,14 +636,14 @@ class CompetitorAnalyzer {
   }
   
   addCompetitor(url) {
-    // Analizar sitio competidor
+    // Analyze competitor site
     const competitorData = this.analyzeSite(url);
     this.competitors.push(competitorData);
     return competitorData;
   }
   
   compareWithCompetitors() {
-    // Para cada métrica relevante, comparar con competidores
+    // For each relevant metric, compare with competitors
     this.comparisonResults = {
       contentStrategy: this.compareContentStrategy(),
       technicalSEO: this.compareTechnicalFactors(),
@@ -656,71 +655,71 @@ class CompetitorAnalyzer {
     return this.comparisonResults;
   }
   
-  // Métodos específicos para diferentes comparativas
+  // Specific methods for different comparisons
   // ...
 }
 ```
 
-### Factores Comparados
-1. **Estrategia de Contenido**:
-   - Longitud y profundidad del contenido
-   - Estructura y formato
-   - Frecuencia de actualización
-   - Tipos de contenido (texto, vídeo, infografías, etc.)
+### Compared Factors
+1. **Content Strategy**:
+   - Length and depth of content
+   - Structure and format
+   - Frequency of updates
+   - Content types (text, video, infographics, etc.)
 
-2. **Factores Técnicos**:
-   - Velocidad de carga
-   - Optimización móvil
-   - Estructura HTML
-   - Implementación de datos estructurados
+2. **Technical Factors**:
+   - Loading speed
+   - Mobile optimization
+   - HTML structure
+   - Structured data implementation
 
-3. **Estrategia de Palabras Clave**:
-   - Palabras clave principales y secundarias
-   - Densidad y posicionamiento
-   - Términos semánticamente relacionados
-   - Intención de búsqueda cubierta
+3. **Keyword Strategy**:
+   - Main and secondary keywords
+   - Density and positioning
+   - Semantic-related terms
+   - Search intent covered
 
-4. **Autoridad y Enlaces**:
-   - Estructura de enlaces internos
-   - Estrategia de enlaces externos
-   - Presencia de enlaces de autoridad
-   - Texto ancla utilizado
+4. **Authority and Links**:
+   - Internal link structure
+   - External link strategy
+   - Authority presence
+   - Anchor text usage
 
-### Requisitos Técnicos
-- API para análisis básico de sitios externos
-- Algoritmos de comparación de factores SEO
-- Sistema de identificación de palabras clave
-- Capacidad para detectar brechas y oportunidades
-- Interfaz visual para comparativas claras y accionables
+### Technical Requirements
+- API for basic site analysis
+- SEO comparison algorithms
+- System for identifying keywords
+- Ability to detect gaps and opportunities
+- Visual interface for clear and actionable comparisons
 
-### Casos de Uso
-1. **Investigación de Mercado**: Un negocio evalúa las estrategias SEO de su competencia directa.
-2. **Planificación Estratégica**: Un especialista en marketing identifica oportunidades no aprovechadas por competidores.
-3. **Benchmarking**: Un sitio web mide su rendimiento SEO contra los líderes del sector.
+### Use Cases
+1. **Market Research**: A business evaluates SEO strategies of its direct competitors.
+2. **Strategic Planning**: A marketing specialist identifies opportunities not exploited by competitors.
+3. **Benchmarking**: A website measures its SEO performance against industry leaders.
 
-## 8. Integración con Google Search Console
+## 8. Integration with Google Search Console
 
-### Descripción
-Conecta la extensión con la API de Google Search Console para proporcionar datos reales de rendimiento en búsquedas, complementando el análisis on-page con información de comportamiento en los resultados de búsqueda.
+### Description
+Connects the extension with the Google Search Console API to provide real-time performance data from searches, complementing on-page analysis with behavior data from search results.
 
-### Características
-- Conexión segura con la cuenta de Google Search Console
-- Visualización de impresiones y clics para la URL analizada
-- Datos de posición media en resultados de búsqueda
-- Análisis de palabras clave que generan tráfico
-- Identificación de oportunidades de mejora basadas en datos reales
-- Seguimiento de cambios en rendimiento tras implementar mejoras
-- Alertas para problemas detectados por Google
+### Features
+- Secure connection with Google Search Console account
+- Visualization of impressions and clicks for the analyzed URL
+- Average position data in search results
+- Analysis of keywords generating traffic
+- Identification of opportunities for improvement based on real data
+- Tracking of changes in performance after implementing improvements
+- Alerts for problems detected by Google
 
-### Componentes de la Interfaz de Usuario
-- **Panel de Autenticación**: Para conectar con Google Search Console
-- **Dashboard de Rendimiento**: Gráficos y métricas de desempeño en búsquedas
-- **Analizador de Consultas**: Palabras clave que generan impresiones y clics
-- **Rastreador de Posiciones**: Seguimiento de cambios en el ranking
+### User Interface Components
+- **Authentication Panel**: To connect with Google Search Console
+- **Performance Dashboard**: Graphs and metrics of performance in searches
+- **Query Analyzer**: Keywords generating impressions and clicks
+- **Position Tracker**: Tracking changes in ranking
 
-### Implementación Técnica
+### Technical Implementation
 ```javascript
-// Ejemplo simplificado de integración con Google Search Console
+// Simplified example of Google Search Console integration
 class SearchConsoleIntegration {
   constructor(apiCredentials) {
     this.credentials = apiCredentials;
@@ -729,12 +728,12 @@ class SearchConsoleIntegration {
   }
   
   async authenticate() {
-    // Autenticar con Google API
+    // Authenticate with Google API
     // ...
   }
   
   async fetchPerformanceData(url, dateRange) {
-    // Obtener datos de rendimiento para la URL específica
+    // Get performance data for the specific URL
     const response = await this.api.performanceReport({
       url: url,
       startDate: dateRange.start,
@@ -746,49 +745,49 @@ class SearchConsoleIntegration {
     return this.data.performance;
   }
   
-  // Métodos para diferentes tipos de datos y análisis
+  // Methods for different types of data and analysis
   // ...
 }
 ```
 
-### Datos Integrados
-1. **Métricas de Rendimiento**:
-   - Impresiones en resultados de búsqueda
-   - Clics y CTR (Click-Through Rate)
-   - Posición media en resultados
-   - Tendencias a lo largo del tiempo
+### Integrated Data
+1. **Performance Metrics**:
+   - Impressions in search results
+   - Clicks and CTR (Click-Through Rate)
+   - Average position
+   - Trends over time
 
-2. **Análisis de Consultas**:
-   - Palabras clave que generan impresiones
-   - Términos con mejor y peor CTR
-   - Oportunidades para mejorar posiciones
-   - Palabras clave emergentes
+2. **Query Analysis**:
+   - Keywords generating impressions
+   - Terms with better and worse CTR
+   - Opportunities for improving positions
+   - Emerging keywords
 
-3. **Diagnóstico Técnico**:
-   - Problemas de rastreo detectados
-   - Errores de cobertura de índice
-   - Problemas de experiencia de usuario en móviles
-   - Alertas de seguridad o spam
+3. **Technical Diagnostics**:
+   - Detected tracking issues
+   - Index coverage errors
+   - Mobile experience issues
+   - Security or spam alerts
 
-4. **Recomendaciones Basadas en Datos**:
-   - Optimizaciones sugeridas según comportamiento real
-   - Priorización basada en potencial de tráfico
-   - Correcciones para problemas detectados por Google
+4. **Data-Based Recommendations**:
+   - Suggestions based on real behavior
+   - Prioritization based on potential traffic
+   - Corrections for problems detected by Google
 
-### Requisitos Técnicos
-- Implementación de OAuth para autenticación con Google
-- API para conexión con Google Search Console
-- Almacenamiento seguro de credenciales
-- Sistemas de visualización de datos temporales
-- Algoritmos para identificar oportunidades en datos de rendimiento
+### Technical Requirements
+- Implementation of OAuth for Google authentication
+- API for connection with Google Search Console
+- Secure storage of credentials
+- Temporal data visualization systems
+- Algorithms for identifying opportunities in performance data
 
-### Casos de Uso
-1. **Evaluación de Impacto**: Un SEO verifica si los cambios implementados mejoraron el rendimiento real en búsquedas.
-2. **Descubrimiento de Palabras Clave**: Un editor identifica términos no considerados que ya generan tráfico.
-3. **Resolución de Problemas**: Un webmaster detecta y soluciona problemas técnicos reportados por Google.
+### Use Cases
+1. **Impact Evaluation**: An SEO verifies if implemented changes improved real performance in searches.
+2. **Keyword Discovery**: An editor identifies terms not considered that already generate traffic.
+3. **Problem Resolution**: A webmaster detects and resolves problems reported by Google.
 
-### Requisitos Técnicos
-- Analizador de estructura DOM para extraer y clasificar elementos de contenido
-- Algoritmos de evaluación de jerarquía y relaciones entre elementos
-- Analizador de legibilidad con soporte para español y otros idiomas
-- Base de conocimiento sobre mejores prácticas de estructuración 
+### Technical Requirements
+- DOM structure analyzer to extract and classify content elements
+- Algorithms for evaluating hierarchy and relationships between elements
+- Readability analyzer with support for Spanish and other languages
+- SEO best practices knowledge base 

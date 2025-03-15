@@ -1,40 +1,179 @@
 ---
 layout: project-layout
-title: "Bug Registry - paellaSEO"
-description: "This documentation maintains a detailed record of known bugs in the paellaSEO extension, their current status, resolution plans, and the history of solved issues. This document serves as a central reference for tracking problems during the development and maintenance of the extension."
-project: "paellaSEO"
-date: 2025-03-15
-order: 50
-permalink: /projects/paellaseo/bug_documentation/
+title: "paellaSEO Bug Registry"
+description: "Central reference for tracking known bugs in the paellaSEO extension, detailing their statuses, resolution plans, and history of solved issues."
+project: paellaseo
+date: 2024-03-15
+order: 3
+permalink: /projects/paellaseo/bug-documentation/
 sidebar_nav: true
 ---
 
+# paellaSEO Bug Registry
 
-This documentation maintains a detailed record of known bugs in the paellaSEO extension, their current status, resolution plans, and the history of solved issues. This document serves as a central reference for tracking problems during the development and maintenance of the extension.
+Central reference for tracking known bugs in the paellaSEO extension, detailing their statuses, resolution plans, and history of solved issues.
 
 ## Bug Tracking System
 
-### Naming Convention
-All bugs must have a unique ID following the format:
-- `BUG-YYYYMMDD-XX` where:
-  - `YYYYMMDD` is the date the bug was identified
-  - `XX` is a two-digit sequential number (starting at 01) for bugs reported on the same day
+All bugs in paellaSEO are tracked using a standardized system to ensure proper documentation, prioritization, and resolution. Each bug is assigned a unique identifier and tracked through its lifecycle.
 
-### Cycle of a Bug
-1. **Identification**: The bug is detected and documented
-2. **Analysis**: The root cause is investigated and possible solutions are evaluated
-3. **Prioritization**: The bug is assigned a priority and its resolution is scheduled
-4. **Resolution**: The solution is implemented
-5. **Verification**: It is verified that the bug has been resolved correctly
-6. **Closure**: The solution is documented and the bug is closed
+### Bug ID Convention
 
-### Priority Levels
-- **Critical**: Prevents basic functionality of the extension, affects security, or may cause data loss
-- **High**: Significantly affects the main functionality of the extension
-- **Medium**: Affects secondary functionalities or has alternative solutions
-- **Low**: Minor errors, UI/UX non-critical issues
+Each bug is assigned a unique ID with the format: `BUG-YYYYMMDD-XX`
 
-### Bug Categories
+- `YYYYMMDD`: Date when the bug was reported
+- `XX`: Sequential number for bugs reported on the same day
+
+## Active Bugs
+
+### BUG-20240315-01
+
+**Title:** Keyword density calculation incorrect for non-English content
+
+**Status:** Open
+
+**Priority:** High
+
+**Reported:** March 15, 2024
+
+**Description:**
+The keyword density calculation algorithm fails to accurately measure keyword frequency in non-English content, particularly for languages with different character sets or grammatical structures. This results in inaccurate SEO recommendations for non-English websites.
+
+**Steps to Reproduce:**
+1. Create a page with Spanish, French, or German content
+2. Add keywords with accented characters (á, é, ü, etc.)
+3. Run the keyword density analysis
+4. Compare results with manual calculation
+
+**Expected Behavior:**
+Keyword density should be calculated correctly regardless of language or character set.
+
+**Actual Behavior:**
+Density calculations are 15-30% lower than actual for non-English content.
+
+**Technical Details:**
+- Affects all non-Latin character sets
+- Most severe with Cyrillic, Arabic, and Asian languages
+- Related to the text normalization function in `src/analysis/keyword-density.js`
+
+**Resolution Plan:**
+1. Implement Unicode-aware text normalization
+2. Add language detection to adjust analysis algorithms
+3. Create test cases for multiple languages
+4. Expected fix in version 1.2.0
+
+---
+
+### BUG-20240315-02
+
+**Title:** Meta tag analyzer crashes with long descriptions
+
+**Status:** In Progress
+
+**Priority:** Medium
+
+**Reported:** March 15, 2024
+
+**Description:**
+When analyzing meta descriptions longer than 320 characters, the extension occasionally crashes or returns incorrect truncation recommendations. This affects users who need to analyze pages with verbose meta descriptions.
+
+**Steps to Reproduce:**
+1. Create a page with a meta description exceeding 320 characters
+2. Run the meta tag analyzer
+3. Observe crash or incorrect recommendations
+
+**Technical Details:**
+- Error occurs in `src/analyzers/meta-analyzer.js`
+- Related to string handling in the truncation suggestion algorithm
+- Affects approximately 5% of analysis operations
+
+**Resolution Plan:**
+1. Implement proper string length handling
+2. Add error boundaries around the meta analysis component
+3. Fix scheduled for version 1.1.5 (in development)
+4. Current workaround: Manually truncate descriptions before analysis
+
+**Assigned To:** Developer Team
+
+---
+
+## Resolved Bugs
+
+### BUG-20240301-01
+
+**Title:** Incorrect heading structure recommendations
+
+**Status:** Resolved (v1.1.0)
+
+**Priority:** High
+
+**Reported:** March 1, 2024
+
+**Description:**
+The heading structure analyzer was incorrectly flagging valid H1→H2→H3 hierarchies as problematic, recommending unnecessary changes to properly structured content.
+
+**Resolution:**
+- Fixed the heading hierarchy validation algorithm
+- Added unit tests for various heading structures
+- Implemented in version 1.1.0 (released March 10, 2024)
+
+---
+
+### BUG-20240220-03
+
+**Title:** Browser extension fails to initialize on Firefox
+
+**Status:** Resolved (v1.0.5)
+
+**Priority:** Critical
+
+**Reported:** February 20, 2024
+
+**Description:**
+The extension would fail to initialize properly on Firefox browsers (versions 115-120), showing only a blank interface. This was caused by incompatible JavaScript syntax in the initialization module.
+
+**Resolution:**
+- Identified incompatible optional chaining syntax
+- Replaced with compatible alternatives
+- Added Firefox-specific test suite
+- Fixed in emergency patch v1.0.5 (released February 22, 2024)
+
+## Bug Reporting Guidelines
+
+To report a new bug in paellaSEO, please include the following information:
+
+1. **Detailed Description:** What happened and what you expected to happen
+2. **Reproduction Steps:** Step-by-step instructions to reproduce the issue
+3. **Environment:** Browser type and version, operating system, extension version
+4. **Screenshots/Videos:** Visual evidence of the bug when possible
+5. **Console Logs:** Any relevant error messages from the browser console
+
+Submit bug reports through:
+- GitHub Issues: [github.com/paellaseo/issues](https://github.com/paellaseo/issues)
+- Email: support@paellaseo.com
+- In-app feedback form
+
+## Bug Resolution Process
+
+1. **Triage:** Bug is verified and prioritized
+2. **Assignment:** Bug is assigned to a developer
+3. **Development:** Fix is implemented and tested
+4. **Review:** Code review and quality assurance
+5. **Release:** Fix is included in the next version release
+6. **Verification:** Post-release confirmation that the bug is resolved
+
+## Bug Status Definitions
+
+- **Open:** Bug has been reported but not yet addressed
+- **In Progress:** Bug is currently being fixed
+- **Under Review:** Fix has been implemented and is being reviewed
+- **Ready for Release:** Fix is complete and scheduled for the next release
+- **Resolved:** Bug has been fixed and the fix has been released
+- **Closed:** Bug report was invalid or cannot be reproduced
+- **Won't Fix:** Bug is acknowledged but will not be fixed (with explanation)
+
+## Bug Categories
+
 - **Functional**: Related to the logic of main functionalities
 - **UI/UX**: Problems with interface and user experience
 - **Performance**: Speed, memory, or resource problems
@@ -97,185 +236,6 @@ Link to the commit or Pull Request that resolves the bug.
 ### Additional Notes
 Relevant additional information about the bug.
 ```
-
-## Reporting Bugs Process
-
-### For Developers
-1. Document the bug using the template above
-2. Assign a unique ID following the established convention
-3. Categorize and prioritize the bug
-4. Add the bug to the "Open Bugs" section of this document
-5. Notify the team through the established communication channel
-
-### For Users and Testers
-1. Use the "Report a Problem" function from the extension interface
-2. Provide a clear description of the problem
-3. Include detailed reproduction steps
-4. Attach screenshots if possible
-5. Include environment information (browser, operating system)
-
-## Open Bugs
-
-### Functional
-
-#### [BUG-20240617-01] The analyzer does not detect multiple H1 tags correctly
-
-**Description**: The content structure analyzer does not mark as an error when a page has multiple H1 tags, which is not recommended for SEO.
-
-**Steps to Reproduce**:
-1. Open the extension on a page with multiple H1 tags
-2. Run the full analysis
-3. Review the "Content Structure" section in the results
-
-**Expected Behavior**: The system should identify and mark as error the presence of multiple H1 tags, suggesting to keep only one.
-
-**Actual Behavior**: The system does not detect the problem and does not show any warning about multiple H1 tags.
-
-**Environment Information**:
-- Chrome Version: 114.0.5735.198
-- Operating System: Windows 11
-- paellaSEO Version: 0.1.0 (development)
-
-**Category**: Functional
-
-**Priority**: High
-
-**Status**: In Analysis
-
-**Assigned To**: To be assigned
-
-**Identification Date**: 2024-06-17
-
-**Resolution Date**: Pending
-
-**Additional Notes**: This problem directly affects the accuracy of SEO analysis, as having multiple H1s is considered a bad practice that can negatively affect positioning.
-
-### UI/UX
-
-#### [BUG-20240617-02] Recommendations interface does not adjust correctly on small screens
-
-**Description**: The interface that shows SEO improvement recommendations does not adapt correctly to screens with resolution less than 1280x800px, causing some elements to be outside the view or overlap.
-
-**Steps to Reproduce**:
-1. Open the extension on a browser with screen resolution below 1280x800px
-2. Navigate to the "Recommendations" tab
-3. Observe how the elements of the interface are displayed
-
-**Expected Behavior**: The interface should adapt responsively, showing all elements correctly without overlap or content loss.
-
-**Actual Behavior**: The elements of the recommendations panel overlap and some buttons are partially outside the view.
-
-**Screenshots**: [Pending to include]
-
-**Environment Information**:
-- Chrome Version: 115.0.5790.102
-- Operating System: macOS Monterey
-- paellaSEO Version: 0.1.0 (development)
-
-**Category**: UI/UX
-
-**Priority**: Medium
-
-**Status**: Open
-
-**Assigned To**: To be assigned
-
-**Identification Date**: 2024-06-17
-
-**Resolution Date**: Pending
-
-### Performance
-
-#### [BUG-20240617-03] Excessive analysis time on pages with many images
-
-**Description**: Analysis time increases exponentially on pages with more than 50 images, taking more than 20 seconds to complete or even blocking.
-
-**Steps to Reproduce**:
-1. Visit a page with a large number of images (e.g., a photo gallery)
-2. Start the full SEO analysis
-3. Measure the time it takes to complete
-
-**Expected Behavior**: The analysis should complete in a reasonable time (less than 5 seconds) regardless of the number of images, possibly implementing batch analysis.
-
-**Actual Behavior**: The analysis takes more than 20 seconds, and in some cases the interface temporarily freezes.
-
-**Environment Information**:
-- Chrome Version: 114.0.5735.198
-- Operating System: Linux Ubuntu 22.04
-- paellaSEO Version: 0.1.0 (development)
-
-**Category**: Performance
-
-**Priority**: High
-
-**Status**: In Analysis
-
-**Assigned To**: To be assigned
-
-**Identification Date**: 2024-06-17
-
-**Resolution Date**: Pending
-
-**Additional Notes**: Initial investigation suggests that the problem may be related to how alt attributes and image dimensions are processed. Batch processing or asynchronous processing is being considered.
-
-## Resolved Bugs
-
-### Functional
-
-#### [BUG-20240615-01] Meta tag analyzer fails with special characters
-
-**Description**: The meta tag analyzer produces an error when the title or description contains certain special characters (like emojis or Chinese characters).
-
-**Steps to Reproduce**:
-1. Visit a page with emojis or special characters in the meta tags
-2. Run the meta tag analysis
-3. Observe the error in the console
-
-**Expected Behavior**: The analyzer should process any type of characters in the meta tags correctly.
-
-**Actual Behavior**: The analysis fails showing an encoding error in the console and not showing results for the meta tags.
-
-**Environment Information**:
-- Chrome Version: 114.0.5735.90
-- Operating System: Windows 10
-- paellaSEO Version: 0.1.0 (development)
-
-**Category**: Functional
-
-**Priority**: Medium
-
-**Status**: Resolved
-
-**Assigned To**: María González
-
-**Identification Date**: 2024-06-15
-
-**Resolution Date**: 2024-06-16
-
-**Implemented Solution**: Updated the meta tag parser to use `TextDecoder` with full UTF-8 support and implemented a more robust handling of special characters. Additionally, unit tests were added with cases including emojis and characters from different languages.
-
-**Commit/PR**: https://github.com/ejemplo/paellaSEO/pull/42
-
-## Error Statistics
-
-### Distribution by Category
-- Functional: 2 (2 open, 0 resolved)
-- UI/UX: 1 (1 open, 0 resolved)
-- Performance: 1 (1 open, 0 resolved)
-- Security: 0
-- Compatibility: 0
-- Data: 0
-
-### Distribution by Priority
-- Critical: 0
-- High: 2
-- Medium: 2
-- Low: 0
-
-### Average Resolution Time
-- All bugs: 1 day
-- High Priority Bugs: N/A
-- Medium Priority Bugs: 1 day
 
 ## Bug Resolution Workflow
 
