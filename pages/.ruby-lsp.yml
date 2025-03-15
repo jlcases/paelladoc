@@ -1,0 +1,17 @@
+---
+formatter:
+  rubocop:
+    command: rubocop
+    args: ["--auto-correct"]
+diagnostics:
+  rubocop:
+    command: rubocop
+    args: ["--format", "json"]
+completion:
+  solargraph:
+    command: solargraph
+    args: ["stdio"]
+hover:
+  solargraph:
+    command: solargraph
+    args: ["stdio"] 

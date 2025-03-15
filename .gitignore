@@ -37,3 +37,13 @@ tmp/
 
 /docs
 .memory.json
+
+# Private projects
+# These are automatically generated based on .memory.json
+/docs/*/private/
+/pages/projects/*/private/
+
+# Ignore specific private projects (examples)
+# Uncomment and modify as needed
+# /docs/secretproject/
+# /pages/projects/secretproject/

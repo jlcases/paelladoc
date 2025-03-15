@@ -1,140 +1,177 @@
 ---
 layout: default
-title: PAELLA DOC - Documentación con Sabor
-description: Sistema de documentación interactivo impulsado por IA que hace que documentar sea tan satisfactorio como preparar una buena paella valenciana.
+title: PAELLADOC - Interactive Documentation System
+description: Bridge the gap between product and engineering teams with AI-powered documentation that evolves with your project in real-time.
 ---
 
-<div class="hero">
-  <h1>PAELLA DOC</h1>
-  <p class="tagline">Documentación con el sabor de la innovación</p>
-</div>
-
-<div class="projects-section">
-  <h2>Proyectos</h2>
-  
-  <div class="project-card">
-    <h3>paellaSEO</h3>
-    <p>Extensión de Chrome para análisis SEO en tiempo real. Un ejemplo completo de documentación técnica.</p>
-    <div class="project-links">
-      <a href="projects/paellaSEO/00_index.html" class="primary-link">Documentación Principal</a>
-      <a href="projects/paellaSEO/feature_documentation.html">Funcionalidades</a>
-      <a href="projects/paellaSEO/quick_task_documentation.html">Tareas</a>
-      <a href="projects/paellaSEO/bug_documentation.html">Errores</a>
+<div class="hero-section">
+  <div class="container">
+    <h1 class="hero-title">🥘 PAELLADOC</h1>
+    <p class="hero-description">Bridge the gap between product and engineering teams with AI-powered documentation that evolves with your project in real-time.</p>
+    <div class="hero-buttons">
+      <a href="https://github.com/jlcases/paelladoc" class="btn btn-primary" target="_blank">View on GitHub</a>
+      <a href="#projects" class="btn btn-secondary">Explore Projects</a>
     </div>
   </div>
 </div>
 
-<style>
-.hero {
-  text-align: center;
-  padding: 4rem 2rem;
-  background: linear-gradient(135deg, #FFB800 0%, #CD9B1D 100%);
-  color: white;
-  margin-bottom: 3rem;
-  border-radius: 8px;
-  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-}
+<div class="container">
+  <section class="about-section">
+    <h2>The Art of Product Development: A Paella Masterclass</h2>
+    <p>Just as having all the ingredients for a paella isn't enough—only combining them in perfect proportions with a master chef's expertise creates an <strong>unforgettable paella</strong>—the same principle applies to product development.</p>
+    
+    <div class="paella-metaphor">
+      <div class="metaphor-item">
+        <h4>🍚 Ingredients</h4>
+        <p>Having all the right tools, frameworks, and technologies</p>
+      </div>
+      <div class="metaphor-item">
+        <h4>🔥 Heat</h4>
+        <p>The pressure and timeline of development cycles</p>
+      </div>
+      <div class="metaphor-item">
+        <h4>👨‍🍳 Expertise</h4>
+        <p>The knowledge and experience of your team</p>
+      </div>
+      <div class="metaphor-item">
+        <h4>📋 Recipe</h4>
+        <p>The documentation that guides the entire process</p>
+      </div>
+    </div>
+    
+    <p>PAELLADOC is the master chef's recipe book that ensures your product development creates an <strong>unforgettable experience</strong>, combining all elements in perfect harmony.</p>
+    
+    <h3>Why Traditional Documentation Fails</h3>
+    <ul>
+      <li><strong>Disconnected tools</strong>: Product teams use Confluence while engineers use GitHub</li>
+      <li><strong>Static documentation</strong>: Becomes outdated as soon as development begins</li>
+      <li><strong>Implementation gaps</strong>: What's built often differs from what was specified</li>
+      <li><strong>Knowledge silos</strong>: Critical context gets lost between teams</li>
+    </ul>
+    
+    <h3>The PAELLADOC Advantage</h3>
+    <p>Our integrated approach ensures documentation and implementation stay perfectly aligned:</p>
+    
+    <div class="advantage-grid">
+      <div class="advantage-item">
+        <h4>🔄 Real-Time Updates</h4>
+        <p>Documentation evolves alongside your code, ensuring specs always reflect reality</p>
+      </div>
+      
+      <div class="advantage-item">
+        <h4>🤖 AI-Guided Implementation</h4>
+        <p>Cursor follows documentation tasks, helping developers implement exactly what was specified</p>
+      </div>
+      
+      <div class="advantage-item">
+        <h4>🔗 Bidirectional Sync</h4>
+        <p>Changes in code can update documentation and vice versa, maintaining perfect alignment</p>
+      </div>
+      
+      <div class="advantage-item">
+        <h4>👥 Cross-Team Collaboration</h4>
+        <p>Product managers and developers work from the same source of truth</p>
+      </div>
+    </div>
+    
+    <pre><code>paelladoc/
+├── .cursorrules              # The main recipe book
+├── .cursor/
+│   └── rules/
+│       ├── templates/        # Our base recipes
+│       ├── scripts/         # Kitchen utensils
+│       └── paelladoc.mdc    # The master recipe
+├── docs/                    # Our documentary paellas
+└── .memory.json            # The chef's notebook</code></pre>
+  </section>
 
-.hero h1 {
-  font-size: 3rem;
-  margin: 0;
-  text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.2);
-}
-
-.tagline {
-  font-size: 1.5rem;
-  margin-top: 1rem;
-  opacity: 0.9;
-}
-
-.projects-section {
-  max-width: 800px;
-  margin: 0 auto;
-  padding: 0 2rem;
-}
-
-.project-card {
-  background: var(--background-color, #ffffff);
-  border: 1px solid var(--border-color, #e1e4e8);
-  border-radius: 8px;
-  padding: 2rem;
-  margin: 2rem 0;
-  transition: transform 0.2s ease-in-out, box-shadow 0.2s ease-in-out;
-}
-
-.project-card:hover {
-  transform: translateY(-2px);
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
-}
-
-.project-card h3 {
-  color: var(--primary-color, #FFB800);
-  margin-top: 0;
-}
-
-.project-links {
-  margin-top: 1.5rem;
-  display: flex;
-  flex-wrap: wrap;
-  gap: 1rem;
-}
-
-.project-links a {
-  text-decoration: none;
-  padding: 0.5rem 1rem;
-  border-radius: 4px;
-  transition: all 0.2s ease-in-out;
-}
-
-.primary-link {
-  background: var(--primary-color, #FFB800);
-  color: white;
-}
-
-.primary-link:hover {
-  background: var(--secondary-color, #CD9B1D);
-}
-
-.project-links a:not(.primary-link) {
-  border: 1px solid var(--border-color, #e1e4e8);
-  color: var(--text-color, #1E1E24);
-}
-
-.project-links a:not(.primary-link):hover {
-  background: var(--background-color, #f6f8fa);
-  border-color: var(--primary-color, #FFB800);
-}
-</style>
-
-# Paella Doc
-
-Welcome to the Paella Doc documentation site. This site provides comprehensive information about the Paella Doc system, an AI-powered interactive documentation generator.
-
-## Overview
-
-Paella Doc is an advanced documentation system that uses natural language conversations to create, maintain, and organize project documentation efficiently.
-
-## Features
-
-- Interactive chat-based documentation generation
-- Template-based document creation
-- Automatic market research
-- Architecture Decision Records (ADR) management
-- Documentation completeness tracking
-- MDC file generation for Cursor integration
-
-## Getting Started
-
-To get started with Paella Doc, follow these steps:
-
-1. Initialize a new documentation project using the `PAELLA` command
-2. Continue working on specific documents with the `CONTINUE` command
-3. Generate Cursor MDC files with the `GENERATE_MDC` command
-
-## Documentation Structure
-
-Paella Doc organizes documentation in a structured way, following MECE principles (Mutually Exclusive, Collectively Exhaustive).
-
----
-
-For more information, explore the documentation sections above. 
+  <section id="projects" class="projects-section">
+    <h2>Documentation Projects</h2>
+    <p>Explore our comprehensive documentation projects. Each project follows the MECE principle to ensure complete and non-redundant documentation.</p>
+    
+    <div class="projects-grid">
+      {% assign projects = site.pages | where_exp: "item", "item.path contains 'projects/'" | where_exp: "item", "item.path != 'projects/index.md'" | group_by_exp: "item", "item.path | split: '/' | slice: 1 | first" %}
+      
+      {% for project in projects %}
+        {% assign project_name = project.name %}
+        {% if project_name != "RECUENCO" and project_name != "MALENIO" and project_name != "index" %}
+          {% assign index = project.items | where_exp: "item", "item.name contains 'index'" | first %}
+          {% if index %}
+            <div class="project-card">
+              <div class="project-card-header">
+                <h3 class="project-card-title">{{ project_name | capitalize }}</h3>
+              </div>
+              <div class="project-card-body">
+                <p class="project-card-description">{{ index.excerpt | strip_html | truncatewords: 25 }}</p>
+                <a href="{{ index.url | relative_url }}" class="project-card-link">View Documentation →</a>
+              </div>
+            </div>
+          {% endif %}
+        {% endif %}
+      {% endfor %}
+    </div>
+    
+    {% assign public_project_count = 0 %}
+    {% for project in projects %}
+      {% assign project_name = project.name %}
+      {% if project_name != "RECUENCO" and project_name != "MALENIO" and project_name != "index" %}
+        {% assign public_project_count = public_project_count | plus: 1 %}
+      {% endif %}
+    {% endfor %}
+    
+    {% if public_project_count == 0 %}
+      <div class="no-projects">
+        <p>No hay proyectos públicos disponibles en este momento.</p>
+      </div>
+    {% endif %}
+  </section>
+  
+  <section class="features-section">
+    <h2>Key Features</h2>
+    
+    <div class="features-grid">
+      <div class="feature">
+        <h3>Product-Engineering Integration</h3>
+        <ul>
+          <li>Replace Confluence with living documentation</li>
+          <li>Update user stories in real-time</li>
+          <li>Track implementation against specifications</li>
+          <li>Eliminate cross-team communication barriers</li>
+        </ul>
+      </div>
+      
+      <div class="feature">
+        <h3>AI-Powered Development</h3>
+        <ul>
+          <li>Cursor follows documentation tasks automatically</li>
+          <li>Contextual assistance based on project specs</li>
+          <li>Intelligent implementation suggestions</li>
+          <li>Continuous alignment with product vision</li>
+        </ul>
+      </div>
+      
+      <div class="feature">
+        <h3>Comprehensive Documentation</h3>
+        <ul>
+          <li>Market research and product definition</li>
+          <li>Technical architecture and specifications</li>
+          <li>User stories and journey maps</li>
+          <li>Architecture Decision Records (ADRs)</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+  
+  <section class="getting-started-section">
+    <h2>Getting Started</h2>
+    <ol>
+      <li><strong>Clone or Fork</strong>: Clone the repository or fork it to your GitHub account</li>
+      <li><strong>Open with Cursor</strong>: Open the project with Cursor 0.47 or higher</li>
+      <li><strong>Start Cooking</strong>: Simply type <code>PAELLA</code> and follow the interactive conversation</li>
+    </ol>
+    
+    <div class="cta">
+      <a href="https://github.com/jlcases/paelladoc" class="btn btn-primary" target="_blank">Get Started Now</a>
+    </div>
+  </section>
+</div> 

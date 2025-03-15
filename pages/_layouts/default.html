@@ -1,60 +1,89 @@
 <!DOCTYPE html>
-<html lang="es">
-<head>
+<html lang="{{ site.lang | default: "en-US" }}">
+  <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>{{ page.title | default: site.title }}</title>
-    <link rel="stylesheet" href="{{ '/assets/css/style.css' | relative_url }}">
-</head>
-<body>
-    <header>
-        <nav>
-            <a href="{{ '/' | relative_url }}">Inicio</a>
-            {% if site.github.repository_url %}
-            <a href="{{ site.github.repository_url }}">GitHub</a>
-            {% endif %}
-        </nav>
-        <button id="theme-toggle" aria-label="Cambiar tema">
-            <svg class="sun" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                <circle cx="12" cy="12" r="5"/>
-                <line x1="12" y1="1" x2="12" y2="3"/>
-                <line x1="12" y1="21" x2="12" y2="23"/>
-                <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/>
-                <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/>
-                <line x1="1" y1="12" x2="3" y2="12"/>
-                <line x1="21" y1="12" x2="23" y2="12"/>
-                <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/>
-                <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/>
-            </svg>
-            <svg class="moon" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/>
-            </svg>
-        </button>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="{{ page.description | default: site.description }}">
+    <meta name="keywords" content="paelladoc, documentation, {{ page.title }}, {{ page.keywords | default: '' }}">
+    <meta name="author" content="{{ site.author | default: 'PaellaDoc' }}">
+    
+    <title>{% if page.title %}{{ page.title }} | {% endif %}{{ site.title }}</title>
+    
+    <link rel="stylesheet" href="{{ "/assets/css/style.css?v=" | append: site.github.build_revision | relative_url }}">
+    <link rel="stylesheet" href="{{ "/assets/css/paelladoc.css?v=" | append: site.github.build_revision | relative_url }}">
+    <link rel="icon" type="image/png" href="{{ "/assets/images/favicon.png" | relative_url }}">
+  </head>
+  <body>
+    <header class="site-header">
+      <div class="container">
+        <div class="header-content">
+          <div class="logo">
+            <a href="{{ "/" | relative_url }}">
+              <img src="{{ "/assets/images/paelladoc-logo.png" | relative_url }}" alt="PaellaDoc Logo">
+              <span>{{ site.title }}</span>
+            </a>
+          </div>
+          <nav class="main-nav">
+            <ul>
+              <li><a href="{{ "/" | relative_url }}" {% if page.url == "/" %}class="active"{% endif %}>Home</a></li>
+              <li><a href="{{ "/projects" | relative_url }}" {% if page.url contains "/projects" %}class="active"{% endif %}>Projects</a></li>
+              <li><a href="{{ "/about" | relative_url }}" {% if page.url contains "/about" %}class="active"{% endif %}>About</a></li>
+            </ul>
+          </nav>
+          <button class="menu-toggle" aria-label="Toggle menu">
+            <span></span>
+            <span></span>
+            <span></span>
+          </button>
+        </div>
+      </div>
     </header>
 
-    <main>
+    <main class="site-content">
+      <div class="container">
+        {% if page.title and page.url != "/" %}
+        <div class="page-header">
+          <h1>{{ page.title }}</h1>
+          {% if page.description %}
+          <p class="page-description">{{ page.description }}</p>
+          {% endif %}
+        </div>
+        {% endif %}
+
         {{ content }}
+      </div>
     </main>
 
-    <footer>
-        <p>{{ site.description | default: site.github.project_tagline }}</p>
+    <footer class="site-footer">
+      <div class="container">
+        <div class="footer-content">
+          <div class="footer-logo">
+            <img src="{{ "/assets/images/paelladoc-logo-small.png" | relative_url }}" alt="PaellaDoc">
+            <p>{{ site.description }}</p>
+          </div>
+          <div class="footer-links">
+            <h3>Links</h3>
+            <ul>
+              <li><a href="{{ "/" | relative_url }}">Home</a></li>
+              <li><a href="{{ "/projects" | relative_url }}">Projects</a></li>
+              <li><a href="https://github.com/jlcases/paelladoc" target="_blank">GitHub</a></li>
+            </ul>
+          </div>
+          <div class="footer-license">
+            <h3>License</h3>
+            <p>Licensed under the <a href="https://github.com/jlcases/paelladoc/blob/main/LICENSE" target="_blank">MIT License</a>.</p>
+            <p>&copy; {{ site.time | date: '%Y' }} PaellaDoc. All rights reserved.</p>
+          </div>
+        </div>
+      </div>
     </footer>
 
     <script>
-        function toggleTheme() {
-            const html = document.documentElement;
-            const currentTheme = html.getAttribute('data-theme');
-            const newTheme = currentTheme === 'dark' ? 'light' : 'dark';
-            
-            html.setAttribute('data-theme', newTheme);
-            localStorage.setItem('theme', newTheme);
-        }
-
-        document.getElementById('theme-toggle').addEventListener('click', toggleTheme);
-
-        // Set initial theme
-        const savedTheme = localStorage.getItem('theme') || 'light';
-        document.documentElement.setAttribute('data-theme', savedTheme);
+      document.querySelector('.menu-toggle').addEventListener('click', function() {
+        document.querySelector('.main-nav').classList.toggle('active');
+        this.classList.toggle('active');
+      });
     </script>
-</body>
+  </body>
 </html> 
