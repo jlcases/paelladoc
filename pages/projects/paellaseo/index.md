@@ -61,6 +61,7 @@ Explore the complete documentation for paellaSEO:
 - [Bug Documentation]({{ site.baseurl }}/projects/paellaseo/bug_documentation/)
 - [Feature Documentation]({{ site.baseurl }}/projects/paellaseo/feature_documentation/)
 - [Quick Task Documentation]({{ site.baseurl }}/projects/paellaseo/quick_task_documentation/)
+- [Commands Reference]({{ site.baseurl }}/commands/)
 
 ## Development Status
 paellaSEO is currently in active development with a focus on expanding analysis capabilities and improving the user interface. The project follows an agile development methodology with regular updates and feature additions.

@@ -5,11 +5,6 @@ description: Learn more about the PAELLADOC interactive documentation system
 ---
 
 <div class="about-container">
-  <div class="about-header">
-    <div class="paella-icon">🥘</div>
-    <h1>About PAELLADOC</h1>
-  </div>
-
   <div class="about-content">
     <section class="about-section">
       <h2>What is PAELLADOC?</h2>
@@ -45,18 +40,19 @@ description: Learn more about the PAELLADOC interactive documentation system
 
     <section class="about-section">
       <h2>Our Mission</h2>
-      <p>PAELLADOC aims to transform how teams document their products and processes. We believe that documentation should be:</p>
+      <p>PAELLADOC aims to transform how teams document their products and processes. Our ultimate goal is to enable documentation with such a level of detail that AI can automatically implement your ideas.</p>
       <ul class="mission-list">
         <li><strong>Interactive</strong> - Not static files, but living documents</li>
         <li><strong>Collaborative</strong> - Created by both product and engineering teams</li>
         <li><strong>Accessible</strong> - Easy to create, update, and understand</li>
         <li><strong>Actionable</strong> - Directly connected to development workflows</li>
+        <li><strong>AI-Ready</strong> - Structured for automated implementation</li>
       </ul>
     </section>
 
     <section class="about-section">
-      <h2>The Team</h2>
-      <p>PAELLADOC fue creado por un CPTO que se llama @PR. Como un maestro chef de paella, ha combinado su experiencia y visión para crear algo que es mayor que la suma de sus partes.</p>
+      <h2>Creator</h2>
+      <p>PAELLADOC was created by <a href="https://x.com/jlcases" target="_blank">@jlcases</a>. Like a master paella chef, he has combined his experience and vision to create something that is greater than the sum of its parts.</p>
     </section>
   </div>
 </div>
@@ -66,11 +62,6 @@ description: Learn more about the PAELLADOC interactive documentation system
     max-width: 900px;
     margin: 0 auto;
     padding: 2rem 1rem;
-  }
-  
-  .about-header {
-    text-align: center;
-    margin-bottom: 3rem;
   }
   
   .paella-icon {

@@ -49,7 +49,7 @@ permalink: /projects/
             </div>
             <p class="project-description">{{ project_index.description | default: project_index.excerpt | strip_html | truncate: 120 }}</p>
             <div class="project-footer">
-              <a href="{{ project_index.url }}" class="project-link">View Project</a>
+              <a href="{{ site.baseurl }}{{ project_index.url }}" class="project-link">View Project</a>
               <span class="project-date">{{ project_index.date | date: "%m/%d/%Y" }}</span>
             </div>
           </div>

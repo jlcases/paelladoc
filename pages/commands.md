@@ -1,39 +1,33 @@
 ---
 layout: default
-title: Comandos PAELLADOC
-description: Guía completa de los comandos disponibles en PAELLADOC y cómo utilizarlos
+title: PAELLADOC Commands
+description: Complete guide to all commands available in PAELLADOC and how to use them
 ---
 
 <div class="commands-container">
-  <div class="commands-header">
-    <div class="paella-icon">🥘</div>
-    <h1>Comandos PAELLADOC</h1>
-    <p class="commands-intro">PAELLADOC ofrece una serie de comandos potentes para gestionar tu documentación de forma interactiva. Aquí encontrarás todos los comandos disponibles y cómo utilizarlos.</p>
-  </div>
-
   <div class="commands-content">
     <section class="command-section">
-      <h2>Comandos Principales</h2>
+      <h2>Main Commands</h2>
       
       <div class="command-card">
         <div class="command-name">PAELLA</div>
         <div class="command-description">
-          <p>Inicia el proceso de documentación y genera las reglas de Cursor.</p>
+          <p>Initiates the documentation process and generates Cursor rules.</p>
           <div class="command-usage">
-            <h4>Uso:</h4>
-            <code>PAELLA nombre_proyecto</code>
+            <h4>Usage:</h4>
+            <code>PAELLA project_name</code>
           </div>
           <div class="command-args">
-            <h4>Argumentos:</h4>
+            <h4>Arguments:</h4>
             <ul>
-              <li><code>nombre_proyecto</code> - Nombre del proyecto a documentar (requerido)</li>
-              <li><code>generate_rules</code> - Si se deben generar reglas de Cursor desde la documentación (por defecto: true)</li>
-              <li><code>ai_mode</code> - Modo de operación de la IA: "autonomous", "collaborative", o "advisory" (por defecto: "collaborative")</li>
+              <li><code>project_name</code> - Name of the project to document (required)</li>
+              <li><code>generate_rules</code> - Whether to generate Cursor rules from documentation (default: true)</li>
+              <li><code>ai_mode</code> - AI operation mode: "autonomous", "collaborative", or "advisory" (default: "collaborative")</li>
             </ul>
           </div>
           <div class="command-example">
-            <h4>Ejemplo:</h4>
-            <code>PAELLA mi_proyecto</code>
+            <h4>Example:</h4>
+            <code>PAELLA my_project</code>
           </div>
         </div>
       </div>
@@ -41,49 +35,49 @@ description: Guía completa de los comandos disponibles en PAELLADOC y cómo uti
       <div class="command-card">
         <div class="command-name">CONTINUE</div>
         <div class="command-description">
-          <p>Continúa con la documentación de un proyecto existente.</p>
+          <p>Continues with an existing project documentation.</p>
           <div class="command-usage">
-            <h4>Uso:</h4>
-            <code>CONTINUE nombre_proyecto</code>
+            <h4>Usage:</h4>
+            <code>CONTINUE project_name</code>
           </div>
           <div class="command-args">
-            <h4>Argumentos:</h4>
+            <h4>Arguments:</h4>
             <ul>
-              <li><code>nombre_proyecto</code> - Nombre del proyecto a continuar (requerido)</li>
-              <li><code>update_rules</code> - Si se deben actualizar las reglas de Cursor desde la documentación (por defecto: true)</li>
-              <li><code>sync_templates</code> - Si se deben sincronizar las plantillas con el estado actual (por defecto: true)</li>
+              <li><code>project_name</code> - Name of the project to continue with (required)</li>
+              <li><code>update_rules</code> - Whether to update Cursor rules from documentation (default: true)</li>
+              <li><code>sync_templates</code> - Whether to synchronize templates with current state (default: true)</li>
             </ul>
           </div>
           <div class="command-example">
-            <h4>Ejemplo:</h4>
-            <code>CONTINUE mi_proyecto</code>
+            <h4>Example:</h4>
+            <code>CONTINUE my_project</code>
           </div>
         </div>
       </div>
     </section>
-
+    
     <section class="command-section">
-      <h2>Comandos de Gestión de Proyectos</h2>
+      <h2>Project Management Commands</h2>
       
       <div class="command-card">
         <div class="command-name">ACHIEVEMENT</div>
         <div class="command-description">
-          <p>Registra un logro en la memoria del proyecto.</p>
+          <p>Records an achievement in the project memory.</p>
           <div class="command-usage">
-            <h4>Uso:</h4>
-            <code>ACHIEVEMENT "descripción" categoría [nivel_impacto]</code>
+            <h4>Usage:</h4>
+            <code>ACHIEVEMENT description category [impact_level]</code>
           </div>
           <div class="command-args">
-            <h4>Argumentos:</h4>
+            <h4>Arguments:</h4>
             <ul>
-              <li><code>descripción</code> - Descripción del logro (requerido)</li>
-              <li><code>categoría</code> - Categoría del logro: "architecture", "development", "documentation", "testing", "security", "performance", "product", "design", "research" (requerido)</li>
-              <li><code>nivel_impacto</code> - Nivel de impacto: "high", "medium", "low" (por defecto: "medium")</li>
+              <li><code>description</code> - Description of the achievement (required)</li>
+              <li><code>category</code> - Category of the achievement (required): architecture, development, documentation, testing, security, performance, product, design, research</li>
+              <li><code>impact_level</code> - Level of impact of the achievement (default: "medium"): high, medium, low</li>
             </ul>
           </div>
           <div class="command-example">
-            <h4>Ejemplo:</h4>
-            <code>ACHIEVEMENT "Implementación de autenticación segura" security high</code>
+            <h4>Example:</h4>
+            <code>ACHIEVEMENT "Implemented responsive design" design high</code>
           </div>
         </div>
       </div>
@@ -91,22 +85,22 @@ description: Guía completa de los comandos disponibles en PAELLADOC y cómo uti
       <div class="command-card">
         <div class="command-name">ISSUE</div>
         <div class="command-description">
-          <p>Registra un problema en la memoria del proyecto.</p>
+          <p>Records an issue in the project memory.</p>
           <div class="command-usage">
-            <h4>Uso:</h4>
-            <code>ISSUE "descripción" severidad área</code>
+            <h4>Usage:</h4>
+            <code>ISSUE description severity area</code>
           </div>
           <div class="command-args">
-            <h4>Argumentos:</h4>
+            <h4>Arguments:</h4>
             <ul>
-              <li><code>descripción</code> - Descripción del problema (requerido)</li>
-              <li><code>severidad</code> - Nivel de severidad: "critical", "high", "medium", "low" (requerido)</li>
-              <li><code>área</code> - Área afectada: "product", "technical", "process", "security", "performance" (requerido)</li>
+              <li><code>description</code> - Description of the issue (required)</li>
+              <li><code>severity</code> - Severity level of the issue (required): critical, high, medium, low</li>
+              <li><code>area</code> - Area affected by the issue (required): product, technical, process, security, performance</li>
             </ul>
           </div>
           <div class="command-example">
-            <h4>Ejemplo:</h4>
-            <code>ISSUE "Fallo en la validación de entrada" high security</code>
+            <h4>Example:</h4>
+            <code>ISSUE "Login page not responsive on mobile" high product</code>
           </div>
         </div>
       </div>
@@ -114,71 +108,49 @@ description: Guía completa de los comandos disponibles en PAELLADOC y cómo uti
       <div class="command-card">
         <div class="command-name">DECISION</div>
         <div class="command-description">
-          <p>Registra una decisión técnica en la memoria del proyecto.</p>
+          <p>Records a technical decision in the project memory.</p>
           <div class="command-usage">
-            <h4>Uso:</h4>
-            <code>DECISION "descripción" impacto "razonamiento"</code>
+            <h4>Usage:</h4>
+            <code>DECISION description impact rationale</code>
           </div>
           <div class="command-args">
-            <h4>Argumentos:</h4>
+            <h4>Arguments:</h4>
             <ul>
-              <li><code>descripción</code> - Descripción de la decisión (requerido)</li>
-              <li><code>impacto</code> - Áreas impactadas: ["architecture", "development", "documentation", "testing", "security", "performance", "product", "design", "process"] (requerido)</li>
-              <li><code>razonamiento</code> - Razonamiento detrás de la decisión (requerido)</li>
+              <li><code>description</code> - Description of the decision (required)</li>
+              <li><code>impact</code> - Areas impacted by the decision (required): architecture, development, documentation, testing, security, performance, product, design, process</li>
+              <li><code>rationale</code> - Reasoning behind the decision (required)</li>
             </ul>
           </div>
           <div class="command-example">
-            <h4>Ejemplo:</h4>
-            <code>DECISION "Usar arquitectura microservicios" ["architecture", "development"] "Mejora la escalabilidad y mantenibilidad"</code>
-          </div>
-        </div>
-      </div>
-      
-      <div class="command-card">
-        <div class="command-name">MEMORY</div>
-        <div class="command-description">
-          <p>Muestra el registro de desarrollo.</p>
-          <div class="command-usage">
-            <h4>Uso:</h4>
-            <code>MEMORY [filtro] [formato]</code>
-          </div>
-          <div class="command-args">
-            <h4>Argumentos:</h4>
-            <ul>
-              <li><code>filtro</code> - Filtrar memoria por categoría: "all", "achievements", "issues", "decisions", "product", "technical" (por defecto: "all")</li>
-              <li><code>formato</code> - Formato de salida: "detailed", "summary", "timeline" (por defecto: "detailed")</li>
-            </ul>
-          </div>
-          <div class="command-example">
-            <h4>Ejemplo:</h4>
-            <code>MEMORY issues summary</code>
+            <h4>Example:</h4>
+            <code>DECISION "Use React for frontend" "architecture,development" "Better component reusability and ecosystem"</code>
           </div>
         </div>
       </div>
     </section>
-
+    
     <section class="command-section">
-      <h2>Comandos de Investigación y Verificación</h2>
+      <h2>Research and Verification Commands</h2>
       
       <div class="command-card">
         <div class="command-name">RESEARCH</div>
         <div class="command-description">
-          <p>Realiza investigación automática para un tema específico.</p>
+          <p>Performs automatic research for a specific topic.</p>
           <div class="command-usage">
-            <h4>Uso:</h4>
-            <code>RESEARCH "tema" [profundidad] nombre_proyecto</code>
+            <h4>Usage:</h4>
+            <code>RESEARCH topic depth project_name</code>
           </div>
           <div class="command-args">
-            <h4>Argumentos:</h4>
+            <h4>Arguments:</h4>
             <ul>
-              <li><code>tema</code> - Tema a investigar (requerido)</li>
-              <li><code>profundidad</code> - Nivel de profundidad: "basic", "standard", "exhaustive" (por defecto: "standard")</li>
-              <li><code>nombre_proyecto</code> - Proyecto con el que asociar la investigación (requerido)</li>
+              <li><code>topic</code> - Topic to research (required)</li>
+              <li><code>depth</code> - Research depth level (default: "standard"): basic, standard, exhaustive</li>
+              <li><code>project_name</code> - Project to associate research with (required)</li>
             </ul>
           </div>
           <div class="command-example">
-            <h4>Ejemplo:</h4>
-            <code>RESEARCH "tendencias en microservicios" exhaustive mi_proyecto</code>
+            <h4>Example:</h4>
+            <code>RESEARCH "React state management" exhaustive my_project</code>
           </div>
         </div>
       </div>
@@ -186,48 +158,70 @@ description: Guía completa de los comandos disponibles en PAELLADOC y cómo uti
       <div class="command-card">
         <div class="command-name">VERIFY</div>
         <div class="command-description">
-          <p>Verifica una fuente de información.</p>
+          <p>Verifies an information source.</p>
           <div class="command-usage">
-            <h4>Uso:</h4>
-            <code>VERIFY "fuente" tipo [fiabilidad]</code>
+            <h4>Usage:</h4>
+            <code>VERIFY source type [reliability]</code>
           </div>
           <div class="command-args">
-            <h4>Argumentos:</h4>
+            <h4>Arguments:</h4>
             <ul>
-              <li><code>fuente</code> - URL o referencia de la fuente a verificar (requerido)</li>
-              <li><code>tipo</code> - Tipo de fuente: "academic", "technical", "blog", "documentation", "market_research", "user_research" (requerido)</li>
-              <li><code>fiabilidad</code> - Nivel de fiabilidad requerido: "high", "medium", "low" (por defecto: "high")</li>
+              <li><code>source</code> - URL or reference of the source to verify (required)</li>
+              <li><code>type</code> - Type of source (required): academic, technical, blog, documentation, market_research, user_research</li>
+              <li><code>reliability</code> - Required reliability level (default: "high"): high, medium, low</li>
             </ul>
           </div>
           <div class="command-example">
-            <h4>Ejemplo:</h4>
-            <code>VERIFY "https://example.com/research-paper" academic high</code>
+            <h4>Example:</h4>
+            <code>VERIFY "https://reactjs.org/docs/hooks-intro.html" documentation high</code>
           </div>
         </div>
       </div>
     </section>
-
+    
     <section class="command-section">
-      <h2>Comandos de Generación y Gestión</h2>
+      <h2>Documentation Management Commands</h2>
+      
+      <div class="command-card">
+        <div class="command-name">MEMORY</div>
+        <div class="command-description">
+          <p>Shows the development record.</p>
+          <div class="command-usage">
+            <h4>Usage:</h4>
+            <code>MEMORY [filter] [format]</code>
+          </div>
+          <div class="command-args">
+            <h4>Arguments:</h4>
+            <ul>
+              <li><code>filter</code> - Filter memory by category (default: "all"): all, achievements, issues, decisions, product, technical</li>
+              <li><code>format</code> - Output format (default: "detailed"): detailed, summary, timeline</li>
+            </ul>
+          </div>
+          <div class="command-example">
+            <h4>Example:</h4>
+            <code>MEMORY decisions timeline</code>
+          </div>
+        </div>
+      </div>
       
       <div class="command-card">
         <div class="command-name">GENERATE_RULES</div>
         <div class="command-description">
-          <p>Genera o actualiza reglas de Cursor desde la documentación.</p>
+          <p>Generates or updates Cursor rules from documentation.</p>
           <div class="command-usage">
-            <h4>Uso:</h4>
-            <code>GENERATE_RULES nombre_proyecto [tipo_regla]</code>
+            <h4>Usage:</h4>
+            <code>GENERATE_RULES project_name [rule_type]</code>
           </div>
           <div class="command-args">
-            <h4>Argumentos:</h4>
+            <h4>Arguments:</h4>
             <ul>
-              <li><code>nombre_proyecto</code> - Nombre del proyecto (requerido)</li>
-              <li><code>tipo_regla</code> - Tipos de reglas a generar: ["product", "technical", "process", "security", "all"] (por defecto: ["all"])</li>
+              <li><code>project_name</code> - Name of the project (required)</li>
+              <li><code>rule_type</code> - Types of rules to generate (default: ["all"]): product, technical, process, security, all</li>
             </ul>
           </div>
           <div class="command-example">
-            <h4>Ejemplo:</h4>
-            <code>GENERATE_RULES mi_proyecto ["technical", "security"]</code>
+            <h4>Example:</h4>
+            <code>GENERATE_RULES my_project technical,security</code>
           </div>
         </div>
       </div>
@@ -235,45 +229,49 @@ description: Guía completa de los comandos disponibles en PAELLADOC y cómo uti
       <div class="command-card">
         <div class="command-name">TEMPLATE</div>
         <div class="command-description">
-          <p>Gestiona plantillas de documentación.</p>
+          <p>Manages documentation templates.</p>
           <div class="command-usage">
-            <h4>Uso:</h4>
-            <code>TEMPLATE operación tipo_plantilla [nombre_plantilla]</code>
+            <h4>Usage:</h4>
+            <code>TEMPLATE operation template_type [template_name]</code>
           </div>
           <div class="command-args">
-            <h4>Argumentos:</h4>
+            <h4>Arguments:</h4>
             <ul>
-              <li><code>operación</code> - Operación a realizar: "create", "update", "delete", "list", "sync" (requerido)</li>
-              <li><code>tipo_plantilla</code> - Tipo de plantilla: "product", "technical", "process", "simplified" (requerido)</li>
-              <li><code>nombre_plantilla</code> - Nombre de la plantilla (requerido para algunas operaciones)</li>
+              <li><code>operation</code> - Template operation to perform (required): create, update, delete, list, sync</li>
+              <li><code>template_type</code> - Type of template (required): product, technical, process, simplified</li>
+              <li><code>template_name</code> - Name of the template (optional)</li>
             </ul>
           </div>
           <div class="command-example">
-            <h4>Ejemplo:</h4>
-            <code>TEMPLATE create technical arquitectura_microservicios</code>
+            <h4>Example:</h4>
+            <code>TEMPLATE list technical</code>
           </div>
         </div>
       </div>
+    </section>
+    
+    <section class="command-section">
+      <h2>Advanced Commands</h2>
       
       <div class="command-card">
-        <div class="command-name">GENERATE_MDC</div>
+        <div class="command-name">FORCE_RESEARCH</div>
         <div class="command-description">
-          <p>Genera un archivo MDC de Cursor a partir de la documentación del proyecto para desarrollo.</p>
+          <p>Forces automatic deep research for a document without asking any questions.</p>
           <div class="command-usage">
-            <h4>Uso:</h4>
-            <code>GENERATE_MDC nombre_proyecto [ruta_salida] [incluir_reglas]</code>
+            <h4>Usage:</h4>
+            <code>FORCE_RESEARCH project_name document [force_level]</code>
           </div>
           <div class="command-args">
-            <h4>Argumentos:</h4>
+            <h4>Arguments:</h4>
             <ul>
-              <li><code>nombre_proyecto</code> - Nombre del proyecto para generar MDC (requerido)</li>
-              <li><code>ruta_salida</code> - Ruta donde guardar el archivo MDC (por defecto: "docs/${nombre_proyecto}/")</li>
-              <li><code>incluir_reglas</code> - Si se deben extraer reglas de desarrollo de la documentación (por defecto: true)</li>
+              <li><code>project_name</code> - Name of the project (required)</li>
+              <li><code>document</code> - Document to research (e.g., 01_market_research.md) (required)</li>
+              <li><code>force_level</code> - Level of force to apply to research (default: "high"): normal, high, maximum</li>
             </ul>
           </div>
           <div class="command-example">
-            <h4>Ejemplo:</h4>
-            <code>GENERATE_MDC mi_proyecto</code>
+            <h4>Example:</h4>
+            <code>FORCE_RESEARCH my_project 01_market_research.md maximum</code>
           </div>
         </div>
       </div>
@@ -281,45 +279,45 @@ description: Guía completa de los comandos disponibles en PAELLADOC y cómo uti
       <div class="command-card">
         <div class="command-name">UPDATE_ADR</div>
         <div class="command-description">
-          <p>Actualiza el Registro de Decisiones de Arquitectura basado en cambios recientes.</p>
+          <p>Updates the Architecture Decision Record based on recent changes.</p>
           <div class="command-usage">
-            <h4>Uso:</h4>
-            <code>UPDATE_ADR nombre_proyecto [auto_detect] [update_status]</code>
+            <h4>Usage:</h4>
+            <code>UPDATE_ADR project_name [auto_detect] [update_status]</code>
           </div>
           <div class="command-args">
-            <h4>Argumentos:</h4>
+            <h4>Arguments:</h4>
             <ul>
-              <li><code>nombre_proyecto</code> - Nombre del proyecto para actualizar ADR (requerido)</li>
-              <li><code>auto_detect</code> - Si se deben detectar automáticamente los cambios arquitectónicos (por defecto: true)</li>
-              <li><code>update_status</code> - Si se debe actualizar el estado de las decisiones existentes (por defecto: true)</li>
+              <li><code>project_name</code> - Name of the project to update ADR for (required)</li>
+              <li><code>auto_detect</code> - Whether to automatically detect architectural changes (default: true)</li>
+              <li><code>update_status</code> - Whether to update status of existing decisions (default: true)</li>
             </ul>
           </div>
           <div class="command-example">
-            <h4>Ejemplo:</h4>
-            <code>UPDATE_ADR mi_proyecto</code>
+            <h4>Example:</h4>
+            <code>UPDATE_ADR my_project true true</code>
           </div>
         </div>
       </div>
       
       <div class="command-card">
-        <div class="command-name">FORCE_RESEARCH</div>
+        <div class="command-name">GENERATE_MDC</div>
         <div class="command-description">
-          <p>Fuerza la investigación automática profunda para un documento sin hacer preguntas.</p>
+          <p>Generates a Cursor MDC file from project documentation for development.</p>
           <div class="command-usage">
-            <h4>Uso:</h4>
-            <code>FORCE_RESEARCH nombre_proyecto documento [nivel_fuerza]</code>
+            <h4>Usage:</h4>
+            <code>GENERATE_MDC project_name [output_path] [include_rules]</code>
           </div>
           <div class="command-args">
-            <h4>Argumentos:</h4>
+            <h4>Arguments:</h4>
             <ul>
-              <li><code>nombre_proyecto</code> - Nombre del proyecto (requerido)</li>
-              <li><code>documento</code> - Documento a investigar (ej. 01_market_research.md) (requerido)</li>
-              <li><code>nivel_fuerza</code> - Nivel de fuerza a aplicar: "normal", "high", "maximum" (por defecto: "high")</li>
+              <li><code>project_name</code> - Name of the project to generate MDC for (required)</li>
+              <li><code>output_path</code> - Path where to save the MDC file (default: "docs/${project_name}/")</li>
+              <li><code>include_rules</code> - Whether to extract development rules from documentation (default: true)</li>
             </ul>
           </div>
           <div class="command-example">
-            <h4>Ejemplo:</h4>
-            <code>FORCE_RESEARCH mi_proyecto 01_market_research.md maximum</code>
+            <h4>Example:</h4>
+            <code>GENERATE_MDC my_project "docs/my_project/" true</code>
           </div>
         </div>
       </div>
@@ -329,59 +327,84 @@ description: Guía completa de los comandos disponibles en PAELLADOC y cómo uti
 
 <style>
   .commands-container {
-    max-width: 900px;
+    max-width: 1200px;
     margin: 0 auto;
-    padding: 2rem 1rem;
+    padding: 2rem 0;
   }
   
-  .commands-header {
+  .commands-content {
     text-align: center;
     margin-bottom: 3rem;
   }
   
   .paella-icon {
-    font-size: 6rem;
+    font-size: 4rem;
     margin-bottom: 1rem;
-    animation: steam 3s ease-in-out infinite;
-  }
-  
-  @keyframes steam {
-    0% { transform: translateY(0) rotate(0deg); }
-    50% { transform: translateY(-10px) rotate(5deg); }
-    100% { transform: translateY(0) rotate(0deg); }
   }
   
   .commands-intro {
-    font-size: 1.2rem;
-    max-width: 700px;
+    max-width: 800px;
     margin: 0 auto;
+    font-size: 1.2rem;
+    color: #555;
   }
   
   .command-section {
     margin-bottom: 3rem;
+    text-align: left;
+  }
+  
+  .command-section h2 {
+    border-bottom: 2px solid #f5821f;
+    padding-bottom: 0.5rem;
+    margin-bottom: 2rem;
+    color: #333;
   }
   
   .command-card {
-    background-color: var(--gray-50);
-    border-radius: var(--border-radius-md);
+    background-color: #fff;
+    border-radius: 8px;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
     padding: 1.5rem;
-    margin-bottom: 1.5rem;
-    box-shadow: var(--shadow-sm);
-    border-left: 5px solid var(--paella-orange);
+    margin-bottom: 2rem;
+    display: flex;
+    flex-direction: column;
+  }
+  
+  @media (min-width: 768px) {
+    .command-card {
+      flex-direction: row;
+    }
   }
   
   .command-name {
-    font-family: monospace;
-    font-size: 1.5rem;
+    background-color: #f5821f;
+    color: white;
     font-weight: bold;
-    color: var(--paella-orange);
+    padding: 0.5rem 1rem;
+    border-radius: 4px;
+    display: inline-block;
     margin-bottom: 1rem;
-    padding-bottom: 0.5rem;
-    border-bottom: 1px solid var(--gray-200);
+    font-family: monospace;
+    font-size: 1.2rem;
+    min-width: 150px;
+    text-align: center;
+  }
+  
+  @media (min-width: 768px) {
+    .command-name {
+      margin-right: 1.5rem;
+      margin-bottom: 0;
+    }
+  }
+  
+  .command-description {
+    flex: 1;
   }
   
   .command-description p {
     margin-bottom: 1rem;
+    font-size: 1.1rem;
   }
   
   .command-usage, .command-args, .command-example {
@@ -390,12 +413,11 @@ description: Guía completa de los comandos disponibles en PAELLADOC y cómo uti
   
   .command-usage h4, .command-args h4, .command-example h4 {
     font-size: 1rem;
+    color: #555;
     margin-bottom: 0.5rem;
-    color: var(--gray-700);
   }
   
   .command-args ul {
-    list-style-type: disc;
     padding-left: 1.5rem;
   }
   
@@ -404,29 +426,17 @@ description: Guía completa de los comandos disponibles en PAELLADOC y cómo uti
   }
   
   code {
-    font-family: monospace;
-    background-color: var(--gray-100);
+    background-color: #f5f5f5;
     padding: 0.2rem 0.4rem;
-    border-radius: var(--border-radius-sm);
+    border-radius: 3px;
+    font-family: monospace;
     font-size: 0.9rem;
   }
   
   .command-example code {
     display: block;
-    padding: 0.75rem;
-    background-color: var(--gray-800);
-    color: var(--gray-100);
-    border-radius: var(--border-radius-md);
-    overflow-x: auto;
-  }
-  
-  @media (max-width: 768px) {
-    .command-card {
-      padding: 1rem;
-    }
-    
-    .command-name {
-      font-size: 1.3rem;
-    }
+    padding: 0.5rem;
+    background-color: #f5f5f5;
+    border-left: 3px solid #f5821f;
   }
 </style> 
