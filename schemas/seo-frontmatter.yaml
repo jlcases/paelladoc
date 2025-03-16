@@ -1,0 +1,75 @@
+# Schema para validación de frontmatter SEO
+type: object
+required:
+  - title
+  - meta_description
+  - seo_title
+  - keywords
+  - canonical_url
+  - og_type
+  - og_title
+  - og_description
+  - og_image
+  - twitter_card
+properties:
+  title:
+    type: string
+    minLength: 35
+    maxLength: 65
+  meta_description:
+    type: string
+    minLength: 120
+    maxLength: 158
+  seo_title:
+    type: string
+    minLength: 35
+    maxLength: 65
+  keywords:
+    type: array
+    items:
+      type: string
+    minItems: 3
+    maxItems: 7
+  canonical_url:
+    type: string
+    pattern: ^https?://.*$
+  og_type:
+    type: string
+    enum: [website, article]
+  og_title:
+    type: string
+  og_description:
+    type: string
+  og_image:
+    type: string
+    pattern: ^https?://.*\.(jpg|jpeg|png|gif)$
+  twitter_card:
+    type: string
+    enum: [summary, summary_large_image]
+  author:
+    type: string
+  date:
+    type: string
+    pattern: ^\d{4}-\d{2}-\d{2}$
+  last_modified:
+    type: string
+    pattern: ^\d{4}-\d{2}-\d{2}$
+  language:
+    type: string
+    pattern: ^[a-z]{2}(-[A-Z]{2})?$
+  structured_data:
+    type: object
+  social_sharing:
+    type: object
+  analytics:
+    type: object
+  category:
+    type: string
+  tags:
+    type: array
+    items:
+      type: string
+  conversion_goals:
+    type: array
+    items:
+      type: string 

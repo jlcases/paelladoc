@@ -1,0 +1,9 @@
+{
+    "MD041": false,
+    "MD033": false,
+    "MD013": false,
+    "default": true,
+    "line-length": false,
+    "no-hard-tabs": true,
+    "whitespace": false
+}
