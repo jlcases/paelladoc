@@ -1,1 +1,54 @@
- 
+{
+    "version": "1.0.0",
+    "name": "paelladoc-documentation-workflow",
+    "description": "Documentation workflow with code context support",
+    "workflow_steps": {
+        "with_code_context": [
+            {
+                "step": "analyze_existing_code",
+                "actions": [
+                    "scan_directory",
+                    "detect_architecture",
+                    "extract_components",
+                    "analyze_dependencies"
+                ]
+            },
+            {
+                "step": "generate_initial_documentation",
+                "actions": [
+                    "create_architecture_doc",
+                    "create_api_doc",
+                    "create_database_doc"
+                ]
+            },
+            {
+                "step": "user_verification",
+                "actions": [
+                    "present_findings",
+                    "request_confirmation",
+                    "allow_modifications"
+                ]
+            },
+            {
+                "step": "complete_documentation",
+                "actions": [
+                    "fill_gaps",
+                    "add_business_context",
+                    "validate_completeness"
+                ]
+            }
+        ]
+    },
+    "integration": {
+        "code_analysis": {
+            "enabled": true,
+            "auto_update": true,
+            "link_to_source": true
+        },
+        "documentation_update": {
+            "watch_code_changes": true,
+            "auto_sync": true,
+            "notification_on_changes": true
+        }
+    }
+} 
