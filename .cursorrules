@@ -60,6 +60,47 @@
                         "id": "welcome",
                         "type": "message",
                         "content": "Welcome to PAELLADOC - Interactive Documentation System",
+                        "next": "project_type_selection"
+                    },
+                    {
+                        "id": "project_type_selection",
+                        "type": "choice",
+                        "prompt": "¿Qué tipo de proyecto quieres documentar?",
+                        "options": [
+                            "Proyecto nuevo (sin código)",
+                            "Proyecto existente (con código en code_context)"
+                        ],
+                        "store_as": "project_type",
+                        "next": "check_code_context"
+                    },
+                    {
+                        "id": "check_code_context",
+                        "type": "conditional",
+                        "condition": {
+                            "field": "project_type",
+                            "equals": "Proyecto existente (con código en code_context)"
+                        },
+                        "true": "analyze_existing_code",
+                        "false": "project_name_input"
+                    },
+                    {
+                        "id": "analyze_existing_code",
+                        "type": "action",
+                        "action": "analyze_code_context",
+                        "params": {
+                            "path": "code_context/",
+                            "analysis_type": "comprehensive",
+                            "extract": [
+                                "architecture",
+                                "components",
+                                "dependencies",
+                                "api_endpoints",
+                                "database_schema",
+                                "business_logic",
+                                "security_patterns"
+                            ]
+                        },
+                        "store_result_as": "code_analysis",
                         "next": "project_name_input"
                     },
                     {
@@ -1452,6 +1493,34 @@
             "UPDATED": "{{current_date}}",
             "STATUS": "Draft",
             "AUTO_REPLACE": true
+        }
+    },
+    "code_analysis_settings": {
+        "supported_languages": [
+            "javascript",
+            "typescript",
+            "python",
+            "java",
+            "go",
+            "rust",
+            "c++",
+            "c#"
+        ],
+        "analysis_features": {
+            "detect_architecture": true,
+            "extract_components": true,
+            "identify_patterns": true,
+            "analyze_dependencies": true,
+            "security_audit": true,
+            "performance_patterns": true,
+            "api_documentation": true,
+            "database_schema": true
+        },
+        "documentation_integration": {
+            "auto_generate_sections": true,
+            "link_to_source": true,
+            "include_code_snippets": true,
+            "generate_diagrams": true
         }
     }
 } 
