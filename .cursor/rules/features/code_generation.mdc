@@ -1,0 +1,350 @@
+/**
+ * Manages code generation capabilities based on documentation in PAELLADOC
+ */
+{
+    "name": "code_generation",
+    "description": "PAELLADOC's code generation capabilities based on complete documentation",
+    "version": "1.5.0",
+    "patterns": ["**/*.md", "**/*.model.json", "**/*.schema.json"],
+    "functionality": {
+        "generate_code": {
+            "description": "Generate code artifacts based on documentation",
+            "enabled": true,
+            "requires_validation": true,
+            "extraction_sources": [
+                "architecture_documents",
+                "api_specification",
+                "component_definitions",
+                "data_models"
+            ],
+            "supported_languages": [
+                "typescript",
+                "javascript",
+                "python",
+                "java",
+                "kotlin",
+                "csharp",
+                "ruby",
+                "go",
+                "php"
+            ],
+            "output_types": [
+                "complete_application",
+                "library",
+                "module",
+                "component",
+                "scaffold"
+            ]
+        },
+        "tdd_generation": {
+            "description": "Generate test-driven development artifacts",
+            "enabled": true,
+            "components": [
+                {
+                    "name": "interface_contracts",
+                    "description": "Generate interfaces with test contracts",
+                    "artifacts": [
+                        "interface_definitions",
+                        "interface_contracts",
+                        "interface_tests",
+                        "mock_implementations"
+                    ]
+                },
+                {
+                    "name": "test_first_components",
+                    "description": "Generate tests before implementation",
+                    "artifacts": [
+                        "unit_tests",
+                        "implementation_stubs",
+                        "test_utilities"
+                    ]
+                },
+                {
+                    "name": "compliance_verification",
+                    "description": "Generate compliance checks for interfaces",
+                    "artifacts": [
+                        "interface_verification_tests",
+                        "contract_validators",
+                        "adapter_tests"
+                    ]
+                }
+            ],
+            "methodology": {
+                "test_first": true,
+                "red_green_refactor": true,
+                "interface_driven": true,
+                "pattern_verification": true
+            }
+        },
+        "design_pattern_generation": {
+            "description": "Generate code following established design patterns",
+            "enabled": true,
+            "patterns": [
+                {
+                    "name": "adapter",
+                    "description": "Generate adapter pattern implementations",
+                    "artifacts": [
+                        "target_interface",
+                        "adapter_implementation",
+                        "adapter_tests",
+                        "adapter_factory"
+                    ],
+                    "validation_rules": [
+                        "interface_compliance",
+                        "complete_method_coverage",
+                        "type_safety",
+                        "error_handling",
+                        "liskov_substitution"
+                    ]
+                },
+                {
+                    "name": "factory",
+                    "description": "Generate factory pattern implementations",
+                    "artifacts": [
+                        "factory_interface",
+                        "concrete_factories",
+                        "product_interfaces",
+                        "factory_tests"
+                    ]
+                },
+                {
+                    "name": "strategy",
+                    "description": "Generate strategy pattern implementations",
+                    "artifacts": [
+                        "strategy_interface",
+                        "concrete_strategies",
+                        "context_class",
+                        "strategy_tests"
+                    ]
+                },
+                {
+                    "name": "observer",
+                    "description": "Generate observer pattern implementations",
+                    "artifacts": [
+                        "subject_interface",
+                        "observer_interface",
+                        "concrete_subject",
+                        "concrete_observers",
+                        "observer_tests"
+                    ]
+                },
+                {
+                    "name": "composite",
+                    "description": "Generate composite pattern implementations",
+                    "artifacts": [
+                        "component_interface",
+                        "leaf_class",
+                        "composite_class",
+                        "composite_tests"
+                    ]
+                }
+            ]
+        },
+        "interface_enforcement": {
+            "description": "Enforce interface contracts in generated code",
+            "enabled": true,
+            "strategies": [
+                {
+                    "name": "static_type_checking",
+                    "languages": ["typescript", "java", "kotlin", "csharp", "go"]
+                },
+                {
+                    "name": "runtime_assertions",
+                    "languages": ["javascript", "python", "ruby", "php"]
+                },
+                {
+                    "name": "test_validation",
+                    "languages": ["all"]
+                },
+                {
+                    "name": "documentation_contracts",
+                    "languages": ["all"]
+                }
+            ],
+            "verification_levels": [
+                "method_signatures",
+                "parameter_types",
+                "return_types",
+                "exception_handling",
+                "behavioral_contracts"
+            ]
+        }
+    },
+    "validation": {
+        "pre_generation": [
+            "check_documentation_completeness",
+            "validate_architecture_consistency",
+            "check_naming_conventions",
+            "validate_interface_definitions"
+        ],
+        "post_generation": [
+            "run_tests",
+            "check_code_style",
+            "verify_interface_implementations",
+            "validate_adapter_pattern_correctness",
+            "ensure_pattern_compliance"
+        ]
+    }
+}
+
+# Code Generation
+
+## Commands
+
+### GENERATE_CODE
+Generates code based on completed documentation
+
+#### Arguments:
+- `project_name` (string, required): Name of the project to generate code for
+- `output_path` (string, required): Path where generated code will be stored (can be a different repository)
+- `code_type` (string): Type of code to generate. Options: "frontend", "backend", "full_stack", "extension", "library". Default: "full_stack"
+- `language` (string): Primary language to use. Options: "javascript", "typescript", "python", "java", "ruby", "go", "php". Default: "typescript"
+- `style_guide` (string): Style guide to follow for code generation. Default: based on project type
+- `include_tests` (boolean): Whether to generate tests for the code. Default: true
+- `github_repo` (string): Optional GitHub repository to create/push to
+- `methodologies` (array): Development methodologies to apply. Options: "tdd", "bdd", "scrum", "ci", "pair". Required.
+- `git_workflow` (string): Git workflow to use. Options: "github_flow", "gitflow", "trunk_based", "no_workflow". Required.
+
+#### Behavior with Existing Documentation:
+When the GENERATE_CODE command is invoked without parameters, the system MUST:
+
+1. **Check Project Memory**:
+   - Extract project name, type, language preferences, and other details from existing documentation
+   - If no project documentation exists, inform the user and suggest starting with the PAELLA command first
+
+2. **Auto-Populate Parameters**:
+   - Automatically use values from existing documentation where available (project_name, code_type, language, etc.)
+   - Only prompt for parameters that cannot be determined from documentation
+
+3. **Summarize Documentation Analysis**:
+   - "Analyzing documentation for [project_name]"
+   - Confirm the extracted architectural components, API specifications, and data models
+   - Highlight any missing information that might affect code quality
+
+4. **Review and Confirmation**:
+   - Present the determined parameters to the user for confirmation
+   - Allow the user to override any auto-detected values
+   - Confirm critical decisions (output_path, github_repo) before proceeding
+
+#### Required Conversation Flow:
+When parameters cannot be extracted from documentation or when invoked with minimal parameters, a conversational flow MUST be initiated to gather the following information in this specific order:
+
+1. **Project Information Verification**:
+   - Verify project name and type from memory or ask
+   - Confirm or ask for output path
+
+2. **Development Methodology Selection**:
+   - Ask which development methodology the user wants to apply (TDD, BDD, etc.)
+   - Explain the implications of each methodology for code generation
+   - Collect multiple methodologies if applicable
+
+3. **Git Workflow Selection**:
+   - Ask which Git workflow the user prefers
+   - Explain the benefits of each workflow option
+   - Configure the appropriate Git structure based on selection
+
+4. **Language & Technology Stack**:
+   - Confirm or ask for primary programming language
+   - Ask about specific frameworks or libraries to include
+   - Determine testing frameworks based on methodology
+
+5. **Testing Strategy**:
+   - Confirm if tests should be included (based on methodology)
+   - Ask about test coverage requirements
+   - Determine types of tests needed (unit, integration, e2e)
+
+6. **Repository Management**:
+   - Ask if a new repository should be created
+   - Determine repository type and visibility
+   - Configure CI/CD based on Git workflow selection
+
+This conversation flow MUST be adaptive - skipping steps where information is already available from documentation - and code generation MUST NOT begin until all required parameters have been gathered.
+
+### CREATE_REPO
+Creates a new repository for generated code
+
+#### Arguments:
+- `repo_name` (string, required): Name of the repository to create
+- `repo_type` (string): Type of repository. Options: "github", "gitlab", "local". Default: "github"
+- `visibility` (string): Repository visibility. Options: "public", "private". Default: "private"
+- `include_ci` (boolean): Whether to include CI/CD configuration. Default: true
+- `license` (string): License to use. Options: "MIT", "Apache-2.0", "GPL-3.0", etc. Default: "MIT"
+
+## Code Generation Architecture
+
+The code generation system follows a structured approach:
+
+1. **Documentation Analysis**: Extract requirements, architecture, components, and API specifications from documentation
+2. **Scaffolding**: Generate project structure based on architecture and project type
+3. **Component Generation**: Create individual components described in documentation
+4. **Integration**: Connect components according to the architecture specification
+5. **Testing**: Generate tests based on requirements and components
+6. **Deployment**: Configure CI/CD pipelines based on project needs
+
+## Code Generation Process
+
+```
+Documentation -> Requirements Extraction -> Component Specification -> Code Generation -> Testing -> Repository Management
+```
+
+### Documentation Sources
+
+The following documentation elements are used for code generation:
+
+- **Architecture Documents**: Overall structure and patterns
+- **API Specifications**: Endpoints, methods, schemas
+- **Component Specifications**: Individual component details
+- **Data Models**: Entity relationships and structures
+- **User Stories**: Functional requirements
+
+### Code Quality Assurance
+
+Generated code is subject to:
+
+- **Linting**: Enforcing style guide rules
+- **Testing**: Unit, integration, and E2E tests
+- **Security Scanning**: Detecting potential vulnerabilities
+- **Documentation**: Automatic documentation generation
+
+## Repository Management
+
+The system can manage code repositories in the following ways:
+
+1. **Create New Repository**: Generate a fresh repository with code
+2. **Update Existing Repository**: Add or update code in an existing repository
+3. **Branch Management**: Create feature branches for different components
+4. **PR Workflow**: Generate pull requests for review
+
+## Code Templates
+
+Code generation uses templates based on project type:
+
+### Frontend Templates
+- React component structures
+- Vue component structures
+- Angular module structures
+- State management patterns
+- Routing configurations
+
+### Backend Templates
+- API routes and controllers
+- Database models and migrations
+- Authentication systems
+- Middleware components
+- Service layer patterns
+
+### Full Stack Templates
+- Client-server communication
+- Data validation
+- Error handling
+- State synchronization
+- Deployment configurations
+
+## Integration with Documentation
+
+Code generation is tightly integrated with documentation:
+
+- Changes to documentation trigger code updates
+- Code generation reports discrepancies in documentation
+- Documentation can be updated based on code changes
+- Bi-directional traceability between documentation and code 

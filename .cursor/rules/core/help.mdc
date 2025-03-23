@@ -1,0 +1,271 @@
+---
+description: "Implements the help system for PAELLADOC commands"
+globs: ["**/*"]
+---
+
+# PAELLADOC Help System
+
+## Command: HELP
+
+The HELP command provides information about available PAELLADOC commands and their usage.
+
+### Implementation
+
+```json
+{
+  "name": "help_system",
+  "description": "Help system for PAELLADOC commands",
+  "version": "1.0.0",
+  "commands": {
+    "help": {
+      "action": "display_help",
+      "handler": "generateCommandHelp",
+      "response_template": "command_help_template"
+    },
+    "paella_help_flag": {
+      "action": "paella_help",
+      "handler": "generateCommandHelp",
+      "response_template": "command_help_template"
+    }
+  }
+}
+```
+
+### Display Help Function
+
+When displaying help, the system will:
+
+1. Gather all command metadata from the PAELLADOC system
+2. Organize commands into logical categories
+3. Format the help information according to the requested format
+4. Display additional context and examples for each command
+
+### Categories
+
+Commands are organized in the following categories:
+
+- **Core Commands**: PAELLA, CONTINUE, HELP
+- **Project Memory**: ACHIEVEMENT, ISSUE, DECISION, MEMORY
+- **Style & Workflow**: CODING_STYLE, WORKFLOW
+- **Documentation**: TEMPLATE, VERIFY, RESEARCH
+- **Code Generation**: GENERATE_RULES, GENERATE_CODE
+
+### Command Examples
+
+#### Core Commands
+
+```json
+{
+  "examples": {
+    "PAELLA": [
+      "PAELLA project_name=\"My New Project\" project_type=\"frontend\"",
+      "PAELLA project_name=\"API Service\" project_type=\"backend\" methodologies=[\"tdd\"]",
+      "PAELLA project_type=\"chrome_extension\" git_workflow=\"github_flow\"",
+      "PAELLA -help"
+    ],
+    "CONTINUE": [
+      "CONTINUE project_name=\"My Existing Project\"",
+      "CONTINUE project_name=\"Website Redesign\" update_rules=true sync_templates=false"
+    ],
+    "HELP": [
+      "HELP",
+      "HELP command=PAELLA",
+      "HELP format=summary",
+      "HELP format=examples"
+    ]
+  }
+}
+```
+
+#### Project Memory Commands
+
+```json
+{
+  "examples": {
+    "ACHIEVEMENT": [
+      "ACHIEVEMENT description=\"Completed responsive design\" category=\"design\"",
+      "ACHIEVEMENT description=\"Reduced API response time by 30%\" category=\"performance\" impact_level=\"high\""
+    ],
+    "ISSUE": [
+      "ISSUE description=\"Authentication fails on Safari\" severity=\"high\" area=\"technical\"",
+      "ISSUE description=\"Missing error handling in login flow\" severity=\"medium\" area=\"security\""
+    ],
+    "DECISION": [
+      "DECISION description=\"Use React for frontend\" impact=[\"architecture\", \"development\"] rationale=\"Better component model and ecosystem\"",
+      "DECISION description=\"Implement JWT for auth\" impact=[\"security\", \"architecture\"] rationale=\"Stateless authentication with better scaling\""
+    ],
+    "MEMORY": [
+      "MEMORY",
+      "MEMORY filter=\"achievements\"",
+      "MEMORY filter=\"decisions\" format=\"timeline\""
+    ]
+  }
+}
+```
+
+#### Style & Workflow Commands
+
+```json
+{
+  "examples": {
+    "CODING_STYLE": [
+      "CODING_STYLE operation=\"apply\" style_name=\"frontend\" project_name=\"My Web App\"",
+      "CODING_STYLE operation=\"list\"",
+      "CODING_STYLE operation=\"show\" style_name=\"tdd\" project_name=\"API Project\""
+    ],
+    "WORKFLOW": [
+      "WORKFLOW operation=\"apply\" workflow_name=\"github_flow\" project_name=\"Team Project\"",
+      "WORKFLOW operation=\"customize\" workflow_name=\"gitflow\" project_name=\"Enterprise App\" customizations=\"{\\\"release_branch_prefix\\\": \\\"rel-\\\"}\""
+    ]
+  }
+}
+```
+
+#### Documentation Commands
+
+```json
+{
+  "examples": {
+    "TEMPLATE": [
+      "TEMPLATE operation=\"list\" template_type=\"technical\"",
+      "TEMPLATE operation=\"create\" template_type=\"product\" template_name=\"feature_analysis\"",
+      "TEMPLATE operation=\"sync\" template_type=\"simplified\""
+    ],
+    "VERIFY": [
+      "VERIFY source=\"https://developer.mozilla.org/en-US/docs/Web/API/Fetch_API\" type=\"documentation\"",
+      "VERIFY source=\"Smith, J. (2023). Modern Web Architecture. IEEE Journal\" type=\"academic\" reliability=\"high\""
+    ],
+    "RESEARCH": [
+      "RESEARCH operation=\"create\" research_type=\"market_research\" project_name=\"E-commerce Platform\"",
+      "RESEARCH operation=\"show\" research_type=\"competitive_analysis\" project_name=\"Mobile App\""
+    ]
+  }
+}
+```
+
+#### Code Generation Commands
+
+```json
+{
+  "examples": {
+    "GENERATE_RULES": [
+      "GENERATE_RULES project_name=\"My Project\"",
+      "GENERATE_RULES project_name=\"Security App\" rule_type=[\"security\", \"technical\"]"
+    ],
+    "GENERATE_CODE": [
+      "GENERATE_CODE project_name=\"Todo App\" output_path=\"./src\" code_type=\"frontend\" language=\"typescript\"",
+      "GENERATE_CODE project_name=\"API Server\" output_path=\"./server\" code_type=\"backend\" language=\"javascript\" include_tests=true"
+    ]
+  }
+}
+```
+
+### Response Templates
+
+#### Command Help Template (Detailed)
+
+```
+# PAELLADOC Command Reference
+
+## Available Commands
+
+{{#each categories}}
+### {{name}}
+
+{{#each commands}}
+#### {{name}}
+{{description}}
+
+Usage: {{name}} {{usage}}
+
+Arguments:
+{{#each args}}
+- {{name}}: {{description}}
+  Type: {{type}}
+  {{#if required}}Required{{else}}Optional{{/if}}
+  {{#if default}}Default: {{default}}{{/if}}
+{{/each}}
+
+{{#if examples}}
+Examples:
+{{#each examples}}
+- {{this}}
+{{/each}}
+{{/if}}
+
+{{/each}}
+{{/each}}
+```
+
+#### Command Help Template (Summary)
+
+```
+# PAELLADOC Commands
+
+{{#each categories}}
+## {{name}}
+
+{{#each commands}}
+### {{name}}
+{{description}}
+{{/each}}
+{{/each}}
+```
+
+#### Command Help Template (Examples)
+
+```
+# PAELLADOC Command Examples
+
+{{#each categories}}
+## {{name}}
+
+{{#each commands}}
+### {{name}}
+
+{{#each examples}}
+{{this}}
+{{/each}}
+{{/each}}
+{{/each}}
+```
+
+### Example Usage
+
+1. Display help for all commands:
+   ```
+   HELP
+   ```
+
+2. Display help for a specific command:
+   ```
+   HELP command=PAELLA
+   ```
+
+3. Display summarized help:
+   ```
+   HELP format=summary
+   ```
+
+4. Use the help flag with PAELLA:
+   ```
+   PAELLA -help
+   ```
+
+### Implementation Notes
+
+- The help system dynamically loads command metadata from all MDC files
+- Commands are sorted alphabetically within their categories
+- Examples are generated based on common use patterns
+- When using `PAELLA -help`, the system redirects to the HELP command functionality
+
+### Integration with PAELLA Command
+
+When `PAELLA -help` is detected, the system performs the following:
+
+1. Intercepts the help flag before processing other arguments
+2. Redirects to the HELP command implementation
+3. Displays the complete command reference
+4. Does not execute the normal PAELLA command functionality
+
+This ensures that users can quickly access help without needing to know the specific HELP command syntax. 

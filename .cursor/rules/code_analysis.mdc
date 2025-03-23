@@ -1,1 +1,90 @@
- 
+---
+description: 
+globs: 
+alwaysApply: false
+---
+{
+    "version": "1.0.0",
+    "name": "paelladoc-code-analyzer",
+    "description": "Code analysis rules for PAELLADOC",
+    "patterns": ["code_context/**/*"],
+    "rules": [
+        {
+            "name": "architecture-detection",
+            "description": "Detecta patrones arquitectónicos en el código",
+            "patterns": ["**/*.{js,ts,py,java,go,rs,cpp,cs}"],
+            "analysis": {
+                "detect_patterns": [
+                    "MVC",
+                    "MVVM",
+                    "Clean Architecture",
+                    "Microservices",
+                    "Event-Driven",
+                    "Layered Architecture"
+                ],
+                "component_analysis": true,
+                "dependency_mapping": true
+            }
+        },
+        {
+            "name": "api-documentation",
+            "description": "Extrae documentación de APIs",
+            "patterns": [
+                "**/controllers/**/*",
+                "**/routes/**/*",
+                "**/handlers/**/*",
+                "**/api/**/*"
+            ],
+            "analysis": {
+                "extract_endpoints": true,
+                "parse_comments": true,
+                "identify_dto": true,
+                "security_patterns": true
+            }
+        },
+        {
+            "name": "database-schema",
+            "description": "Analiza esquemas de base de datos",
+            "patterns": [
+                "**/models/**/*",
+                "**/entities/**/*",
+                "**/schemas/**/*",
+                "**/*.sql"
+            ],
+            "analysis": {
+                "extract_models": true,
+                "relationships": true,
+                "migrations": true
+            }
+        }
+    ],
+    "documentation_templates": {
+        "architecture": {
+            "template": "02_technical_architecture.md",
+            "sections": [
+                "Detected Architecture",
+                "Component Structure",
+                "Dependencies",
+                "Integration Points"
+            ]
+        },
+        "api": {
+            "template": "05_api_specification.md",
+            "sections": [
+                "Endpoints Overview",
+                "Authentication",
+                "Data Models",
+                "Error Handling"
+            ]
+        },
+        "database": {
+            "template": "04_database_design.md",
+            "sections": [
+                "Schema Overview",
+                "Entity Relationships",
+                "Migrations",
+                "Data Flow"
+            ]
+        }
+    }
+} 

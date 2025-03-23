@@ -1,57 +1,72 @@
-# Simplified Template: Bug Documentation
+# Plantilla Simplificada: Documentación de Bug
 
-## Bug Information
-- **Product**: [Product Name]
-- **Bug ID**: [ID or Reference]
-- **Reported Date**: [Date]
-- **Reported By**: [Name/Role]
-- **Severity**: [Critical/High/Medium/Low]
-- **Status**: [Open/In Progress/Fixed/Verified/Closed]
+## Información General
+- **Nombre del Producto**: [Nombre del producto afectado]
+- **ID del Bug**: [Identificador único del bug]
+- **Fecha de Reporte**: [Fecha cuando se reportó]
+- **Reportado por**: [Persona que reportó el bug]
+- **Asignado a**: [Persona responsable de la resolución]
+- **Versión Afectada**: [Versión(es) donde ocurre el bug]
+- **Prioridad**: [Alta/Media/Baja]
+- **Severidad**: [Crítica/Alta/Media/Baja]
+- **Estado**: [Reportado/En análisis/En desarrollo/Resuelto/Verificado/Cerrado]
 
-## Bug Description
-[Clear description of the bug, including what happens vs. what should happen]
+## Descripción del Bug (MECE)
+- **Resumen**: [Descripción concisa del problema]
+- **Comportamiento Esperado**: [Cómo debería funcionar correctamente]
+- **Comportamiento Actual**: [Cómo está funcionando incorrectamente]
+- **Impacto**: 
+  - **Impacto en Usuario**: [Cómo afecta a los usuarios]
+  - **Impacto en Negocio**: [Repercusiones para el negocio]
+  - **Alcance**: [Número de usuarios/clientes afectados]
 
-## Environment (MECE)
-- **Platform**: [OS/Browser/Device]
-- **Version**: [Product Version]
-- **User Type**: [Admin/Regular User/etc.]
-- **Configuration**: [Relevant configuration details]
-- **Related Feature**: [Feature or component affected]
-- **Related Commit/Change**: [If regression, reference to change that introduced it]
-
-## Reproduction Steps
-1. [Step 1]
-2. [Step 2]
-3. [Step 3]
+## Pasos para Reproducir
+1. [Paso 1]
+2. [Paso 2]
+3. [Paso 3]
 ...
 
-## Impact Analysis
-- **Affected Users**: [Who is affected and how many]
-- **Functional Impact**: [How functionality is impaired]
-- **Business Impact**: [Any business consequences]
-- **Potential Side Effects**: [Other areas that might be impacted]
+## Contexto Adicional
+- **Entorno**: [Detalles del entorno donde ocurre - sistema operativo, navegador, etc.]
+- **Consistencia**: [Siempre ocurre / Intermitente / Ocurre bajo condiciones específicas]
+- **Adjuntos**: [Enlaces a capturas de pantalla, logs, videos, etc.]
+- **Información de Usuario**: [Datos sobre el usuario afectado, si relevante]
 
-## Root Cause Analysis
-- **Technical Cause**: [What's causing the bug]
-- **Contributing Factors**: [Other factors that contributed]
-- **Type of Issue**: [Logic Error/Performance/Security/etc.]
+## Análisis de Causa Raíz
+- **Componente Afectado**: [Módulo/componente específico donde está el problema]
+- **Causa Técnica**: [Explicación técnica de por qué ocurre el bug]
+- **Factores Contribuyentes**: [Otros factores que contribuyen al problema]
+- **¿Regresión?**: [Sí/No - ¿Es un problema que antes funcionaba correctamente?]
+- **Commit/Cambio Relacionado**: [Si es regresión, referencia al cambio que lo introdujo]
 
-## Solution
-- **Approach**: [How the bug will be fixed]
-- **Implementation Details**: [Technical details of the fix]
-- **Code Changes**: [Files/components that need modification]
-- **Pull Request/Commit**: [References to code changes]
+## Plan de Solución
+- **Enfoque de Corrección**: [Descripción de cómo se planea resolver]
+- **Archivos a Modificar**: [Lista de archivos que requieren cambios]
+- **Cambios en la Base de Datos**: [Si aplican]
+- **Riesgos de la Corrección**: [Posibles efectos secundarios]
+- **Estimación de Esfuerzo**: [Tiempo estimado para la resolución]
 
-## Verification
-- **Test Cases**: [Test cases to verify the fix]
-- **Validation Approach**: [How to verify the fix works]
-- **Regression Testing**: [Tests to ensure no regression]
+## Verificación
+- **Plan de Testing**: [Cómo se verificará que el bug está resuelto]
+- **Casos de Prueba**: [Tests específicos a realizar]
+- **Criterios de Aceptación**: [Condiciones para considerar el bug como resuelto]
 
-## Prevention Measures
-- **How to Prevent Similar Issues**: [Process or technical improvements]
-- **Documentation Updates**: [Changes needed to documentation]
-- **Test Coverage Improvements**: [Added tests]
+## Prevención
+- **Causa de no Detección**: [Por qué no se detectó antes en pruebas]
+- **Mejoras en Proceso**: [Cambios en el proceso para prevenir bugs similares]
+- **Mejoras en Testing**: [Nuevos casos de prueba a añadir]
+
+## Resolución
+- **Solución Implementada**: [Descripción de la solución aplicada]
+- **Pull Request/Commit**: [Referencias a los cambios en el código]
+- **Versión Corregida**: [Versión donde se incluye la corrección]
+- **Notas para Release**: [Texto a incluir en notas de la versión]
+
+## Lecciones Aprendidas
+- **Observaciones**: [Reflexiones sobre el bug y su solución]
+- **Acciones Preventivas**: [Acciones a tomar para evitar bugs similares]
+- **Conocimiento Adquirido**: [Nuevos conocimientos obtenidos]
 
 ---
 
-This simplified template follows MECE principles (Mutually Exclusive, Collectively Exhaustive) to document a bug completely and in a structured manner, facilitating its analysis, resolution, and prevention of similar problems in the future. 
+Esta plantilla simplificada sigue principios MECE (Mutuamente Excluyente, Colectivamente Exhaustivo) para documentar un bug de manera completa y estructurada, facilitando su análisis, resolución y prevención de problemas similares en el futuro. 

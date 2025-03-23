@@ -1,0 +1,43 @@
+{
+  "version": "1.0.0",
+  "name": "PAELLADOC Conversation Config",
+  "description": "Configuration for PAELLADOC conversations",
+  "enabled": true,
+  "conversation_flows": [
+    {
+      "path": ".cursor/rules/templates/conversation_flows/main_conversation_flow.json",
+      "enabled": true,
+      "priority": "critical"
+    },
+    {
+      "path": ".cursor/rules/templates/conversation_flows/technical_specifications_flow.json",
+      "enabled": true,
+      "priority": "high"
+    }
+  ],
+  "commands": {
+    "PAELLA": {
+      "required_flows": ["main_conversation"],
+      "optional_flows": []
+    },
+    "CONTINUE": {
+      "required_flows": ["main_conversation"],
+      "optional_flows": []
+    },
+    "GENERATE_CODE": {
+      "required_flows": ["main_conversation", "technical_specifications"],
+      "optional_flows": []
+    }
+  },
+  "global_requirements": {
+    "technical_specifications_required": true,
+    "documentation_validation": true,
+    "memory_system_enabled": true
+  },
+  "error_handling": {
+    "missing_technical_specs": {
+      "error_message": "ERROR: Technical specifications are MANDATORY before generating code or detailed documentation. Please complete the technical specifications using the PAELLA or CONTINUE command.",
+      "recovery_action": "prompt_for_technical_specs"
+    }
+  }
+}

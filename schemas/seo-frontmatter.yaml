@@ -7,10 +7,10 @@ required:
   - keywords
   - canonical_url
   - og_type
-  - og_title
-  - og_description
   - og_image
   - twitter_card
+  - author
+  - date
 properties:
   title:
     type: string
@@ -26,23 +26,19 @@ properties:
     maxLength: 65
   keywords:
     type: array
-    items:
-      type: string
     minItems: 3
     maxItems: 7
+    items:
+      type: string
   canonical_url:
     type: string
-    pattern: ^https?://.*$
+    pattern: "^https?://[\\w\\-\\.]+(:\\d+)?(/[\\w\\-\\./%]*)*$"
   og_type:
     type: string
     enum: [website, article]
-  og_title:
-    type: string
-  og_description:
-    type: string
   og_image:
     type: string
-    pattern: ^https?://.*\.(jpg|jpeg|png|gif)$
+    pattern: "^https?://[\\w\\-\\.]+(:\\d+)?(/[\\w\\-\\./%]*)*$"
   twitter_card:
     type: string
     enum: [summary, summary_large_image]
@@ -50,13 +46,10 @@ properties:
     type: string
   date:
     type: string
-    pattern: ^\d{4}-\d{2}-\d{2}$
-  last_modified:
-    type: string
-    pattern: ^\d{4}-\d{2}-\d{2}$
+    pattern: "^\\d{4}-\\d{2}-\\d{2}$"
   language:
     type: string
-    pattern: ^[a-z]{2}(-[A-Z]{2})?$
+    enum: [en, es]
   structured_data:
     type: object
   social_sharing:

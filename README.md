@@ -1,10 +1,10 @@
 # 🥘 PAELLADOC: Advanced Software Development System
 
-![Version](https://img.shields.io/badge/version-2.0.0-blue.svg)
+![Version](https://img.shields.io/badge/version-3.0.0-blue.svg)
 ![Status](https://img.shields.io/badge/status-active-success.svg)
-![Cursor](https://img.shields.io/badge/cursor-0.47-green.svg)
+![Cursor](https://img.shields.io/badge/cursor-0.47+-green.svg)
 ![Compatibility](https://img.shields.io/badge/compatibility-cursor%200.47+-orange.svg)
-![Updated](https://img.shields.io/badge/updated-2025--03--12-brightgreen.svg)
+![Updated](https://img.shields.io/badge/updated-2025--03--23-brightgreen.svg)
 
 ## 🎯 The Art of Documentation in the AI Era
 
@@ -19,34 +19,57 @@ Just as a skilled chef knows that the secret to a perfect paella lies in the qua
 
 ### 🥘 The PAELLADOC Solution
 
-Following the MECE principle (Mutually Exclusive, Collectively Exhaustive), we organize documentation like a perfect recipe:
+Following the MECE principle (Mutually Exclusive, Collectively Exhaustive), we organize documentation with a modular architecture:
 
 ```
 paelladoc/
-├── .cursorrules              # The main recipe book
 ├── .cursor/
 │   └── rules/
-│       ├── templates/        # Our base recipes
-│       ├── scripts/         # Kitchen utensils
-│       └── paelladoc.mdc    # The master recipe
-├── docs/                    # Our documentary paellas
-└── .memory.json            # The chef's notebook
+│       ├── core/                # Core PAELLADOC functionality
+│       │   ├── commands.mdc     # Main command definitions
+│       │   ├── help.mdc         # Help system implementation
+│       │   └── verification.mdc # Documentation verification processes
+│       ├── features/            # Modular feature extensions
+│       │   ├── templates.mdc    # Template management
+│       │   ├── project_memory.mdc # Project memory capabilities  
+│       │   ├── coding_styles.mdc  # Programming style guides
+│       │   ├── git_workflows.mdc  # Git workflow methodologies
+│       │   ├── code_generation.mdc # Code generation capabilities
+│       │   ├── conversation_workflow.mdc # Conversation flows
+│       │   ├── interfaces.mdc   # User interface definitions
+│       │   └── product_management.mdc # Product management features
+│       ├── templates/           # Document and code templates
+│       │   ├── coding_styles/   # Programming style guides
+│       │   ├── github-workflows/ # Git workflow methodologies
+│       │   ├── product_management/ # Product management templates
+│       │   ├── code_generation/ # Code generation templates
+│       │   ├── conversation_flows/ # Conversation flow configs
+│       │   ├── methodologies/   # Development methodologies
+│       │   ├── Product/         # Main product documentation
+│       │   ├── scripts/         # Template-specific scripts
+│       │   ├── selectors/       # Selection guide templates
+│       │   └── simplified_templates/ # Simple documentation
+│       ├── scripts/             # Utility scripts
+│       ├── DIRECTORY_STRUCTURE.md # Directory organization
+│       ├── feature_map.md       # Feature mapping documentation
+│       ├── imports.mdc          # Import definitions
+│       ├── paelladoc_conversation_config.json # Conversation config
+│       └── paelladoc.mdc        # Main orchestrator
+├── docs/                        # Generated documentation
+└── .memory.json                 # Project memory store
 ```
 
 ### 🍳 Simple Usage
 
-Just type:
+Just type one of our comprehensive commands:
 ```bash
-PAELLA [project_name]  # e.g., PAELLA myproject
+PAELLA [project_name]           # Initialize new documentation
+CONTINUE [project_name]         # Continue with existing documentation
+GENERATE_CODE [project_name]    # Generate code from documentation
+STORY operation="create" [args] # Manage user stories
+SPRINT operation="plan" [args]  # Plan and manage sprints
+MEETING operation="create" [args] # Record meeting notes
 ```
-
-The system will:
-1. First ask you:
-   - Which language you want to communicate in
-   - Which language(s) you want the documentation in
-2. Then:
-   - If the project exists in docs/, continue with existing documentation
-   - If it's new, start the interactive documentation process
 
 ### 🤖 Interactive Documentation Process
 
@@ -55,25 +78,65 @@ Like a well-trained chef, PAELLADOC will:
 - Guide you through project documentation with relevant questions
 - Research market trends and technical standards
 - Generate comprehensive documentation
+- Allow management of the entire product lifecycle
 
 ### 🌟 Key Features
 
-1. **Multilingual Support**
-   - Choose your communication language
-   - Generate documentation in multiple languages
-   - Natural dialogue interface
-   - Context-aware responses
+1. **Modular Architecture**
+   - Core commands, help system, and verification
+   - Feature-specific modules that can be extended
+   - Comprehensive template system
+   - Clean separation of concerns
+   - Well-documented directory structure and feature mapping
 
 2. **MECE System for Perfect Context**
    - Mutually Exclusive: Each piece of context has its place
    - Collectively Exhaustive: Nothing important is left out
    - Adaptable: Context level adjusts to the need
 
-3. **Simple Project Management**
-   - Quick project existence check
-   - Continue existing documentation
-   - Start new projects easily
-   - Automatic research integration
+3. **End-to-End Product Development**
+   - Documentation creation and maintenance
+   - Product management with user stories and sprints
+   - Meeting and decision tracking
+   - Code generation from documentation
+   - Repository creation and management
+
+4. **Comprehensive Git Workflows**
+   - GitHub Flow for simple projects
+   - GitFlow for structured development
+   - Trunk-Based Development for continuous delivery
+   - Custom workflow options
+
+5. **Programming Style Guidelines**
+   - Frontend development with React
+   - Backend development with Node.js
+   - Chrome extension development
+   - Test-Driven Development methodology
+
+6. **Product Management Suite**
+   - User story management
+   - Sprint planning and reporting
+   - Meeting notes with action items
+   - Project status reporting
+   - Task management and tracking
+
+7. **Code Generation**
+   - Generate code from documentation
+   - Create repositories for generated code
+   - Multiple language and framework support
+   - Test generation and quality assurance
+   
+8. **Enhanced Conversation Workflows**
+   - Structured conversation flows
+   - Configurable interaction patterns
+   - Intelligent context gathering
+   - Dynamic question sequences
+
+9. **Interface Definition System**
+   - User interface specifications
+   - Interaction design guidelines
+   - Component architecture definitions
+   - Responsive design patterns
 
 ### 💪 PAELLADOC vs. Paid Solutions
 
@@ -83,7 +146,9 @@ Like a well-trained chef, PAELLADOC will:
 | Automatic research | ✅ | ❌ |
 | MECE structure | ✅ | ✅ |
 | Direct IDE integration | ✅ | ❌ or limited |
-| Cost | **FREE** | $20-100/month |
+| Product management | ✅ | ✅ but limited |
+| Code generation | ✅ | ❌ or limited |
+| Cost | **FREE** | $20-200/month |
 | External dependencies | **NONE** | Multiple services |
 | Open source | ✅ | ❌ |
 
@@ -103,28 +168,17 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 
 ## 🔍 Professional Documentation with AI-Powered Research
 
-PAELLADOC has evolved into a comprehensive, professional-grade documentation system designed specifically for product development teams. Built on the MECE principle (Mutually Exclusive, Collectively Exhaustive), it creates structured, complete, and verifiable documentation through intelligent conversations and automatic deep research.
+PAELLADOC has evolved into a comprehensive, professional-grade documentation and product development system. Built on the MECE principle (Mutually Exclusive, Collectively Exhaustive), it creates structured, complete, and verifiable documentation through intelligent conversations and automatic deep research.
 
 ### 🧠 Built for Professional Teams
 
+- **Product Owners**: Manage user stories, sprints, tasks, and project status
 - **Product Teams**: Create market research with verified data and academic references
 - **Architects**: Maintain living Architecture Decision Records that evolve with your project 
 - **Technical Writers**: Produce consistent, high-quality documentation with structured templates
 - **Development Teams**: Generate comprehensive technical documentation with proper cross-references
 
 ### 🚀 Core Professional Features
-
-```
-PAELLADOC/
-├── .cursorrules               # Configuration with intelligent workflows
-├── .cursor/
-│   └── rules/
-│       ├── templates/         # Professional document templates
-│       ├── scripts/           # Automation utilities
-│       └── paelladoc.mdc      # Rules definition with advanced capabilities
-├── docs/                      # Generated documentation
-└── .memory.json               # Project memory and context store
-```
 
 ## 📊 Enterprise-Grade Capabilities
 
@@ -175,18 +229,41 @@ UPDATE_ADR projectname
 ### 5. Documentation to Development Bridge
 
 ```bash
-# Automatically offered when documentation is complete
-CONTINUE projectname
+# Generate code from documentation
+GENERATE_CODE projectname
 
-# Generate MDC file directly from documentation
-GENERATE_MDC projectname 
+# Create a new repository for generated code
+CREATE_REPO repo_name="my-project" repo_type="github"
 ```
 
 - **Documentation Completeness Tracking**: Automatically tracks completion percentage
-- **MDC Generation**: Creates Cursor MDC file from completed documentation
+- **Code Generation**: Creates full applications from completed documentation
 - **Development Rules Extraction**: Identifies patterns, rules, and guidelines from docs
 - **Seamless Transition**: Bridges the gap between documentation and development
 - **Context Preservation**: Maintains all project context for AI-assisted development
+
+### 6. Complete Product Management Suite
+
+```bash
+# Create a new user story
+STORY operation="create" title="User registration" description="As a user, I want to register..."
+
+# Plan a sprint
+SPRINT operation="plan" name="Sprint 1" start_date="2024-07-15" end_date="2024-07-29"
+
+# Record meeting notes
+MEETING operation="create" title="Sprint planning" date="2024-07-14"
+
+# Generate a sprint report
+REPORT report_type="sprint" sprint_id="SP-1"
+```
+
+- **User Story Management**: Create, update, and track user stories
+- **Sprint Planning**: Plan sprints with capacity and velocity tracking
+- **Meeting Management**: Record and distribute meeting notes with action items
+- **Task Tracking**: Manage tasks with assignees, due dates, and dependencies
+- **Progress Reporting**: Generate comprehensive status reports
+- **Visualization**: Create burndown charts and other visual aids
 
 ## 🛠️ Professional Commands
 
@@ -194,14 +271,20 @@ GENERATE_MDC projectname
 |---------|-------------|---------|
 | `PAELLA` | Start new documentation project | `PAELLA new-product` |
 | `CONTINUE` | Continue existing documentation | `CONTINUE new-product` |
-| `FORCE_RESEARCH` | Force automatic research | `FORCE_RESEARCH new-product 01_market_research.md high` |
-| `UPDATE_ADR` | Update Architecture Decision Record | `UPDATE_ADR new-product` |
-| `GENERATE_MDC` | Generate MDC from documentation | `GENERATE_MDC new-product` |
-| `RESEARCH` | Perform targeted research | `RESEARCH "market size email extensions" exhaustive new-product` |
-| `VERIFY` | Verify information source | `VERIFY "https://example.com/report" market_research high` |
+| `GENERATE_CODE` | Generate code from documentation | `GENERATE_CODE new-product` |
+| `CREATE_REPO` | Create repository for code | `CREATE_REPO repo_name="new-product"` |
+| `STORY` | Manage user stories | `STORY operation="create" title="User login"` |
+| `TASK` | Manage tasks | `TASK operation="create" title="Implement login form"` |
+| `SPRINT` | Manage sprints | `SPRINT operation="create" name="Sprint 1"` |
+| `MEETING` | Manage meeting notes | `MEETING operation="create" title="Planning"` |
+| `REPORT` | Generate reports | `REPORT report_type="sprint" sprint_id="SP-1"` |
+| `VERIFY` | Verify documentation | `VERIFY scope="project" format="detailed"` |
 | `ACHIEVEMENT` | Record project achievement | `ACHIEVEMENT "Completed market analysis" research high` |
 | `ISSUE` | Document project issue | `ISSUE "Incomplete competitor data" medium research` |
+| `DECISION` | Record technical decision | `DECISION "Use React for frontend" impact=["architecture"]` |
 | `MEMORY` | View project memory | `MEMORY filter=all format=detailed` |
+| `CODING_STYLE` | Apply coding style | `CODING_STYLE operation="apply" style_name="frontend"` |
+| `WORKFLOW` | Apply Git workflow | `WORKFLOW operation="apply" workflow_name="github_flow"` |
 
 ## 📈 Market Research Validation System
 
@@ -221,12 +304,6 @@ PAELLADOC's market research validation system is a standout feature for product 
    - Hallucination prevention with cross-validation
    - Academic-style citations and references
 
-3. **Confidence Scoring**:
-   - Transparency in information reliability
-   - Source quality weighting
-   - Data recency evaluation
-   - Conflicting information handling
-
 ## 🏗️ Architecture Decision Records
 
 For architects and technical leads, PAELLADOC provides a robust ADR system:
@@ -237,6 +314,70 @@ For architects and technical leads, PAELLADOC provides a robust ADR system:
 - **Structured**: Standardized format for all decisions
 - **Historical**: Maintains complete decision history with timestamps
 
+## 📊 Product Management System
+
+For product owners and managers, PAELLADOC offers comprehensive tools:
+
+- **User Story Management**: Create and track user stories in standard format
+- **Sprint Planning**: Organize sprints with capacity planning and tracking
+- **Task Management**: Break down stories into tasks with assignments
+- **Meeting Documentation**: Record all meetings with action items
+- **Project Tracking**: Monitor project status with detailed reports
+- **Team Collaboration**: Facilitate team communication and coordination
+- **Visual Progress Tracking**: Generate charts and visualizations
+
+## 🧭 Customer Journey
+
+The typical journey of a PAELLADOC user follows these stages:
+
+### 1. Discovery & Setup
+
+- **First Contact**: User discovers PAELLADOC through recommendations, GitHub, or Cursor community
+- **Installation**: Clones the repository and opens it with Cursor IDE
+- **Exploration**: Reviews documentation and available features
+- **Setup**: Sets up project-specific configurations if needed
+
+### 2. Documentation Creation
+
+- **Project Initialization**: Uses `PAELLA [project_name]` to begin a new documentation project
+- **Template Selection**: Chooses appropriate templates based on project needs
+- **Content Creation**: Interactively answers questions about the project
+- **Customization**: Adjusts generated content to match specific project requirements
+- **Research Integration**: Reviews and approves auto-researched content
+
+### 3. Product Management
+
+- **User Story Creation**: Creates user stories with `STORY operation="create"`
+- **Sprint Planning**: Plans sprints with `SPRINT operation="plan"`
+- **Task Assignment**: Assigns tasks to team members
+- **Meeting Documentation**: Records meetings and action items
+- **Progress Tracking**: Monitors project progress with reports
+
+### 4. Development Bridge
+
+- **Code Generation**: Uses `GENERATE_CODE` to create application code
+- **Repository Setup**: Creates a code repository with `CREATE_REPO`
+- **Integration**: Links documentation changes to code updates
+- **Coding**: Develops using the generated code foundation
+- **Testing & Validation**: Tests and validates against documentation requirements
+
+### 5. Continuous Improvement
+
+- **Documentation Updates**: Keeps documentation updated with project changes
+- **Memory Management**: Records achievements, issues, and decisions
+- **Project Evolution**: Adjusts course based on feedback and new requirements
+- **Knowledge Sharing**: Uses documentation for onboarding and knowledge transfer
+- **Process Refinement**: Improves documentation and development processes
+
+This journey demonstrates how PAELLADOC serves as a complete solution for the entire software development lifecycle, from initial concept to ongoing maintenance and improvement.
+
+## 📋 Examples and Use Cases
+
+For detailed examples of how PAELLADOC can transform projects:
+
+- [HealthTrack App case study](./examples/healthtrack-case-study.md): Illustrates how PAELLADOC automates the entire software development lifecycle for a mobile health application.
+- [SEO PowerTools Chrome Extension case study](./examples/seo-extension-case-study.md): Shows how PAELLADOC streamlines the development of a browser extension for SEO professionals.
+
 ## 🚀 Getting Started for Professionals
 
 1. **Clone Repository**: `git clone https://github.com/yourusername/paelladoc.git`
@@ -245,8 +386,10 @@ For architects and technical leads, PAELLADOC provides a robust ADR system:
 4. **Select Template**: Choose from Research, Planning, Technical, or Management templates
 5. **Generate Documents**: PAELLADOC will create the initial structure based on your template
 6. **Document Interactively**: Use `CONTINUE your-project-name` to work through each document
-7. **Generate MDC**: When documentation is complete, PAELLADOC will offer to generate an MDC file
-8. **Start Development**: Begin development with Cursor using the generated MDC file
+7. **Manage Product**: Use product management commands to manage the development process
+8. **Generate Code**: When documentation is complete, use `GENERATE_CODE` to create code
+9. **Create Repository**: Use `CREATE_REPO` to set up a repository for your generated code
+10. **Start Development**: Begin development with your generated code foundation
 
 ## 🔧 Technical Requirements
 
@@ -260,4 +403,4 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 
 ---
 
-*PAELLADOC is built for professional product and development teams who need verified, consistent, and comprehensive documentation that evolves with their projects.*
+*PAELLADOC is built for professional product and development teams who need verified, consistent, and comprehensive documentation that evolves with their projects. With the addition of product management and code generation features, it now offers a complete end-to-end solution for the entire software development lifecycle.*

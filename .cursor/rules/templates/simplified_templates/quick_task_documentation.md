@@ -1,34 +1,29 @@
-# Ultra Simplified Template: Quick Task / Maintenance
+# Plantilla Ultra Simplificada: Tarea Rápida / Mantenimiento
 
----
-title: [Task Title]
-date: [YYYY-MM-DD]
-author: [Author]
-status: [Draft/In Review/Completed]
-task_type: [Maintenance/Optimization/Configuration/Other]
-estimated_time: [Estimate]
-actual_time: [Actual]
----
+## Información Básica
+- **Producto**: [Nombre del producto]
+- **Tipo de Tarea**: [Mantenimiento/Mejora/Refactorización/Optimización/Configuración]
+- **Fecha**: [Fecha]
+- **Responsable**: [Nombre]
 
-## Task Description
-[Brief and clear description of the task]
+## Descripción (MECE)
+- **¿Qué se va a hacer?**: [Descripción concisa]
+- **¿Por qué es necesario?**: [Justificación]
+- **¿Qué beneficio aporta?**: [Valor esperado]
 
-## Justification
-[Why this task is necessary - 1-2 sentences]
+## Detalles Técnicos
+- **Componentes Afectados**: [Lista breve]
+- **Enfoque de Implementación**: [Descripción simplificada]
+- **Tiempo Estimado**: [Horas/Días]
 
-## Implementation Details
-- **Files/Components Modified**: [List or description]
-- **Changes Made**: [Key changes]
-- **Dependencies**: [Any dependencies affected]
+## Plan de Validación
+- **¿Cómo verificar que funciona?**: [Descripción simple]
+- **Riesgos a Considerar**: [Posibles efectos secundarios]
 
-## Testing
-- **Tested**: [Yes/No/Partially]
-- **Testing Method**: [How it was tested]
-- **Results**: [Brief results]
-
-## Notes
-[Any additional information, warnings, or considerations]
+## Seguimiento
+- **Estado**: [Pendiente/En Progreso/Completado]
+- **Notas Adicionales**: [Información relevante]
 
 ---
 
-This ultra-simplified template allows quick documentation of small tasks or maintenance changes, maintaining a MECE approach but reduced to the minimum necessary. 
+Esta plantilla ultra simplificada permite documentar rápidamente tareas pequeñas o cambios de mantenimiento, manteniendo un enfoque MECE pero reducido al mínimo necesario. 

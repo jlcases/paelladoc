@@ -48,3 +48,5 @@ tmp/
 # /docs/secretproject/
 # /pages/projects/secretproject/
 /code_context/
+/venv/
+.cursor/rules/scripts/venv

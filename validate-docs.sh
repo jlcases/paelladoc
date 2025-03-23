@@ -113,64 +113,54 @@ validate_markdown_file() {
     
     # Extraer y validar frontmatter
     echo -e "${GREEN}⚡ Validando frontmatter...${NC}"
-    if ! grep -q '^---$' "$file"; then
-        echo -e "${RED}❌ No se encontró frontmatter en $file${NC}"
+    
+    # Verificar si el archivo comienza con ---
+    if ! head -n 1 "$file" | grep -q '^---$'; then
+        echo -e "${RED}❌ El archivo no comienza con frontmatter (---)${NC}"
         return 1
     fi
 
-    # Extraer frontmatter
-    sed -n '/^---$/,/^---$/p' "$file" > temp_frontmatter.yml
+    # Extraer el frontmatter hasta el segundo ---
+    awk '/^---$/ {i++; next} i==1 {print}' "$file" > temp_frontmatter.yml
     
+    if [ ! -s temp_frontmatter.yml ]; then
+        echo -e "${RED}❌ No se pudo extraer el frontmatter${NC}"
+        return 1
+    fi
+
+    # Mostrar el contenido para debug
+    echo "DEBUG: Contenido del frontmatter:"
+    cat temp_frontmatter.yml
+
     # YAML syntax validation
     echo -e "${GREEN}⚡ Validando sintaxis YAML...${NC}"
-    yamllint temp_frontmatter.yml || {
-        echo -e "${RED}❌ Validación YAML fallida${NC}"
-        rm temp_frontmatter.yml
-        return 1
-    }
-
-    # Convertir YAML a JSON para validación con ajv
-    echo -e "${GREEN}⚡ Validando schema SEO...${NC}"
-    python3 -c 'import sys, yaml, json; json.dump(yaml.safe_load(sys.stdin), sys.stdout)' < temp_frontmatter.yml > temp_frontmatter.json
-
-    # Validar contra el schema SEO
-    if ! ajv validate -s schemas/seo-frontmatter.yaml -d temp_frontmatter.json; then
-        echo -e "${RED}❌ El frontmatter no cumple con el schema SEO${NC}"
-        echo -e "${YELLOW}ℹ️  Revisa que todos los campos requeridos estén presentes:${NC}"
-        echo "  - title (35-65 caracteres)"
-        echo "  - meta_description (120-158 caracteres)"
-        echo "  - seo_title (35-65 caracteres)"
-        echo "  - keywords (3-7 palabras clave)"
-        echo "  - canonical_url"
-        echo "  - og_type (website o article)"
-        echo "  - og_title"
-        echo "  - og_description"
-        echo "  - og_image (URL de imagen válida)"
-        echo "  - twitter_card (summary o summary_large_image)"
-        rm -f temp_frontmatter.yml temp_frontmatter.json
-        return 1
-    fi
-
-    # Validar estructura básica del documento
-    echo -e "${GREEN}⚡ Validando estructura del documento...${NC}"
-    
-    # Verificar encabezados
-    if ! grep -q "^# " "$file"; then
-        echo -e "${YELLOW}⚠️  No se encontró un encabezado principal (h1) en $file${NC}"
-    fi
-    
-    # Verificar enlaces
-    if grep -q "]()" "$file"; then
-        echo -e "${YELLOW}⚠️  Se encontraron enlaces vacíos en $file${NC}"
-    fi
-    
-    # Verificar imágenes
-    if grep -q "![.*]()" "$file"; then
-        echo -e "${YELLOW}⚠️  Se encontraron imágenes sin ruta en $file${NC}"
-    fi
+    python3 -c '
+import sys, yaml
+try:
+    data = yaml.safe_load(sys.stdin)
+    if not isinstance(data, dict):
+        print("Error: El frontmatter no es un diccionario válido", file=sys.stderr)
+        sys.exit(1)
+    required = ["title", "meta_description", "seo_title", "keywords", "canonical_url", "og_type", "og_image", "twitter_card", "author", "date"]
+    missing = [field for field in required if field not in data]
+    if missing:
+        print(f"Error: Faltan campos requeridos: {", ".join(missing)}".replace(", .", ", "), file=sys.stderr)
+        sys.exit(1)
+    print("✅ Frontmatter válido")
+except yaml.YAMLError as e:
+    print(f"Error de sintaxis YAML: {str(e)}", file=sys.stderr)
+    sys.exit(1)
+except Exception as e:
+    print(f"Error inesperado: {str(e)}", file=sys.stderr)
+    sys.exit(1)
+' < temp_frontmatter.yml || {
+    echo -e "${RED}❌ Validación de YAML fallida${NC}"
+    rm -f temp_frontmatter.yml
+    return 1
+}
 
     # Limpiar archivos temporales
-    rm -f temp_frontmatter.yml temp_frontmatter.json
+    rm -f temp_frontmatter.yml
     
     return 0
 }

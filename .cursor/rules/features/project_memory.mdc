@@ -1,0 +1,83 @@
+---
+description: "Manages the project memory system for tracking achievements, issues and decisions in PAELLADOC"
+globs: ["**/.memory.json", "**/memory/*"]
+---
+
+# Project Memory
+
+Project Memory is the historical tracking system in PAELLADOC that captures decisions, achievements, and issues throughout the project lifecycle.
+
+## Commands
+
+### ACHIEVEMENT
+Records an achievement in the project memory
+
+#### Arguments:
+- `description` (string, required): Description of the achievement
+- `category` (string, required): Category of the achievement. Options: "architecture", "development", "documentation", "testing", "security", "performance", "product", "design", "research"
+- `impact_level` (string): Level of impact of the achievement. Options: "high", "medium", "low". Default: "medium"
+
+### ISSUE
+Records an issue in the project memory
+
+#### Arguments:
+- `description` (string, required): Description of the issue
+- `severity` (string, required): Severity level of the issue. Options: "critical", "high", "medium", "low"
+- `area` (string, required): Area affected by the issue. Options: "product", "technical", "process", "security", "performance"
+
+### DECISION
+Records a technical decision in the project memory
+
+#### Arguments:
+- `description` (string, required): Description of the decision
+- `impact` (array, required): Areas impacted by the decision. Options: ["architecture", "development", "documentation", "testing", "security", "performance", "product", "design", "process"]
+- `rationale` (string, required): Reasoning behind the decision
+
+### MEMORY
+Shows the development record
+
+#### Arguments:
+- `filter` (string): Filter memory by category. Options: "all", "achievements", "issues", "decisions", "product", "technical". Default: "all"
+- `format` (string): Output format. Options: "detailed", "summary", "timeline". Default: "detailed"
+
+## Memory Structure
+
+The project memory is stored in a structured JSON format:
+
+```json
+{
+  "project": "Project Name",
+  "created": "2023-03-15T00:00:00.000Z",
+  "last_updated": "2023-03-20T00:00:00.000Z",
+  "entries": [
+    {
+      "type": "achievement",
+      "timestamp": "2023-03-15T00:00:00.000Z",
+      "description": "Completed initial architecture design",
+      "category": "architecture",
+      "impact_level": "high"
+    },
+    {
+      "type": "issue",
+      "timestamp": "2023-03-16T00:00:00.000Z",
+      "description": "Performance degradation in search functionality",
+      "severity": "medium",
+      "area": "performance"
+    },
+    {
+      "type": "decision",
+      "timestamp": "2023-03-17T00:00:00.000Z",
+      "description": "Use GraphQL instead of REST for API",
+      "impact": ["architecture", "development"],
+      "rationale": "Better query flexibility and reduced over-fetching"
+    }
+  ]
+}
+```
+
+## Benefits of Project Memory
+
+- **Institutional Knowledge**: Preserves decisions and context over time
+- **Onboarding**: Helps new team members understand project history
+- **Retrospectives**: Facilitates project review and learning
+- **Documentation**: Automatically generates documentation from actual development history 

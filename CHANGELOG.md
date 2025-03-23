@@ -4,7 +4,45 @@ All notable changes to PAELLADOC will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
-## [2.0.0] - 2025-03-12
+## [3.0.0] - 2025-03-23
+
+### Breaking Changes
+- Comprehensive reorganization of the `.cursor/rules` directory structure
+- Enhanced modularity with clearer separation of concerns
+- Addition of new interfaces and conversation workflows
+- Improved documentation of the system architecture
+
+### Added
+- New help system in `core/help.mdc`
+- User interface definitions in `features/interfaces.mdc`
+- Enhanced conversation workflow in `features/conversation_workflow.mdc`
+- Detailed directory structure documentation in `DIRECTORY_STRUCTURE.md`
+- Feature mapping documentation in `feature_map.md`
+- Configuration file for conversation flows in `paelladoc_conversation_config.json`
+- New template directories:
+  - `templates/conversation_flows/` for conversation configurations
+  - `templates/methodologies/` for development methodologies
+  - `templates/Product/` for main product documentation
+  - `templates/scripts/` for template-specific scripts
+  - `templates/selectors/` for selection guide templates
+  - `templates/simplified_templates/` for simplified documentation
+- Improved organization of code generation templates
+
+### Changed
+- Modular architecture with cleaner file organization
+- Enhanced product management capabilities
+- Improved code generation system
+- Better documentation of the directory structure
+- Enhanced mapping between features and their implementations
+- Reorganized template structure for better maintainability
+
+### Fixed
+- Directory structure inconsistencies
+- Feature implementation mapping gaps
+- Template organization clarity
+- Documentation of system architecture
+
+## [2.0.0] - 2024-03-12
 
 ### Breaking Changes
 - Complete restructuring for Cursor 0.47 compatibility

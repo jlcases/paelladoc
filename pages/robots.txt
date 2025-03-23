@@ -1,4 +1,0 @@
-User-agent: *
-Allow: /
-
-Sitemap: https://jlcases.github.io/paelladoc/sitemap.xml 
