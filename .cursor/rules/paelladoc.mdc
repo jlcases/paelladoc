@@ -7,6 +7,7 @@ imports:
   - ".cursor/rules/core/commands.mdc"
   - ".cursor/rules/core/verification.mdc"
   - ".cursor/rules/core/help.mdc"
+  - ".cursor/rules/core/memory_management.mdc"
   - ".cursor/rules/features/templates.mdc"
   - ".cursor/rules/features/project_memory.mdc"
   - ".cursor/rules/features/coding_styles.mdc"

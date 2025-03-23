@@ -1,83 +1,208 @@
 ---
-description: "Manages the project memory system for tracking achievements, issues and decisions in PAELLADOC"
-globs: ["**/.memory.json", "**/memory/*"]
+description: "Sistema de memoria de proyecto para registro y transferencia de contexto mediante IA"
+globs: ["**/.memory.json", "**/memory.json"]
+imports:
+  - ".cursor/rules/core/memory_management.mdc"
+commands:
+  CONTEXT:
+    description: "Gestiona el contexto de IA para la sesión actual"
+    action: "manage_ai_context"
+    args:
+      - name: "operation"
+        type: "string"
+        description: "Operación a realizar con el contexto"
+        enum: ["show", "update", "reset", "transfer"]
+        default: "show"
+      - name: "focus"
+        type: "string"
+        description: "Actualiza el enfoque actual de la sesión"
+        required: false
+      - name: "preferences"
+        type: "array"
+        description: "Actualiza las preferencias de codificación"
+        items:
+          type: "string"
+        required: false
+      - name: "next_tasks"
+        type: "array"
+        description: "Actualiza las próximas tareas a realizar"
+        items:
+          type: "string"
+        required: false
+      - name: "to_file"
+        type: "string"
+        description: "Ruta donde guardar el contexto extraído"
+        required: false
+  SUMMARIZE:
+    description: "Genera un resumen de la conversación actual para la memoria del proyecto"
+    action: "summarize_conversation"
+    args:
+      - name: "format"
+        type: "string"
+        description: "Formato del resumen"
+        enum: ["concise", "detailed", "actionable"]
+        default: "concise"
+      - name: "focus"
+        type: "string"
+        description: "Aspecto en el que enfocarse para el resumen"
+        enum: ["decisions", "technical", "next_steps", "all"]
+        default: "all"
+      - name: "save_to_memory"
+        type: "boolean"
+        description: "Guardar automáticamente en la memoria del proyecto"
+        default: true
 ---
 
-# Project Memory
+# Sistema de Memoria del Proyecto con IA
 
-Project Memory is the historical tracking system in PAELLADOC that captures decisions, achievements, and issues throughout the project lifecycle.
+El sistema de memoria del proyecto permite registrar decisiones, logros, problemas y mantener contexto entre sesiones de trabajo mediante el uso de IA.
 
-## Commands
+## Objetivos
 
-### ACHIEVEMENT
-Records an achievement in the project memory
+- Mantener un registro histórico del desarrollo
+- Preservar el contexto entre sesiones de trabajo
+- Facilitar la transferencia de conocimiento
+- Ayudar en la toma de decisiones basada en precedentes
+- Reducir el tiempo de puesta al día al cambiar de tareas
 
-#### Arguments:
-- `description` (string, required): Description of the achievement
-- `category` (string, required): Category of the achievement. Options: "architecture", "development", "documentation", "testing", "security", "performance", "product", "design", "research"
-- `impact_level` (string): Level of impact of the achievement. Options: "high", "medium", "low". Default: "medium"
+## Comandos Disponibles
 
-### ISSUE
-Records an issue in the project memory
+### CONTEXT
 
-#### Arguments:
-- `description` (string, required): Description of the issue
-- `severity` (string, required): Severity level of the issue. Options: "critical", "high", "medium", "low"
-- `area` (string, required): Area affected by the issue. Options: "product", "technical", "process", "security", "performance"
+Este comando permite gestionar el contexto de IA para la sesión actual.
 
-### DECISION
-Records a technical decision in the project memory
+**Ejemplos:**
 
-#### Arguments:
-- `description` (string, required): Description of the decision
-- `impact` (array, required): Areas impacted by the decision. Options: ["architecture", "development", "documentation", "testing", "security", "performance", "product", "design", "process"]
-- `rationale` (string, required): Reasoning behind the decision
-
-### MEMORY
-Shows the development record
-
-#### Arguments:
-- `filter` (string): Filter memory by category. Options: "all", "achievements", "issues", "decisions", "product", "technical". Default: "all"
-- `format` (string): Output format. Options: "detailed", "summary", "timeline". Default: "detailed"
-
-## Memory Structure
-
-The project memory is stored in a structured JSON format:
-
-```json
-{
-  "project": "Project Name",
-  "created": "2023-03-15T00:00:00.000Z",
-  "last_updated": "2023-03-20T00:00:00.000Z",
-  "entries": [
-    {
-      "type": "achievement",
-      "timestamp": "2023-03-15T00:00:00.000Z",
-      "description": "Completed initial architecture design",
-      "category": "architecture",
-      "impact_level": "high"
-    },
-    {
-      "type": "issue",
-      "timestamp": "2023-03-16T00:00:00.000Z",
-      "description": "Performance degradation in search functionality",
-      "severity": "medium",
-      "area": "performance"
-    },
-    {
-      "type": "decision",
-      "timestamp": "2023-03-17T00:00:00.000Z",
-      "description": "Use GraphQL instead of REST for API",
-      "impact": ["architecture", "development"],
-      "rationale": "Better query flexibility and reduced over-fetching"
-    }
-  ]
-}
+Mostrar contexto actual:
+```
+CONTEXT
 ```
 
-## Benefits of Project Memory
+Actualizar enfoque de la sesión:
+```
+CONTEXT operation=update focus="Implementación de análisis de metadatos para SEO"
+```
 
-- **Institutional Knowledge**: Preserves decisions and context over time
-- **Onboarding**: Helps new team members understand project history
-- **Retrospectives**: Facilitates project review and learning
-- **Documentation**: Automatically generates documentation from actual development history 
+Actualizar tareas pendientes:
+```
+CONTEXT operation=update next_tasks=["Completar US-04", "Refactorizar clase HeadingValidator", "Implementar pruebas de integración"]
+```
+
+Transferir contexto a un archivo:
+```
+CONTEXT operation=transfer to_file="path/to/context.json"
+```
+
+Reiniciar contexto:
+```
+CONTEXT operation=reset
+```
+
+### SUMMARIZE
+
+Este comando genera un resumen de la conversación actual para almacenarlo en la memoria del proyecto.
+
+**Ejemplos:**
+
+Generar resumen conciso:
+```
+SUMMARIZE
+```
+
+Generar resumen detallado enfocado en decisiones técnicas:
+```
+SUMMARIZE format=detailed focus=decisions
+```
+
+Generar resumen accionable sin guardarlo en memoria:
+```
+SUMMARIZE format=actionable save_to_memory=false
+```
+
+### MEMORY
+
+Este comando muestra el contenido del registro de desarrollo.
+
+**Ejemplos:**
+
+Mostrar toda la memoria:
+```
+MEMORY
+```
+
+Mostrar solo las decisiones:
+```
+MEMORY filter=decisions
+```
+
+Mostrar un resumen del contexto de IA:
+```
+MEMORY filter=ai_context format=summary
+```
+
+### ACHIEVEMENT
+
+Este comando registra un logro en la memoria del proyecto.
+
+**Ejemplos:**
+
+```
+ACHIEVEMENT description="Completada la refactorización de la clase HeadingValidator" category="development" impact_level="medium"
+```
+
+### ISSUE
+
+Este comando registra un problema en la memoria del proyecto.
+
+**Ejemplos:**
+
+```
+ISSUE description="Detectada inconsistencia en el algoritmo de puntuación" severity="medium" area="technical"
+```
+
+### DECISION
+
+Este comando registra una decisión técnica en la memoria del proyecto.
+
+**Ejemplos:**
+
+```
+DECISION description="Adoptar patrón Strategy para validadores de encabezados" impact=["architecture", "development"] rationale="Mejorar extensibilidad y seguir principios SOLID"
+```
+
+## Ciclo de Trabajo con Memoria de Proyecto
+
+1. **Inicio de Sesión**: Usar `CONTEXT` para cargar el contexto de la sesión anterior
+2. **Durante el Desarrollo**: Registrar logros, problemas y decisiones con los comandos correspondientes
+3. **Fin de Sesión**: Usar `SUMMARIZE` para generar un resumen de lo trabajado
+
+## Integración con el Flujo de Git
+
+El sistema de memoria se integra automáticamente con Git mediante hooks que:
+
+1. Actualizan la memoria con cada commit
+2. Extraen decisiones de los mensajes de commit
+3. Detectan patrones de deuda técnica en el código
+4. Actualizan métricas de calidad cuando hay cambios en tests
+
+## Consejos para Maximizar el Valor de la Memoria
+
+- Registra decisiones importantes mientras trabajas
+- Utiliza mensajes de commit informativos que comiencen con tipos (feat, fix, refactor, etc.)
+- Ejecuta `SUMMARIZE` al finalizar sesiones significativas
+- Actualiza el enfoque actual con `CONTEXT` al cambiar de tarea
+- Consulta la memoria antes de tomar decisiones similares a las ya tomadas
+
+## Recomendaciones para Equipos
+
+- Revisar periódicamente las decisiones registradas
+- Utilizar la memoria para sesiones de onboarding
+- Consultar la memoria durante las planificaciones
+- Actualizar regularmente las preferencias de codificación del equipo
+
+## Saber Más
+
+Para más información sobre la gestión de memoria con IA, ejecute:
+```
+HELP CONTEXT
+``` 
