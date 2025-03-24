@@ -51,12 +51,12 @@ Hasta la fecha, se han implementado:
   - ✅ Detección de problemas de relevancia
   - ✅ Simplificación y refactorización
 
-### Interfaz CLI (Sprint 7 - Planificado)
-- ⬜ US-06: Implementación de interfaz de línea de comandos
-  - ⬜ Análisis de URL específica
-  - ⬜ Procesamiento de múltiples URLs
-  - ⬜ Generación de reportes en varios formatos
-  - ⬜ Configuración de análisis
+### Interfaz de Usuario Básica (Sprint 7 - Planificado)
+- ⬜ US-09: Popup con resumen de análisis
+  - ⬜ Visualización de puntuaciones globales y por categoría
+  - ⬜ Listado de problemas detectados ordenados por severidad
+  - ⬜ Implementación de navegación intuitiva entre categorías
+  - ⬜ Optimización para carga rápida
 
 ### Análisis de Enlaces (Sprint 8 - Planificado)
 - ⬜ US-07: Validación de enlaces internos y externos
@@ -69,26 +69,34 @@ Hasta la fecha, se han implementado:
 - ⬜ Análisis de dimensiones y tamaño
 - ⬜ Recomendaciones de optimización
 
-### Interfaz de Usuario Básica (Sprint 10 - Planificado)
-- ⬜ US-09: Popup con resumen de análisis
+### Configuración y Opciones (Sprint 10 - Planificado)
 - ⬜ US-10: Página de opciones simple
-- ⬜ Indicadores visuales de puntuación
-- ⬜ Listado de problemas detectados
+- ⬜ Configuración de análisis
+- ⬜ Personalización de umbrales
+- ⬜ Perfiles por tipo de sitio
 
 ## Fase 2: Mejoras y Expansión (Q1 2024)
 
-### Análisis Avanzado (Sprint 11-12)
+### Mejoras para Usuarios Avanzados (Sprint 11)
+- ⬜ US-06: Implementación de interfaz de línea de comandos (CLI)
+  - ⬜ Análisis de URL específica
+  - ⬜ Procesamiento de múltiples URLs
+  - ⬜ Generación de reportes en varios formatos
+  - ⬜ Configuración de análisis
+  - ⬜ Publicación npm
+
+### Análisis Avanzado (Sprint 12-13)
 - ⬜ US-12: Detección de contenido duplicado
 - ⬜ Análisis de legibilidad
 - ⬜ Recomendaciones de optimización técnica
 
-### Exportación y Reportes (Sprint 13)
+### Exportación y Reportes (Sprint 14)
 - ⬜ US-13: Generación de informes PDF
 - ⬜ Exportación de datos a CSV/Excel
 - ⬜ US-14: Histórico de análisis
 - ⬜ Comparación de progreso
 
-### Mejoras de UX (Sprint 14)
+### Mejoras de UX (Sprint 15)
 - ⬜ Interfaz avanzada con visualizaciones gráficas
 - ⬜ Dashboard personalizable
 - ⬜ Temas claros/oscuros
@@ -96,25 +104,25 @@ Hasta la fecha, se han implementado:
 
 ## Fase 3: Funcionalidades Avanzadas (Q2-Q3 2024)
 
-### Integración con APIs (Sprint 15-16)
+### Integración con APIs (Sprint 16-17)
 - ⬜ US-15: Seguimiento histórico de páginas
 - ⬜ US-16: Análisis de competidores
 - ⬜ Servicios externos de análisis SEO
 - ⬜ APIs de verificación de backlinks
 
-### Análisis en Lote (Sprint 17)
+### Análisis en Lote (Sprint 18)
 - ⬜ US-18: Análisis de múltiples URLs
 - ⬜ Análisis de sitios completos
 - ⬜ Exportación de resultados en lote
 - ⬜ Generación de informes comparativos
 
-### Monitorización Continua (Sprint 18)
+### Monitorización Continua (Sprint 19)
 - ⬜ Alertas sobre cambios importantes
 - ⬜ Seguimiento de posiciones en buscadores
 - ⬜ Notificaciones de problemas detectados
 - ⬜ Monitorización de sitios favoritos
 
-### Funcionalidades Premium (Sprint 19-20)
+### Funcionalidades Premium (Sprint 20-21)
 - ⬜ Plan de acción personalizado
 - ⬜ Asistente AI para optimización
 - ⬜ Sincronización entre dispositivos
@@ -128,8 +136,8 @@ Hasta la fecha, se han implementado:
 | Sprint 4 | Análisis de estructura de encabezados | Julio 2023 ✅ |
 | Sprint 5 | Análisis de densidad de palabras clave y mejoras al sistema de puntuación | Agosto 2023 ✅ |
 | Sprint 6 | Análisis semántico de contenido | Septiembre 2023 ✅ |
-| Sprint 7 | Implementación de CLI | Octubre 2023 🚧 |
-| Sprint 8-10 | Análisis de enlaces, imágenes e interfaz | Noviembre-Diciembre 2023 |
+| Sprint 7 | Interfaz de usuario básica (popup) | Octubre 2023 🚧 |
+| Sprint 8-10 | Análisis de enlaces, imágenes y opciones | Noviembre-Diciembre 2023 |
 | Beta Cerrada | Funcionalidades principales completas con interfaz básica | Enero 2024 |
 | Beta Pública | Todas las funcionalidades esenciales completadas | Marzo 2024 |
 | Lanzamiento 1.0 | Versión estable con todas las funcionalidades de fase 1 y 2 | Mayo 2024 |

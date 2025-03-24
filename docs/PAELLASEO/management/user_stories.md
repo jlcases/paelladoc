@@ -108,17 +108,17 @@ Para [beneficio]
 
 ## Próximo Sprint (Sprint 7)
 
-### US-06: Implementación de CLI (Prioridad: Alta)
-**Como** usuario avanzado,  
-**Quiero** una interfaz de línea de comandos,  
-**Para** ejecutar análisis SEO en entornos CI/CD o en lotes de URLs.
+### US-09: Interfaz de popup básica (Prioridad: Alta)
+**Como** usuario de la extensión,  
+**Quiero** una interfaz simple y clara en el popup de la extensión,  
+**Para** visualizar rápidamente los resultados del análisis SEO.
 
 **Criterios de Aceptación:**
-- [ ] Debe permitir analizar una URL específica
-- [ ] Debe permitir analizar múltiples URLs desde un archivo
-- [ ] Debe generar reportes en formatos JSON, CSV o texto
-- [ ] Debe permitir configurar qué análisis ejecutar
-- [ ] Debe ser instalable vía npm
+- [ ] Debe mostrar puntuaciones globales y por categoría
+- [ ] Debe listar problemas detectados ordenados por severidad
+- [ ] Debe proporcionar sugerencias accionables
+- [ ] Debe tener una navegación intuitiva entre diferentes aspectos
+- [ ] Debe cargar rápidamente (menos de 1 segundo)
 
 **Estimación:** 8 Story Points
 
@@ -152,20 +152,6 @@ Para [beneficio]
 
 **Estimación:** 5 Story Points
 
-### US-09: Interfaz de popup básica (Prioridad: Alta)
-**Como** usuario de la extensión,  
-**Quiero** una interfaz simple y clara en el popup de la extensión,  
-**Para** visualizar rápidamente los resultados del análisis SEO.
-
-**Criterios de Aceptación:**
-- [ ] Debe mostrar puntuaciones globales y por categoría
-- [ ] Debe listar problemas detectados ordenados por severidad
-- [ ] Debe proporcionar sugerencias accionables
-- [ ] Debe tener una navegación intuitiva entre diferentes aspectos
-- [ ] Debe cargar rápidamente (menos de 1 segundo)
-
-**Estimación:** 8 Story Points
-
 ### US-10: Página de opciones (Prioridad: Media)
 **Como** usuario de la extensión,  
 **Quiero** personalizar las configuraciones de análisis,  
@@ -179,6 +165,24 @@ Para [beneficio]
 - [ ] Debe ofrecer perfiles predefinidos para diferentes tipos de sitios
 
 **Estimación:** 5 Story Points
+
+## Mejoras (Nice to Have)
+
+### US-06: Implementación de CLI (Prioridad: Media)
+**Como** usuario avanzado,  
+**Quiero** una interfaz de línea de comandos,  
+**Para** ejecutar análisis SEO en entornos CI/CD o en lotes de URLs.
+
+**Criterios de Aceptación:**
+- [ ] Debe permitir analizar una URL específica
+- [ ] Debe permitir analizar múltiples URLs desde un archivo
+- [ ] Debe generar reportes en formatos JSON, CSV o texto
+- [ ] Debe permitir configurar qué análisis ejecutar
+- [ ] Debe ser instalable vía npm
+
+**Nota:** Esta funcionalidad no forma parte del MVP de la extensión de Chrome. Es una característica adicional para usuarios avanzados.
+
+**Estimación:** 8 Story Points
 
 ### US-12: Detección de contenido duplicado (Prioridad: Media)
 **Como** editor de contenido,  

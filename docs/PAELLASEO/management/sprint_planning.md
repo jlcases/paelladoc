@@ -14,7 +14,7 @@ tags: [seo, chrome-extension, sprint, planificación, tareas]
 
 ## Información General
 **Período del Sprint:** 2023-10-01 a 2023-10-15
-**Objetivo:** Implementar interfaz de línea de comandos (CLI) para análisis SEO en entornos automatizados
+**Objetivo:** Implementar interfaz básica de popup para visualización de resultados del análisis SEO
 **Capacidad del Equipo:** 15 Story Points
 **Story Points Planificados:** 8 de 15 (53%)
 
@@ -72,45 +72,45 @@ tags: [seo, chrome-extension, sprint, planificación, tareas]
 
 ### Historias de Usuario Seleccionadas
 
-#### US-06: Implementación de CLI (8 SP) - ⬜ EN PLANIFICACIÓN
-**Como** usuario avanzado,  
-**Quiero** una interfaz de línea de comandos,  
-**Para** ejecutar análisis SEO en entornos CI/CD o en lotes de URLs.
+#### US-09: Interfaz de popup básica (8 SP) - ⬜ EN PLANIFICACIÓN
+**Como** usuario de la extensión,  
+**Quiero** una interfaz simple y clara en el popup de la extensión,  
+**Para** visualizar rápidamente los resultados del análisis SEO.
 
 **Criterios de Aceptación:**
-- [ ] Debe permitir analizar una URL específica
-- [ ] Debe permitir analizar múltiples URLs desde un archivo
-- [ ] Debe generar reportes en formatos JSON, CSV o texto
-- [ ] Debe permitir configurar qué análisis ejecutar
-- [ ] Debe ser instalable vía npm
+- [ ] Debe mostrar puntuaciones globales y por categoría
+- [ ] Debe listar problemas detectados ordenados por severidad
+- [ ] Debe proporcionar sugerencias accionables
+- [ ] Debe tener una navegación intuitiva entre diferentes aspectos
+- [ ] Debe cargar rápidamente (menos de 1 segundo)
 
 **Tareas Técnicas:**
-1. ⬜ Crear estructura básica de CLI con Node.js (3h)
-2. ⬜ Implementar comando para análisis de URL única (4h)
-3. ⬜ Desarrollar procesamiento de archivos con múltiples URLs (4h)
-4. ⬜ Implementar opciones de configuración y formateo (3h)
-5. ⬜ Desarrollar exportación de reportes (4h)
+1. ⬜ Crear estructura básica del popup en HTML (3h)
+2. ⬜ Implementar estilos CSS para interfaz visual (4h)
+3. ⬜ Desarrollar componentes de visualización de puntuaciones (4h)
+4. ⬜ Implementar listado de problemas y sugerencias (3h)
+5. ⬜ Desarrollar navegación entre categorías de análisis (3h)
 6. ⬜ Integrar con los módulos de análisis existentes (5h)
-7. ⬜ Configurar publicación npm (2h)
-8. ⬜ Crear documentación de uso (2h)
+7. ⬜ Optimizar rendimiento de carga (2h)
+8. ⬜ Crear documentación de la interfaz (2h)
 
 ## Dependencias y Riesgos
 
 ### Dependencias
-- La CLI debe funcionar con todos los analizadores implementados (meta tags, encabezados, palabras clave, semántico)
-- El formato de salida debe ser consistente con el diseñado para la futura interfaz de usuario
+- La interfaz debe visualizar correctamente los resultados de todos los analizadores implementados (meta tags, encabezados, palabras clave, semántico)
+- El diseño debe ser compatible con las restricciones de tamaño de los popups de extensiones Chrome
 
 ### Riesgos
-- **Incompatibilidad de entorno**: La CLI debe funcionar en diferentes sistemas operativos
-  - *Mitigación*: Usar librerías multiplataforma y realizar pruebas en Windows, macOS y Linux
-- **Rendimiento en lotes grandes**: El procesamiento de múltiples URLs podría degradar el rendimiento
-  - *Mitigación*: Implementar procesamiento concurrente limitado y mostrar progreso
+- **Rendimiento de carga**: La visualización de muchos problemas podría ralentizar la apertura del popup
+  - *Mitigación*: Implementar carga progresiva y limitar cantidad inicial de elementos visibles
+- **Compatibilidad con diferentes tamaños de pantalla**: El popup debe adaptarse a diferentes configuraciones
+  - *Mitigación*: Usar diseño responsive y realizar pruebas en diferentes entornos
 
 ## Objetivos de Métricas
 
 - **Cobertura de Tests**: Mantener >95% (Objetivo: 98%)
 - **Deuda Técnica**: No incrementar más de 0.3 días (Objetivo: reducir a 0.5 días)
-- **Rendimiento**: Procesar una URL en menos de 2 segundos, y 100 URLs en menos de 3 minutos
+- **Rendimiento**: Cargar el popup en menos de 0.5 segundos, incluso con gran cantidad de datos
 
 ## Planificación de Reuniones
 
