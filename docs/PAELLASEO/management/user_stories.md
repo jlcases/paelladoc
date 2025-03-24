@@ -140,10 +140,10 @@ Se ha decidido revertir el código al commit `4bc7698029f490e7659f5b3a229043f91e
 
 ## Próximo Sprint (Sprint 8+) - Backlog Priorizado
 
-### US-07: Análisis de enlaces (Prioridad: Alta)
+### US-07: Análisis de enlaces con modelo Reasonable Surfer (Prioridad: Alta)
 **Como** usuario de la extensión,  
-**Quiero** un análisis de los enlaces internos y externos de mi página,  
-**Para** mejorar la estructura de navegación y autoridad de mi sitio.
+**Quiero** un análisis avanzado de los enlaces internos y externos de mi página usando el modelo Reasonable Surfer,  
+**Para** mejorar la estructura de navegación, autoridad y distribución de enlazado según probabilidad de clic.
 
 **Criterios de Aceptación:**
 - [ ] Debe detectar y contar enlaces internos y externos
@@ -151,6 +151,20 @@ Se ha decidido revertir el código al commit `4bc7698029f490e7659f5b3a229043f91e
 - [ ] Debe analizar textos ancla y recomendar mejoras
 - [ ] Debe validar la presencia de atributos rel adecuados (nofollow, ugc, etc.)
 - [ ] Debe proporcionar una puntuación para la estructura de enlaces
+- [ ] Debe implementar el modelo Reasonable Surfer para evaluar el valor de los enlaces según:
+  - [ ] Posición en la página (encabezado, contenido principal, pie de página, sidebar)
+  - [ ] Visibilidad y prominencia (tamaño, color, efectos visuales)
+  - [ ] Tipo de elemento (texto, imagen, botón)
+  - [ ] Contexto del enlace (dentro de párrafo, lista, tabla, etc.)
+  - [ ] Relevancia temática con el contenido circundante
+- [ ] Debe identificar enlaces con bajo valor según Reasonable Surfer
+- [ ] Debe recomendar mejoras en la estructura de enlaces basándose en el modelo
+- [ ] Debe proporcionar visualización de "mapa de calor" de enlaces según su valor
+
+**Notas técnicas:**
+- Basado en la patente de Google "Reasonable Surfer" que asigna diferentes valores a los enlaces según probabilidad de clic
+- Implementación simplificada que considera factores principales de posición, visibilidad, tipo y contexto
+- Integración con el sistema de puntuación general existente
 
 **Estimación:** 8 Story Points
 

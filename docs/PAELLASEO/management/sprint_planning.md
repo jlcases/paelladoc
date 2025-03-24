@@ -7,14 +7,14 @@ version: 0.4
 security_level: Internal
 last_reviewed: 2025-03-25
 next_review: 2025-05-01
-tags: [seo, chrome-extension, sprint, planificación, tareas, enlaces]
+tags: [seo, chrome-extension, sprint, planificación, tareas, enlaces, reasonable-surfer]
 ---
 
 # Planificación de Sprint: PaellaSEO Sprint 8
 
 ## Información General
 **Período del Sprint:** 2023-10-16 a 2023-10-31
-**Objetivo:** Implementar análisis de enlaces para identificar y evaluar enlaces internos y externos
+**Objetivo:** Implementar análisis de enlaces para identificar y evaluar enlaces internos y externos utilizando el modelo Reasonable Surfer
 **Capacidad del Equipo:** 15 Story Points
 **Story Points Planificados:** 8 de 15 (53%)
 
@@ -68,10 +68,10 @@ tags: [seo, chrome-extension, sprint, planificación, tareas, enlaces]
 
 ### Historias de Usuario Seleccionadas
 
-#### US-07: Análisis de enlaces (8 SP) - ⬜ EN PLANIFICACIÓN
+#### US-07: Análisis de enlaces con modelo Reasonable Surfer (8 SP) - ⬜ EN PLANIFICACIÓN
 **Como** usuario de la extensión,  
-**Quiero** un análisis de los enlaces internos y externos de mi página,  
-**Para** mejorar la estructura de navegación y autoridad de mi sitio.
+**Quiero** un análisis avanzado de los enlaces internos y externos de mi página usando el modelo Reasonable Surfer,  
+**Para** mejorar la estructura de navegación, autoridad y distribución de enlazado según probabilidad de clic.
 
 **Criterios de Aceptación:**
 - [ ] Debe detectar y contar enlaces internos y externos
@@ -79,6 +79,14 @@ tags: [seo, chrome-extension, sprint, planificación, tareas, enlaces]
 - [ ] Debe analizar textos ancla y recomendar mejoras
 - [ ] Debe validar la presencia de atributos rel adecuados (nofollow, ugc, etc.)
 - [ ] Debe proporcionar una puntuación para la estructura de enlaces
+- [ ] Debe implementar el modelo Reasonable Surfer para evaluar el valor de los enlaces según:
+  - [ ] Posición en la página (encabezado, contenido principal, pie de página, sidebar)
+  - [ ] Visibilidad y prominencia (tamaño, color, efectos visuales)
+  - [ ] Tipo de elemento (texto, imagen, botón)
+  - [ ] Contexto del enlace (dentro de párrafo, lista, tabla, etc.)
+  - [ ] Relevancia temática con el contenido circundante
+- [ ] Debe identificar enlaces con bajo valor según Reasonable Surfer
+- [ ] Debe recomendar mejoras en la estructura de enlaces basándose en el modelo
 
 **Tareas Técnicas:**
 1. ⬜ Diseñar interfaces y tipos para el módulo de análisis de enlaces (3h)
@@ -87,12 +95,18 @@ tags: [seo, chrome-extension, sprint, planificación, tareas, enlaces]
 4. ⬜ Desarrollar verificación de enlaces rotos (5h)
 5. ⬜ Implementar análisis de textos ancla (4h)
 6. ⬜ Desarrollar validación de atributos rel (3h)
-7. ⬜ Crear sistema de puntuación para estructura de enlaces (3h)
-8. ⬜ Integrar con el sistema de puntuación general (2h)
-9. ⬜ Implementar generación de sugerencias de mejora (4h)
-10. ⬜ Desarrollar pruebas unitarias y de integración (5h)
-11. ⬜ Crear documentación técnica del módulo (3h)
-12. ⬜ Integrar con interfaz de usuario existente (4h)
+7. ⬜ Crear sistema básico de puntuación para estructura de enlaces (3h)
+8. ⬜ Diseñar e implementar algoritmo Reasonable Surfer para valoración de enlaces (8h)
+   - ⬜ Detección de posición de enlaces en la estructura DOM
+   - ⬜ Análisis de propiedades visuales (tamaño, color, contraste)
+   - ⬜ Evaluación de contexto y relevancia temática
+   - ⬜ Cálculo de puntuación ponderada según factores
+9. ⬜ Crear visualización de "mapa de calor" para enlaces según valor (4h)
+10. ⬜ Implementar generación de sugerencias basadas en el modelo Reasonable Surfer (5h)
+11. ⬜ Integrar con el sistema de puntuación general (2h)
+12. ⬜ Desarrollar pruebas unitarias y de integración (6h)
+13. ⬜ Crear documentación técnica del módulo (3h)
+14. ⬜ Integrar con interfaz de usuario existente (4h)
 
 ## Enfoque Técnico
 
@@ -104,32 +118,47 @@ Utilizaremos el patrón de desarrollo TDD siguiendo el ciclo Red-Green-Refactor:
 3. **Fase REFACTOR**: Mejorar el código manteniendo la funcionalidad
 
 ### Arquitectura
-- **Módulo de Análisis**: Se creará un nuevo módulo `linkAnalysisUtils.ts` siguiendo el patrón de los módulos existentes
-- **Integración UI**: Se extenderá el store de estado para incluir resultados del análisis de enlaces
-- **Actualización de Componentes**: Se modificarán los componentes existentes para visualizar los nuevos datos
+- **Módulo Base**: Se creará un módulo `linkAnalysisUtils.ts` para funcionalidades básicas
+- **Módulo Reasonable Surfer**: Se implementará un módulo `reasonableSurferUtils.ts` para el algoritmo avanzado
+- **Integración UI**: Se extenderá el store de estado para incluir resultados del análisis
+- **Visualización**: Se desarrollarán componentes para mostrar valor de enlaces y recomendaciones
+
+### Modelo Reasonable Surfer
+El modelo Reasonable Surfer es un concepto avanzado de SEO basado en la patente de Google que asigna diferentes valores a los enlaces según la probabilidad de que sean clicados por un usuario real. Implementaremos una versión simplificada con estas características:
+
+- **Factores de posición**: Mayor valor a enlaces en contenido principal, menor en pie de página
+- **Factores visuales**: Mayor valor a enlaces prominentes, destacados o con contraste
+- **Factores contextuales**: Mayor valor a enlaces dentro de contextos relevantes al tema
+- **Factores de formato**: Evaluación diferente para enlaces de texto vs. imágenes
+- **Algoritmo de puntuación**: Sistema ponderado que combine todos los factores
 
 ## Dependencias y Riesgos
 
 ### Dependencias
-- Acceso al DOM para extracción de enlaces
+- Acceso al DOM para extracción de enlaces y análisis de posición
 - Capacidad para realizar solicitudes HTTP para verificar enlaces
+- Acceso a propiedades de estilo computado para análisis visual
 - Integración con el sistema de puntuación existente
-- Actualización de la interfaz para mostrar resultados de análisis de enlaces
+- Actualización de la interfaz para mostrar resultados de análisis
 
 ### Riesgos
 - **Rendimiento de verificación de enlaces**: La verificación de enlaces rotos podría consumir tiempo y recursos
   - *Mitigación*: Implementar verificación asíncrona con límites de tiempo y concurrencia
 - **Problemas de seguridad CORS**: Limitaciones al verificar enlaces externos
   - *Mitigación*: Usar técnicas alternativas de verificación o solicitar permisos adicionales
-- **Impacto en el rendimiento general**: Análisis de muchos enlaces podría ralentizar la extensión
-  - *Mitigación*: Implementar análisis progresivo y optimizar algoritmos de procesamiento
+- **Complejidad del algoritmo Reasonable Surfer**: Dificultad para implementar todos los factores
+  - *Mitigación*: Enfoque incremental, comenzando con factores de mayor impacto
+- **Precisión de la evaluación**: Dificultad para validar la exactitud del modelo sin datos reales
+  - *Mitigación*: Benchmarking con estudios publicados sobre patrones de clics
+- **Impacto en el rendimiento general**: Análisis avanzado podría ralentizar la extensión
+  - *Mitigación*: Implementar análisis progresivo y procesamiento en segundo plano
 
 ## Objetivos de Métricas
 
 - **Cobertura de Tests**: Mantener >95% (Objetivo: 98%)
 - **Deuda Técnica**: No incrementar más de 0.3 días
-- **Rendimiento**: El análisis de enlaces debe completarse en menos de 2 segundos para páginas con hasta 100 enlaces
-- **Precisión**: Detección correcta de enlaces rotos con tasa de error <5%
+- **Rendimiento**: El análisis de enlaces debe completarse en menos de 3 segundos para páginas con hasta 100 enlaces
+- **Precisión**: Correlación >70% con patrones de clics conocidos en estudios de eye-tracking
 
 ## Planificación de Reuniones
 
@@ -144,8 +173,10 @@ Utilizaremos el patrón de desarrollo TDD siguiendo el ciclo Red-Green-Refactor:
 - [Backlog de Historias de Usuario](/docs/PAELLASEO/management/user_stories.md)
 - [Hoja de Ruta de Desarrollo](/docs/PAELLASEO/planning/development_roadmap.md)
 - [Documentación Técnica](/docs/PAELLASEO/technical/implementation_details.md)
+- [Patente Google Reasonable Surfer](https://patents.google.com/patent/US8620915B1/)
 - [MDN: Verificación de enlaces con JavaScript](https://developer.mozilla.org/en-US/docs/Web/API/Fetch_API)
 - [Chrome Extension API: Permisos de red](https://developer.chrome.com/docs/extensions/reference/permissions/)
+- [Estudios de patrones de eye-tracking en páginas web](https://www.nngroup.com/articles/f-shaped-pattern-reading-web-content/)
 
 ---
 
