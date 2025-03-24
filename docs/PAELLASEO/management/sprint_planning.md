@@ -72,27 +72,27 @@ tags: [seo, chrome-extension, sprint, planificación, tareas]
 
 ### Historias de Usuario Seleccionadas
 
-#### US-09: Interfaz de popup básica (8 SP) - ⬜ EN PLANIFICACIÓN
+#### US-09: Interfaz de popup básica (8 SP) - ✅ COMPLETADO
 **Como** usuario de la extensión,  
 **Quiero** una interfaz simple y clara en el popup de la extensión,  
 **Para** visualizar rápidamente los resultados del análisis SEO.
 
 **Criterios de Aceptación:**
-- [ ] Debe mostrar puntuaciones globales y por categoría
-- [ ] Debe listar problemas detectados ordenados por severidad
-- [ ] Debe proporcionar sugerencias accionables
-- [ ] Debe tener una navegación intuitiva entre diferentes aspectos
-- [ ] Debe cargar rápidamente (menos de 1 segundo)
+- [x] Debe mostrar puntuaciones globales y por categoría
+- [x] Debe listar problemas detectados ordenados por severidad
+- [x] Debe proporcionar sugerencias accionables
+- [x] Debe tener una navegación intuitiva entre diferentes aspectos
+- [x] Debe cargar rápidamente (menos de 1 segundo)
 
 **Tareas Técnicas:**
-1. ⬜ Crear estructura básica del popup en HTML (3h)
-2. ⬜ Implementar estilos CSS para interfaz visual (4h)
-3. ⬜ Desarrollar componentes de visualización de puntuaciones (4h)
-4. ⬜ Implementar listado de problemas y sugerencias (3h)
-5. ⬜ Desarrollar navegación entre categorías de análisis (3h)
-6. ⬜ Integrar con los módulos de análisis existentes (5h)
-7. ⬜ Optimizar rendimiento de carga (2h)
-8. ⬜ Crear documentación de la interfaz (2h)
+1. ✅ Crear estructura básica del popup en HTML (3h)
+2. ✅ Implementar estilos CSS para interfaz visual (4h)
+3. ✅ Desarrollar componentes de visualización de puntuaciones (4h)
+4. ✅ Implementar listado de problemas y sugerencias (3h)
+5. ✅ Desarrollar navegación entre categorías de análisis (3h)
+6. ✅ Integrar con los módulos de análisis existentes (5h)
+7. ✅ Optimizar rendimiento de carga (2h)
+8. ✅ Crear documentación de la interfaz (2h)
 
 ## Dependencias y Riesgos
 

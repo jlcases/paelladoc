@@ -3,7 +3,7 @@ title: Backlog de Historias de Usuario - PaellaSEO
 date: 2023-07-06
 author: Claude
 status: Active
-version: 0.4
+version: 0.5
 security_level: Internal
 last_reviewed: 2025-03-25
 next_review: 2025-04-25
@@ -21,6 +21,9 @@ Como [rol]
 Quiero [funcionalidad]
 Para [beneficio]
 ```
+
+## NOTA IMPORTANTE (25/03/2024)
+Se ha decidido revertir el código al commit `4bc7698029f490e7659f5b3a229043f91eac36b6` debido a problemas fundamentales con la implementación de los tests TDD. Los cambios no seguían correctamente la metodología TDD y estaban introduciendo incompatibilidades entre módulos CommonJS y ESM. Todo el trabajo de tests posteriores ha sido eliminado para comenzar desde una base estable y seguir correctamente la metodología TDD.
 
 ## Historias Completadas
 
@@ -106,28 +109,36 @@ Para [beneficio]
 
 **Estimación:** 13 Story Points
 
-## Próximo Sprint (Sprint 7)
-
-### US-09: Interfaz de popup básica (Prioridad: Alta)
+### US-09: Interfaz de popup básica (Completada - Sprint 7)
 **Como** usuario de la extensión,  
 **Quiero** una interfaz simple y clara en el popup de la extensión, inspirada visualmente en una paella valenciana,  
 **Para** visualizar rápidamente los resultados del análisis SEO.
 
 **Criterios de Aceptación:**
-- [ ] Debe mostrar puntuaciones globales y por categoría
-- [ ] Debe listar problemas detectados ordenados por severidad
-- [ ] Debe proporcionar sugerencias accionables
-- [ ] Debe tener una navegación intuitiva entre diferentes aspectos
-- [ ] Debe cargar rápidamente (menos de 1 segundo)
-- [ ] Debe utilizar un sistema de diseño coherente inspirado en los colores y elementos de una paella valenciana
-- [ ] Debe representar metafóricamente los elementos SEO como ingredientes de una receta
+- [x] Debe mostrar puntuaciones globales y por categoría
+- [x] Debe listar problemas detectados ordenados por severidad
+- [x] Debe proporcionar sugerencias accionables
+- [x] Debe tener una navegación intuitiva entre diferentes aspectos
+- [x] Debe cargar rápidamente (menos de 1 segundo)
+- [x] Debe utilizar un sistema de diseño coherente inspirado en los colores y elementos de una paella valenciana
+- [x] Debe representar metafóricamente los elementos SEO como ingredientes de una receta
 
-**Notas de Diseño:**
-El diseño debe evocar la esencia de una paella a través de su paleta de colores (amarillo azafrán, rojo pimentón, verde judía, marrón socarrat) y elementos visuales. Ver documento de especificaciones: [Especificaciones de Interfaz de Usuario](/docs/PAELLASEO/technical/ui_specifications.md)
+**Notas de Implementación:**
+- Implementada siguiendo la metodología TDD
+- Arquitectura basada en principios SOLID
+- Uso de Svelte Store para gestión de estado
+- Componentes con responsabilidad única y alta cohesión
+- Interfaz visual con metáforas relacionadas con paella (ingredientes, cocción, etc.)
+- Tests unitarios que validan toda la funcionalidad
+- Refactorización completa para mejorar separación de responsabilidades:
+  - Abstracción de lógica de negocio usando un store centralizado
+  - Extracción de componentes para cada elemento UI con propósito único
+  - Creación de módulos de utilidades para funciones reutilizables
+  - Aplicación de principio de inversión de dependencias
 
 **Estimación:** 8 Story Points
 
-## Backlog Priorizado (Sprint 8+)
+## Próximo Sprint (Sprint 8+) - Backlog Priorizado
 
 ### US-07: Análisis de enlaces (Prioridad: Alta)
 **Como** usuario de la extensión,  
@@ -142,6 +153,8 @@ El diseño debe evocar la esencia de una paella a través de su paleta de colore
 - [ ] Debe proporcionar una puntuación para la estructura de enlaces
 
 **Estimación:** 8 Story Points
+
+## Backlog Priorizado (Sprint 8+)
 
 ### US-08: Análisis de imágenes (Prioridad: Alta)
 **Como** usuario de la extensión,  
