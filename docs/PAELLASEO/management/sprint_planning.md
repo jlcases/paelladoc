@@ -132,6 +132,79 @@ El modelo Reasonable Surfer es un concepto avanzado de SEO basado en la patente 
 - **Factores de formato**: Evaluación diferente para enlaces de texto vs. imágenes
 - **Algoritmo de puntuación**: Sistema ponderado que combine todos los factores
 
+### Implementación del Modelo Reasonable Surfer
+
+Basándonos en la patente US8620915B1 de Google, implementaremos el algoritmo Reasonable Surfer con el siguiente enfoque técnico:
+
+#### 1. Extracción y Análisis de Características
+
+Para cada enlace en la página, extraeremos y analizaremos las siguientes características:
+
+**Características de Posición:**
+- Coordenadas X/Y en la página
+- Posición relativa (arriba/abajo del pliegue)
+- Área de la página (cabecera, menú, contenido principal, barra lateral, pie)
+- Posición en listas o menús (primero, medio, último)
+- Distancia desde el inicio del contenido principal
+
+**Características Visuales:**
+- Tamaño de fuente (en píxeles o relativo al texto base)
+- Color del enlace y contraste con el fondo
+- Uso de negrita, cursiva u otros estilos destacados
+- Presencia de efectos (subrayado, hover, sombras)
+- Tamaño del área clicable (para imágenes o botones)
+
+**Características de Contexto:**
+- Análisis del texto circundante (5-10 palabras antes/después)
+- Relación semántica entre texto del enlace y contenido de la página
+- Presencia en párrafo descriptivo vs. lista de enlaces
+- Densidad de enlaces en el área circundante
+- Relevancia temática con el título de la página
+
+**Características del Enlace:**
+- Tipo de enlace (texto, imagen, botón, banner)
+- Longitud del texto de anclaje (número de palabras)
+- Presencia de palabras comerciales en el texto de anclaje
+- Atributos especiales (rel="nofollow", target="_blank")
+- Destino interno vs. externo
+
+#### 2. Cálculo de Puntuación Ponderada
+
+Implementaremos un sistema de puntuación con las siguientes características:
+
+1. **Modelo de ponderación**: Asignaremos pesos iniciales a cada factor basados en estudios de eye-tracking y comportamiento de usuarios, con mayor peso a factores de posición (40%), visuales (30%), contexto (20%) y tipo de enlace (10%).
+
+2. **Normalización de valores**: Cada característica se normalizará a un valor entre 0 y 1, donde 1 representa la mayor probabilidad de clic.
+
+3. **Fórmula de cálculo**:
+   ```
+   LinkValue = Σ(FeatureValue_i × FeatureWeight_i) / Σ(FeatureWeight_i)
+   ```
+   Donde:
+   - LinkValue: Valor final del enlace (entre 0 y 1)
+   - FeatureValue_i: Valor normalizado de cada característica
+   - FeatureWeight_i: Peso asignado a cada característica
+
+4. **Ajuste contextual**: El peso de ciertos factores se ajustará según el tipo de página (blog, e-commerce, landing page) y dispositivo (móvil vs. escritorio).
+
+5. **Distribución final**: Los valores de todos los enlaces de la página se normalizarán para que sumen 1, representando la distribución de probabilidad de clic.
+
+#### 3. Implementación del Algoritmo
+
+El algoritmo se implementará en varias fases:
+
+1. **Fase de recopilación**: Extracción de todas las características mediante análisis del DOM y estilos computados.
+
+2. **Fase de análisis**: Procesamiento y normalización de características.
+
+3. **Fase de puntuación**: Cálculo del valor ponderado para cada enlace.
+
+4. **Fase de visualización**: Generación del "mapa de calor" que muestre visualmente el valor de cada enlace.
+
+5. **Fase de recomendación**: Identificación de enlaces con valor subóptimo y generación de sugerencias específicas para mejorarlos.
+
+El modelo permitirá ajustes dinámicos basados en la retroalimentación del usuario y se entrenará inicialmente con datos de estudios publicados sobre patrones de clics y comportamiento de navegación.
+
 ## Dependencias y Riesgos
 
 ### Dependencias
