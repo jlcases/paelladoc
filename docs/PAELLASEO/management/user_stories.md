@@ -110,7 +110,7 @@ Para [beneficio]
 
 ### US-09: Interfaz de popup básica (Prioridad: Alta)
 **Como** usuario de la extensión,  
-**Quiero** una interfaz simple y clara en el popup de la extensión,  
+**Quiero** una interfaz simple y clara en el popup de la extensión, inspirada visualmente en una paella valenciana,  
 **Para** visualizar rápidamente los resultados del análisis SEO.
 
 **Criterios de Aceptación:**
@@ -119,6 +119,11 @@ Para [beneficio]
 - [ ] Debe proporcionar sugerencias accionables
 - [ ] Debe tener una navegación intuitiva entre diferentes aspectos
 - [ ] Debe cargar rápidamente (menos de 1 segundo)
+- [ ] Debe utilizar un sistema de diseño coherente inspirado en los colores y elementos de una paella valenciana
+- [ ] Debe representar metafóricamente los elementos SEO como ingredientes de una receta
+
+**Notas de Diseño:**
+El diseño debe evocar la esencia de una paella a través de su paleta de colores (amarillo azafrán, rojo pimentón, verde judía, marrón socarrat) y elementos visuales. Ver documento de especificaciones: [Especificaciones de Interfaz de Usuario](/docs/PAELLASEO/technical/ui_specifications.md)
 
 **Estimación:** 8 Story Points
 

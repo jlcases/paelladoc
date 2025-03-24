@@ -57,6 +57,10 @@ Hasta la fecha, se han implementado:
   - ⬜ Listado de problemas detectados ordenados por severidad
   - ⬜ Implementación de navegación intuitiva entre categorías
   - ⬜ Optimización para carga rápida
+  - ⬜ Sistema de diseño inspirado en paella valenciana
+    - ⬜ Paleta de colores basada en ingredientes tradicionales
+    - ⬜ Elementos visuales e iconografía temática
+    - ⬜ Microinteracciones inspiradas en la "cocción" de la paella
 
 ### Análisis de Enlaces (Sprint 8 - Planificado)
 - ⬜ US-07: Validación de enlaces internos y externos

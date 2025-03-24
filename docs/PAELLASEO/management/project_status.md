@@ -79,6 +79,10 @@ Sprint 7: ⬚⬚⬚⬚⬚⬚⬚⬚ 0/8 puntos (en planificación)
 ## Áreas de Enfoque Actual
 - Implementación de interfaz de usuario básica (popup) - US-09
 - Diseño y desarrollo de componentes visuales para extensión Chrome
+- Creación del sistema de diseño inspirado en paella valenciana
+  - Desarrollo de paleta de colores temática
+  - Diseño de iconografía y elementos visuales
+  - Implementación de microinteracciones
 - Preparación para análisis de enlaces (US-07)
 
 ## Bloqueantes y Riesgos
