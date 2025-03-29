@@ -59,6 +59,13 @@ commands:
         description: "Display help information about available commands"
         default: false
         flag: "-help"
+    behavior:
+      conversation_required: true
+      auto_documentation: false
+      conversation_flow: "main_conversation"
+      wait_for_user_confirmation: true
+      prevent_automatic_generation: true
+      allow_minimal_mode: true
   HELP:
     description: "Displays help information about available PAELLADOC commands"
     action: "display_help"

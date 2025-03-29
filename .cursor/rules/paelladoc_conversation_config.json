@@ -18,11 +18,11 @@
   "commands": {
     "PAELLA": {
       "required_flows": ["main_conversation"],
-      "optional_flows": []
+      "optional_flows": ["technical_specifications"]
     },
     "CONTINUE": {
       "required_flows": ["main_conversation"],
-      "optional_flows": []
+      "optional_flows": ["technical_specifications"]
     },
     "GENERATE_CODE": {
       "required_flows": ["main_conversation", "technical_specifications"],
@@ -30,13 +30,13 @@
     }
   },
   "global_requirements": {
-    "technical_specifications_required": true,
-    "documentation_validation": true,
+    "technical_specifications_required": false,
+    "documentation_validation": false,
     "memory_system_enabled": true
   },
   "error_handling": {
     "missing_technical_specs": {
-      "error_message": "ERROR: Technical specifications are MANDATORY before generating code or detailed documentation. Please complete the technical specifications using the PAELLA or CONTINUE command.",
+      "error_message": "NOTE: Technical specifications are recommended before generating code or detailed documentation. Would you like to complete the technical specifications now?",
       "recovery_action": "prompt_for_technical_specs"
     }
   }

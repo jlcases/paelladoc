@@ -1,6 +1,7 @@
 ---
 description: "Defines the main commands of PAELLADOC for initializing documentation, continuing projects, and recording development"
 globs: ["**/*"]
+alwaysApply: true
 ---
 
 # PAELLADOC Commands
@@ -92,4 +93,42 @@ Manages programming style guides for the project
 - `operation` (string, required): Style operation to perform. Options: "apply", "customize", "list", "show"
 - `style_name` (string, required): Name of the style. Options: "frontend", "backend", "chrome_extension", "tdd", "github_workflow"
 - `project_name` (string, required): Name of the project to apply style to
-- `customizations` (string): Path to customization file or inline JSON customizations 
+- `customizations` (string): Path to customization file or inline JSON customizations
+
+## Command System
+
+PAELLADOC provides a command-based interface for managing documentation. All commands follow this pattern:
+
+```
+COMMAND param1=value1 param2=value2
+```
+
+### Documentation Commands
+
+- **PAELLA** - Initialize a new documentation project
+- **CONTINUE** - Continue working on an existing documentation project
+- **HELP** - Get help for any PAELLADOC command
+
+### Memory Commands
+
+- **ACHIEVEMENT** - Record a project achievement
+- **ISSUE** - Record a project issue
+- **DECISION** - Record a technical decision
+- **MEMORY** - View the memory log
+
+### Command Processing
+
+Commands should never automatically generate documentation without user confirmation. The process flow should be:
+
+1. Parse the command and arguments
+2. Execute a conversation flow to gather required information
+3. Ask for explicit user confirmation
+4. Only upon confirmation, generate documentation
+
+The AI should assist by:
+1. Making sure all required information is collected before generating documentation
+2. Respecting user preferences for documentation detail level
+3. Always explaining what will be generated before proceeding
+4. Never generating unneeded documentation components
+
+All commands should use the conversational approach by default, preventing any automatic generation of files without explicit user confirmation. This rule is critical for maintaining user control over the documentation process. 

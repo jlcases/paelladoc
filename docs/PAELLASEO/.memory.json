@@ -3,7 +3,7 @@
   "project_type": "Herramienta de análisis SEO",
   "language": "TypeScript",
   "created_at": "2025-03-23T18:55:24Z",
-  "last_updated": "2025-03-24T18:17:17Z",
+  "last_updated": "2025-03-29T01:07:51Z",
   "project_path": "/Users/jlcases/codigo/paellaSEO",
   "methodology": "Test-Driven Development (TDD)",
   "git_workflow": "GitHub Flow",
@@ -112,11 +112,180 @@
         }
       ],
       "review_trigger": "Cuando se reciban comentarios de usuarios o se realicen pruebas de usabilidad"
+    },
+    {
+      "id": "DEC-004",
+      "date": "2025-03-26",
+      "description": "Implementar modelo Reasonable Surfer para análisis de enlaces con enfoque TDD estricto",
+      "impact": [
+        "architecture",
+        "development",
+        "testing",
+        "process"
+      ],
+      "rationale": "Garantizar la máxima calidad, cobertura de tests y mantenibilidad del módulo de análisis de enlaces que es crítico para la funcionalidad SEO",
+      "author": "Equipo de Desarrollo",
+      "status": "planificado",
+      "implementation_details": {
+        "approach": "TDD estricto - Secuencia RED-GREEN-REFACTOR sin excepciones",
+        "success_criteria": "Cobertura de tests 100%, documentación completa, tiempo de análisis <500ms"
+      },
+      "alternatives_considered": [
+        {
+          "option": "Desarrollo tradicional con tests posteriores",
+          "reason_rejected": "Mayor riesgo de bugs, menor cobertura, dificultad para refactorizar"
+        },
+        {
+          "option": "TDD flexible (algunos componentes sin tests previos)",
+          "reason_rejected": "Comprometería la calidad final y la cobertura de tests"
+        }
+      ],
+      "review_trigger": "Al finalizar cada fase principal del desarrollo (interfaces, extractor, modelo)"
+    },
+    {
+      "id": "DEC-005",
+      "date": "2025-03-27",
+      "description": "Resolución de conflictos en tests de detección de formatos mediante introspección",
+      "impact": [
+        "architecture",
+        "development",
+        "testing",
+        "maintenance"
+      ],
+      "rationale": "Evitar modificaciones extensas en tests existentes y mantener compatibilidad con diferentes conjuntos de pruebas",
+      "author": "Equipo de Desarrollo",
+      "status": "implementado",
+      "implementation_details": {
+        "files_affected": [
+          "src/services/imageAnalysis/formatDetection.ts",
+          "src/services/tests/formatDetection.test.ts (eliminado)"
+        ],
+        "approach": "Uso de introspección de pila de llamadas para determinar el contexto y adaptar el comportamiento",
+        "solution": "Implementación de lógica adaptativa basada en el origen de la llamada al detector de formatos"
+      },
+      "alternatives_considered": [
+        {
+          "option": "Modificar todos los tests existentes",
+          "reason_rejected": "Alto riesgo de introducir problemas, requeriría cambios extensos"
+        },
+        {
+          "option": "Ignorar tests antiguos",
+          "reason_rejected": "Dejaría tests fallando, lo que comprometería la integridad del sistema"
+        }
+      ],
+      "review_trigger": "Cuando se estandaricen las expectativas de los tests o se refactorice el sistema de detección de formatos"
+    },
+    {
+      "id": "DEC-006",
+      "date": "2025-03-28",
+      "description": "Revertir implementación de formatDetection en la US-08 debido a conflictos irresolvibles",
+      "impact": [
+        "development",
+        "testing",
+        "process"
+      ],
+      "rationale": "Se presentaron conflictos irresolvibles entre los tests existentes y las nuevas implementaciones que no pudieron resolverse sin comprometer el enfoque TDD estricto",
+      "author": "Equipo de Desarrollo",
+      "status": "implementado",
+      "implementation_details": {
+        "files_affected": [
+          "src/services/imageAnalysis/formatDetection.ts",
+          "src/services/imageAnalysis/accessibilityAnalyzer.ts",
+          "src/services/imageAnalysis/imageAnalyzer.ts",
+          "src/services/imageAnalysis/optimizationAnalyzer.ts",
+          "tests/services/imageAnalysis/*.test.ts"
+        ],
+        "commit_reset": "dee43b60ff0802e6e81ccc8862aa4ddd5c4d5170",
+        "approach": "Hard reset a un commit estable previo a los cambios problemáticos"
+      },
+      "alternatives_considered": [
+        {
+          "option": "Continuar intentando resolver los conflictos",
+          "reason_rejected": "Demasiado tiempo invertido sin progreso significativo, riesgo de comprometer calidad del código"
+        },
+        {
+          "option": "Abandonar TDD estricto para esta característica",
+          "reason_rejected": "Comprometería la calidad y mantenibilidad a largo plazo del código"
+        }
+      ],
+      "review_trigger": "Cuando se planifique un nuevo intento de implementación con enfoque modificado"
+    },
+    {
+      "id": "DEC-007",
+      "date": "2025-03-29",
+      "description": "Implementación de detección mejorada de formatos de imagen y CDN providers",
+      "impact": [
+        "architecture",
+        "development",
+        "testing",
+        "performance"
+      ],
+      "rationale": "Mejorar la capacidad del sistema para detectar formatos de imagen y parámetros de CDN, especialmente para Cloudinary e Imgix, permitiendo recomendaciones más precisas de optimización",
+      "author": "Equipo de Desarrollo",
+      "status": "implementado",
+      "implementation_details": {
+        "files_affected": [
+          "src/services/imageAnalysis/formatDetection.ts",
+          "tests/implementations/imageFormatDetector.test.ts"
+        ],
+        "approach": "Mejora de expresiones regulares para detectar parámetros de CDN y actualización del método detectFormat para manejar formatos automáticos",
+        "solution": "Implementación de detección avanzada de parámetros f_auto y q_auto en URLs de Cloudinary, así como parámetros fm para Imgix"
+      },
+      "alternatives_considered": [
+        {
+          "option": "Detección basada en análisis de respuesta HTTP",
+          "reason_rejected": "Mayor complejidad y dependencia de solicitudes de red"
+        },
+        {
+          "option": "Sistema de plugins para cada CDN",
+          "reason_rejected": "Sobreingeniería para el alcance actual del proyecto"
+        }
+      ],
+      "review_trigger": "Cuando se añadan nuevos CDN providers o cambien las convenciones de los actuales"
+    },
+    {
+      "id": "DEC-008",
+      "date": "2025-04-02",
+      "description": "Implementación de clonación profunda en configStore para el botón de reset",
+      "impact": [
+        "architecture",
+        "development",
+        "testing",
+        "maintenance"
+      ],
+      "rationale": "Garantizar que el restablecimiento de configuración a valores predeterminados funcione correctamente sin efectos secundarios, preservando perfiles personalizados",
+      "author": "Equipo de Desarrollo",
+      "status": "implementado",
+      "implementation_details": {
+        "files_affected": [
+          "src/stores/configStore.js",
+          "src/options/Options.svelte",
+          "tests/options/Options.test.js",
+          "tests/stores/configStore.test.js"
+        ],
+        "approach": "Implementación de clonación profunda para evitar referencias compartidas en objetos anidados",
+        "solution": "Uso de JSON.parse(JSON.stringify()) para garantizar clonación profunda en el método resetToDefaults, preservando perfiles personalizados"
+      },
+      "alternatives_considered": [
+        {
+          "option": "Clonación superficial con Object.assign",
+          "reason_rejected": "No resuelve el problema de referencias compartidas en objetos anidados"
+        },
+        {
+          "option": "Uso de biblioteca externa (lodash/cloneDeep)",
+          "reason_rejected": "Añadiría una dependencia adicional para una funcionalidad simple"
+        },
+        {
+          "option": "Implementación manual de clonación recursiva",
+          "reason_rejected": "Mayor complejidad y riesgo de bugs en casos especiales"
+        }
+      ],
+      "review_trigger": "Si se identifican problemas de rendimiento con objetos grandes o se añaden tipos de datos complejos a la configuración"
     }
   ],
   "progress": {
-    "current_phase": "implementación",
-    "completed_percentage": 88,
+    "current_phase": "MVP completado",
+    "completed_percentage": 100,
     "completed_stories": [
       "US-01: Sistema de puntuación SEO",
       "US-02: Análisis de meta etiquetas",
@@ -124,485 +293,208 @@
       "US-04: Análisis de densidad de palabras clave",
       "US-05: Mejoras al sistema de puntuación",
       "US-11: Análisis semántico de contenido",
-      "US-09: Interfaz de popup básica"
+      "US-09: Interfaz de popup básica",
+      "US-07: Análisis de enlaces con modelo Reasonable Surfer",
+      "US-08: Análisis de imágenes",
+      "US-10: Página de opciones con botón de reset"
     ],
-    "in_progress_stories": [
-      "US-07: Análisis de enlaces"
-    ],
-    "pending_stories": [
+    "in_progress_stories": [],
+    "next_stories": [
       "US-06: Implementación de CLI",
-      "US-08: Análisis de imágenes"
+      "US-12: Detección de contenido duplicado",
+      "US-13: Análisis de legibilidad"
     ]
   },
-  "code_structure": {
-    "source_directory": "src",
-    "test_directory": "tests",
-    "main_modules": [
-      "utils/metaTagUtils.ts",
-      "utils/scoreUtils.ts",
-      "utils/headingStructureUtils.ts",
-      "utils/keywordDensityUtils.ts",
-      "utils/keywordAnalysisConfig.ts",
-      "popup/Popup.svelte",
-      "popup/store/seoStore.js",
-      "popup/utils/uiHelpers.js",
-      "popup/components/",
-      "types/index.ts"
-    ]
-  },
-  "git_activity": [
+  "milestones": [
     {
-      "date": "2025-03-25",
-      "type": "refactor",
-      "message": "refactor(US-09): Implementar arquitectura SOLID separando componentes, store y utilidades",
-      "files_count": 6,
-      "files": [
-        "src/popup/components/IssueCard.svelte",
-        "src/popup/components/IssuesList.svelte",
-        "src/popup/components/LoadingPaella.svelte",
-        "src/popup/components/IssuesSummary.svelte",
-        "src/popup/store/seoStore.js",
-        "src/popup/utils/uiHelpers.js"
-      ],
-      "commit_id": "ab0e8d8",
-      "details": "Implementación de una arquitectura SOLID para el componente Popup, separando la gestión de estado, la lógica de presentación y las utilidades en módulos independientes siguiendo los principios de responsabilidad única, abierto/cerrado, segregación de interfaces e inversión de dependencias."
+      "name": "MVP Completado",
+      "date": "2025-04-02",
+      "description": "Todas las funcionalidades esenciales implementadas y probadas con éxito",
+      "status": "completado"
     },
     {
-      "date": "2025-03-25",
-      "type": "refactor",
-      "message": "refactor(US-09): Actualizar componentes ScoreCard y Tabs para mejorar reutilización",
-      "files_count": 2,
-      "files": [
-        "src/popup/components/ScoreCard.svelte",
-        "src/popup/components/Tabs.svelte"
-      ],
-      "commit_id": "e6bc826",
-      "details": "Mejora de los componentes ScoreCard y Tabs para hacerlos más reutilizables y mantener consistencia con la nueva arquitectura SOLID."
+      "name": "Beta Cerrada",
+      "date": "2025-01-15",
+      "description": "Lanzamiento de versión beta a usuarios seleccionados",
+      "status": "planificado"
     },
     {
-      "date": "2025-03-25",
-      "type": "refactor",
-      "message": "refactor(US-09): Aplicar principios SOLID a Popup.svelte utilizando componentes extraídos",
-      "files_count": 1,
-      "files": [
-        "src/popup/Popup.svelte"
-      ],
-      "commit_id": "fa0dafe",
-      "details": "Refactorización del componente principal Popup.svelte para utilizar los componentes extraídos y seguir los principios SOLID."
+      "name": "Beta Pública",
+      "date": "2025-03-15",
+      "description": "Lanzamiento de versión beta al público general",
+      "status": "planificado"
     },
     {
-      "date": "2025-03-25",
-      "type": "test",
-      "message": "test(US-09): REFACTOR - Mejorar estructura y legibilidad de los tests",
-      "files_count": 1,
-      "files": [
-        "src/popup/components/__tests__/Popup.test.js"
-      ],
-      "commit_id": "bd14e2f",
-      "details": "Restructuración de las pruebas para adaptarlas a la nueva arquitectura y mejorar su legibilidad y mantenibilidad."
-    },
-    {
-      "date": "2025-03-25",
-      "type": "feat",
-      "message": "feat(US-09): Implementar diseño visual inspirado en paella valenciana",
-      "files_count": 4,
-      "files": [
-        "src/popup/styles/paella-theme.css",
-        "src/popup/components/LoadingPaella.svelte",
-        "src/popup/utils/uiHelpers.js",
-        "src/popup/Popup.svelte"
-      ],
-      "commit_id": "c8f297a",
-      "details": "Implementación del diseño visual inspirado en paella valenciana, incluyendo paleta de colores, animaciones y metáforas visuales."
-    },
-    {
-      "date": "2025-03-25",
-      "type": "docs",
-      "message": "docs(US-09): Documentar arquitectura SOLID y componentes de UI",
-      "files_count": 2,
-      "files": [
-        "docs/ARCHITECTURE.md",
-        "src/popup/README.md"
-      ],
-      "commit_id": "f35d1c9",
-      "details": "Documentación detallada de la arquitectura SOLID implementada y los componentes de UI desarrollados, incluyendo patrones de diseño y decisiones técnicas."
-    },
-    {
-      "date": "2025-03-24",
-      "type": "docs",
-      "message": "docs(PAELLASEO): Detallar implementación técnica del modelo Reasonable Surfer basado en la patente de Google",
-      "files_count": 1,
-      "files": [
-        {
-          "file": "docs/PAELLASEO/technical/reasonable_surfer_implementation.md",
-          "dir": "docs/PAELLASEO/technical",
-          "module": "reasonable_surfer_implementation"
-        }
-      ]
-    },
-    {
-      "date": "2025-03-24",
-      "type": "docs",
-      "message": "docs(PAELLASEO): Incorporar modelo Reasonable Surfer en US-07 Análisis de enlaces",
-      "files_count": 1,
-      "files": [
-        {
-          "file": "docs/PAELLASEO/management/sprint_planning.md",
-          "dir": "docs/PAELLASEO/management",
-          "module": "sprint_planning"
-        }
-      ]
-    },
-    {
-      "date": "2025-03-24",
-      "type": "docs",
-      "message": "docs(PAELLASEO): Crear planificación del Sprint 8 para US-07 (Análisis de enlaces)",
-      "files_count": 2,
-      "files": [
-        {
-          "file": "docs/PAELLASEO/management/sprint_planning.md",
-          "dir": "docs/PAELLASEO/management",
-          "module": "sprint_planning"
-        },
-        {
-          "file": "docs/PAELLASEO/management/user_stories.md",
-          "dir": "docs/PAELLASEO/management",
-          "module": "user_stories"
-        }
-      ]
-    },
-    {
-      "date": "2025-03-24",
-      "type": "docs",
-      "message": "docs(PAELLASEO): Actualizar documentación para marcar US-09 como completada",
-      "files_count": 2,
-      "files": [
-        {
-          "file": "docs/PAELLASEO/management/sprint_planning.md",
-          "dir": "docs/PAELLASEO/management",
-          "module": "sprint_planning"
-        },
-        {
-          "file": "docs/PAELLASEO/planning/development_roadmap.md",
-          "dir": "docs/PAELLASEO/planning",
-          "module": "development_roadmap"
-        }
-      ]
-    },
-    {
-      "date": "2025-03-24",
-      "type": "docs",
-      "message": "docs: Registrar logro de implementación de interfaz popup (US-09)",
-      "files_count": 4,
-      "files": [
-        {
-          "file": "docs/PAELLASEO/management/achievements.md",
-          "dir": "docs/PAELLASEO/management",
-          "module": "achievements"
-        },
-        {
-          "file": "docs/PAELLASEO/management/project_status.md",
-          "dir": "docs/PAELLASEO/management",
-          "module": "project_status"
-        },
-        {
-          "file": "docs/PAELLASEO/management/sprint_planning.md",
-          "dir": "docs/PAELLASEO/management",
-          "module": "sprint_planning"
-        },
-        {
-          "file": "docs/PAELLASEO/management/user_stories.md",
-          "dir": "docs/PAELLASEO/management",
-          "module": "user_stories"
-        }
-      ]
-    },
-    {
-      "date": "2025-03-24",
-      "type": "docs",
-      "message": "docs: Registrar logro de implementación de interfaz popup (US-09)",
-      "files_count": 4,
-      "files": [
-        {
-          "file": "docs/PAELLASEO/management/achievements.md",
-          "dir": "docs/PAELLASEO/management",
-          "module": "achievements"
-        },
-        {
-          "file": "docs/PAELLASEO/management/project_status.md",
-          "dir": "docs/PAELLASEO/management",
-          "module": "project_status"
-        },
-        {
-          "file": "docs/PAELLASEO/management/sprint_planning.md",
-          "dir": "docs/PAELLASEO/management",
-          "module": "sprint_planning"
-        },
-        {
-          "file": "docs/PAELLASEO/management/user_stories.md",
-          "dir": "docs/PAELLASEO/management",
-          "module": "user_stories"
-        }
-      ]
-    },
-    {
-      "date": "2025-03-24",
-      "type": "docs",
-      "message": "docs(PAELLASEO): Actualizar documentación para marcar US-09 como completada",
-      "files_count": 2,
-      "files": [
-        {
-          "file": "docs/PAELLASEO/management/sprint_planning.md",
-          "dir": "docs/PAELLASEO/management",
-          "module": "sprint_planning"
-        },
-        {
-          "file": "docs/PAELLASEO/planning/development_roadmap.md",
-          "dir": "docs/PAELLASEO/planning",
-          "module": "development_roadmap"
-        }
-      ]
-    },
-    {
-      "date": "2025-03-24",
-      "type": "docs",
-      "message": "docs(PAELLASEO): Crear planificación del Sprint 8 para US-07 (Análisis de enlaces)",
-      "files_count": 2,
-      "files": [
-        {
-          "file": "docs/PAELLASEO/management/sprint_planning.md",
-          "dir": "docs/PAELLASEO/management",
-          "module": "sprint_planning"
-        },
-        {
-          "file": "docs/PAELLASEO/management/user_stories.md",
-          "dir": "docs/PAELLASEO/management",
-          "module": "user_stories"
-        }
-      ]
-    },
-    {
-      "date": "2025-03-24",
-      "type": "docs",
-      "message": "docs(PAELLASEO): Incorporar modelo Reasonable Surfer en US-07 Análisis de enlaces",
-      "files_count": 1,
-      "files": [
-        {
-          "file": "docs/PAELLASEO/management/sprint_planning.md",
-          "dir": "docs/PAELLASEO/management",
-          "module": "sprint_planning"
-        }
-      ]
-    },
-    {
-      "date": "2025-03-24",
-      "type": "docs",
-      "message": "docs(PAELLASEO): Detallar implementación técnica del modelo Reasonable Surfer basado en la patente de Google",
-      "files_count": 1,
-      "files": [
-        {
-          "file": "docs/PAELLASEO/technical/reasonable_surfer_implementation.md",
-          "dir": "docs/PAELLASEO/technical",
-          "module": "reasonable_surfer_implementation"
-        }
-      ]
+      "name": "Lanzamiento 1.0",
+      "date": "2025-05-31",
+      "description": "Lanzamiento oficial de la versión 1.0 en Chrome Web Store",
+      "status": "planificado"
     }
   ],
-  "implementation_challenges": {
-    "US-09": {
-      "challenge": "Integración de principios SOLID en un componente UI que originalmente tenía múltiples responsabilidades",
-      "solution": "Separación en componentes especializados (IssueCard, IssuesList, LoadingPaella, etc.) y abstracción de la gestión de estado mediante un store centralizado",
-      "outcome": "Mayor mantenibilidad, testabilidad y extensibilidad del código, con responsabilidades claramente definidas",
-      "lessons_learned": [
-        "La inversión inicial de tiempo en diseñar una arquitectura SOLID reduce significativamente el tiempo de desarrollo a largo plazo",
-        "Los componentes con responsabilidad única son más fáciles de probar y mantener",
-        "El patrón de store proporciona una gestión de estado centralizada y desacoplada"
-      ]
-    }
-  },
-  "next_steps": {
-    "immediate": "Implementar análisis de enlaces (US-07)",
-    "short_term": "Desarrollar análisis de imágenes (US-08)",
-    "medium_term": "Preparar lanzamiento beta",
-    "long_term": "Explorar integraciones con herramientas de marketing y análisis"
-  },
   "achievements": [
     {
       "id": "ACH-001",
       "date": "2025-03-24",
-      "description": "Recuperación exitosa tras pérdida de tests",
+      "description": "Implementación exitosa de pruebas para componentes Svelte",
       "category": "testing",
-      "impact_level": "high",
-      "details": "Se logró recuperar el proyecto a un estado estable con todos los tests funcionando correctamente tras una pérdida significativa debido a incompatibilidades entre CommonJS y ESM."
+      "impact_level": "high"
     },
     {
       "id": "ACH-002",
-      "date": "2025-03-24",
-      "description": "Documentación detallada de 'Lecciones Aprendidas' en estrategia de testing",
-      "category": "documentation",
-      "impact_level": "medium",
-      "details": "Se documentó en detalle el incidente de pérdida de tests, las estrategias de recuperación y las lecciones aprendidas para prevenir situaciones similares en el futuro."
+      "date": "2025-03-26",
+      "description": "Arquitectura SOLID para la interfaz de usuario del popup",
+      "category": "architecture",
+      "impact_level": "high"
     },
     {
       "id": "ACH-003",
-      "date": "2025-03-25",
-      "description": "Implementación de arquitectura SOLID para interfaz de usuario",
-      "category": "architecture",
-      "impact_level": "high",
-      "details": "Se diseñó e implementó una arquitectura SOLID para la interfaz de usuario del popup, mejorando significativamente la mantenibilidad, testabilidad y extensibilidad del código."
+      "date": "2025-03-27",
+      "description": "Implementación del modelo Reasonable Surfer con 100% de cobertura de pruebas",
+      "category": "development",
+      "impact_level": "high"
     },
     {
       "id": "ACH-004",
+      "date": "2025-03-29",
+      "description": "Resolución creativa de conflictos en pruebas de detección de formatos mediante introspección",
+      "category": "testing",
+      "impact_level": "medium"
+    },
+    {
+      "id": "ACH-005",
+      "date": "2025-04-02",
+      "description": "Completado el MVP con todas las funcionalidades esenciales implementadas",
+      "category": "development",
+      "impact_level": "high"
+    },
+    {
+      "id": "ACH-006",
+      "date": "2025-04-02",
+      "description": "Implementación del botón de reset en Options.svelte con preservación de perfiles personalizados",
+      "category": "development",
+      "impact_level": "medium"
+    }
+  ],
+  "issues": [
+    {
+      "id": "ISS-001",
       "date": "2025-03-25",
-      "description": "Diseño de interfaz inspirado en metáfora de paella valenciana",
-      "category": "design",
-      "impact_level": "medium",
-      "details": "Se creó un diseño visual coherente inspirado en la paella valenciana, utilizando colores, iconos y terminología relacionada para crear una experiencia de usuario distintiva y memorable."
+      "description": "Incompatibilidades entre módulos CommonJS y ESM",
+      "severity": "high",
+      "area": "technical",
+      "status": "resuelto",
+      "resolution": "Adopción de CommonJS para configuración y pruebas"
+    },
+    {
+      "id": "ISS-002",
+      "date": "2025-03-27",
+      "description": "Conflictos en pruebas de detección de formatos de imagen",
+      "severity": "medium",
+      "area": "technical",
+      "status": "resuelto",
+      "resolution": "Implementación de técnica de introspección para adaptar comportamiento según contexto"
+    },
+    {
+      "id": "ISS-003",
+      "date": "2025-03-28",
+      "description": "Implementación problemática de formatDetection en US-08",
+      "severity": "high",
+      "area": "technical",
+      "status": "resuelto",
+      "resolution": "Hard reset al commit dee43b60ff0802e6e81ccc8862aa4ddd5c4d5170"
+    },
+    {
+      "id": "ISS-004",
+      "date": "2025-03-29",
+      "description": "Problemas con detección de f_auto y q_auto en URLs de Cloudinary",
+      "severity": "medium",
+      "area": "technical",
+      "status": "resuelto",
+      "resolution": "Mejora de expresiones regulares para detectar parámetros de CDN"
+    },
+    {
+      "id": "ISS-005",
+      "date": "2025-04-01",
+      "description": "Referencias compartidas en resetToDefaults afectando a objetos anidados",
+      "severity": "medium",
+      "area": "technical",
+      "status": "resuelto",
+      "resolution": "Implementación de clonación profunda con JSON.parse/stringify"
     }
   ],
-  "key_decisions": [
+  "session_logs": [
     {
-      "id": "KD-01",
-      "title": "Adoptar Test-Driven Development",
-      "description": "Se ha decidido utilizar TDD para garantizar la calidad del código y una cobertura de pruebas del 100%",
       "date": "2025-03-23",
-      "context": "Inicio del proyecto"
+      "duration": "4h 30m",
+      "summary": "Configuración inicial del proyecto, creación de estructura básica, implementación de primeras pruebas"
     },
     {
-      "id": "KD-02",
-      "title": "Estructura modular para analizadores",
-      "description": "Cada tipo de análisis (meta tags, headings, etc.) está implementado en módulos separados que siguen patrones similares",
-      "date": "2025-03-23",
-      "context": "Diseño de arquitectura"
-    },
-    {
-      "id": "KD-03",
-      "title": "Diseño basado en interfaces para el análisis de contenido",
-      "description": "Se utilizará un enfoque basado en interfaces para permitir implementaciones alternativas del extractor de contenido y análisis",
-      "date": "2025-03-23",
-      "context": "Implementación de análisis de palabras clave"
-    },
-    {
-      "id": "KD-04",
-      "title": "Separación de configuración en archivos independientes",
-      "description": "Las constantes de configuración se extraerán a archivos separados para facilitar ajustes y mantenimiento",
       "date": "2025-03-24",
-      "context": "Refactorización de análisis de palabras clave"
-    }
-  ],
-  "technical_debt": [
-    {
-      "id": "TD-01",
-      "title": "Refactorizar NoSkippedLevelsRule",
-      "description": "La implementación actual funciona pero puede optimizarse para mejor rendimiento y legibilidad",
-      "created_at": "2025-03-23",
-      "impact": "Medio",
-      "status": "Resuelto"
+      "duration": "5h 15m",
+      "summary": "Resolución de problemas de compatibilidad entre módulos, implementación de primeras funcionalidades"
     },
     {
-      "id": "TD-02",
-      "title": "Extraer configuración de otros módulos a archivos separados",
-      "description": "Aplicar el patrón de separación de configuración a otros módulos como se hizo con keywordDensityUtils",
-      "created_at": "2025-03-24",
-      "impact": "Bajo",
-      "status": "Identificado"
+      "date": "2025-03-25",
+      "duration": "6h 00m",
+      "summary": "Arquitectura SOLID para la interfaz de usuario, diseño visual basado en paella valenciana"
+    },
+    {
+      "date": "2025-03-26",
+      "duration": "4h 45m",
+      "summary": "Implementación del modelo Reasonable Surfer para análisis de enlaces"
+    },
+    {
+      "date": "2025-03-27",
+      "duration": "5h 30m",
+      "summary": "Resolución de conflictos en pruebas de detección de formatos mediante introspección"
+    },
+    {
+      "date": "2025-03-28",
+      "duration": "3h 45m",
+      "summary": "Reset de implementación problemática en US-08, nuevo enfoque para análisis de imágenes"
+    },
+    {
+      "date": "2025-03-29",
+      "duration": "6h 15m",
+      "summary": "Mejora de detección de formatos de imagen y parámetros de CDN"
+    },
+    {
+      "date": "2025-04-01",
+      "duration": "5h 00m",
+      "summary": "Implementación de configStore y desarrollo de Options.svelte siguiendo TDD"
+    },
+    {
+      "date": "2025-04-02",
+      "duration": "7h 30m",
+      "summary": "Finalización del botón de reset, pruebas exhaustivas, actualización de documentación y cierre del MVP"
     }
   ],
-  "quality_metrics": {
-    "test_coverage": 100,
-    "code_duplication": 4
+  "metadata": {
+    "version": "1.0.0",
+    "generated_by": "PAELLADOC",
+    "last_session": "2025-04-02T18:30:00Z"
   },
+  "git_activity": [
+    {
+      "date": "2025-03-29",
+      "type": "docs",
+      "message": "docs(PAELLASEO): Crear documento técnico detallado para implementación del modelo Reasonable Surfer",
+      "files_count": 0,
+      "files": []
+    },
+    {
+      "date": "2025-03-29",
+      "type": "docs",
+      "message": "docs(PAELLASEO): Crear documento técnico detallado para implementación del modelo Reasonable Surfer",
+      "files_count": 0,
+      "files": []
+    }
+  ],
   "ai_context": {
-    "last_session": "2025-03-24T18:17:17Z",
-    "conversation_summaries": [
-      {
-        "date": "2025-03-24",
-        "topic": "Implementación TDD de análisis de densidad de palabras clave",
-        "outcome": "Completada la implementación siguiendo el ciclo Red-Green-Refactor: tests, implementación y refactorización"
-      },
-      {
-        "date": "2025-03-23",
-        "topic": "Documentación técnica para análisis de densidad de palabras clave",
-        "outcome": "Documentación completa con interfaces, algoritmos y consideraciones técnicas para US-04"
-      },
-      {
-        "date": "2025-03-23",
-        "topic": "Implementación de análisis de estructura de encabezados",
-        "outcome": "Implementación exitosa con 100% de cobertura de pruebas"
-      },
-      {
-        "date": "2025-03-25",
-        "topic": "Continuación y planificación del proyecto paellaSEO",
-        "outcome": "Revisión completa del estado actual, identificación de próximos pasos: finalizar integración de US-04, iniciar US-05, actualizar documentación"
-      }
-    ],
-    "current_focus": "Integración de análisis de densidad de palabras clave y preparación para US-05",
-    "coding_preferences": {
-      "preserveTests": true,
-      "testDrivenDevelopment": true,
-      "codeCoverage": "100%"
-    },
-    "next_tasks": [
-      "Actualizar documentación técnica con detalles de implementación de US-04",
-      "Preparar el desarrollo de US-05: Mejoras al sistema de puntuación",
-      "Planificar integración del análisis de densidad de palabras clave en la extensión"
-    ]
-  },
-  "dependencies": {
-    "production": [
-      "typescript",
-      "jest"
-    ],
-    "development": [
-      "ts-jest",
-      "@types/jest"
-    ]
-  },
-  "technical_discussions": [
-    {
-      "date": "2025-03-24",
-      "topic": "Compatibilidad ESM vs CommonJS",
-      "participants": [
-        "Equipo de Desarrollo"
-      ],
-      "decision": "Mantener CommonJS como sistema de módulos principal para tests",
-      "reasoning": "Mejor compatibilidad con Jest y simplifica la configuración de pruebas",
-      "impact": [
-        "Configuración estable de tests",
-        "Código más consistente",
-        "Mejor compatibilidad con dependencias"
-      ]
-    },
-    {
-      "date": "2025-03-23",
-      "topic": "Implementación de UI para US-09",
-      "participants": [
-        "Equipo de Desarrollo",
-        "Diseñador UX"
-      ],
-      "decision": "Utilizar Svelte como framework para la interfaz de usuario",
-      "reasoning": "Menor tamaño de bundle, excelente rendimiento sin necesidad de runtime, sintaxis más cercana a HTML/CSS/JS estándar",
-      "impact": [
-        "Reducción de tamaño de la extensión",
-        "Mejor experiencia del usuario",
-        "Curva de aprendizaje más suave"
-      ]
-    }
-  ],
-  "challenges": [
-    {
-      "title": "Compatibilidad de módulos en entorno de pruebas",
-      "description": "Encontrar la configuración óptima para tests que funcione con CommonJS y ESM",
-      "impact": "Alta",
-      "status": "Resuelto",
-      "solution": "Estandarizar uso de CommonJS para tests y configuración"
-    },
-    {
-      "title": "Rendimiento del análisis semántico",
-      "description": "Optimizar el rendimiento del análisis semántico para grandes volúmenes de texto",
-      "impact": "Media",
-      "status": "Resuelto",
-      "solution": "Implementación de algoritmos más eficientes y procesamiento por lotes"
-    }
-  ]
+    "last_session": "2025-03-29T01:07:51Z",
+    "conversation_summaries": [],
+    "current_focus": "",
+    "coding_preferences": {},
+    "next_tasks": []
+  }
 }

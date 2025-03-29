@@ -7,6 +7,62 @@
   "trigger_commands": ["PAELLA", "CONTINUE", "GENERATE_CODE"],
   "steps": [
     {
+      "id": "documentation_scope",
+      "name": "Documentation Scope",
+      "description": "Determine the scope and depth of the documentation",
+      "required": true,
+      "questions": [
+        {
+          "id": "documentation_depth",
+          "text": "What level of detail should the documentation have?",
+          "type": "single_choice",
+          "options": [
+            "Minimal - just the essentials, very simple structure",
+            "Basic - only essential aspects",
+            "Standard - complete but concise documentation",
+            "Detailed - thorough documentation with examples",
+            "Exhaustive - complete documentation for all aspects"
+          ],
+          "default": "Minimal - just the essentials, very simple structure",
+          "required": true
+        },
+        {
+          "id": "documentation_priorities",
+          "text": "Which areas are priorities in the documentation?",
+          "type": "multiple_choice",
+          "options": [
+            "Technical architecture",
+            "APIs and interfaces",
+            "User flows",
+            "Configuration and deployment",
+            "Security",
+            "Testing",
+            "Development guides",
+            "User guides"
+          ],
+          "default": [],
+          "required": false
+        },
+        {
+          "id": "existing_documentation",
+          "text": "Is there any existing documentation that should be incorporated?",
+          "type": "boolean",
+          "default": false,
+          "required": false
+        },
+        {
+          "id": "existing_documentation_details",
+          "text": "Describe the existing documentation:",
+          "type": "textarea",
+          "condition": {
+            "field": "existing_documentation",
+            "value": true
+          },
+          "required": false
+        }
+      ]
+    },
+    {
       "id": "project_basics",
       "name": "Project Basic Information",
       "description": "Collect basic information about the project to document",
@@ -24,14 +80,14 @@
           "text": "Provide a brief description of the project:",
           "type": "textarea",
           "default": null,
-          "required": true
+          "required": false
         },
         {
           "id": "project_purpose",
           "text": "What is the main purpose of the project?",
           "type": "textarea",
           "default": null,
-          "required": true
+          "required": false
         }
       ]
     },
@@ -39,7 +95,11 @@
       "id": "project_category",
       "name": "Project Category",
       "description": "Determine the category and type of the project",
-      "required": true,
+      "required": false,
+      "condition": {
+        "field": "documentation_depth",
+        "not_value": "Minimal - just the essentials, very simple structure"
+      },
       "questions": [
         {
           "id": "project_category",
@@ -76,84 +136,22 @@
       "id": "technical_specifications",
       "name": "Technical Specifications",
       "description": "Collect detailed technical information for the project",
-      "required": true,
+      "required": false,
+      "condition": {
+        "field": "documentation_depth",
+        "not_value": "Minimal - just the essentials, very simple structure"
+      },
       "flow_reference": "technical_specifications"
-    },
-    {
-      "id": "documentation_scope",
-      "name": "Documentation Scope",
-      "description": "Determine the scope and depth of the documentation",
-      "required": true,
-      "questions": [
-        {
-          "id": "documentation_depth",
-          "text": "What level of detail should the documentation have?",
-          "type": "single_choice",
-          "options": [
-            "Basic - only essential aspects",
-            "Standard - complete but concise documentation",
-            "Detailed - thorough documentation with examples",
-            "Exhaustive - complete documentation for all aspects"
-          ],
-          "default": "Standard - complete but concise documentation",
-          "required": true
-        },
-        {
-          "id": "documentation_audience",
-          "text": "Who is the primary audience for the documentation?",
-          "type": "multiple_choice",
-          "options": [
-            "Developers",
-            "Designers",
-            "Product Managers",
-            "Non-technical stakeholders",
-            "End users",
-            "Other"
-          ],
-          "default": ["Developers"],
-          "required": true
-        },
-        {
-          "id": "documentation_priorities",
-          "text": "Which areas are priorities in the documentation?",
-          "type": "multiple_choice",
-          "options": [
-            "Technical architecture",
-            "APIs and interfaces",
-            "User flows",
-            "Configuration and deployment",
-            "Security",
-            "Testing",
-            "Development guides",
-            "User guides"
-          ],
-          "default": ["Technical architecture", "APIs and interfaces"],
-          "required": true
-        },
-        {
-          "id": "existing_documentation",
-          "text": "Is there any existing documentation that should be incorporated?",
-          "type": "boolean",
-          "default": false,
-          "required": true
-        },
-        {
-          "id": "existing_documentation_details",
-          "text": "Describe the existing documentation:",
-          "type": "textarea",
-          "condition": {
-            "field": "existing_documentation",
-            "value": true
-          },
-          "required": true
-        }
-      ]
     },
     {
       "id": "development_methodology",
       "name": "Development Methodology",
       "description": "Collect information about development methodologies",
-      "required": true,
+      "required": false,
+      "condition": {
+        "field": "documentation_depth",
+        "not_value": "Minimal - just the essentials, very simple structure"
+      },
       "questions": [
         {
           "id": "methodologies",
@@ -173,26 +171,70 @@
       ]
     },
     {
+      "id": "user_confirmation",
+      "name": "Confirmation",
+      "description": "Confirm document generation",
+      "required": true,
+      "questions": [
+        {
+          "id": "confirm_generation",
+          "text": "You've provided the following information:\n- Project name: {{project_name}}\n- Documentation level: {{documentation_depth}}\n\nWould you like me to generate documentation with these settings?",
+          "type": "boolean",
+          "default": false,
+          "required": true
+        }
+      ]
+    },
+    {
       "id": "next_steps",
       "name": "Next Steps",
       "description": "Guidance on how to continue with the documentation process",
       "required": true,
+      "condition": {
+        "field": "confirm_generation",
+        "value": true
+      },
       "no_questions": true,
-      "message": "Thank you for providing this information. Based on your answers, I can generate the documentation structure for your project. You can continue working with the documentation using the following commands:\n\n- `CONTINUE project_name=\"{{project_name}}\"` to resume this project later\n- `MEMORY` to view the project record\n- `ACHIEVEMENT`, `ISSUE` or `DECISION` to record important events\n- `GENERATE_CODE` to generate code based on the documentation\n\nWould you like me to create the documentation structure now?"
+      "message": "Thank you for providing this information. I'll generate the documentation structure for your project based on your requirements. You can continue working with the documentation using the following commands:\n\n- `CONTINUE project_name=\"{{project_name}}\"` to resume this project later\n- `MEMORY` to view the project record\n- `ACHIEVEMENT`, `ISSUE` or `DECISION` to record important events"
+    },
+    {
+      "id": "canceled_generation",
+      "name": "Canceled Generation",
+      "description": "Message when generation is canceled",
+      "required": true,
+      "condition": {
+        "field": "confirm_generation",
+        "value": false
+      },
+      "no_questions": true,
+      "message": "Documentation generation has been canceled. Type PAELLA to start over or provide additional parameters when you're ready."
     }
   ],
+  "generation_control": {
+    "enable_generation": "{{confirm_generation}}",
+    "generation_message": "Generating documentation for project {{project_name}} with {{documentation_depth}} level of detail...",
+    "manual_generation_only": true
+  },
   "output_templates": [
     {
       "template_id": "project_definition_md",
       "format": "markdown",
       "path": "docs/{{project_name}}/definition/project_definition.md",
-      "template_file": ".cursor/rules/templates/Product/01_project_definition.md"
+      "template_file": ".cursor/rules/templates/Product/01_project_definition.md",
+      "condition": {
+        "field": "confirm_generation",
+        "value": true
+      }
     },
     {
       "template_id": "memory_json",
       "format": "json",
       "path": "docs/{{project_name}}/.memory.json",
-      "template_file": ".cursor/rules/templates/Product/memory_template.json"
+      "template_file": ".cursor/rules/templates/Product/memory_template.json",
+      "condition": {
+        "field": "confirm_generation",
+        "value": true
+      }
     }
   ]
 }
