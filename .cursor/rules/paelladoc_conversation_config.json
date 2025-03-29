@@ -18,26 +18,48 @@
   "commands": {
     "PAELLA": {
       "required_flows": ["main_conversation"],
-      "optional_flows": ["technical_specifications"]
+      "optional_flows": ["technical_specifications"],
+      "sequential_questions": true,
+      "save_to_memory": true
     },
     "CONTINUE": {
       "required_flows": ["main_conversation"],
-      "optional_flows": ["technical_specifications"]
+      "optional_flows": ["technical_specifications"],
+      "sequential_questions": true,
+      "save_to_memory": true
     },
     "GENERATE_CODE": {
       "required_flows": ["main_conversation", "technical_specifications"],
-      "optional_flows": []
+      "optional_flows": [],
+      "sequential_questions": true,
+      "save_to_memory": true
     }
   },
   "global_requirements": {
     "technical_specifications_required": false,
     "documentation_validation": false,
-    "memory_system_enabled": true
+    "memory_system_enabled": true,
+    "sequential_questioning": true,
+    "require_explicit_confirmation": true,
+    "show_comprehensive_summary": true,
+    "save_after_each_question": true
+  },
+  "memory_management": {
+    "memory_file": ".memory.json",
+    "auto_save": true,
+    "save_frequency": "after_each_question",
+    "show_save_confirmations": true
   },
   "error_handling": {
     "missing_technical_specs": {
       "error_message": "NOTE: Technical specifications are recommended before generating code or detailed documentation. Would you like to complete the technical specifications now?",
       "recovery_action": "prompt_for_technical_specs"
     }
+  },
+  "conversation_style": {
+    "one_question_at_a_time": true,
+    "show_progress": true,
+    "confirm_each_answer": true,
+    "show_memory_updates": true
   }
 }

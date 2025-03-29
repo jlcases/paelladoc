@@ -5,12 +5,55 @@
   "required": true,
   "priority": "critical",
   "trigger_commands": ["PAELLA", "CONTINUE", "GENERATE_CODE"],
+  "presentation": {
+    "introduction": "Welcome to PAELLADOC. I'll ask you questions ONE BY ONE to gather information about your project. After each response, I'll save the information to the project memory, and only when we have all the necessary information, I'll show you a summary and ask if you want to generate the documentation.",
+    "outro": "Thank you for providing this information. Remember you can use commands like MEMORY to view the project record, or ACHIEVEMENT, ISSUE, or DECISION to record important events."
+  },
   "steps": [
+    {
+      "id": "project_basics",
+      "name": "Project Basic Information",
+      "description": "Collect basic information about the project to document",
+      "required": true,
+      "sequential": true,
+      "save_to_memory_after_each_question": true,
+      "questions": [
+        {
+          "id": "project_name",
+          "text": "What is the name of the project?",
+          "type": "text",
+          "default": null,
+          "required": true,
+          "memory_path": "project.name",
+          "confirmation_message": "Saved: Project name = '{{value}}'"
+        },
+        {
+          "id": "project_description",
+          "text": "Provide a brief description of the project:",
+          "type": "textarea",
+          "default": null,
+          "required": true,
+          "memory_path": "project.description",
+          "confirmation_message": "Saved: Project description"
+        },
+        {
+          "id": "project_purpose",
+          "text": "What is the main purpose of the project?",
+          "type": "textarea",
+          "default": null,
+          "required": true,
+          "memory_path": "project.purpose",
+          "confirmation_message": "Saved: Project purpose"
+        }
+      ]
+    },
     {
       "id": "documentation_scope",
       "name": "Documentation Scope",
       "description": "Determine the scope and depth of the documentation",
       "required": true,
+      "sequential": true,
+      "save_to_memory_after_each_question": true,
       "questions": [
         {
           "id": "documentation_depth",
@@ -23,8 +66,10 @@
             "Detailed - thorough documentation with examples",
             "Exhaustive - complete documentation for all aspects"
           ],
-          "default": "Minimal - just the essentials, very simple structure",
-          "required": true
+          "default": "Standard - complete but concise documentation",
+          "required": true,
+          "memory_path": "documentation.depth",
+          "confirmation_message": "Saved: Documentation level of detail = '{{value}}'"
         },
         {
           "id": "documentation_priorities",
@@ -41,14 +86,18 @@
             "User guides"
           ],
           "default": [],
-          "required": false
+          "required": true,
+          "memory_path": "documentation.priorities",
+          "confirmation_message": "Saved: Documentation priorities"
         },
         {
           "id": "existing_documentation",
           "text": "Is there any existing documentation that should be incorporated?",
           "type": "boolean",
           "default": false,
-          "required": false
+          "required": true,
+          "memory_path": "documentation.has_existing",
+          "confirmation_message": "Saved: Existing documentation = {{value}}"
         },
         {
           "id": "existing_documentation_details",
@@ -58,36 +107,9 @@
             "field": "existing_documentation",
             "value": true
           },
-          "required": false
-        }
-      ]
-    },
-    {
-      "id": "project_basics",
-      "name": "Project Basic Information",
-      "description": "Collect basic information about the project to document",
-      "required": true,
-      "questions": [
-        {
-          "id": "project_name",
-          "text": "What is the name of the project?",
-          "type": "text",
-          "default": null,
-          "required": true
-        },
-        {
-          "id": "project_description",
-          "text": "Provide a brief description of the project:",
-          "type": "textarea",
-          "default": null,
-          "required": false
-        },
-        {
-          "id": "project_purpose",
-          "text": "What is the main purpose of the project?",
-          "type": "textarea",
-          "default": null,
-          "required": false
+          "required": true,
+          "memory_path": "documentation.existing_details",
+          "confirmation_message": "Saved: Existing documentation details"
         }
       ]
     },
@@ -95,11 +117,9 @@
       "id": "project_category",
       "name": "Project Category",
       "description": "Determine the category and type of the project",
-      "required": false,
-      "condition": {
-        "field": "documentation_depth",
-        "not_value": "Minimal - just the essentials, very simple structure"
-      },
+      "required": true,
+      "sequential": true,
+      "save_to_memory_after_each_question": true,
       "questions": [
         {
           "id": "project_category",
@@ -118,7 +138,9 @@
             "Other"
           ],
           "default": null,
-          "required": true
+          "required": true,
+          "memory_path": "project.category",
+          "confirmation_message": "Saved: Project category = '{{value}}'"
         },
         {
           "id": "project_category_other",
@@ -128,30 +150,19 @@
             "field": "project_category",
             "value": "Other"
           },
-          "required": true
+          "required": true,
+          "memory_path": "project.category_custom",
+          "confirmation_message": "Saved: Custom category = '{{value}}'"
         }
       ]
-    },
-    {
-      "id": "technical_specifications",
-      "name": "Technical Specifications",
-      "description": "Collect detailed technical information for the project",
-      "required": false,
-      "condition": {
-        "field": "documentation_depth",
-        "not_value": "Minimal - just the essentials, very simple structure"
-      },
-      "flow_reference": "technical_specifications"
     },
     {
       "id": "development_methodology",
       "name": "Development Methodology",
       "description": "Collect information about development methodologies",
-      "required": false,
-      "condition": {
-        "field": "documentation_depth",
-        "not_value": "Minimal - just the essentials, very simple structure"
-      },
+      "required": true,
+      "sequential": true,
+      "save_to_memory_after_each_question": true,
       "questions": [
         {
           "id": "methodologies",
@@ -166,9 +177,19 @@
             "No specific methodology"
           ],
           "default": [],
-          "required": true
+          "required": true,
+          "memory_path": "development.methodologies",
+          "confirmation_message": "Saved: Development methodologies"
         }
       ]
+    },
+    {
+      "id": "requirements_summary",
+      "name": "Requirements Summary",
+      "description": "Show a summary of all collected information",
+      "required": true,
+      "no_questions": true,
+      "message": "## Project Requirements Summary\n\n### Basic Information\n- Project name: {{project_name}}\n- Category: {{project_category}}\n- Purpose: {{project_purpose}}\n\n### Documentation Scope\n- Level of detail: {{documentation_depth}}\n- Priorities: {{documentation_priorities}}\n\n### Development Methodology\n- Methodologies: {{methodologies}}\n\nLet's review this information to ensure it's complete and correct."
     },
     {
       "id": "user_confirmation",
@@ -178,10 +199,11 @@
       "questions": [
         {
           "id": "confirm_generation",
-          "text": "You've provided the following information:\n- Project name: {{project_name}}\n- Documentation level: {{documentation_depth}}\n\nWould you like me to generate documentation with these settings?",
+          "text": "Do you want to generate the documentation with the provided information?\n\nIf you confirm, documentation files will be created according to the defined structure.",
           "type": "boolean",
           "default": false,
-          "required": true
+          "required": true,
+          "memory_path": "documentation.confirmed_generation"
         }
       ]
     },
@@ -195,7 +217,7 @@
         "value": true
       },
       "no_questions": true,
-      "message": "Thank you for providing this information. I'll generate the documentation structure for your project based on your requirements. You can continue working with the documentation using the following commands:\n\n- `CONTINUE project_name=\"{{project_name}}\"` to resume this project later\n- `MEMORY` to view the project record\n- `ACHIEVEMENT`, `ISSUE` or `DECISION` to record important events"
+      "message": "Excellent! I'll generate the documentation structure for your '{{project_name}}' project based on your requirements.\n\nTo continue working with this documentation, you can use:\n\n- `CONTINUE project_name=\"{{project_name}}\"` to resume this project later\n- `MEMORY` to view the project record\n- `ACHIEVEMENT`, `ISSUE` or `DECISION` to record important events"
     },
     {
       "id": "canceled_generation",
@@ -207,13 +229,14 @@
         "value": false
       },
       "no_questions": true,
-      "message": "Documentation generation has been canceled. Type PAELLA to start over or provide additional parameters when you're ready."
+      "message": "No problem. Documentation generation has been canceled. All the information provided has been saved in the project memory. You can use the PAELLA command to resume the process when you're ready, or provide additional parameters to customize the documentation."
     }
   ],
   "generation_control": {
     "enable_generation": "{{confirm_generation}}",
-    "generation_message": "Generating documentation for project {{project_name}} with {{documentation_depth}} level of detail...",
-    "manual_generation_only": true
+    "generation_message": "Generating documentation for project '{{project_name}}' with '{{documentation_depth}}' level of detail...",
+    "manual_generation_only": true,
+    "memory_update_on_generation": true
   },
   "output_templates": [
     {
