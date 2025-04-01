@@ -340,27 +340,27 @@ commands:
       steps:
         - step: "project_verification"
           required_params: ["project_name", "output_path"]
-          message: "Verificando información del proyecto y output path"
+          message: "Verifying project information and output path"
           extract_from: ["project_memory"]
         - step: "methodology_selection"
           required_params: ["methodologies"]
-          message: "Seleccionando metodologías de desarrollo"
+          message: "Selecting development methodologies"
           extract_from: ["project_memory", "architecture_documents"]
         - step: "git_workflow_selection"
           required_params: ["git_workflow"]
-          message: "Seleccionando flujo de trabajo de Git"
+          message: "Selecting Git workflow"
           extract_from: ["project_memory"]
         - step: "language_tech_stack"
           required_params: ["language", "code_type"]
-          message: "Verificando lenguaje y stack tecnológico"
+          message: "Verifying language and technology stack"
           extract_from: ["project_memory", "architecture_documents"]
         - step: "testing_strategy"
           required_params: ["include_tests"]
-          message: "Definiendo estrategia de testing"
+          message: "Defining testing strategy"
           extract_from: ["project_memory", "architecture_documents"]
         - step: "repository_management"
           required_params: ["github_repo"]
-          message: "Configurando gestión de repositorio"
+          message: "Configuring repository management"
           extract_from: ["project_memory"]
   CREATE_REPO:
     description: "Creates a new repository for generated code"

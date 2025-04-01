@@ -1,0 +1,70 @@
+{
+  "project_name": "PROJECT_NAME",
+  "project_type": "Software Project",
+  "language": "",
+  "created_at": "CURRENT_DATE",
+  "last_updated": "CURRENT_DATE",
+  "project_path": "PROJECT_PATH",
+  "methodology": "Agile",
+  "git_workflow": "GitHub Flow",
+  "progress": {
+    "current_phase": "initialization",
+    "completed_percentage": 0,
+    "completed_stories": [],
+    "in_progress_stories": [],
+    "pending_stories": []
+  },
+  "code_structure": {
+    "source_directory": "src",
+    "test_directory": "tests",
+    "main_modules": []
+  },
+  "git_activity": [
+    {
+      "date": "TODAY_DATE",
+      "message": "Project initialization"
+    }
+  ],
+  "key_decisions": [
+    {
+      "id": "KD-01",
+      "title": "Project initialization",
+      "description": "Project memory system configuration",
+      "date": "TODAY_DATE",
+      "context": "Project start"
+    }
+  ],
+  "technical_debt": [],
+  "quality_metrics": {
+    "test_coverage": 0,
+    "code_duplication": 0
+  },
+  "ai_context": {
+    "last_session": "CURRENT_DATE",
+    "conversation_summaries": [
+      {
+        "date": "TODAY_DATE",
+        "topic": "Initial setup",
+        "outcome": "Project memory system configuration"
+      }
+    ],
+    "current_focus": "Project initialization",
+    "coding_preferences": {
+      "testDrivenDevelopment": true,
+      "codeCoverage": "high"
+    },
+    "next_tasks": [
+      "Define project requirements",
+      "Establish base architecture"
+    ]
+  },
+  "dependencies": {
+    "production": [],
+    "development": []
+  },
+  "next_steps": [
+    "Define use cases",
+    "Configure development environment",
+    "Establish code standards"
+  ]
+} 

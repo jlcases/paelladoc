@@ -1,208 +1,208 @@
 ---
-description: "Sistema de memoria de proyecto para registro y transferencia de contexto mediante IA"
+description: "Project memory system for context recording and transfer using AI"
 globs: ["**/.memory.json", "**/memory.json"]
 imports:
   - ".cursor/rules/core/memory_management.mdc"
 commands:
   CONTEXT:
-    description: "Gestiona el contexto de IA para la sesión actual"
+    description: "Manages AI context for the current session"
     action: "manage_ai_context"
     args:
       - name: "operation"
         type: "string"
-        description: "Operación a realizar con el contexto"
+        description: "Operation to perform with the context"
         enum: ["show", "update", "reset", "transfer"]
         default: "show"
       - name: "focus"
         type: "string"
-        description: "Actualiza el enfoque actual de la sesión"
+        description: "Updates the current focus of the session"
         required: false
       - name: "preferences"
         type: "array"
-        description: "Actualiza las preferencias de codificación"
+        description: "Updates coding preferences"
         items:
           type: "string"
         required: false
       - name: "next_tasks"
         type: "array"
-        description: "Actualiza las próximas tareas a realizar"
+        description: "Updates the upcoming tasks to perform"
         items:
           type: "string"
         required: false
       - name: "to_file"
         type: "string"
-        description: "Ruta donde guardar el contexto extraído"
+        description: "Path where to save the extracted context"
         required: false
   SUMMARIZE:
-    description: "Genera un resumen de la conversación actual para la memoria del proyecto"
+    description: "Generates a summary of the current conversation for the project memory"
     action: "summarize_conversation"
     args:
       - name: "format"
         type: "string"
-        description: "Formato del resumen"
+        description: "Summary format"
         enum: ["concise", "detailed", "actionable"]
         default: "concise"
       - name: "focus"
         type: "string"
-        description: "Aspecto en el que enfocarse para el resumen"
+        description: "Aspect to focus on for the summary"
         enum: ["decisions", "technical", "next_steps", "all"]
         default: "all"
       - name: "save_to_memory"
         type: "boolean"
-        description: "Guardar automáticamente en la memoria del proyecto"
+        description: "Automatically save to project memory"
         default: true
 ---
 
-# Sistema de Memoria del Proyecto con IA
+# Project Memory System with AI
 
-El sistema de memoria del proyecto permite registrar decisiones, logros, problemas y mantener contexto entre sesiones de trabajo mediante el uso de IA.
+The project memory system allows recording decisions, achievements, issues, and maintaining context between work sessions using AI.
 
-## Objetivos
+## Objectives
 
-- Mantener un registro histórico del desarrollo
-- Preservar el contexto entre sesiones de trabajo
-- Facilitar la transferencia de conocimiento
-- Ayudar en la toma de decisiones basada en precedentes
-- Reducir el tiempo de puesta al día al cambiar de tareas
+- Maintain a historical record of development
+- Preserve context between work sessions
+- Facilitate knowledge transfer
+- Assist in decision-making based on precedents
+- Reduce ramp-up time when switching tasks
 
-## Comandos Disponibles
+## Available Commands
 
 ### CONTEXT
 
-Este comando permite gestionar el contexto de IA para la sesión actual.
+This command allows managing the AI context for the current session.
 
-**Ejemplos:**
+**Examples:**
 
-Mostrar contexto actual:
+Show current context:
 ```
 CONTEXT
 ```
 
-Actualizar enfoque de la sesión:
+Update session focus:
 ```
-CONTEXT operation=update focus="Implementación de análisis de metadatos para SEO"
-```
-
-Actualizar tareas pendientes:
-```
-CONTEXT operation=update next_tasks=["Completar US-04", "Refactorizar clase HeadingValidator", "Implementar pruebas de integración"]
+CONTEXT operation=update focus="Implementation of metadata analysis for SEO"
 ```
 
-Transferir contexto a un archivo:
+Update pending tasks:
+```
+CONTEXT operation=update next_tasks=["Complete US-04", "Refactor HeadingValidator class", "Implement integration tests"]
+```
+
+Transfer context to a file:
 ```
 CONTEXT operation=transfer to_file="path/to/context.json"
 ```
 
-Reiniciar contexto:
+Reset context:
 ```
 CONTEXT operation=reset
 ```
 
 ### SUMMARIZE
 
-Este comando genera un resumen de la conversación actual para almacenarlo en la memoria del proyecto.
+This command generates a summary of the current conversation to store in the project memory.
 
-**Ejemplos:**
+**Examples:**
 
-Generar resumen conciso:
+Generate concise summary:
 ```
 SUMMARIZE
 ```
 
-Generar resumen detallado enfocado en decisiones técnicas:
+Generate detailed summary focused on technical decisions:
 ```
 SUMMARIZE format=detailed focus=decisions
 ```
 
-Generar resumen accionable sin guardarlo en memoria:
+Generate actionable summary without saving it to memory:
 ```
 SUMMARIZE format=actionable save_to_memory=false
 ```
 
 ### MEMORY
 
-Este comando muestra el contenido del registro de desarrollo.
+This command shows the contents of the development record.
 
-**Ejemplos:**
+**Examples:**
 
-Mostrar toda la memoria:
+Show all memory:
 ```
 MEMORY
 ```
 
-Mostrar solo las decisiones:
+Show only decisions:
 ```
 MEMORY filter=decisions
 ```
 
-Mostrar un resumen del contexto de IA:
+Show a summary of AI context:
 ```
 MEMORY filter=ai_context format=summary
 ```
 
 ### ACHIEVEMENT
 
-Este comando registra un logro en la memoria del proyecto.
+This command records an achievement in the project memory.
 
-**Ejemplos:**
+**Examples:**
 
 ```
-ACHIEVEMENT description="Completada la refactorización de la clase HeadingValidator" category="development" impact_level="medium"
+ACHIEVEMENT description="Completed refactoring of HeadingValidator class" category="development" impact_level="medium"
 ```
 
 ### ISSUE
 
-Este comando registra un problema en la memoria del proyecto.
+This command records an issue in the project memory.
 
-**Ejemplos:**
+**Examples:**
 
 ```
-ISSUE description="Detectada inconsistencia en el algoritmo de puntuación" severity="medium" area="technical"
+ISSUE description="Detected inconsistency in the scoring algorithm" severity="medium" area="technical"
 ```
 
 ### DECISION
 
-Este comando registra una decisión técnica en la memoria del proyecto.
+This command records a technical decision in the project memory.
 
-**Ejemplos:**
+**Examples:**
 
 ```
-DECISION description="Adoptar patrón Strategy para validadores de encabezados" impact=["architecture", "development"] rationale="Mejorar extensibilidad y seguir principios SOLID"
+DECISION description="Adopt Strategy pattern for header validators" impact=["architecture", "development"] rationale="Improve extensibility and follow SOLID principles"
 ```
 
-## Ciclo de Trabajo con Memoria de Proyecto
+## Project Memory Workflow
 
-1. **Inicio de Sesión**: Usar `CONTEXT` para cargar el contexto de la sesión anterior
-2. **Durante el Desarrollo**: Registrar logros, problemas y decisiones con los comandos correspondientes
-3. **Fin de Sesión**: Usar `SUMMARIZE` para generar un resumen de lo trabajado
+1. **Session Start**: Use `CONTEXT` to load context from the previous session
+2. **During Development**: Record achievements, issues, and decisions with the corresponding commands
+3. **Session End**: Use `SUMMARIZE` to generate a summary of what was worked on
 
-## Integración con el Flujo de Git
+## Integration with Git Flow
 
-El sistema de memoria se integra automáticamente con Git mediante hooks que:
+The memory system automatically integrates with Git through hooks that:
 
-1. Actualizan la memoria con cada commit
-2. Extraen decisiones de los mensajes de commit
-3. Detectan patrones de deuda técnica en el código
-4. Actualizan métricas de calidad cuando hay cambios en tests
+1. Update memory with each commit
+2. Extract decisions from commit messages
+3. Detect technical debt patterns in the code
+4. Update quality metrics when there are changes in tests
 
-## Consejos para Maximizar el Valor de la Memoria
+## Tips to Maximize Memory Value
 
-- Registra decisiones importantes mientras trabajas
-- Utiliza mensajes de commit informativos que comiencen con tipos (feat, fix, refactor, etc.)
-- Ejecuta `SUMMARIZE` al finalizar sesiones significativas
-- Actualiza el enfoque actual con `CONTEXT` al cambiar de tarea
-- Consulta la memoria antes de tomar decisiones similares a las ya tomadas
+- Record important decisions while working
+- Use informative commit messages that start with types (feat, fix, refactor, etc.)
+- Run `SUMMARIZE` at the end of significant sessions
+- Update the current focus with `CONTEXT` when changing tasks
+- Consult memory before making decisions similar to those already made
 
-## Recomendaciones para Equipos
+## Recommendations for Teams
 
-- Revisar periódicamente las decisiones registradas
-- Utilizar la memoria para sesiones de onboarding
-- Consultar la memoria durante las planificaciones
-- Actualizar regularmente las preferencias de codificación del equipo
+- Periodically review recorded decisions
+- Use memory for onboarding sessions
+- Consult memory during planning
+- Regularly update team coding preferences
 
-## Saber Más
+## Learn More
 
-Para más información sobre la gestión de memoria con IA, ejecute:
+For more information about memory management with AI, run:
 ```
 HELP CONTEXT
 ``` 

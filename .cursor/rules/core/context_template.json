@@ -1,0 +1,45 @@
+{
+  "project_name": "PROJECT_NAME",
+  "project_path": "PROJECT_PATH",
+  "initialized_at": "CURRENT_DATE",
+  "last_updated": "CURRENT_DATE",
+  "conversation_summaries": [
+    {
+      "date": "TODAY_DATE",
+      "summary": "Project initialization. Configuration of the memory system for progress tracking and continuous documentation."
+    }
+  ],
+  "key_insights": [
+    {
+      "topic": "Continuous Documentation",
+      "insight": "Maintaining a project memory facilitates continuity and knowledge transfer"
+    }
+  ],
+  "current_focus": "Development environment configuration",
+  "development_context": {
+    "methodology": "Agile",
+    "current_phase": "Initialization",
+    "active_tasks": [
+      {
+        "id": "TASK-01",
+        "title": "Environment setup",
+        "status": "In progress",
+        "priority": "High",
+        "description": "Prepare the development environment and necessary tools"
+      }
+    ]
+  },
+  "code_insights": {
+    "strengths": [],
+    "areas_for_improvement": [],
+    "architecture": {
+      "core_modules": [],
+      "interfaces": []
+    }
+  },
+  "implementation_details": {
+    "key_algorithms": [],
+    "data_structures": [],
+    "known_issues": []
+  }
+} 

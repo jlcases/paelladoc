@@ -1,11 +1,11 @@
 ---
-description: "Sistema de gestión automática de memoria de proyecto en PAELLADOC con asistencia de IA"
+description: "Automatic project memory management system in PAELLADOC with AI assistance"
 globs: ["**/.memory.json", "**/memory.json"]
 shellScripts:
   - source: ".cursor/rules/core/memory_updater.sh"
-    description: "Actualiza automáticamente los archivos de memoria con cada commit"
+    description: "Automatically updates memory files with each commit"
   - source: ".cursor/rules/core/git_hook_installer.sh"
-    description: "Instala los hooks de Git necesarios para la actualización automática"
+    description: "Installs necessary Git hooks for automatic updates"
 aiAssistance:
   enabled: true
   conversationMemory: true
@@ -21,65 +21,65 @@ aiAssistance:
   intelligentUpdate: true
 commands:
   CONTEXT:
-    description: "Administra el contexto de IA entre sesiones de trabajo"
+    description: "Manages AI context between work sessions"
     action: "manage_context"
     args:
       - name: "operation"
         type: "string"
-        description: "Operación a realizar con el contexto"
+        description: "Operation to perform with the context"
         enum: ["show", "update", "reset", "transfer"]
         default: "show"
       - name: "focus"
         type: "string"
-        description: "Actualiza el enfoque actual de la sesión"
+        description: "Updates the current focus of the session"
         required: false
       - name: "preferences"
         type: "array"
-        description: "Actualiza las preferencias de codificación"
+        description: "Updates coding preferences"
         items:
           type: "string"
         required: false
       - name: "next_tasks"
         type: "array"
-        description: "Actualiza las próximas tareas a realizar"
+        description: "Updates the upcoming tasks to perform"
         items:
           type: "string"
         required: false
       - name: "to_file"
         type: "string"
-        description: "Ruta donde guardar el contexto extraído"
+        description: "Path where to save the extracted context"
         required: false
 ---
 
-# Sistema de Memoria Automática con IA
+# Automatic Memory System with AI
 
-PAELLADOC integra un sistema de gestión automática de memoria de proyecto con asistencia de inteligencia artificial. Este sistema mantiene el contexto entre sesiones de trabajo y facilita la continuidad cognitiva en el desarrollo.
+PAELLADOC integrates an automatic project memory management system with artificial intelligence assistance. This system maintains context between work sessions and facilitates cognitive continuity in development.
 
-## Descripción
+## Description
 
-El sistema de memoria con IA mantiene automáticamente archivos `.memory.json` que rastrean:
+The AI memory system automatically maintains `.memory.json` files that track:
 
-1. Información histórica del desarrollo
-2. Decisiones técnicas tomadas (extraídas de mensajes de commit)
-3. Deuda técnica identificada en el código
-4. Métricas de calidad (cobertura de pruebas, etc.)
-5. Contexto de la IA entre sesiones
+1. Historical development information
+2. Technical decisions made (extracted from commit messages)
+3. Technical debt identified in the code
+4. Quality metrics (test coverage, etc.)
+5. AI context between sessions
 
-Toda esta información se gestiona automáticamente mediante hooks de Git que se activan con cada commit.
+All this information is automatically managed through Git hooks that are triggered with each commit.
 
-## Ubicación de los Archivos de Memoria
+## Memory Files Location
 
-El sistema de memoria utiliza las siguientes ubicaciones:
+The memory system uses the following locations:
 
-- **Archivo principal**: `docs/[PROYECTO]/.memory.json`
-- **Contexto de IA**: `docs/[PROYECTO]/project_context.json`
-- **Backup de contexto**: `.cursor/project_context.json` (ubicación alternativa)
+- **Main file**: `docs/[PROJECT]/.memory.json`
+- **AI Context**: `docs/[PROJECT]/project_context.json`
+- **Context Backup**: `.cursor/project_context.json` (alternative location)
 
-Donde `[PROYECTO]` es el nombre del directorio raíz del proyecto. Esto permite que el sistema funcione correctamente incluso con múltiples proyectos en diferentes carpetas.
+Where `[PROJECT]` is the name of the project's root directory. This allows the system to work correctly even with multiple projects in different folders.
 
-## Contexto de IA
+## AI Context
 
-El contexto de IA incluye:
+The AI context includes:
 
 ```json
 {
@@ -87,83 +87,83 @@ El contexto de IA incluye:
   "conversation_summaries": [
     {
       "date": "2023-05-15",
-      "topic": "Implementación de análisis SEO",
-      "key_points": ["Decisión de utilizar patrón Strategy", "Implementación TDD para validadores"],
-      "decisions": ["Refactorizar clase HeadingValidator", "Usar interfaces para extensibilidad"]
+      "topic": "SEO analysis implementation",
+      "key_points": ["Decision to use Strategy pattern", "TDD implementation for validators"],
+      "decisions": ["Refactor HeadingValidator class", "Use interfaces for extensibility"]
     }
   ],
-  "current_focus": "Implementación de análisis de metadatos para SEO",
+  "current_focus": "Implementation of metadata analysis for SEO",
   "coding_preferences": {
     "naming_convention": "camelCase",
     "testing_framework": "Jest",
     "code_style": "Airbnb"
   },
   "next_tasks": [
-    "Completar US-04",
-    "Refactorizar clase HeadingValidator"
+    "Complete US-04",
+    "Refactor HeadingValidator class"
   ]
 }
 ```
 
-## Ciclo de Vida de la Memoria
+## Memory Lifecycle
 
-1. **Inicialización**:
-   - Creación del archivo `.memory.json` en la carpeta del proyecto
-   - Creación del archivo `project_context.json` para contexto de IA
-   - Registro de metadatos iniciales del proyecto
+1. **Initialization**:
+   - Creation of the `.memory.json` file in the project folder
+   - Creation of the `project_context.json` file for AI context
+   - Recording of initial project metadata
 
-2. **Actualización Automática**:
-   - Cada commit activa los hooks que actualizan la memoria
-   - Extracción de decisiones de mensajes de commit
-   - Detección de patrones de deuda técnica en el código
-   - Actualización de métricas cuando hay cambios en tests
+2. **Automatic Update**:
+   - Each commit triggers hooks that update the memory
+   - Extraction of decisions from commit messages
+   - Detection of technical debt patterns in the code
+   - Update of metrics when there are changes in tests
 
-3. **Actualización Inteligente**:
-   - La IA analiza conversaciones para extraer información relevante
-   - Mantiene el contexto entre sesiones de trabajo
-   - Registra preferencias de codificación y enfoque actual
+3. **Intelligent Update**:
+   - AI analyzes conversations to extract relevant information
+   - Maintains context between work sessions
+   - Records coding preferences and current focus
 
-4. **Consulta y Uso**:
-   - Acceso al historial de decisiones para mantener consistencia
-   - Consulta de contexto para retomar el trabajo donde se dejó
-   - Visualización de métricas y progreso
+4. **Query and Use**:
+   - Access to decision history to maintain consistency
+   - Context query to resume work where it was left off
+   - Visualization of metrics and progress
 
-## Beneficios del Sistema
+## System Benefits
 
-1. **Documentación Continua**: Genera documentación automáticamente mientras se desarrolla
-2. **Preservación de Conocimiento**: Mantiene un registro del razonamiento detrás de las decisiones
-3. **Deuda Técnica Visible**: Identifica y rastrea problemas técnicos para su resolución
-4. **Continuidad Cognitiva**: Reduce el tiempo necesario para retomar el trabajo
-5. **Consistencia**: Facilita mantener patrones y decisiones consistentes
+1. **Continuous Documentation**: Automatically generates documentation while developing
+2. **Knowledge Preservation**: Maintains a record of the reasoning behind decisions
+3. **Visible Technical Debt**: Identifies and tracks technical issues for resolution
+4. **Cognitive Continuity**: Reduces the time needed to resume work
+5. **Consistency**: Facilitates maintaining consistent patterns and decisions
 
-## Comandos Disponibles
+## Available Commands
 
 ### CONTEXT
 
-Este comando permite gestionar el contexto de IA para la sesión actual.
+This command allows you to manage the AI context for the current session.
 
-**Ejemplos:**
+**Examples:**
 
-Mostrar contexto actual:
+Show current context:
 ```
 CONTEXT
 ```
 
-Actualizar enfoque de la sesión:
+Update session focus:
 ```
-CONTEXT operation=update focus="Implementación de análisis de metadatos para SEO"
-```
-
-Actualizar tareas pendientes:
-```
-CONTEXT operation=update next_tasks=["Completar US-04", "Refactorizar clase HeadingValidator"]
+CONTEXT operation=update focus="Implementation of metadata analysis for SEO"
 ```
 
-### Otros Comandos
+Update pending tasks:
+```
+CONTEXT operation=update next_tasks=["Complete US-04", "Refactor HeadingValidator class"]
+```
 
-El sistema se integra con otros comandos de PAELLADOC como:
+### Other Commands
 
-- `ACHIEVEMENT`: Registra logros en el desarrollo
-- `ISSUE`: Registra problemas encontrados
-- `DECISION`: Registra decisiones técnicas importantes
-- `MEMORY`: Muestra el contenido del registro histórico 
+The system integrates with other PAELLADOC commands such as:
+
+- `ACHIEVEMENT`: Records development achievements
+- `ISSUE`: Records encountered problems
+- `DECISION`: Records important technical decisions
+- `MEMORY`: Shows the contents of the historical record 
