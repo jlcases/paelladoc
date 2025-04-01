@@ -1,4 +1,4 @@
-# 🥘 PAELLADOC: Advanced Software Development System
+# 🥘 PAELLADOC: Advanced Product Development System
 
 ![Version](https://img.shields.io/badge/version-3.0.0-blue.svg)
 ![Status](https://img.shields.io/badge/status-active-success.svg)
