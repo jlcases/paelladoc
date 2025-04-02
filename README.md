@@ -9,7 +9,8 @@
 [![GitHub Forks](https://img.shields.io/github/forks/jlcases/paelladoc?style=social)](https://github.com/jlcases/paelladoc/fork)
 [![X Community](https://img.shields.io/badge/X%20Community-PAellaDOC-blue)](https://x.com/i/communities/1907494161458090406)
 
-![image](https://github.com/user-attachments/assets/77abd307-f243-42bd-ab66-6d621b167366)
+![image](https://github.com/user-attachments/assets/7abbd46b-1cbe-4e19-a5ec-e19c9a5ed791)
+
 
 ## 👥 Join the PAellaDOC Team
 
