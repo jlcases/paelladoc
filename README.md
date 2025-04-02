@@ -1,10 +1,13 @@
-# 🥘 PAELLADOC: Advanced Product Development System
+# 🥘 PAELLADOC: The development exoskeleton
 
 ![Version](https://img.shields.io/badge/version-3.0.0-blue.svg)
 ![Status](https://img.shields.io/badge/status-active-success.svg)
 ![Cursor](https://img.shields.io/badge/cursor-0.47+-green.svg)
 ![Compatibility](https://img.shields.io/badge/compatibility-cursor%200.47+-orange.svg)
 ![Updated](https://img.shields.io/badge/updated-2025--03--23-brightgreen.svg)
+
+![image](https://github.com/user-attachments/assets/77abd307-f243-42bd-ab66-6d621b167366)
+
 
 ## 🎯 The Art of Documentation in the AI Era
 
