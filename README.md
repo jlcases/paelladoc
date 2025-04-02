@@ -5,9 +5,38 @@
 ![Cursor](https://img.shields.io/badge/cursor-0.47+-green.svg)
 ![Compatibility](https://img.shields.io/badge/compatibility-cursor%200.47+-orange.svg)
 ![Updated](https://img.shields.io/badge/updated-2025--03--23-brightgreen.svg)
+[![GitHub Stars](https://img.shields.io/github/stars/jlcases/paelladoc?style=social)](https://github.com/jlcases/paelladoc)
+[![GitHub Forks](https://img.shields.io/github/forks/jlcases/paelladoc?style=social)](https://github.com/jlcases/paelladoc/fork)
+[![X Community](https://img.shields.io/badge/X%20Community-PAellaDOC-blue)](https://x.com/i/communities/1907494161458090406)
 
 ![image](https://github.com/user-attachments/assets/77abd307-f243-42bd-ab66-6d621b167366)
 
+## 👥 Join the PAellaDOC Team
+
+**I'm actively seeking contributors to help evolve PAellaDOC from concept to industry standard!**
+
+Whether you're a:
+- 🧠 Product manager with methodology insights
+- 💻 Developer wanting to enhance the framework architecture
+- 📝 Technical writer with documentation expertise
+- 🎨 UX designer who can improve template systems
+- 🛠️ DevOps engineer to streamline implementation workflows
+
+**How to join:**
+1. Join our X Community: [PAellaDOC Community](https://x.com/i/communities/1907494161458090406)
+2. Star and fork the repository
+3. Check the open issues or propose new improvements
+4. Submit pull requests with your contributions
+
+**Current priorities:**
+- Template system expansion
+- Rules architecture refinement
+- New command implementations
+- Real-world case studies and examples
+
+No contribution is too small - from fixing typos to implementing major features, all help is appreciated and acknowledged!
+
+As we build this together, we're creating the definitive standard for AI-assisted development documentation.
 
 ## 🎯 The Art of Documentation in the AI Era
 
@@ -406,4 +435,4 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 
 ---
 
-*PAELLADOC is built for professional product and development teams who need verified, consistent, and comprehensive documentation that evolves with their projects. With the addition of product management and code generation features, it now offers a complete end-to-end solution for the entire software development lifecycle.*
+*PAELLADOC is built for professional product and development teams who need verified, consistent, and comprehensive documentation that evolves with their projects. With the addition of product management and code generation features, it now offers a complete end-to-end solution for the entire software development lifecycle.* 
