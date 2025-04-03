@@ -1,6 +1,7 @@
 ---
-description: "Project memory system for context recording and transfer using AI"
-globs: ["**/.memory.json", "**/memory.json"]
+description: When user mentions project memory, context transfer, conversation summary, or uses related commands (CONTEXT, SUMMARIZE, MEMORY, ACHIEVEMENT, ISSUE, DECISION), manage the project memory and AI context
+globs: **/.memory.json, **/memory.json
+alwaysApply: false
 imports:
   - ".cursor/rules/core/memory_management.mdc"
 commands:

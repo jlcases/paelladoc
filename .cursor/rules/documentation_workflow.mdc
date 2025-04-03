@@ -1,59 +1,37 @@
 ---
-description: 
+description: When user discusses the documentation process or workflow, especially involving code analysis and generation, provide guidance based on the PAELLADOC workflow steps
 globs: 
 alwaysApply: false
 ---
-{
-    "version": "1.0.0",
-    "name": "paelladoc-documentation-workflow",
-    "description": "Documentation workflow with code context support",
-    "workflow_steps": {
-        "with_code_context": [
-            {
-                "step": "analyze_existing_code",
-                "actions": [
-                    "scan_directory",
-                    "detect_architecture",
-                    "extract_components",
-                    "analyze_dependencies"
-                ]
-            },
-            {
-                "step": "generate_initial_documentation",
-                "actions": [
-                    "create_architecture_doc",
-                    "create_api_doc",
-                    "create_database_doc"
-                ]
-            },
-            {
-                "step": "user_verification",
-                "actions": [
-                    "present_findings",
-                    "request_confirmation",
-                    "allow_modifications"
-                ]
-            },
-            {
-                "step": "complete_documentation",
-                "actions": [
-                    "fill_gaps",
-                    "add_business_context",
-                    "validate_completeness"
-                ]
-            }
-        ]
-    },
-    "integration": {
-        "code_analysis": {
-            "enabled": true,
-            "auto_update": true,
-            "link_to_source": true
-        },
-        "documentation_update": {
-            "watch_code_changes": true,
-            "auto_sync": true,
-            "notification_on_changes": true
-        }
-    }
-} 
+
+# PAELLADOC Documentation Workflow
+
+This outlines the typical workflow when generating documentation, particularly when existing code context is provided.
+
+## Workflow Steps (with Code Context)
+
+1.  **Analyze Existing Code:**
+    *   Scan project directory.
+    *   Detect architectural patterns.
+    *   Extract key components and modules.
+    *   Analyze dependencies between components.
+
+2.  **Generate Initial Documentation:**
+    *   Create Architecture document outline.
+    *   Draft API specifications (if applicable).
+    *   Outline Database design (if applicable).
+
+3.  **User Verification & Input:**
+    *   Present analysis findings to the user.
+    *   Request confirmation and clarification.
+    *   Allow user modifications and additions.
+
+4.  **Complete Documentation:**
+    *   Fill documentation gaps based on user input.
+    *   Incorporate business context and requirements.
+    *   Validate documentation for completeness and accuracy.
+
+## Integration Features
+
+*   **Code Analysis Integration:** Documentation can be linked directly to source code.
+*   **Automatic Updates:** Documentation can be configured to update automatically when code changes (requires setup). 

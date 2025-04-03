@@ -1,6 +1,7 @@
 ---
-description: "Manages documentation templates and their lifecycle in PAELLADOC"
-globs: ["**/templates/*"]
+description: Manages documentation templates and their lifecycle in PAELLADOC. Activates when user mentions templates or uses the TEMPLATE command.
+globs: 
+alwaysApply: false
 ---
 
 # Template Management

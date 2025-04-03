@@ -1,6 +1,7 @@
 ---
-description: "Manages Git workflow methodologies and practices in PAELLADOC"
-globs: ["**/.git/*", "**/.github/*"]
+description: When user asks about Git workflows, branching strategies, or uses the WORKFLOW command, manage the application and customization of Git methodologies
+globs: 
+alwaysApply: false
 ---
 
 # Git Workflows

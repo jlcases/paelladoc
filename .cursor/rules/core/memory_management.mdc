@@ -1,6 +1,7 @@
 ---
-description: "Automatic project memory management system in PAELLADOC with AI assistance"
-globs: ["**/.memory.json", "**/memory.json"]
+description: When user mentions project memory, asks about development history, or uses memory-related commands (MEMORY, ACHIEVEMENT, ISSUE, DECISION, CONTEXT), manage the project memory and AI context
+globs: **/.memory.json, **/memory.json
+alwaysApply: false
 shellScripts:
   - source: ".cursor/rules/core/memory_updater.sh"
     description: "Automatically updates memory files with each commit"

@@ -1,6 +1,7 @@
 ---
-description: "Conversational workflow for documentation gathering"
-globs: ["**/*"]
+description: When a PAELLADOC command is invoked with missing parameters, guide the user through the appropriate interactive conversation workflow to gather the necessary information
+globs: 
+alwaysApply: false
 ---
 
 # Conversational Workflow for Commands

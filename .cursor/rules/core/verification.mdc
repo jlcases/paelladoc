@@ -1,6 +1,7 @@
 ---
-description: "Defines the documentation verification processes and validation commands in PAELLADOC"
-globs: ["**/verification/*", "**/tests/*"]
+description: When user asks to verify documentation, check code consistency, or uses the VERIFY command, execute the documentation verification process
+globs: 
+alwaysApply: false
 ---
 
 # Documentation Verification

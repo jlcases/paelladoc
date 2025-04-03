@@ -1,6 +1,7 @@
 ---
-description: "Rules and best practices for Frontend development with React"
-globs: ["src/**/*.{js,jsx,ts,tsx}", "components/**/*.{js,jsx,ts,tsx}"]
+description: When user works on React frontend files (in src/ or components/, using .js, .jsx, .ts, .tsx extensions), apply these best practices for organization, state management, performance, and testing
+globs: src/**/*.{js,jsx,ts,tsx}, components/**/*.{js,jsx,ts,tsx}
+alwaysApply: false
 ---
 # Rules for Frontend Development with React
 
