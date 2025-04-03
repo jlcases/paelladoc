@@ -1,6 +1,7 @@
 ---
-description: "Manages product management features including user stories, tasks, sprints and meeting notes in PAELLADOC"
-globs: ["**/*"]
+description: Manages product management features including user stories, tasks, sprints and meeting notes in PAELLADOC. Activates when user mentions STORY, TASK, SPRINT, MEETING, or REPORT commands or product management concepts.
+globs: 
+alwaysApply: false
 ---
 
 commands:

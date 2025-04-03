@@ -1,6 +1,7 @@
 ---
-description: "Manages programming style guides and coding standards in PAELLADOC"
-globs: ["**/coding_styles/*", "**/src/**/*"]
+description: When user asks about coding styles, standards, or uses the CODING_STYLE command, manage the application and customization of style guides
+globs: 
+alwaysApply: false
 ---
 
 # Coding Styles

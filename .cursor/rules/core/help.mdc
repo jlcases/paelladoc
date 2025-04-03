@@ -1,6 +1,7 @@
 ---
-description: "Implements the help system for PAELLADOC commands"
-globs: ["**/*"]
+description: When user asks for HELP, needs info on command usage, or mentions specific PAELLADOC commands, explain their purpose and parameters
+globs: 
+alwaysApply: false
 ---
 
 # PAELLADOC Help System
