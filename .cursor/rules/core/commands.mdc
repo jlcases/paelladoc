@@ -1,7 +1,7 @@
 ---
-description: "Defines the main commands of PAELLADOC for initializing documentation, continuing projects, and recording development"
-globs: ["**/*"]
-alwaysApply: true
+description: When user executes any PAELLADOC command or asks about available commands, provide guidance on command usage and parameters
+globs: **/*
+alwaysApply: false
 ---
 
 # PAELLADOC Commands
@@ -11,124 +11,85 @@ alwaysApply: true
 ### PAELLA
 Initiates the documentation process and generates Cursor rules
 
-#### Arguments:
-- `project_name` (string, optional): Name of the project to document. If not provided, PAELLADOC will start an interactive conversation to gather this information.
-- `project_type` (string): Type of project to document. Options: "frontend", "backend", "chrome_extension", "fullstack", "mobile_app". Default: "frontend"
-- `methodologies` (array): Development methodologies to apply. Options: ["tdd", "github_workflow"]. Default: []
-- `git_workflow` (string): Git workflow style to use. Options: "github_flow", "gitflow", "trunk_based", "no_workflow". Default: "github_flow"
-- `generate_rules` (boolean): Whether to generate Cursor rules from documentation. Default: true
-- `ai_mode` (string): AI operation mode. Options: "autonomous", "collaborative", "advisory". Default: "collaborative"
-- `-help` (flag): Display help information about available commands.
+Arguments:
+- project_name (string, optional): Name of the project to document
+- project_type (string): Type of project (frontend, backend, chrome_extension, fullstack, mobile_app)
+- methodologies (comma-separated): Development methodologies (tdd, github_workflow)
+- git_workflow (string): Git workflow style (github_flow, gitflow, trunk_based, no_workflow)
+- generate_rules (boolean): Whether to generate Cursor rules from documentation
+- ai_mode (string): AI operation mode (autonomous, collaborative, advisory)
+- -help (flag): Display help information
 
 ### HELP
 Displays help information about available PAELLADOC commands
 
-#### Arguments:
-- `command` (string, optional): Specific command to get help for. If not provided, shows all commands.
-- `format` (string): Output format for help information. Options: "detailed", "summary", "examples". Default: "detailed"
-
-#### Behavior:
-When the HELP command is invoked or when PAELLA -help is used, the system MUST:
-
-1. **Without specific command**:
-   - List all available commands with their short descriptions
-   - Organize commands by category (Core, Memory, Style, etc.)
-   - For each command, show basic usage syntax
-   - Include examples of common command patterns
-
-2. **With specific command**:
-   - Show detailed information about the specified command
-   - List all arguments with their types, descriptions, and default values
-   - Show example usages with different argument combinations
-   - Provide context for when the command should be used
-
-3. **Format options**:
-   - detailed: Full description with all arguments and examples
-   - summary: Brief description with just required arguments
-   - examples: Focus on practical examples of command usage
+Arguments:
+- command (string, optional): Specific command to get help for
+- format (string): Output format (detailed, summary, examples)
 
 ### CONTINUE
 Continues with an existing project documentation
 
-#### Arguments:
-- `project_name` (string, required): Name of the project to continue with
-- `update_rules` (boolean): Whether to update Cursor rules from documentation. Default: true
-- `sync_templates` (boolean): Whether to synchronize templates with current state. Default: true
+Arguments:
+- project_name (string, required): Name of the project to continue with
+- update_rules (boolean): Whether to update Cursor rules from documentation
+- sync_templates (boolean): Whether to synchronize templates with current state
 
 ### ACHIEVEMENT
 Records an achievement in the project memory
 
-#### Arguments:
-- `description` (string, required): Description of the achievement
-- `category` (string, required): Category of the achievement. Options: "architecture", "development", "documentation", "testing", "security", "performance", "product", "design", "research"
-- `impact_level` (string): Level of impact of the achievement. Options: "high", "medium", "low". Default: "medium"
+Arguments:
+- description (string, required): Description of the achievement
+- category (string, required): Category (architecture, development, documentation, testing, security, performance, product, design, research)
+- impact_level (string): Level of impact (high, medium, low)
 
 ### ISSUE
 Records an issue in the project memory
 
-#### Arguments:
-- `description` (string, required): Description of the issue
-- `severity` (string, required): Severity level of the issue. Options: "critical", "high", "medium", "low"
-- `area` (string, required): Area affected by the issue. Options: "product", "technical", "process", "security", "performance"
+Arguments:
+- description (string, required): Description of the issue
+- severity (string, required): Severity level (critical, high, medium, low)
+- area (string, required): Area affected (product, technical, process, security, performance)
 
 ### DECISION
 Records a technical decision in the project memory
 
-#### Arguments:
-- `description` (string, required): Description of the decision
-- `impact` (array, required): Areas impacted by the decision. Options: ["architecture", "development", "documentation", "testing", "security", "performance", "product", "design", "process"]
-- `rationale` (string, required): Reasoning behind the decision
+Arguments:
+- description (string, required): Description of the decision
+- impact (comma-separated): Areas impacted (architecture, development, documentation, testing, security, performance, product, design, process)
+- rationale (string, required): Reasoning behind the decision
 
 ### MEMORY
 Shows the development record
 
-#### Arguments:
-- `filter` (string): Filter memory by category. Options: "all", "achievements", "issues", "decisions", "product", "technical". Default: "all"
-- `format` (string): Output format. Options: "detailed", "summary", "timeline". Default: "detailed"
+Arguments:
+- filter (string): Filter memory by category (all, achievements, issues, decisions, product, technical)
+- format (string): Output format (detailed, summary, timeline)
 
 ### CODING_STYLE
 Manages programming style guides for the project
 
-#### Arguments:
-- `operation` (string, required): Style operation to perform. Options: "apply", "customize", "list", "show"
-- `style_name` (string, required): Name of the style. Options: "frontend", "backend", "chrome_extension", "tdd", "github_workflow"
-- `project_name` (string, required): Name of the project to apply style to
-- `customizations` (string): Path to customization file or inline JSON customizations
+Arguments:
+- operation (string, required): Style operation (apply, customize, list, show)
+- style_name (string, required): Name of the style (frontend, backend, chrome_extension, tdd, github_workflow)
+- project_name (string, required): Name of the project to apply style to
+- customizations (string): Path to customization file or inline JSON customizations
 
-## Command System
+### GENERATE_CONTEXT
+Converts a code repository to text format for processing
 
-PAELLADOC provides a command-based interface for managing documentation. All commands follow this pattern:
+Arguments:
+- repo_path (string, required): Path to the repository to process
+- output (string): Output file name for the extracted content
+- line_numbers (boolean): Whether to show line numbers in the output file
+- style (string): Output style (plain, xml)
+- ignore (string): Additional patterns to ignore (comma-separated)
 
-```
-COMMAND param1=value1 param2=value2
-```
+### GENERATE-DOC
+Analyzes code and generates comprehensive documentation with interactive guidance
 
-### Documentation Commands
-
-- **PAELLA** - Initialize a new documentation project
-- **CONTINUE** - Continue working on an existing documentation project
-- **HELP** - Get help for any PAELLADOC command
-
-### Memory Commands
-
-- **ACHIEVEMENT** - Record a project achievement
-- **ISSUE** - Record a project issue
-- **DECISION** - Record a technical decision
-- **MEMORY** - View the memory log
-
-### Command Processing
-
-Commands should never automatically generate documentation without user confirmation. The process flow should be:
-
-1. Parse the command and arguments
-2. Execute a conversation flow to gather required information
-3. Ask for explicit user confirmation
-4. Only upon confirmation, generate documentation
-
-The AI should assist by:
-1. Making sure all required information is collected before generating documentation
-2. Respecting user preferences for documentation detail level
-3. Always explaining what will be generated before proceeding
-4. Never generating unneeded documentation components
-
-All commands should use the conversational approach by default, preventing any automatic generation of files without explicit user confirmation. This rule is critical for maintaining user control over the documentation process. 
+Arguments:
+- repo_path (string): Path to the repository to analyze (optional if context already exists)
+- context_path (string): Path to the context directory (default: code_context/extracted)
+- output (string): Path where to save the generated documentation
+- template (string): Documentation template to use

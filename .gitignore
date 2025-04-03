@@ -49,6 +49,7 @@ tmp/
 # /pages/projects/secretproject/
 /code_context/
 /venv/
+.venv/
 .cursor/rules/scripts/venv
 # Archivos de contexto de Cursor
 .cursor/project_context.json

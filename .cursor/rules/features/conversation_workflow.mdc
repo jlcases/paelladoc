@@ -1,13 +1,88 @@
 ---
-description: "Conversational workflow for documentation gathering"
-globs: ["**/*"]
+description: When a PAELLADOC command is invoked with missing parameters, guide the user through the appropriate interactive conversation workflow to gather the necessary information
+globs: 
+alwaysApply: false
 ---
 
-# Conversational Workflow for Commands
+# Conversation Workflows for PAELLADOC Commands
 
-## Overview
+PAELLADOC uses interactive conversation workflows to guide users through command execution when parameters are missing.
 
-When invoked with minimal parameters or without required parameters, PAELLADOC commands should initiate an interactive conversational workflow to collect the necessary information from the user. This approach creates a more natural, human-friendly experience compared to requiring users to remember specific parameter formats.
+## Available Workflows
+
+### PAELLA Command Workflow
+
+When the user invokes `PAELLA` without all required parameters:
+
+1. **Project Type Selection**:
+   ```
+   What type of project would you like to document?
+   1. Frontend Application
+   2. Backend API
+   3. Full-stack Application
+   4. Chrome Extension
+   5. Mobile Application
+   ```
+
+2. **Development Methodology**:
+   ```
+   Which development methodologies would you like to follow?
+   1. Test-Driven Development (TDD)
+   2. Behavior-Driven Development (BDD)
+   3. GitHub Workflow
+   4. None
+   ```
+
+3. **Git Workflow**:
+   ```
+   Which Git workflow would you like to use?
+   1. GitHub Flow
+   2. GitFlow
+   3. Trunk-Based Development
+   4. No specific workflow
+   ```
+
+### GENERATE-DOC Command Workflow
+
+When the user invokes `GENERATE-DOC` without all parameters:
+
+1. **Repository Selection**:
+   ```
+   Please specify the repository path you want to analyze:
+   (Enter the full path or a relative path to your repository)
+   ```
+
+2. **Focus Areas**:
+   ```
+   What aspects of the codebase would you like to focus on?
+   1. Complete documentation
+   2. API documentation only
+   3. Architecture overview
+   4. Database schema
+   5. Custom focus (please specify)
+   ```
+
+3. **Output Preferences**:
+   ```
+   How would you like the documentation to be structured?
+   1. Standard documentation format
+   2. API reference format
+   3. Developer guide format
+   4. User manual format
+   5. Custom format (please specify)
+   ```
+
+4. **Additional Questions**:
+   Based on the detected codebase structure, the system will ask relevant questions about:
+   - Project purpose and goals
+   - Target audience
+   - Technical constraints
+   - Security requirements
+   - Performance expectations
+
+### Other Command Workflows
+
+Similar workflows exist for other commands such as `CODING_STYLE`, `WORKFLOW`, and `TEMPLATE`.
 
 ## Implementation Structure
 

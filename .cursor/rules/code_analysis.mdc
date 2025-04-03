@@ -1,8 +1,41 @@
 ---
-description: 
+description: When user asks about analyzing code to generate documentation, explain the capabilities and process based on PAELLADOC code analysis rules
 globs: 
 alwaysApply: false
 ---
+
+# PAELLADOC Code Analysis Rules
+
+This rule defines how PAELLADOC analyzes existing codebases to bootstrap the documentation process.
+
+## Analysis Capabilities
+
+1.  **Architecture Detection**:
+    *   Applies to various language files (`.js`, `.ts`, `.py`, `.java`, etc.).
+    *   Detects common patterns: MVC, MVVM, Clean Architecture, Microservices, Event-Driven, Layered.
+    *   Analyzes component structure and maps dependencies.
+
+2.  **API Documentation Extraction**:
+    *   Applies to typical API folders (`controllers`, `routes`, `handlers`, `api`).
+    *   Extracts endpoints, request/response models (DTOs), and security patterns.
+    *   Parses comments (e.g., JSDoc, Swagger annotations) for details.
+
+3.  **Database Schema Analysis**:
+    *   Applies to model/entity/schema folders and `.sql` files.
+    *   Extracts data models and their relationships.
+    *   Identifies database migration scripts.
+
+## Corresponding Documentation Templates
+
+The analysis results are used to populate specific sections in standard PAELLADOC templates:
+
+*   **Architecture Analysis** -> `02_technical_architecture.md`
+    *   Sections: Detected Architecture, Component Structure, Dependencies, Integration Points.
+*   **API Analysis** -> `05_api_specification.md`
+    *   Sections: Endpoints Overview, Authentication, Data Models, Error Handling.
+*   **Database Analysis** -> `04_database_design.md`
+    *   Sections: Schema Overview, Entity Relationships, Migrations, Data Flow.
+
 {
     "version": "1.0.0",
     "name": "paelladoc-code-analyzer",
@@ -87,4 +120,46 @@ alwaysApply: false
             ]
         }
     }
-} 
+}
+
+# Code Analysis for Documentation Generation
+
+This module handles analyzing source code to generate documentation automatically using PAELLA.
+
+## Available Commands
+
+1. **GENERATE_CONTEXT** - Convert a code repository to text for processing
+   - Usage: `GENERATE_CONTEXT repo_path=/path/to/repo [options]`
+   - Options: output, line_numbers, style, ignore
+   - See [generate_context.mdc](mdc:code_analysis/generate_context.mdc) for details
+
+2. **ANALYZE_CODE** - Analyze code structure and patterns
+   - Usage: `ANALYZE_CODE context=/path/to/context [options]`
+   - Options: output, format, depth
+
+3. **EXTRACT_DEFINITIONS** - Extract function, class, and type definitions
+   - Usage: `EXTRACT_DEFINITIONS context=/path/to/context [options]`
+   - Options: output, format, kinds
+
+4. **MAP_DEPENDENCIES** - Map dependencies between code components
+   - Usage: `MAP_DEPENDENCIES context=/path/to/context [options]`
+   - Options: output, format, depth
+
+## Process Overview
+
+The code analysis process follows these steps:
+
+1. **Repository Conversion**: Convert repository to text format using repopack
+2. **Structure Analysis**: Analyze code structure, patterns, and architecture
+3. **Definition Extraction**: Extract function, class, and type definitions
+4. **Dependency Mapping**: Map dependencies between components
+5. **Documentation Generation**: Generate documentation based on analysis
+
+## Integration with Documentation System
+
+The code analysis results feed into the documentation system to:
+- Generate API documentation
+- Create architecture diagrams
+- Produce usage examples
+- Document data flows
+- Identify potential issues 
