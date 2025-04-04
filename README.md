@@ -4,7 +4,7 @@
 ![Status](https://img.shields.io/badge/status-active-success.svg)
 ![Cursor](https://img.shields.io/badge/cursor-0.47+-green.svg)
 ![Compatibility](https://img.shields.io/badge/compatibility-cursor%200.47+-orange.svg)
-![Updated](https://img.shields.io/badge/updated-2025--03--23-brightgreen.svg)
+![Updated](https://img.shields.io/badge/updated-2025--04--04-brightgreen.svg)
 [![GitHub Stars](https://img.shields.io/github/stars/jlcases/paelladoc?style=social)](https://github.com/jlcases/paelladoc)
 [![GitHub Forks](https://img.shields.io/github/forks/jlcases/paelladoc?style=social)](https://github.com/jlcases/paelladoc/fork)
 [![X Community](https://img.shields.io/badge/X%20Community-PAellaDOC-blue)](https://x.com/i/communities/1907494161458090406)
