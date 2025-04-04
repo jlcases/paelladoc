@@ -56,3 +56,6 @@ tmp/
 
 # Archivos de contexto de IA
 .cursor/project_context.json docs/paelladoc/project_context.json
+
+temp_docs/
+backup_redundancies/
