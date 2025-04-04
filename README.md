@@ -58,36 +58,25 @@ Following the MECE principle (Mutually Exclusive, Collectively Exhaustive), we o
 paelladoc/
 ├── .cursor/
 │   └── rules/
-│       ├── core/                # Core PAELLADOC functionality
-│       │   ├── commands.mdc     # Main command definitions
-│       │   ├── help.mdc         # Help system implementation
-│       │   └── verification.mdc # Documentation verification processes
-│       ├── features/            # Modular feature extensions
-│       │   ├── templates.mdc    # Template management
-│       │   ├── project_memory.mdc # Project memory capabilities  
-│       │   ├── coding_styles.mdc  # Programming style guides
-│       │   ├── git_workflows.mdc  # Git workflow methodologies
-│       │   ├── code_generation.mdc # Code generation capabilities
-│       │   ├── conversation_workflow.mdc # Conversation flows
-│       │   ├── interfaces.mdc   # User interface definitions
-│       │   └── product_management.mdc # Product management features
-│       ├── templates/           # Document and code templates
-│       │   ├── coding_styles/   # Programming style guides
-│       │   ├── github-workflows/ # Git workflow methodologies
-│       │   ├── product_management/ # Product management templates
-│       │   ├── code_generation/ # Code generation templates
-│       │   ├── conversation_flows/ # Conversation flow configs
-│       │   ├── methodologies/   # Development methodologies
-│       │   ├── Product/         # Main product documentation
-│       │   ├── scripts/         # Template-specific scripts
-│       │   ├── selectors/       # Selection guide templates
-│       │   └── simplified_templates/ # Simple documentation
-│       ├── scripts/             # Utility scripts
-│       ├── DIRECTORY_STRUCTURE.md # Directory organization
-│       ├── feature_map.md       # Feature mapping documentation
-│       ├── imports.mdc          # Import definitions
-│       ├── paelladoc_conversation_config.json # Conversation config
-│       └── paelladoc.mdc        # Main orchestrator
+│       ├── orchestrator/        # Central orchestrator definition
+│       │   └── paelladoc.mdc    # Defines all commands and delegates to modules
+│       ├── commands/            # Command definitions by category
+│       │   ├── core/            # Core system commands (help, verification)
+│       │   ├── memory/          # Project memory interaction commands
+│       │   ├── code/            # Code analysis and generation commands
+│       │   ├── styles/          # Coding style and Git workflow commands
+│       │   ├── product/         # Product/Project management commands
+│       │   └── templates/       # Documentation template management commands
+│       ├── modules/             # Core functional implementations
+│       │   ├── code_analysis/   # Logic for code analysis and doc generation
+│       │   ├── memory_management/ # Logic for handling project memory
+│       │   └── conversation/    # Logic for managing conversation flows
+│       ├── scripts/             # Utility and executable scripts
+│       ├── config/              # System-wide configuration files
+│       └── docs/                # System documentation and guides
+├── code_context/                # Processed repository content
+│   ├── extracted/               # Repositories extracted as text
+│   └── generated/               # Generated documentation
 ├── docs/                        # Generated documentation
 └── .memory.json                 # Project memory store
 ```
@@ -96,9 +85,11 @@ paelladoc/
 
 Just type one of our comprehensive commands:
 ```bash
-PAELLA [project_name]        # Initialize new documentation
-CONTINUE [project_name]      # Continue with existing documentation
-GENERATE_CODE [project_name] # Generate code from documentation
+PAELLA [project_name]           # Initialize new documentation
+CONTINUE [project_name]         # Continue with existing documentation
+GENERATE_CONTEXT repo_path=path # Extract repository context
+GENERATE_DOC [options]          # Generate documentation from context
+GENERATE_CODE [project_name]    # Generate code from documentation
 STORY operation="create" [args] # Manage user stories
 SPRINT operation="plan" [args]  # Plan and manage sprints
 MEETING operation="create" [args] # Record meeting notes
@@ -115,12 +106,12 @@ Like a well-trained chef, PAELLADOC will:
 
 ### 🌟 Key Features
 
-1. **Modular Architecture**
-   - Core commands, help system, and verification
-   - Feature-specific modules that can be extended
-   - Comprehensive template system
-   - Clean separation of concerns
-   - Well-documented directory structure and feature mapping
+1. **MECE Architecture**
+   - **Orchestrator**: Central command hub with well-defined interfaces
+   - **Commands**: Categorized by function (core, memory, code, styles, product, templates)
+   - **Modules**: Implementation logic separated from command interfaces
+   - **Centralized Configuration**: Clearly located configuration files
+   - **Comprehensive Documentation**: Self-documenting system structure
 
 2. **MECE System for Perfect Context**
    - Mutually Exclusive: Each piece of context has its place
@@ -165,11 +156,11 @@ Like a well-trained chef, PAELLADOC will:
    - Intelligent context gathering
    - Dynamic question sequences
 
-9. **Interface Definition System**
-   - User interface specifications
-   - Interaction design guidelines
-   - Component architecture definitions
-   - Responsive design patterns
+9. **Repository Analysis and Documentation**
+   - Extract repository context with GENERATE_CONTEXT
+   - Generate comprehensive documentation with GENERATE_DOC
+   - Interactive documentation workflow
+   - Multiple documentation templates
 
 ## 🚀 Getting Started
 
@@ -190,6 +181,7 @@ PAELLADOC is a documentation system that uses AI to analyze code repositories an
 - Python 3.8 or higher
 - pip (Python package manager)
 - Access to terminal/command line
+- Cursor 0.47+ (AI-powered IDE)
 
 ## Installation
 
@@ -215,64 +207,70 @@ PAELLADOC is a documentation system that uses AI to analyze code repositories an
    pip install -r requirements.txt
    ```
 
-## Using GENERATE-DOC
+## Using GENERATE_CONTEXT and GENERATE_DOC
 
-The `GENERATE-DOC` command analyzes a code repository and generates interactive documentation:
+The documentation generation process has two main steps:
 
-```
-GENERATE-DOC repo_path=/path/to/repository
-```
+1. **Extract repository context**:
+   ```
+   GENERATE_CONTEXT repo_path=/path/to/repository
+   ```
 
-### Parameters
+2. **Generate documentation**:
+   ```
+   GENERATE_DOC repo_path=/path/to/repository
+   ```
 
-- `repo_path`: Path to the repository you want to document
+### Parameters for GENERATE_CONTEXT
+
+- `repo_path`: Path to the repository you want to process (required)
+- `output`: Path where to save the extracted content (optional)
+- `line_numbers`: Whether to include line numbers (optional)
+- `style`: Output format - plain or xml (optional)
+- `ignore`: Additional patterns to ignore (optional)
+
+### Parameters for GENERATE_DOC
+
+- `repo_path`: Path to the repository you want to document (optional if context exists)
+- `context_path`: Path to the context directory (optional)
 - `output`: Path where to save the documentation (optional)
 - `template`: Documentation template to use (optional)
-- `context_path`: Path to the context directory (optional)
 
 ### Examples
 
 ```
-# Basic documentation
-GENERATE-DOC repo_path=~/projects/my-api
+# Extract repository context
+GENERATE_CONTEXT repo_path=~/projects/my-api
 
-# Specifying output path
-GENERATE-DOC repo_path=~/projects/my-api output=~/documentation/my-api
-
-# Using a specific template
-GENERATE-DOC repo_path=~/projects/my-api template=api-docs
+# Generate documentation
+GENERATE_DOC repo_path=~/projects/my-api template=api-docs output=~/documentation/my-api
 ```
 
 ## Code Analysis Process
 
-PAELLADOC uses [repopack-py](https://github.com/abinthomasonline/repopack-py) to convert code repositories into text format that can be processed by AI systems. This process:
+PAELLADOC uses a multi-step process to generate documentation:
 
-1. Extracts all source code from the repository
-2. Converts it into an optimized text format
-3. Analyzes architecture patterns, APIs, and database schemas
-4. Generates documentation based on the analysis
+1. **Content Extraction**: Extracts all source code from the repository
+2. **Context Generation**: Converts code into an optimized text format
+3. **Code Analysis**: Analyzes architecture patterns, APIs, and database schemas
+4. **Interactive Documentation**: Creates comprehensive documentation with user input
 
 ## Directory Structure
 
 ```
 paelladoc/
-├── code_context/              # Processed repository content
-│   ├── extracted/             # Repositories extracted as text
-│   ├── analyzed/              # Analysis results
-│   │   ├── architecture/      # Architecture analysis
-│   │   ├── api/               # API analysis
-│   │   └── database/          # Database analysis
-│   └── generated/             # Generated documentation
-├── .cursor/rules/             # Cursor rules for AI
-├── requirements.txt           # Python dependencies
-└── README.md                  # This file
+├── .cursor/rules/              # MECE-structured system rules
+│   ├── orchestrator/           # Central command definitions
+│   ├── commands/               # Categorized command implementations 
+│   ├── modules/                # Core functional modules
+│   ├── config/                 # System configuration
+│   ├── scripts/                # Utility scripts
+│   └── docs/                   # System documentation
+├── code_context/               # Processed repository content
+│   ├── extracted/              # Repositories extracted as text
+│   └── generated/              # Generated documentation
+├── docs/                       # Project documentation
+└── README.md                   # This file
 ```
 
-## Main Dependencies
-
-- **repopack**: Converts code repositories to text files
-- **Python 3.8+**: Required programming language
-
-## Advanced Configuration
-
-For advanced configuration, check the files in `.cursor/rules/`.
+For more detailed information about the system architecture, see `.cursor/rules/docs/README.md`.
