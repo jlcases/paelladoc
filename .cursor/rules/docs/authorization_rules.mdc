@@ -1,0 +1,96 @@
+---
+description: "Authorization rules for development, requiring explicit approval before any code implementation"
+globs: **/*.js, **/*.ts, **/*.py, **/*.go, **/*.java, **/*.c, **/*.cpp
+alwaysApply: false
+---
+
+# PaellaPACK Development Authorization Rules
+
+## Core Authorization Principles
+
+1. **NO CODE IMPLEMENTATION WITHOUT PRIOR AUTHORIZATION**
+   - All code implementation must be explicitly authorized by the project lead
+   - Documentation and planning do not constitute authorization to write code
+   - Even preliminary code structure requires explicit approval
+
+2. **Authorization Process**
+   - Project lead must provide explicit written authorization
+   - Authorization must specify exactly what code elements can be created
+   - Authorization must be documented in the project management system
+   - Authorization has an expiration date and scope
+
+3. **Documentation Requirements Before Authorization**
+   - Complete sprint planning documentation
+   - Detailed task breakdown with estimates
+   - Architecture design documents
+   - Interface specifications
+   - Test plans
+
+4. **Authorization Workflow**
+   
+   ```
+   Documentation → Review → Authorization → Implementation → Validation
+   ```
+
+5. **Authorization Levels**
+   - **Level 1**: Structure creation only (directories, package files)
+   - **Level 2**: Interface definition (class/function signatures)
+   - **Level 3**: Implementation code
+   - **Level 4**: Test code
+   - **Level 5**: Integration code
+
+6. **Authorization Record Format**
+   
+   ```
+   AUTHORIZATION:
+   - Date: YYYY-MM-DD
+   - Authorized by: [Name]
+   - Recipient: [Developer Name]
+   - Authorization level: [1-5]
+   - Scope: [Specific components/modules]
+   - Expiration: YYYY-MM-DD
+   - Additional constraints: [Any specific guidelines]
+   ```
+
+7. **Post-Implementation Validation**
+   - All implemented code must be reviewed against the authorization
+   - Implemented code outside authorization scope must be removed
+   - Authorization violations must be documented for process improvement
+
+## Integration with PaellaDOC Orchestrator
+
+The PaellaDOC orchestrator enforces these authorization rules by:
+
+1. Requiring explicit `AUTHORIZE_CODE` command before code generation
+2. Validating documentation completeness before authorization
+3. Tracking authorization status within project memory
+4. Linking generated code to specific authorizations
+5. Flagging unauthorized code during review processes
+
+## Authorization Command
+
+```
+AUTHORIZE_CODE level=[1-5] scope="component_name" assignee="developer_name" expiration="YYYY-MM-DD"
+```
+
+## Example Authorization
+
+```
+AUTHORIZE_CODE level=1 scope="repository_scanner" assignee="developer1" expiration="2024-04-10"
+```
+
+This command authorizes "developer1" to create the directory structure and package files for the repository scanner component until April 10, 2024. No implementation code is authorized at this point.
+
+## Revocation Command
+
+```
+REVOKE_AUTHORIZATION scope="component_name" assignee="developer_name"
+```
+
+## Authorization Verification Command
+
+```
+VERIFY_AUTHORIZATION scope="component_name"
+```
+
+Returns the current authorization status for the specified component. 

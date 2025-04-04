@@ -120,4 +120,46 @@ The analysis results are used to populate specific sections in standard PAELLADO
             ]
         }
     }
-} 
+}
+
+# Code Analysis for Documentation Generation
+
+This module handles analyzing source code to generate documentation automatically using PAELLA.
+
+## Available Commands
+
+1. **GENERATE_CONTEXT** - Convert a code repository to text for processing
+   - Usage: `GENERATE_CONTEXT repo_path=/path/to/repo [options]`
+   - Options: output, line_numbers, style, ignore
+   - See [generate_context.mdc](mdc:code_analysis/generate_context.mdc) for details
+
+2. **ANALYZE_CODE** - Analyze code structure and patterns
+   - Usage: `ANALYZE_CODE context=/path/to/context [options]`
+   - Options: output, format, depth
+
+3. **EXTRACT_DEFINITIONS** - Extract function, class, and type definitions
+   - Usage: `EXTRACT_DEFINITIONS context=/path/to/context [options]`
+   - Options: output, format, kinds
+
+4. **MAP_DEPENDENCIES** - Map dependencies between code components
+   - Usage: `MAP_DEPENDENCIES context=/path/to/context [options]`
+   - Options: output, format, depth
+
+## Process Overview
+
+The code analysis process follows these steps:
+
+1. **Repository Conversion**: Convert repository to text format using repopack
+2. **Structure Analysis**: Analyze code structure, patterns, and architecture
+3. **Definition Extraction**: Extract function, class, and type definitions
+4. **Dependency Mapping**: Map dependencies between components
+5. **Documentation Generation**: Generate documentation based on analysis
+
+## Integration with Documentation System
+
+The code analysis results feed into the documentation system to:
+- Generate API documentation
+- Create architecture diagrams
+- Produce usage examples
+- Document data flows
+- Identify potential issues 

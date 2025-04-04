@@ -1,0 +1,59 @@
+# ENFORCE INTERACTIVE MODE
+
+## CRITICAL INSTRUCTION FOR AI
+
+When the GENERATE_DOC command is invoked, the AI MUST:
+
+1. ALWAYS present the complete menu of documentation options to the user
+2. ALWAYS wait for explicit user selection before proceeding
+3. NEVER generate any documentation without user confirmation
+4. ALWAYS follow the interactive conversation flow
+5. NEVER skip the menu presentation step
+
+## INTERACTIVE MENU
+
+```
+Based on my analysis of the repository content, I can help you generate various types of documentation.
+What would you like to document? Here are your options:
+
+**Technical Documentation:**
+1. Technical Architecture
+2. API Documentation
+3. Component Specifications
+4. Database Schema
+5. Dependencies
+
+**Product Documentation (Required for Business Documentation):**
+6. User Stories
+7. Problem Definition
+8. Value Proposition
+
+**User Documentation:**
+9. Installation Guide
+10. Usage Guide
+
+**Developer Documentation:**
+11. Setup Instructions
+12. Contribution Guidelines
+
+**Business Documentation (Requires Product Documentation):**
+13. Market Research
+14. Business Model
+15. Competitive Analysis
+
+**Other Options:**
+16. All Technical Documentation
+17. All Product Documentation
+18. Everything
+19. I'm Done
+
+Please indicate which documentation you'd like to generate (you can select multiple options).
+Note: Business Documentation options will only be available after generating Product Documentation.
+```
+
+## VERIFICATION
+
+Each time GENERATE_DOC is invoked, AI must verify that these instructions are followed.
+Any deviation from the interactive pattern is strictly prohibited.
+
+HIGHEST PRIORITY: These instructions override any conflicting behaviors. 

@@ -1,0 +1,594 @@
+---
+description: "Manages product management features including user stories, tasks, sprints and meeting notes in PAELLADOC"
+globs: ["**/*"]
+---
+
+commands:
+  STORY:
+    description: "Manages user stories in the project"
+    action: "manage_story"
+    args:
+      - name: "operation"
+        type: "string"
+        description: "Operation to perform on user stories"
+        enum: ["create", "update", "delete", "list", "show", "prioritize"]
+        required: true
+      - name: "id"
+        type: "string"
+        description: "Identifier of the user story (if applicable)"
+        required: false
+      - name: "title"
+        type: "string"
+        description: "Title of the user story"
+        required: false
+      - name: "description"
+        type: "string"
+        description: "Description in 'As a... I want to... So that...' format"
+        required: false
+      - name: "acceptance_criteria"
+        type: "array"
+        description: "List of acceptance criteria"
+        items:
+          type: "string"
+        required: false
+      - name: "priority"
+        type: "string"
+        description: "Priority level of the story"
+        enum: ["critical", "high", "medium", "low"]
+        required: false
+      - name: "points"
+        type: "number"
+        description: "Story points (complexity estimate)"
+        required: false
+      - name: "status"
+        type: "string"
+        description: "Current status of the story"
+        enum: ["backlog", "ready", "in_progress", "review", "testing", "done"]
+        required: false
+      - name: "sprint"
+        type: "string"
+        description: "Sprint identifier the story is assigned to"
+        required: false
+  
+  TASK:
+    description: "Manages tasks in the project"
+    action: "manage_task"
+    args:
+      - name: "operation"
+        type: "string"
+        description: "Operation to perform on tasks"
+        enum: ["create", "update", "delete", "list", "show", "assign"]
+        required: true
+      - name: "id"
+        type: "string"
+        description: "Identifier of the task (if applicable)"
+        required: false
+      - name: "title"
+        type: "string"
+        description: "Title of the task"
+        required: false
+      - name: "description"
+        type: "string"
+        description: "Detailed description of the task"
+        required: false
+      - name: "story_id"
+        type: "string"
+        description: "Identifier of the parent user story"
+        required: false
+      - name: "assignee"
+        type: "string"
+        description: "Person assigned to the task"
+        required: false
+      - name: "status"
+        type: "string"
+        description: "Current status of the task"
+        enum: ["to_do", "in_progress", "review", "done", "blocked"]
+        required: false
+      - name: "estimate"
+        type: "number"
+        description: "Estimated hours to complete"
+        required: false
+      - name: "due_date"
+        type: "string"
+        description: "Due date in YYYY-MM-DD format"
+        required: false
+      - name: "dependencies"
+        type: "array"
+        description: "List of task IDs this task depends on"
+        items:
+          type: "string"
+        required: false
+      - name: "blockers"
+        type: "string"
+        description: "Description of any blockers"
+        required: false
+  
+  SPRINT:
+    description: "Manages sprint planning and execution"
+    action: "manage_sprint"
+    args:
+      - name: "operation"
+        type: "string"
+        description: "Operation to perform on sprints"
+        enum: ["create", "update", "delete", "start", "end", "plan", "list", "show"]
+        required: true
+      - name: "id"
+        type: "string"
+        description: "Identifier of the sprint (if applicable)"
+        required: false
+      - name: "name"
+        type: "string"
+        description: "Name of the sprint"
+        required: false
+      - name: "goal"
+        type: "string"
+        description: "Primary goal of the sprint"
+        required: false
+      - name: "start_date"
+        type: "string"
+        description: "Start date in YYYY-MM-DD format"
+        required: false
+      - name: "end_date"
+        type: "string"
+        description: "End date in YYYY-MM-DD format"
+        required: false
+      - name: "capacity"
+        type: "number"
+        description: "Team capacity in story points"
+        required: false
+      - name: "stories"
+        type: "array"
+        description: "List of story IDs to include in sprint"
+        items:
+          type: "string"
+        required: false
+      - name: "status"
+        type: "string"
+        description: "Current status of the sprint"
+        enum: ["planning", "active", "review", "completed"]
+        required: false
+  
+  MEETING:
+    description: "Manages meeting notes and action items"
+    action: "manage_meeting"
+    args:
+      - name: "operation"
+        type: "string"
+        description: "Operation to perform"
+        enum: ["create", "update", "delete", "list", "show"]
+        required: true
+      - name: "id"
+        type: "string"
+        description: "Identifier of the meeting (if applicable)"
+        required: false
+      - name: "title"
+        type: "string"
+        description: "Title or purpose of the meeting"
+        required: false
+      - name: "date"
+        type: "string"
+        description: "Meeting date in YYYY-MM-DD format"
+        required: false
+      - name: "attendees"
+        type: "array"
+        description: "List of attendees"
+        items:
+          type: "string"
+        required: false
+      - name: "agenda"
+        type: "array"
+        description: "Meeting agenda items"
+        items:
+          type: "string"
+        required: false
+      - name: "notes"
+        type: "string"
+        description: "Detailed meeting notes"
+        required: false
+      - name: "action_items"
+        type: "array"
+        description: "Action items from the meeting"
+        items:
+          type: "object"
+          properties:
+            description:
+              type: "string"
+            assignee:
+              type: "string"
+            due_date:
+              type: "string"
+        required: false
+      - name: "decisions"
+        type: "array"
+        description: "Key decisions made during the meeting"
+        items:
+          type: "string"
+        required: false
+      - name: "meeting_type"
+        type: "string"
+        description: "Type of meeting"
+        enum: ["planning", "daily", "review", "retrospective", "stakeholder", "other"]
+        required: false
+  
+  REPORT:
+    description: "Generates project status reports"
+    action: "generate_report"
+    args:
+      - name: "report_type"
+        type: "string"
+        description: "Type of report to generate"
+        enum: ["sprint", "progress", "velocity", "backlog", "burndown", "custom"]
+        required: true
+      - name: "sprint_id"
+        type: "string"
+        description: "Sprint identifier for sprint-specific reports"
+        required: false
+      - name: "start_date"
+        type: "string"
+        description: "Start date for report period in YYYY-MM-DD format"
+        required: false
+      - name: "end_date"
+        type: "string"
+        description: "End date for report period in YYYY-MM-DD format"
+        required: false
+      - name: "format"
+        type: "string"
+        description: "Output format of the report"
+        enum: ["markdown", "html", "pdf", "json", "csv"]
+        default: "markdown"
+        required: false
+      - name: "include_charts"
+        type: "boolean"
+        description: "Whether to include charts in the report"
+        default: true
+        required: false
+      - name: "metrics"
+        type: "array"
+        description: "Specific metrics to include in the report"
+        items:
+          type: "string"
+          enum: ["velocity", "completion_rate", "bug_count", "story_points", "task_distribution", "blockers"]
+        required: false
+
+product_management:
+  schema:
+    user_story:
+      properties:
+        id: { type: "string", pattern: "US-[0-9]+" }
+        title: { type: "string", maxLength: 100 }
+        description: { type: "string", minLength: 10 }
+        acceptance_criteria: { type: "array", items: { type: "string" } }
+        priority: { type: "string", enum: ["critical", "high", "medium", "low"] }
+        points: { type: "number", minimum: 0, maximum: 21 }
+        status: { type: "string", enum: ["backlog", "ready", "in_progress", "review", "testing", "done"] }
+        sprint: { type: "string", nullable: true }
+        created_at: { type: "string", format: "date-time" }
+        updated_at: { type: "string", format: "date-time" }
+        tags: { type: "array", items: { type: "string" } }
+        epic: { type: "string", nullable: true }
+      required: ["id", "title", "description", "priority", "status", "created_at"]
+    
+    task:
+      properties:
+        id: { type: "string", pattern: "T-[0-9]+" }
+        title: { type: "string", maxLength: 100 }
+        description: { type: "string" }
+        story_id: { type: "string", pattern: "US-[0-9]+", nullable: true }
+        assignee: { type: "string", nullable: true }
+        status: { type: "string", enum: ["to_do", "in_progress", "review", "done", "blocked"] }
+        estimate: { type: "number", minimum: 0 }
+        actual_hours: { type: "number", minimum: 0, nullable: true }
+        due_date: { type: "string", format: "date", nullable: true }
+        dependencies: { type: "array", items: { type: "string", pattern: "T-[0-9]+" } }
+        blockers: { type: "string", nullable: true }
+        created_at: { type: "string", format: "date-time" }
+        updated_at: { type: "string", format: "date-time" }
+        tags: { type: "array", items: { type: "string" } }
+      required: ["id", "title", "status", "created_at"]
+    
+    sprint:
+      properties:
+        id: { type: "string", pattern: "SP-[0-9]+" }
+        name: { type: "string", maxLength: 100 }
+        goal: { type: "string" }
+        start_date: { type: "string", format: "date" }
+        end_date: { type: "string", format: "date" }
+        capacity: { type: "number", minimum: 0 }
+        stories: { type: "array", items: { type: "string", pattern: "US-[0-9]+" } }
+        status: { type: "string", enum: ["planning", "active", "review", "completed"] }
+        created_at: { type: "string", format: "date-time" }
+        updated_at: { type: "string", format: "date-time" }
+        metrics: {
+          type: "object",
+          properties: {
+            planned_points: { type: "number", minimum: 0 },
+            completed_points: { type: "number", minimum: 0 },
+            added_scope: { type: "number", default: 0 },
+            velocity: { type: "number", nullable: true }
+          }
+        }
+      required: ["id", "name", "start_date", "end_date", "status", "created_at"]
+    
+    meeting:
+      properties:
+        id: { type: "string", pattern: "MTG-[0-9]+" }
+        title: { type: "string", maxLength: 200 }
+        date: { type: "string", format: "date" }
+        attendees: { type: "array", items: { type: "string" } }
+        agenda: { type: "array", items: { type: "string" } }
+        notes: { type: "string" }
+        action_items: {
+          type: "array", 
+          items: {
+            type: "object",
+            properties: {
+              id: { type: "string", pattern: "AI-[0-9]+" },
+              description: { type: "string" },
+              assignee: { type: "string" },
+              due_date: { type: "string", format: "date", nullable: true },
+              status: { type: "string", enum: ["open", "in_progress", "completed"] }
+            },
+            required: ["id", "description", "assignee", "status"]
+          }
+        }
+        decisions: { type: "array", items: { type: "string" } }
+        meeting_type: { type: "string", enum: ["planning", "daily", "review", "retrospective", "stakeholder", "other"] }
+        created_at: { type: "string", format: "date-time" }
+        updated_at: { type: "string", format: "date-time" }
+      required: ["id", "title", "date", "attendees", "meeting_type", "created_at"]
+
+  templates:
+    user_story_template: |
+      # User Story: {{id}} - {{title}}
+      
+      **As a** {{as_a}}
+      **I want to** {{want_to}}
+      **So that** {{so_that}}
+      
+      ## Acceptance Criteria
+      {{#each acceptance_criteria}}
+      - {{this}}
+      {{/each}}
+      
+      ## Details
+      - **Priority:** {{priority}}
+      - **Story Points:** {{points}}
+      - **Status:** {{status}}
+      - **Sprint:** {{sprint}}
+      {{#if epic}}
+      - **Epic:** {{epic}}
+      {{/if}}
+      
+      ## Additional Notes
+      {{notes}}
+    
+    sprint_planning_template: |
+      # Sprint Planning: {{name}} ({{id}})
+      
+      **Sprint Goal:** {{goal}}
+      **Duration:** {{start_date}} to {{end_date}}
+      **Capacity:** {{capacity}} story points
+      
+      ## User Stories
+      {{#each stories}}
+      ### {{this.id}} - {{this.title}} ({{this.points}} points)
+      - **Priority:** {{this.priority}}
+      - **Status:** {{this.status}}
+      
+      {{this.description}}
+      
+      **Acceptance Criteria:**
+      {{#each this.acceptance_criteria}}
+      - {{this}}
+      {{/each}}
+      
+      **Tasks:**
+      {{#each this.tasks}}
+      - [ ] {{this.title}} ({{this.estimate}}h) {{#if this.assignee}}@{{this.assignee}}{{/if}}
+      {{/each}}
+      {{/each}}
+      
+      ## Sprint Metrics
+      - **Total Story Points:** {{metrics.planned_points}}
+      - **Velocity (previous sprint):** {{metrics.previous_velocity}}
+      
+      ## Team Availability
+      {{#each team_availability}}
+      - **{{this.name}}:** {{this.available_days}} days ({{this.capacity}} capacity)
+      {{/each}}
+    
+    meeting_notes_template: |
+      # Meeting Notes: {{title}}
+      
+      **Date:** {{date}}
+      **Type:** {{meeting_type}}
+      **Location:** {{location}}
+      
+      ## Attendees
+      {{#each attendees}}
+      - {{this}}
+      {{/each}}
+      
+      ## Agenda
+      {{#each agenda}}
+      1. {{this}}
+      {{/each}}
+      
+      ## Discussion Notes
+      {{notes}}
+      
+      ## Key Decisions
+      {{#each decisions}}
+      - {{this}}
+      {{/each}}
+      
+      ## Action Items
+      {{#each action_items}}
+      - [ ] {{this.description}} ({{this.assignee}}, Due: {{this.due_date}})
+      {{/each}}
+      
+      ## Next Steps
+      {{next_steps}}
+    
+    daily_standup_template: |
+      # Daily Standup: {{date}}
+      
+      ## Team Updates
+      {{#each team_updates}}
+      ### {{this.name}}
+      
+      **Yesterday:**
+      - {{this.yesterday}}
+      
+      **Today:**
+      - {{this.today}}
+      
+      **Blockers:**
+      {{#if this.blockers}}
+      - {{this.blockers}}
+      {{else}}
+      - None
+      {{/if}}
+      {{/each}}
+      
+      ## Sprint Burndown
+      - **Days Remaining:** {{days_remaining}}
+      - **Story Points Remaining:** {{points_remaining}}
+      - **On Track:** {{on_track}}
+      
+      ## Blockers Discussion
+      {{blockers_discussion}}
+      
+      ## Action Items
+      {{#each action_items}}
+      - [ ] {{this.description}} ({{this.assignee}})
+      {{/each}}
+    
+    report_templates:
+      sprint_report: |
+        # Sprint Report: {{sprint.name}} ({{sprint.id}})
+        
+        **Duration:** {{sprint.start_date}} to {{sprint.end_date}}
+        **Goal:** {{sprint.goal}}
+        
+        ## Summary
+        - **Planned Story Points:** {{sprint.metrics.planned_points}}
+        - **Completed Story Points:** {{sprint.metrics.completed_points}}
+        - **Completion Rate:** {{completion_rate}}%
+        - **Scope Changes:** {{scope_changes}} points
+        
+        ## Velocity Chart
+        ```
+        {{velocity_chart}}
+        ```
+        
+        ## Completed Stories
+        {{#each completed_stories}}
+        - **{{this.id}}:** {{this.title}} ({{this.points}} points)
+        {{/each}}
+        
+        ## Incomplete Stories
+        {{#each incomplete_stories}}
+        - **{{this.id}}:** {{this.title}} ({{this.points}} points) - {{this.status}}
+        {{/each}}
+        
+        ## Key Achievements
+        {{#each achievements}}
+        - {{this}}
+        {{/each}}
+        
+        ## Challenges
+        {{#each challenges}}
+        - {{this}}
+        {{/each}}
+        
+        ## Action Items for Next Sprint
+        {{#each action_items}}
+        - [ ] {{this.description}}
+        {{/each}}
+      
+      progress_report: |
+        # Project Progress Report: {{start_date}} to {{end_date}}
+        
+        ## Project Overview
+        - **Project:** {{project_name}}
+        - **Status:** {{project_status}}
+        - **Overall Completion:** {{completion_percentage}}%
+        
+        ## Sprint Status
+        {{#each sprints}}
+        ### {{this.name}}
+        - **Status:** {{this.status}}
+        - **Progress:** {{this.completion_rate}}%
+        - **Key Deliverables:** {{this.key_deliverables}}
+        {{/each}}
+        
+        ## Key Metrics
+        - **Overall Velocity:** {{overall_velocity}} points/sprint
+        - **Defect Rate:** {{defect_rate}}
+        - **Scope Changes:** {{scope_changes}}%
+        
+        ## Burndown Chart
+        ```
+        {{burndown_chart}}
+        ```
+        
+        ## Risk Assessment
+        {{#each risks}}
+        - **{{this.title}}** ({{this.severity}}): {{this.mitigation}}
+        {{/each}}
+        
+        ## Next Steps
+        {{#each next_steps}}
+        - {{this}}
+        {{/each}}
+
+  storage:
+    base_path: "docs/{{project_name}}/product_management/"
+    file_structure:
+      user_stories: "stories/"
+      tasks: "tasks/"
+      sprints: "sprints/"
+      meetings: "meetings/"
+      reports: "reports/"
+      archive: "archive/"
+    indexes:
+      story_index: "indexes/story_index.json"
+      task_index: "indexes/task_index.json"
+      sprint_index: "indexes/sprint_index.json"
+      meeting_index: "indexes/meeting_index.json"
+    
+  integrations:
+    github:
+      enabled: true
+      issue_sync: true
+      milestone_sync: true
+    jira:
+      enabled: false
+      project_key: ""
+      credentials_path: ""
+    trello:
+      enabled: false
+      board_id: ""
+      credentials_path: ""
+  
+  visualizations:
+    burndown_chart: true
+    velocity_chart: true
+    task_distribution: true
+    story_map: true
+    
+  workflow:
+    automated_notifications: true
+    daily_summary: true
+    update_reminders: true
+    pre_meeting_distribution: true
+    post_meeting_distribution: true
+    
+  security:
+    access_control:
+      admin: ["full_access"]
+      product_owner: ["full_access"]
+      team_lead: ["read_write", "no_delete"]
+      developer: ["read_write_own", "read_all"]
+      stakeholder: ["read_only"] 

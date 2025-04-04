@@ -1,0 +1,208 @@
+---
+description: "Project memory system for context recording and transfer using AI"
+globs: ["**/.memory.json", "**/memory.json"]
+imports:
+  - ".cursor/rules/core/memory_management.mdc"
+commands:
+  CONTEXT:
+    description: "Manages AI context for the current session"
+    action: "manage_ai_context"
+    args:
+      - name: "operation"
+        type: "string"
+        description: "Operation to perform with the context"
+        enum: ["show", "update", "reset", "transfer"]
+        default: "show"
+      - name: "focus"
+        type: "string"
+        description: "Updates the current focus of the session"
+        required: false
+      - name: "preferences"
+        type: "array"
+        description: "Updates coding preferences"
+        items:
+          type: "string"
+        required: false
+      - name: "next_tasks"
+        type: "array"
+        description: "Updates the upcoming tasks to perform"
+        items:
+          type: "string"
+        required: false
+      - name: "to_file"
+        type: "string"
+        description: "Path where to save the extracted context"
+        required: false
+  SUMMARIZE:
+    description: "Generates a summary of the current conversation for the project memory"
+    action: "summarize_conversation"
+    args:
+      - name: "format"
+        type: "string"
+        description: "Summary format"
+        enum: ["concise", "detailed", "actionable"]
+        default: "concise"
+      - name: "focus"
+        type: "string"
+        description: "Aspect to focus on for the summary"
+        enum: ["decisions", "technical", "next_steps", "all"]
+        default: "all"
+      - name: "save_to_memory"
+        type: "boolean"
+        description: "Automatically save to project memory"
+        default: true
+---
+
+# Project Memory System with AI
+
+The project memory system allows recording decisions, achievements, issues, and maintaining context between work sessions using AI.
+
+## Objectives
+
+- Maintain a historical record of development
+- Preserve context between work sessions
+- Facilitate knowledge transfer
+- Assist in decision-making based on precedents
+- Reduce ramp-up time when switching tasks
+
+## Available Commands
+
+### CONTEXT
+
+This command allows managing the AI context for the current session.
+
+**Examples:**
+
+Show current context:
+```
+CONTEXT
+```
+
+Update session focus:
+```
+CONTEXT operation=update focus="Implementation of metadata analysis for SEO"
+```
+
+Update pending tasks:
+```
+CONTEXT operation=update next_tasks=["Complete US-04", "Refactor HeadingValidator class", "Implement integration tests"]
+```
+
+Transfer context to a file:
+```
+CONTEXT operation=transfer to_file="path/to/context.json"
+```
+
+Reset context:
+```
+CONTEXT operation=reset
+```
+
+### SUMMARIZE
+
+This command generates a summary of the current conversation to store in the project memory.
+
+**Examples:**
+
+Generate concise summary:
+```
+SUMMARIZE
+```
+
+Generate detailed summary focused on technical decisions:
+```
+SUMMARIZE format=detailed focus=decisions
+```
+
+Generate actionable summary without saving it to memory:
+```
+SUMMARIZE format=actionable save_to_memory=false
+```
+
+### MEMORY
+
+This command shows the contents of the development record.
+
+**Examples:**
+
+Show all memory:
+```
+MEMORY
+```
+
+Show only decisions:
+```
+MEMORY filter=decisions
+```
+
+Show a summary of AI context:
+```
+MEMORY filter=ai_context format=summary
+```
+
+### ACHIEVEMENT
+
+This command records an achievement in the project memory.
+
+**Examples:**
+
+```
+ACHIEVEMENT description="Completed refactoring of HeadingValidator class" category="development" impact_level="medium"
+```
+
+### ISSUE
+
+This command records an issue in the project memory.
+
+**Examples:**
+
+```
+ISSUE description="Detected inconsistency in the scoring algorithm" severity="medium" area="technical"
+```
+
+### DECISION
+
+This command records a technical decision in the project memory.
+
+**Examples:**
+
+```
+DECISION description="Adopt Strategy pattern for header validators" impact=["architecture", "development"] rationale="Improve extensibility and follow SOLID principles"
+```
+
+## Project Memory Workflow
+
+1. **Session Start**: Use `CONTEXT` to load context from the previous session
+2. **During Development**: Record achievements, issues, and decisions with the corresponding commands
+3. **Session End**: Use `SUMMARIZE` to generate a summary of what was worked on
+
+## Integration with Git Flow
+
+The memory system automatically integrates with Git through hooks that:
+
+1. Update memory with each commit
+2. Extract decisions from commit messages
+3. Detect technical debt patterns in the code
+4. Update quality metrics when there are changes in tests
+
+## Tips to Maximize Memory Value
+
+- Record important decisions while working
+- Use informative commit messages that start with types (feat, fix, refactor, etc.)
+- Run `SUMMARIZE` at the end of significant sessions
+- Update the current focus with `CONTEXT` when changing tasks
+- Consult memory before making decisions similar to those already made
+
+## Recommendations for Teams
+
+- Periodically review recorded decisions
+- Use memory for onboarding sessions
+- Consult memory during planning
+- Regularly update team coding preferences
+
+## Learn More
+
+For more information about memory management with AI, run:
+```
+HELP CONTEXT
+``` 

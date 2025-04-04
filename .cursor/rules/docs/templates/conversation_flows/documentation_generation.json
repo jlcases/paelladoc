@@ -1,0 +1,118 @@
+{
+  "flow_id": "documentation_generation",
+  "name": "Documentation Generation Workflow",
+  "description": "Interactive workflow for extracting specific documentation from code on demand",
+  "required": true,
+  "priority": "high",
+  "trigger_commands": ["GENERATE_DOC"],
+  "ai_driven": true,
+  "presentation": {
+    "introduction": "I've analyzed your code and I'm ready to help you generate documentation. What would you like to document?",
+    "outro": "Documentation has been successfully generated based on your selections. You can find the files in the specified output directory."
+  },
+  "steps": [
+    {
+      "id": "initial_analysis",
+      "name": "Initial Code Analysis",
+      "description": "AI analyzes the code to prepare for documentation generation",
+      "required": true,
+      "ai_analysis": true,
+      "no_questions": true,
+      "message": "Analyzing your code... This will just take a moment..."
+    },
+    {
+      "id": "documentation_menu",
+      "name": "Documentation Selection Menu",
+      "description": "Interactive menu for selecting documentation to generate",
+      "required": true,
+      "repeat_until": "done_extracting",
+      "questions": [
+        {
+          "id": "doc_selection",
+          "text": "What would you like to document? (You can select multiple options)\n\nTechnical Documentation:\n1. Technical Architecture\n2. API Documentation\n3. Component Specifications\n4. Database Schema\n5. Dependencies\n\nProduct Documentation:\n6. User Stories\n7. Problem Definition\n8. Value Proposition\n\nBusiness Documentation:\n9. Market Research\n10. Business Model\n11. Competitive Analysis\n\nUser Documentation:\n12. Installation Guide\n13. Usage Guide\n\nDeveloper Documentation:\n14. Setup Instructions\n15. Contribution Guidelines\n\nOther Options:\n16. All Technical Documentation\n17. All Product Documentation\n18. Everything\n19. I'm Done",
+          "type": "multiple_choice",
+          "options": [
+            "Technical Architecture",
+            "API Documentation",
+            "Component Specifications",
+            "Database Schema",
+            "Dependencies",
+            "User Stories",
+            "Problem Definition",
+            "Value Proposition",
+            "Market Research",
+            "Business Model",
+            "Competitive Analysis",
+            "Installation Guide",
+            "Usage Guide",
+            "Setup Instructions",
+            "Contribution Guidelines",
+            "All Technical Documentation",
+            "All Product Documentation",
+            "Everything",
+            "I'm Done"
+          ],
+          "required": true,
+          "memory_path": "current_documentation"
+        }
+      ]
+    },
+    {
+      "id": "documentation_generation",
+      "name": "Documentation Generation",
+      "description": "Generate selected documentation",
+      "required": true,
+      "ai_generation": true,
+      "repeat_for_each": "doc_selection",
+      "exclude_for": ["I'm Done"],
+      "steps": [
+        {
+          "id": "generate_doc",
+          "name": "Generate Documentation",
+          "ai_action": "generate_documentation",
+          "message": "Generating {{item}} documentation..."
+        },
+        {
+          "id": "ask_continue",
+          "name": "Ask to Continue",
+          "skip_for": ["All Technical Documentation", "All Product Documentation", "Everything"],
+          "questions": [
+            {
+              "id": "continue_extracting",
+              "text": "Would you like to extract anything else?",
+              "type": "boolean",
+              "required": true,
+              "memory_path": "continue_documentation"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "completion",
+      "name": "Documentation Complete",
+      "description": "Finalize documentation generation",
+      "required": true,
+      "ai_action": "finalize_documentation",
+      "message": "Documentation generation complete. Here's a summary of what was generated:\n\n{{generated_docs_summary}}\n\nYou can find all documentation in the output directory."
+    }
+  ],
+  "templates": {
+    "technical_architecture": {
+      "sections": [
+        "Overview",
+        "Components",
+        "Dependencies",
+        "Data Flow"
+      ]
+    },
+    "api_documentation": {
+      "sections": [
+        "Endpoints",
+        "Models",
+        "Authentication",
+        "Error Handling"
+      ]
+    }
+  }
+} 

@@ -34,14 +34,10 @@ update_ai_context() {
         return 1
     fi
     
-    # Read current memory file
-    if [ ! -f "$memory_file" ]; then
-        echo "ERROR: Memory file not found: $memory_file"
-        return 1
-    fi
-    
-    # Update last session date
-    jq --arg date "$current_date" '
+    # Update last session date using a temporary script file
+    local temp_jq_script
+    temp_jq_script=$(mktemp)
+    cat <<'JQ_SCRIPT' > "$temp_jq_script"
     # Create ai_context structure if it doesn't exist
     if .ai_context == null then 
         .ai_context = {
@@ -54,8 +50,10 @@ update_ai_context() {
     else 
         .ai_context.last_session = $date
     end
-    ' "$memory_file" > "$memory_file.tmp" && mv "$memory_file.tmp" "$memory_file"
-    
+JQ_SCRIPT
+    jq --arg date "$current_date" -f "$temp_jq_script" "$memory_file" > "$memory_file.tmp" && mv "$memory_file.tmp" "$memory_file"
+    rm "$temp_jq_script"
+
     # Look for Cursor files to extract context if they exist
     cursor_context_file="$PROJECT_ROOT/.cursor/project_context.json"
     
@@ -206,26 +204,29 @@ update_quality_metrics() {
                     BRANCHES_PCT=$(jq -r '.total.branches.pct' "$cov_file" 2>/dev/null || echo "")
                     
                     if [ -n "$LINES_PCT" ]; then
-                        # Update quality metrics
-                        jq --argjson lines "$LINES_PCT" \
-                           --argjson statements "$STATEMENTS_PCT" \
-                           --argjson functions "$FUNCTIONS_PCT" \
-                           --argjson branches "$BRANCHES_PCT" \
-                        '
+                        # Update quality metrics using a temporary script file
+                        local temp_metrics_script
+                        temp_metrics_script=$(mktemp)
+                        cat <<'JQ_SCRIPT' > "$temp_metrics_script"
                         # Create quality_metrics structure if it doesn't exist
-                        if .quality_metrics == null then 
-                            .quality_metrics = {}
-                        else . end |
+                        (.quality_metrics // {}) |
                         # Update metrics
-                        .quality_metrics.test_coverage = $lines |
-                        .quality_metrics.coverage_details = {
+                        .test_coverage = $lines |
+                        .coverage_details = {
                             "lines": $lines,
                             "statements": $statements,
                             "functions": $functions,
                             "branches": $branches,
-                            "last_updated": "'$(get_iso_date)'"
+                            "last_updated": $date
                         }
-                        ' "$memory_file" > "$memory_file.tmp" && mv "$memory_file.tmp" "$memory_file"
+JQ_SCRIPT
+                        jq --argjson lines "${LINES_PCT:-null}" \
+                           --argjson statements "${STATEMENTS_PCT:-null}" \
+                           --argjson functions "${FUNCTIONS_PCT:-null}" \
+                           --argjson branches "${BRANCHES_PCT:-null}" \
+                           --arg date "$(get_iso_date)" \
+                           -f "$temp_metrics_script" "$memory_file" > "$memory_file.tmp" && mv "$memory_file.tmp" "$memory_file"
+                        rm "$temp_metrics_script"
                         
                         echo "Coverage metrics updated from $cov_file"
                         break

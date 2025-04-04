@@ -1,6 +1,6 @@
 ---
 description: When user asks about code generation, uses the GENERATE_CODE or CREATE_REPO commands, or discusses generating code from documentation, guide them through the process and explain requirements
-globs: 
+globs: ["**/code_context/**/*"]
 alwaysApply: false
 ---
 
@@ -71,4 +71,93 @@ Creates a new repository for generated code
 
 ## Code Quality Assurance
 
-Generated code undergoes linting, testing (unit, integration, E2E), security scanning, and documentation generation. 
+Generated code undergoes linting, testing (unit, integration, E2E), security scanning, and documentation generation.
+
+# Code Generation from Documentation
+
+This module handles the generation of code based on documentation and repository analysis.
+
+## Command Definition
+
+```
+GENERATE-DOC [repo_path=/path/to/repo] [context_path=/path/to/context] [output=/path/to/output] [template=template_name]
+```
+
+## Process Steps
+
+1. **Repository Analysis**: 
+   - If `repo_path` is provided, it uses repopack to extract repository content to text
+   - If not, it looks for existing content in the `/Users/jlcases/codigo/paelladoc/code_context/extracted` directory
+
+2. **Context Analysis**:
+   - Analyzes the extracted content for architecture patterns, API endpoints, and database schemas
+   - Stores analysis results in the `/Users/jlcases/codigo/paelladoc/code_context/analyzed` directory
+
+3. **Interactive Documentation Generation**:
+   - Asks relevant questions about the project based on the analysis:
+     - Project purpose and goals
+     - Target audience
+     - Key features and functionality
+     - Technical requirements and constraints
+     - API usage patterns
+     - Database design considerations
+     - Security requirements
+
+4. **Documentation Creation**:
+   - Generates comprehensive documentation based on the analysis and responses
+   - Stores documentation in the `/Users/jlcases/codigo/paelladoc/code_context/generated` directory
+
+## Example Usage
+
+```
+GENERATE-DOC repo_path=/Users/jlcases/projects/my-api-project
+```
+
+## Interactive Workflow
+
+When the command is executed, it follows this conversation flow:
+
+1. **Repository Analysis Confirmation**:
+   ```
+   I'll analyze the repository at /Users/jlcases/projects/my-api-project.
+   Would you like me to focus on any specific part of the codebase?
+   ```
+
+2. **Project Purpose Questions**:
+   ```
+   Based on my analysis, this appears to be a RESTful API with authentication.
+   What is the primary purpose of this API?
+   Who are the intended users?
+   ```
+
+3. **Technical Details Confirmation**:
+   ```
+   I detected these endpoints:
+   - GET /api/users
+   - POST /api/auth/login
+   - GET /api/products
+   
+   Are there any missing endpoints or functionality?
+   ```
+
+4. **Documentation Structure Proposal**:
+   ```
+   Based on our discussion, I'll generate documentation with these sections:
+   1. Project Overview
+   2. Architecture
+   3. API Reference
+   4. Database Schema
+   5. Deployment Guide
+   
+   Would you like to add or remove any sections?
+   ```
+
+5. **Final Documentation Generation**:
+   ```
+   I've generated the documentation. You can find it at:
+   /Users/jlcases/codigo/paelladoc/code_context/generated/my-api-project/
+   ```
+
+## Integration with extract_repo_content.py
+
+The command uses the script at `.cursor/rules/scripts/extract_repo_content.py` to perform the repository extraction, which leverages repopack-py to convert the codebase to text.

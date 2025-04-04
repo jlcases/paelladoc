@@ -73,3 +73,22 @@ Arguments:
 - style_name (string, required): Name of the style (frontend, backend, chrome_extension, tdd, github_workflow)
 - project_name (string, required): Name of the project to apply style to
 - customizations (string): Path to customization file or inline JSON customizations
+
+### GENERATE_CONTEXT
+Converts a code repository to text format for processing
+
+Arguments:
+- repo_path (string, required): Path to the repository to process
+- output (string): Output file name for the extracted content
+- line_numbers (boolean): Whether to show line numbers in the output file
+- style (string): Output style (plain, xml)
+- ignore (string): Additional patterns to ignore (comma-separated)
+
+### GENERATE-DOC
+Analyzes code and generates comprehensive documentation with interactive guidance
+
+Arguments:
+- repo_path (string): Path to the repository to analyze (optional if context already exists)
+- context_path (string): Path to the context directory (default: code_context/extracted)
+- output (string): Path where to save the generated documentation
+- template (string): Documentation template to use

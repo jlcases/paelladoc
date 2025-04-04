@@ -1,0 +1,158 @@
+---
+description: "When user asks about analyzing code to generate documentation, guide them through the interactive documentation generation process"
+globs: ["**/*.py", "**/*.js", "**/*.ts", "**/*.java", "**/*.jsx", "**/*.tsx", "**/*.html", "**/*.css", "**/*.scss"]
+conversation_required: true
+interactive: true
+---
+
+# GENERATE-DOC Command Implementation
+
+This module implements the GENERATE-DOC command which analyzes code repositories and generates comprehensive documentation through an interactive process with the user.
+
+## Command Definition
+
+```
+GENERATE-DOC [repo_path=/path/to/repo] [context_path=/path/to/context] [output=/path/to/output] [template=template_name]
+```
+
+## Usage Examples
+
+```
+GENERATE-DOC repo_path=/Users/jlcases/projects/my-repo
+GENERATE-DOC context_path=/Users/jlcases/code_context/extracted/my-repo.txt
+```
+
+## Documentation Generation Process
+
+When executing this command, PAELLADOC will:
+
+1. If repo_path is provided but no context exists:
+   - Run GENERATE_CONTEXT to extract the repository content first
+   - Use the generated context for documentation
+
+2. If context_path is provided or can be inferred:
+   - Load the context file containing the repository content
+   - Analyze the structure and content of the codebase automatically
+   - Determine project type, technologies used, and other key properties
+
+3. Begin an interactive documentation extraction process:
+   - Present findings from code analysis
+   - Ask the user what type of documentation they want to generate
+   - Offer a menu of available documentation types based on the project
+   - Generate documentation components on demand
+
+4. Documentation types offered (automatically adapted to project):
+   - Technical documentation (architecture, API, components)
+   - Product documentation (user stories, problem definition, value proposition)
+   - Business documentation (market analysis, competitive analysis)
+   - User documentation (installation, usage guides)
+   - Developer documentation (contribution guides, coding standards)
+
+## Documentation Categories
+
+The system will offer categories appropriate to the detected project type, including:
+
+### Technical Documentation
+- Architecture overview
+- Component specifications
+- API references
+- Data models
+- Integration points
+- Security considerations
+
+### Product Documentation
+- Problem definition
+- User stories
+- Value proposition
+- Target audience analysis
+- Product roadmap
+
+### Business Documentation
+- Market analysis
+- Competitive analysis
+- Business model description
+- Marketing strategies
+- Customer acquisition plans
+
+### User Documentation
+- Installation guides
+- Configuration instructions
+- User manuals
+- Troubleshooting guides
+- FAQs
+
+### Developer Documentation
+- Setup instructions
+- Contribution guidelines
+- Testing procedures
+- Release processes
+- Code style guides
+
+## Interactive Process
+
+The documentation generation follows a conversation workflow where the AI will:
+
+1. First analyze the code to extract as much information as possible automatically
+2. Present findings about project type, structure, and technology stack
+3. Ask the user which types of documentation they want to generate
+4. For each chosen type, ask specific questions to gather any missing information
+5. Generate the documentation based on code analysis and user input
+6. Offer to generate additional documentation types
+
+This conversation flow is automatically triggered when the GENERATE_DOC command is invoked.
+
+## Available Templates
+
+The GENERATE-DOC command supports several documentation templates:
+- standard: General-purpose documentation suitable for most projects
+- api: Focused on API documentation for backend services
+- frontend: Frontend application documentation with component details
+- library: Documentation for code libraries and frameworks
+- extension: Chrome extension documentation format
+
+## Working With Repository Content
+
+When working with repository content, the system:
+
+1. Always uses the provided repository content from code_context/extracted/repo_content.txt
+2. Analyzes the content directly without relying on templates or external references
+3. Generates documentation based on the analyzed repository rather than system descriptions 
+4. Prioritizes information from the repository over any other source
+5. Focuses on the actual project being analyzed rather than PAELLADOC itself
+
+## Code Analysis Capabilities
+
+The system analyzes the code to determine:
+
+1. **Project Type Detection**:
+   - Chrome extension (presence of manifest.json, content scripts)
+   - Frontend app (React, Vue, Angular patterns)
+   - Backend API (server patterns, routes definition)
+   - Mobile app (native or hybrid app patterns)
+   - Library/package (exports, module pattern)
+
+2. **Technology Detection**:
+   - Programming languages used
+   - Frameworks and libraries
+   - Build tools and configuration
+   - Testing frameworks
+
+3. **Architecture Analysis**:
+   - Component structure
+   - Design patterns
+   - Project organization
+   - API patterns
+
+4. **User Stories and Requirements**:
+   - Extracting user stories from comments and documentation
+   - Identifying requirements and acceptance criteria
+   - Detecting problem statements and solution approaches
+
+This analysis happens automatically before any user interaction, ensuring the system already has a strong understanding of the project rather than requiring the user to provide this information. 
+
+## Important Behavior Notes
+
+1. When generating documentation, the system will ALWAYS use the extracted repository content from code_context/extracted/repo_content.txt
+2. All documentation generated will be about the repository itself, NOT about PAELLADOC
+3. The system will focus on accurately representing the analyzed project's structure, components, and features
+4. Templates are only used as structural guidance, not for content creation 

@@ -1,0 +1,53 @@
+---
+description: Use when starting any code implementation to ensure prerequisites are documented
+globs: 
+alwaysApply: false
+---
+
+# Pre-Coding Requirements
+
+Before starting any code implementation in PaellaPACK/PaellaDOC, it is mandatory to define and document the following aspects:
+
+## Git Workflow
+
+The following must be clearly documented:
+
+- Which Git workflow will be used (GitFlow, GitHub Flow, Trunk-based, etc.)
+- Branch naming conventions
+- Commit policy (format, granularity)
+- Pull request and review policy
+- Merge vs rebase strategy
+
+## Development Methodology
+
+The following must be specified:
+
+- Whether TDD (Test-Driven Development) will be used
+- Test structure and minimum required coverage
+- Specific testing tools
+- Continuous integration process
+
+## Repository Hosting
+
+The following must be defined:
+
+- Where the repository will be hosted (GitHub, GitLab, Bitbucket, etc.)
+- Permission and access structure
+- Branch protection configuration
+- Integration with CI/CD tools
+
+## Authorization Process
+
+Any code implementation must have explicit authorization after documenting the above aspects. Use the command:
+
+```
+AUTHORIZE_CODE git_flow=<flow> tdd=<yes|no> repo=<repository_host>
+```
+
+Example:
+```
+AUTHORIZE_CODE git_flow=github_flow tdd=yes repo=github
+```
+
+This requirement is linked to the general authorization rules of PaellaDOC:
+[authorization_rules.mdc](mdc:.cursor/rules/authorization_rules.mdc) 

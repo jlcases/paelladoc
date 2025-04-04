@@ -1,0 +1,105 @@
+---
+description: "Manages Git workflow methodologies and practices in PAELLADOC"
+globs: ["**/.git/*", "**/.github/*"]
+---
+
+# Git Workflows
+
+## Commands
+
+### WORKFLOW
+Manages Git workflow methodology for the project
+
+#### Arguments:
+- `operation` (string, required): Workflow operation to perform. Options: "apply", "customize", "list", "show"
+- `workflow_name` (string, required): Name of the Git workflow. Options: "github_flow", "gitflow", "trunk_based", "no_workflow"
+- `project_name` (string, required): Name of the project to apply workflow to
+- `customizations` (string): Path to customization file or inline JSON customizations
+
+## Available Git Workflows
+
+PAELLADOC supports multiple Git workflow methodologies:
+
+### GitHub Flow
+A lightweight, branch-based workflow centered around regular deployments.
+
+**Characteristics:**
+- Single main branch (usually `main`)
+- Feature branches created from main
+- Pull Requests for code review
+- Merge to main and deploy
+- No separate release branches
+
+**Best for:**
+- Small teams
+- Continuous delivery environments
+- Web applications with frequent deployments
+
+### GitFlow
+A robust branching model designed for projects with scheduled releases.
+
+**Characteristics:**
+- Main branch (`main`) represents production code
+- Development branch (`develop`) for ongoing work
+- Feature branches created from `develop`
+- Release branches for preparing releases
+- Hotfix branches for urgent production fixes
+
+**Best for:**
+- Larger teams
+- Projects with scheduled release cycles
+- Applications with multiple versions in production
+
+### Trunk-Based Development
+A source-control methodology where developers collaborate on code in a single branch.
+
+**Characteristics:**
+- Short-lived feature branches (typically less than a day)
+- Frequent commits to main branch
+- Feature toggles for incomplete features
+- Robust automated testing
+- Continuous integration
+
+**Best for:**
+- Experienced teams
+- High-velocity, high-collaboration environments
+- Projects with strong testing discipline
+
+### No Workflow
+Basic Git usage without a formal methodology.
+
+**Characteristics:**
+- Basic Git commands and concepts
+- Flexible approach without specific patterns
+- Minimal process overhead
+
+**Best for:**
+- Solo developers
+- Small prototype projects
+- Learning environments
+
+## Workflow Application Process
+
+When applying a Git workflow, PAELLADOC:
+
+1. **Configures** the project's Git repository
+2. **Creates** necessary branch structure
+3. **Sets up** GitHub/GitLab templates and configurations
+4. **Documents** the workflow for team reference
+5. **Integrates** with CI/CD as appropriate
+
+## Workflow Selection Guide
+
+The appropriate workflow depends on:
+
+1. **Team Size and Experience**:
+   - Small team → GitHub Flow
+   - Large team → GitFlow
+
+2. **Release Frequency**:
+   - Continuous deployment → GitHub Flow or Trunk-Based
+   - Scheduled releases → GitFlow
+
+3. **Project Complexity**:
+   - Simple projects → GitHub Flow or No Workflow
+   - Complex projects → GitFlow or Trunk-Based 

@@ -1,0 +1,17 @@
+---
+description: "Imports for PAELLADOC system"
+globs: ["**/*"]
+imports:
+  - ".cursor/rules/commands/core/help.mdc"
+  - ".cursor/rules/commands/core/verification.mdc"
+  - ".cursor/rules/commands/templates/template.mdc"
+  - ".cursor/rules/commands/memory/project_memory.mdc"
+  - ".cursor/rules/commands/styles/coding_styles.mdc"
+  - ".cursor/rules/commands/styles/git_workflows.mdc"
+  - ".cursor/rules/commands/code/code_generation.mdc"
+  - ".cursor/rules/commands/product/product_management.mdc"
+  - ".cursor/rules/modules/conversation/conversation_workflow.mdc"
+  - ".cursor/rules/modules/code_analysis/code_analysis.mdc"
+  - ".cursor/rules/commands/code/generate_context.mdc"
+  - ".cursor/rules/commands/code/generate_doc.mdc"
+--- 

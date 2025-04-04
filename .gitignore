@@ -49,9 +49,13 @@ tmp/
 # /pages/projects/secretproject/
 /code_context/
 /venv/
+.venv/
 .cursor/rules/scripts/venv
 # Archivos de contexto de Cursor
 .cursor/project_context.json
 
 # Archivos de contexto de IA
 .cursor/project_context.json docs/paelladoc/project_context.json
+
+temp_docs/
+backup_redundancies/

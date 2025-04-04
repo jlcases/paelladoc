@@ -1,0 +1,576 @@
+---
+description: When user asks about analyzing code to generate documentation, explain the capabilities and process based on PAELLADOC code analysis rules
+globs: ["**/*.py", "**/*.js", "**/*.ts", "**/*.java", "**/*.jsx", "**/*.tsx", "**/*.html", "**/*.css", "**/*.scss"]
+conversation_required: true
+interactive: true
+---
+
+# Code Analysis for Documentation Generation
+
+This module handles the analysis of code repositories to generate comprehensive documentation through an interactive process with the user.
+
+## Command Definition
+
+```
+GENERATE-DOC [repo_path=/path/to/repo] [context_path=/path/to/context] [output=/path/to/output] [template=template_name]
+```
+
+## Documentation Generation Process
+
+When executing this command, PAELLADOC will:
+
+1. **Initial Analysis**:
+   - Analyze repository structure and content
+   - Detect project type, frameworks, and patterns
+   - Identify key components and relationships
+
+2. **Interactive Documentation Menu**:
+   Ask the user what documentation they want to generate:
+
+   ```
+   What would you like to document? (You can select multiple options)
+   
+   Technical Documentation:
+   1. Technical Architecture
+   2. API Documentation
+   3. Component Specifications
+   4. Database Schema
+   5. Dependencies
+
+   Product Documentation:
+   6. User Stories
+   7. Problem Definition
+   8. Value Proposition
+
+   Business Documentation:
+   9. Market Research
+   10. Business Model
+   11. Competitive Analysis
+
+   User Documentation:
+   12. Installation Guide
+   13. Usage Guide
+
+   Developer Documentation:
+   14. Setup Instructions
+   15. Contribution Guidelines
+
+   Other Options:
+   16. All Technical Documentation
+   17. All Product Documentation
+   18. Everything
+   19. I'm Done
+   ```
+
+3. **Documentation Generation**:
+   For each selected option:
+   - Generate the corresponding documentation
+   - Ask for any missing information
+   - Create the documentation file
+   - Ask "Would you like to extract anything else?"
+
+4. **Completion**:
+   When the user selects "I'm Done" or confirms they don't want to extract more:
+   - Generate an index of all created documentation
+   - Provide a summary of what was generated
+   - Offer to generate additional documentation if needed
+
+## Documentation Types
+
+### Technical Documentation
+- Architecture overview
+- Component specifications
+- API references
+- Data models
+- Integration points
+- Security considerations
+
+### Product Documentation
+- Problem definition
+- User stories
+- Value proposition
+- Target audience analysis
+- Product roadmap
+
+### Business Documentation
+- Market analysis
+- Competitive analysis
+- Business model description
+- Marketing strategies
+- Customer acquisition plans
+
+### User Documentation
+- Installation guides
+- Configuration instructions
+- User manuals
+- Troubleshooting guides
+- FAQs
+
+### Developer Documentation
+- Setup instructions
+- Contribution guidelines
+- Testing procedures
+- Release processes
+- Code style guides
+
+## AI-Driven Analysis
+
+The AI will analyze the codebase to:
+1. Detect architecture patterns and project structure
+2. Identify components and their relationships
+3. Extract API endpoints and data models
+4. Understand business logic and features
+5. Recognize documentation needs
+
+## Interactive Process
+
+The documentation generation follows this conversation workflow:
+
+1. AI analyzes the code automatically
+2. Presents findings about project type and structure
+3. Asks what documentation to generate
+4. For each selection:
+   - Generates documentation
+   - Asks for any missing information
+   - Creates the documentation file
+   - Asks if user wants to extract more
+5. Continues until user is done
+
+This process is handled directly by the AI without requiring external scripts.
+
+# PAELLADOC Code Analysis Rules
+
+This rule defines how PAELLADOC analyzes existing codebases to bootstrap the documentation process.
+
+## Analysis Capabilities
+
+1.  **Architecture Detection**:
+    *   Applies to various language files (`.js`, `.ts`, `.py`, `.java`, etc.).
+    *   Detects common patterns: MVC, MVVM, Clean Architecture, Microservices, Event-Driven, Layered.
+    *   Analyzes component structure and maps dependencies.
+
+2.  **API Documentation Extraction**:
+    *   Applies to typical API folders (`controllers`, `routes`, `handlers`, `api`).
+    *   Extracts endpoints, request/response models (DTOs), and security patterns.
+    *   Parses comments (e.g., JSDoc, Swagger annotations) for details.
+
+3.  **Database Schema Analysis**:
+    *   Applies to model/entity/schema folders and `.sql` files.
+    *   Extracts data models and their relationships.
+    *   Identifies database migration scripts.
+
+4.  **Project Type Detection**:
+    *   Automatically identifies the type of project being documented
+    *   Determines appropriate documentation categories to offer
+    *   Customizes documentation templates based on project type
+
+## Corresponding Documentation Templates
+
+The analysis results are used to populate specific sections in standard PAELLADOC templates:
+
+*   **Architecture Analysis** -> `02_technical_architecture.md`
+    *   Sections: Detected Architecture, Component Structure, Dependencies, Integration Points.
+*   **API Analysis** -> `05_api_specification.md`
+    *   Sections: Endpoints Overview, Authentication, Data Models, Error Handling.
+*   **Database Analysis** -> `04_database_design.md`
+    *   Sections: Schema Overview, Entity Relationships, Migrations, Data Flow.
+*   **User Stories** -> `03_user_stories.md`
+    *   Sections: Personas, User Flows, Requirements, Acceptance Criteria
+*   **Market Analysis** -> `06_market_analysis.md`
+    *   Sections: Market Size, Competitors, Trends, Opportunities
+
+{
+    "version": "1.0.0",
+    "name": "paelladoc-code-analyzer",
+    "description": "Code analysis rules for PAELLADOC",
+    "patterns": ["code_context/**/*"],
+    "rules": [
+        {
+            "name": "architecture-detection",
+            "description": "Detecta patrones arquitectónicos en el código",
+            "patterns": ["**/*.{js,ts,py,java,go,rs,cpp,cs}"],
+            "analysis": {
+                "detect_patterns": [
+                    "MVC",
+                    "MVVM",
+                    "Clean Architecture",
+                    "Microservices",
+                    "Event-Driven",
+                    "Layered Architecture"
+                ],
+                "component_analysis": true,
+                "dependency_mapping": true
+            }
+        },
+        {
+            "name": "api-documentation",
+            "description": "Extrae documentación de APIs",
+            "patterns": [
+                "**/controllers/**/*",
+                "**/routes/**/*",
+                "**/handlers/**/*",
+                "**/api/**/*"
+            ],
+            "analysis": {
+                "extract_endpoints": true,
+                "parse_comments": true,
+                "identify_dto": true,
+                "security_patterns": true
+            }
+        },
+        {
+            "name": "database-schema",
+            "description": "Analiza esquemas de base de datos",
+            "patterns": [
+                "**/models/**/*",
+                "**/entities/**/*",
+                "**/schemas/**/*",
+                "**/*.sql"
+            ],
+            "analysis": {
+                "extract_models": true,
+                "relationships": true,
+                "migrations": true
+            }
+        },
+        {
+            "name": "project-type-detection",
+            "description": "Detects project type and technology stack automatically",
+            "patterns": ["**/package.json", "**/manifest.json", "**/*.config.*", "**/tsconfig.json", "**/webpack.config.*"],
+            "analysis": {
+                "detect_project_type": true,
+                "identify_frameworks": true,
+                "analyze_dependencies": true,
+                "detect_languages": true
+            }
+        },
+        {
+            "name": "user-story-extraction",
+            "description": "Extracts user stories and requirements from comments and documentation",
+            "patterns": ["**/docs/**/*", "**/*.md", "**/README*", "**/requirements*"],
+            "analysis": {
+                "extract_user_stories": true,
+                "identify_requirements": true,
+                "detect_acceptance_criteria": true
+            }
+        },
+        {
+            "name": "problem-solution-detection",
+            "description": "Identifies problem statements and solution approaches",
+            "patterns": ["**/docs/**/*", "**/*.md", "**/README*"],
+            "analysis": {
+                "extract_problem_statements": true,
+                "identify_solution_approaches": true,
+                "detect_value_proposition": true
+            }
+        }
+    ],
+    "documentation_templates": {
+        "architecture": {
+            "template": "02_technical_architecture.md",
+            "sections": [
+                "Detected Architecture",
+                "Component Structure",
+                "Dependencies",
+                "Integration Points"
+            ]
+        },
+        "api": {
+            "template": "05_api_specification.md",
+            "sections": [
+                "Endpoints Overview",
+                "Authentication",
+                "Data Models",
+                "Error Handling"
+            ]
+        },
+        "database": {
+            "template": "04_database_design.md",
+            "sections": [
+                "Schema Overview",
+                "Entity Relationships",
+                "Migrations",
+                "Data Flow"
+            ]
+        },
+        "user_stories": {
+            "template": "03_user_stories.md",
+            "sections": [
+                "Personas",
+                "User Flows",
+                "Requirements",
+                "Acceptance Criteria"
+            ]
+        },
+        "market_analysis": {
+            "template": "06_market_analysis.md",
+            "sections": [
+                "Market Size",
+                "Competitors", 
+                "Trends",
+                "Opportunities"
+            ]
+        }
+    }
+}
+
+## Process Overview
+
+The code analysis process follows these steps:
+
+1. **Repository Conversion**: Convert repository to text format using repopack
+2. **Structure Analysis**: Analyze code structure, patterns, and architecture
+3. **Definition Extraction**: Extract function, class, and type definitions
+4. **Dependency Mapping**: Map dependencies between components
+5. **Project Type Detection**: Determine project type and technology stack
+6. **Documentation Options**: Determine appropriate documentation options
+7. **User Interaction**: Ask user which documentation to generate
+8. **Documentation Generation**: Generate documentation based on analysis and user choices
+
+## Integration with Documentation System
+
+The code analysis results feed into the documentation system to:
+- Generate API documentation
+- Create architecture diagrams
+- Produce usage examples
+- Document data flows
+- Identify potential issues
+- Determine project type and properties automatically
+- Guide the documentation options presented to the user
+
+## Project Type Detection Logic
+
+The system uses the following heuristics to determine project type:
+
+1. **Chrome Extension**: 
+   - Presence of manifest.json with extension-specific fields
+   - Content scripts, background scripts, and popup files
+   - Extension-specific permissions
+
+2. **Frontend Web App**:
+   - React/Angular/Vue framework dependencies
+   - HTML/CSS/JS structure
+   - Absence of server-side code
+   - Build configurations for SPA/PWA
+
+3. **Backend/API**:
+   - Server frameworks (Express, Koa, Flask, Django, etc.)
+   - Route definitions and controllers
+   - Database connections
+   - API endpoint patterns
+
+4. **Mobile App**:
+   - React Native, Flutter, or native mobile code
+   - Mobile-specific configurations
+   - App manifests and build files
+
+5. **Library/Package**:
+   - Exports structure
+   - Package configuration
+   - Distribution setup
+
+This automatic detection ensures users are never asked about information that can be extracted from the code. 
+
+# Code Analysis Module for PAELLADOC
+
+## Overview
+This module handles code analysis and documentation generation through AI-driven interactive conversations.
+
+## Commands
+
+### GENERATE_DOC
+description: "Interactive documentation generation through AI analysis"
+behavior:
+  conversation_required: true
+  ai_driven: true
+  interactive: true
+  prevent_automatic_generation: true
+
+repository_analysis:
+  analyze_repo_content: true
+  default_repo_path: "code_context/extracted/repo_content.txt"
+  auto_detect_project_type: true
+  extract_technologies: true
+  detect_frameworks: true
+  identify_patterns: true
+  project_structure_analysis: true
+  always_analyze_current_repository: true
+  prefer_context_over_templates: true
+
+conversation_flow:
+  introduction: |
+    Based on my analysis of the repository content at {{repo_path}}, I can help you generate various types of documentation.
+    What would you like to document? Here are your options:
+
+    **Technical Documentation:**
+    1. Technical Architecture
+    2. API Documentation
+    3. Component Specifications
+    4. Database Schema
+    5. Dependencies
+
+    **Product Documentation (Required for Business Documentation):**
+    6. User Stories
+    7. Problem Definition
+    8. Value Proposition
+
+    **User Documentation:**
+    9. Installation Guide
+    10. Usage Guide
+
+    **Developer Documentation:**
+    11. Setup Instructions
+    12. Contribution Guidelines
+
+    **Business Documentation (Requires Product Documentation):**
+    13. Market Research
+    14. Business Model
+    15. Competitive Analysis
+
+    **Other Options:**
+    16. All Technical Documentation
+    17. All Product Documentation
+    18. Everything
+    19. I'm Done
+
+    Please indicate which documentation you'd like to generate (you can select multiple options).
+    Note: Business Documentation options will only be available after generating Product Documentation.
+
+  steps:
+    - id: initial_analysis
+      type: ai_analysis
+      description: "Analyzing project structure and codebase"
+      auto_proceed: true
+      analyze_repo_content: true
+      repo_path: "{{repo_path}}"
+      force_current_repository: true
+
+    - id: documentation_selection
+      type: interactive_menu
+      repeat_until: done
+      options:
+        - Technical Architecture
+        - API Documentation
+        - Component Specifications
+        - Database Schema
+        - Dependencies
+        - User Stories
+        - Problem Definition
+        - Value Proposition
+        - Installation Guide
+        - Usage Guide
+        - Setup Instructions
+        - Contribution Guidelines
+        - Market Research
+        - Business Model
+        - Competitive Analysis
+        - All Technical Documentation
+        - All Product Documentation
+        - Everything
+        - I'm Done
+      multiple_selection: true
+      dependencies:
+        - condition: "Market Research"
+          requires: ["Problem Definition", "Value Proposition", "User Stories"]
+          message: "Market Research requires Product Documentation (Problem Definition, Value Proposition, and User Stories) to be generated first."
+        - condition: "Business Model"
+          requires: ["Problem Definition", "Value Proposition", "User Stories"]
+          message: "Business Model requires Product Documentation (Problem Definition, Value Proposition, and User Stories) to be generated first."
+        - condition: "Competitive Analysis"
+          requires: ["Problem Definition", "Value Proposition"]
+          message: "Competitive Analysis requires Product Documentation (Problem Definition and Value Proposition) to be generated first."
+        - condition: "All Product Documentation"
+          includes: ["User Stories", "Problem Definition", "Value Proposition"]
+        - condition: "Everything"
+          includes: ["User Stories", "Problem Definition", "Value Proposition", "Market Research", "Business Model", "Competitive Analysis"]
+
+    - id: documentation_generation
+      type: ai_generation
+      for_each: selected_option
+      exclude: ["I'm Done"]
+      actions:
+        - validate_dependencies
+        - analyze_code
+        - extract_information
+        - generate_documentation
+        - save_to_memory
+      force_context_analysis: true
+      prioritize_code_content: true
+
+    - id: continue_prompt
+      type: question
+      skip_for: ["All Technical Documentation", "All Product Documentation", "Everything"]
+      text: "Would you like to extract anything else?"
+      options: ["Yes", "No"]
+
+    - id: completion
+      type: summary
+      description: "Generate documentation index and summary"
+
+output_structure:
+  base_path: "docs/generated"
+  templates:
+    technical:
+      - architecture.md
+      - api.md
+      - components.md
+      - database.md
+      - dependencies.md
+    product:
+      - user_stories.md
+      - problem_definition.md
+      - value_proposition.md
+    business:
+      - market_research.md
+      - business_model.md
+      - competitive_analysis.md
+    user:
+      - installation.md
+      - usage.md
+    developer:
+      - setup.md
+      - contributing.md
+
+memory_management:
+  save_selections: true
+  track_generated_docs: true
+  update_project_state: true
+  check_dependencies: true
+
+validation:
+  verify_code_access: true
+  check_dependencies: true
+  ensure_completeness: true
+  validate_product_docs_before_business: true
+  verify_repository_context: true
+
+code_analysis:
+  auto_extract_project_metadata: true
+  metadata_extraction:
+    project_name: true
+    project_type: true
+    technologies: true
+    languages: true
+    frameworks: true
+    architecture: true
+    components: true
+    main_features: true
+    design_patterns: true
+  force_repository_analysis: true
+  
+  detect_project_type:
+    chrome_extension:
+      files: ["manifest.json", "background.js", "content.js"]
+      patterns: ["chrome.runtime", "chrome.tabs", "chrome.storage"]
+    web_frontend:
+      files: ["package.json", "webpack.config.js", "tsconfig.json"]
+      patterns: ["react", "svelte", "vue", "angular"]
+    backend:
+      files: ["server.js", "app.js", "package.json"]
+      patterns: ["express", "koa", "fastify", "nest"]
+    mobile:
+      files: ["App.js", "AndroidManifest.xml", "Info.plist"]
+      patterns: ["react-native", "ionic", "flutter"]
+    library:
+      files: ["package.json", "readme.md", "tsconfig.json"]
+      patterns: ["/^exports:/", "/^main:/", "/^module:/"] 

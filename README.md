@@ -1,6 +1,6 @@
 # 🥘 PAELLADOC: The development exoskeleton
 
-![Version](https://img.shields.io/badge/version-3.0.0-blue.svg)
+![Version](https://img.shields.io/badge/version-0.1.0-blue.svg)
 ![Status](https://img.shields.io/badge/status-active-success.svg)
 ![Cursor](https://img.shields.io/badge/cursor-0.47+-green.svg)
 ![Compatibility](https://img.shields.io/badge/compatibility-cursor%200.47+-orange.svg)
@@ -41,7 +41,7 @@ As we build this together, we're creating the definitive standard for AI-assiste
 
 ## 🎯 The Art of Documentation in the AI Era
 
-Just as a skilled chef knows that the secret to a perfect paella lies in the quality of its ingredients and the order of preparation, PAELLADOC stems from a fundamental truth: **90% of success in AI programming depends on context**.
+Just as a master chef knows that the secret to a perfect paella lies in the quality of its ingredients and the order of preparation, PAELLADOC builds on a fundamental truth: **90% of success in AI programming depends on context**.
 
 ### 🧠 Why Context is Crucial?
 
@@ -58,36 +58,25 @@ Following the MECE principle (Mutually Exclusive, Collectively Exhaustive), we o
 paelladoc/
 ├── .cursor/
 │   └── rules/
-│       ├── core/                # Core PAELLADOC functionality
-│       │   ├── commands.mdc     # Main command definitions
-│       │   ├── help.mdc         # Help system implementation
-│       │   └── verification.mdc # Documentation verification processes
-│       ├── features/            # Modular feature extensions
-│       │   ├── templates.mdc    # Template management
-│       │   ├── project_memory.mdc # Project memory capabilities  
-│       │   ├── coding_styles.mdc  # Programming style guides
-│       │   ├── git_workflows.mdc  # Git workflow methodologies
-│       │   ├── code_generation.mdc # Code generation capabilities
-│       │   ├── conversation_workflow.mdc # Conversation flows
-│       │   ├── interfaces.mdc   # User interface definitions
-│       │   └── product_management.mdc # Product management features
-│       ├── templates/           # Document and code templates
-│       │   ├── coding_styles/   # Programming style guides
-│       │   ├── github-workflows/ # Git workflow methodologies
-│       │   ├── product_management/ # Product management templates
-│       │   ├── code_generation/ # Code generation templates
-│       │   ├── conversation_flows/ # Conversation flow configs
-│       │   ├── methodologies/   # Development methodologies
-│       │   ├── Product/         # Main product documentation
-│       │   ├── scripts/         # Template-specific scripts
-│       │   ├── selectors/       # Selection guide templates
-│       │   └── simplified_templates/ # Simple documentation
-│       ├── scripts/             # Utility scripts
-│       ├── DIRECTORY_STRUCTURE.md # Directory organization
-│       ├── feature_map.md       # Feature mapping documentation
-│       ├── imports.mdc          # Import definitions
-│       ├── paelladoc_conversation_config.json # Conversation config
-│       └── paelladoc.mdc        # Main orchestrator
+│       ├── orchestrator/        # Central orchestrator definition
+│       │   └── paelladoc.mdc    # Defines all commands and delegates to modules
+│       ├── commands/            # Command definitions by category
+│       │   ├── core/            # Core system commands (help, verification)
+│       │   ├── memory/          # Project memory interaction commands
+│       │   ├── code/            # Code analysis and generation commands
+│       │   ├── styles/          # Coding style and Git workflow commands
+│       │   ├── product/         # Product/Project management commands
+│       │   └── templates/       # Documentation template management commands
+│       ├── modules/             # Core functional implementations
+│       │   ├── code_analysis/   # Logic for code analysis and doc generation
+│       │   ├── memory_management/ # Logic for handling project memory
+│       │   └── conversation/    # Logic for managing conversation flows
+│       ├── scripts/             # Utility and executable scripts
+│       ├── config/              # System-wide configuration files
+│       └── docs/                # System documentation and guides
+├── code_context/                # Processed repository content
+│   ├── extracted/               # Repositories extracted as text
+│   └── generated/               # Generated documentation
 ├── docs/                        # Generated documentation
 └── .memory.json                 # Project memory store
 ```
@@ -98,6 +87,8 @@ Just type one of our comprehensive commands:
 ```bash
 PAELLA [project_name]           # Initialize new documentation
 CONTINUE [project_name]         # Continue with existing documentation
+GENERATE_CONTEXT repo_path=path # Extract repository context
+GENERATE_DOC [options]          # Generate documentation from context
 GENERATE_CODE [project_name]    # Generate code from documentation
 STORY operation="create" [args] # Manage user stories
 SPRINT operation="plan" [args]  # Plan and manage sprints
@@ -115,12 +106,12 @@ Like a well-trained chef, PAELLADOC will:
 
 ### 🌟 Key Features
 
-1. **Modular Architecture**
-   - Core commands, help system, and verification
-   - Feature-specific modules that can be extended
-   - Comprehensive template system
-   - Clean separation of concerns
-   - Well-documented directory structure and feature mapping
+1. **MECE Architecture**
+   - **Orchestrator**: Central command hub with well-defined interfaces
+   - **Commands**: Categorized by function (core, memory, code, styles, product, templates)
+   - **Modules**: Implementation logic separated from command interfaces
+   - **Centralized Configuration**: Clearly located configuration files
+   - **Comprehensive Documentation**: Self-documenting system structure
 
 2. **MECE System for Perfect Context**
    - Mutually Exclusive: Each piece of context has its place
@@ -165,25 +156,11 @@ Like a well-trained chef, PAELLADOC will:
    - Intelligent context gathering
    - Dynamic question sequences
 
-9. **Interface Definition System**
-   - User interface specifications
-   - Interaction design guidelines
-   - Component architecture definitions
-   - Responsive design patterns
-
-### 💪 PAELLADOC vs. Paid Solutions
-
-| Feature | PAELLADOC | Paid Alternatives |
-|---------|-----------|-------------------|
-| Interactive conversation | ✅ | ❌ |
-| Automatic research | ✅ | ❌ |
-| MECE structure | ✅ | ✅ |
-| Direct IDE integration | ✅ | ❌ or limited |
-| Product management | ✅ | ✅ but limited |
-| Code generation | ✅ | ❌ or limited |
-| Cost | **FREE** | $20-200/month |
-| External dependencies | **NONE** | Multiple services |
-| Open source | ✅ | ❌ |
+9. **Repository Analysis and Documentation**
+   - Extract repository context with GENERATE_CONTEXT
+   - Generate comprehensive documentation with GENERATE_DOC
+   - Interactive documentation workflow
+   - Multiple documentation templates
 
 ## 🚀 Getting Started
 
@@ -191,52 +168,112 @@ Like a well-trained chef, PAELLADOC will:
 2. **Open with Cursor**: Open the project with Cursor 0.47 or higher
 3. **Start Cooking**: Simply type `PAELLA` and follow the interactive conversation
 
-## 🤝 Contributing
-
-Contributions are welcome. Please read our [contribution guide](CONTRIBUTING.md).
-
 ## 📄 License
 
 This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
 
-## 🔍 Professional Documentation with AI-Powered Research
+# PAELLADOC - Intelligent Documentation System
 
-PAELLADOC has evolved into a comprehensive, professional-grade documentation and product development system. Built on the MECE principle (Mutually Exclusive, Collectively Exhaustive), it creates structured, complete, and verifiable documentation through intelligent conversations and automatic deep research.
+PAELLADOC is a documentation system that uses AI to analyze code repositories and generate comprehensive technical documentation.
 
-### 🧠 Built for Professional Teams
+## Prerequisites
 
-- **Product Owners**: Manage user stories, sprints, tasks, and project status
-- **Product Teams**: Create market research with verified data and academic references
-- **Architects**: Maintain living Architecture Decision Records that evolve with your project 
-- **Technical Writers**: Produce consistent, high-quality documentation with structured templates
-- **Development Teams**: Generate comprehensive technical documentation with proper cross-references
+- Python 3.8 or higher
+- pip (Python package manager)
+- Access to terminal/command line
+- Cursor 0.47+ (AI-powered IDE)
 
-### 🚀 Core Professional Features
+## Installation
 
-## 📊 Enterprise-Grade Capabilities
+1. Clone this repository:
+   ```bash
+   git clone https://github.com/yourusername/paelladoc.git
+   cd paelladoc
+   ```
 
-### 1. Automatic Deep Research & Validation
+2. Create a virtual environment:
+   ```bash
+   # On macOS/Linux
+   python3 -m venv .venv
+   source .venv/bin/activate
+   
+   # On Windows
+   python -m venv .venv
+   .venv\Scripts\activate
+   ```
 
-```bash
-# Automatic research for market documents
-CONTINUE projectname
+3. Install dependencies:
+   ```bash
+   pip install -r requirements.txt
+   ```
 
-# Force in-depth research on specific document
-FORCE_RESEARCH projectname 01_market_research.md maximum
+## Using GENERATE_CONTEXT and GENERATE_DOC
+
+The documentation generation process has two main steps:
+
+1. **Extract repository context**:
+   ```
+   GENERATE_CONTEXT repo_path=/path/to/repository
+   ```
+
+2. **Generate documentation**:
+   ```
+   GENERATE_DOC repo_path=/path/to/repository
+   ```
+
+### Parameters for GENERATE_CONTEXT
+
+- `repo_path`: Path to the repository you want to process (required)
+- `output`: Path where to save the extracted content (optional)
+- `line_numbers`: Whether to include line numbers (optional)
+- `style`: Output format - plain or xml (optional)
+- `ignore`: Additional patterns to ignore (optional)
+
+### Parameters for GENERATE_DOC
+
+- `repo_path`: Path to the repository you want to document (optional if context exists)
+- `context_path`: Path to the context directory (optional)
+- `output`: Path where to save the documentation (optional)
+- `template`: Documentation template to use (optional)
+
+### Examples
+
+```
+# Extract repository context
+GENERATE_CONTEXT repo_path=~/projects/my-api
+
+# Generate documentation
+GENERATE_DOC repo_path=~/projects/my-api template=api-docs output=~/documentation/my-api
 ```
 
-- **Comprehensive Market Analysis**: Automatically researches market size, competition, and trends
-- **Academic-Grade Sources**: Validates all claims with multiple verified sources 
-- **Cross-Validation System**: Ensures factual accuracy with triangulation from different sources
-- **Confidence Scoring**: Rates reliability of research findings with transparency
-- **Automatic References**: Generates professional citations in academic format
+## Code Analysis Process
 
-### 2. Architecture Decision Records Maintenance
+PAELLADOC uses a multi-step process to generate documentation:
 
-```bash
-# Update architecture decisions automatically
-UPDATE_ADR projectname
+1. **Content Extraction**: Extracts all source code from the repository
+2. **Context Generation**: Converts code into an optimized text format
+3. **Code Analysis**: Analyzes architecture patterns, APIs, and database schemas
+4. **Interactive Documentation**: Creates comprehensive documentation with user input
+
+## Directory Structure
+
 ```
+paelladoc/
+├── .cursor/rules/              # MECE-structured system rules
+│   ├── orchestrator/           # Central command definitions
+│   ├── commands/               # Categorized command implementations 
+│   ├── modules/                # Core functional modules
+│   ├── config/                 # System configuration
+│   ├── scripts/                # Utility scripts
+│   └── docs/                   # System documentation
+├── code_context/               # Processed repository content
+│   ├── extracted/              # Repositories extracted as text
+│   └── generated/              # Generated documentation
+├── docs/                       # Project documentation
+└── README.md                   # This file
+```
+
+For more detailed information about the system architecture, see `.cursor/rules/docs/README.md`.
 
 - **Architectural Change Detection**: Identifies changes that impact system architecture
 - **Decision Lifecycle Management**: Tracks status of decisions (Proposed → Accepted → Implemented)
@@ -436,4 +473,4 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 
 ---
 
-*PAELLADOC is built for professional product and development teams who need verified, consistent, and comprehensive documentation that evolves with their projects. With the addition of product management and code generation features, it now offers a complete end-to-end solution for the entire software development lifecycle.* 
+*PAELLADOC is built for professional product and development teams who need verified, consistent, and comprehensive documentation that evolves with their projects. With the addition of product management and code generation features, it now offers a complete end-to-end solution for the entire software development lifecycle.*

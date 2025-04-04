@@ -1,0 +1,361 @@
+---
+description: When a PAELLADOC command is invoked with missing parameters, guide the user through the appropriate interactive conversation workflow to gather the necessary information
+globs: 
+alwaysApply: false
+---
+
+# Conversation Workflows for PAELLADOC Commands
+
+PAELLADOC uses interactive conversation workflows to guide users through command execution when parameters are missing.
+
+## Available Workflows
+
+### PAELLA Command Workflow
+
+When the user invokes `PAELLA` without all required parameters:
+
+1. **Project Type Selection**:
+   ```
+   What type of project would you like to document?
+   1. Frontend Application
+   2. Backend API
+   3. Full-stack Application
+   4. Chrome Extension
+   5. Mobile Application
+   ```
+
+2. **Development Methodology**:
+   ```
+   Which development methodologies would you like to follow?
+   1. Test-Driven Development (TDD)
+   2. Behavior-Driven Development (BDD)
+   3. GitHub Workflow
+   4. None
+   ```
+
+3. **Git Workflow**:
+   ```
+   Which Git workflow would you like to use?
+   1. GitHub Flow
+   2. GitFlow
+   3. Trunk-Based Development
+   4. No specific workflow
+   ```
+
+### GENERATE-DOC Command Workflow
+
+When the user invokes `GENERATE-DOC` without all parameters:
+
+1. **Repository Selection**:
+   ```
+   Please specify the repository path you want to analyze:
+   (Enter the full path or a relative path to your repository)
+   ```
+
+2. **Focus Areas**:
+   ```
+   What aspects of the codebase would you like to focus on?
+   1. Complete documentation
+   2. API documentation only
+   3. Architecture overview
+   4. Database schema
+   5. Custom focus (please specify)
+   ```
+
+3. **Output Preferences**:
+   ```
+   How would you like the documentation to be structured?
+   1. Standard documentation format
+   2. API reference format
+   3. Developer guide format
+   4. User manual format
+   5. Custom format (please specify)
+   ```
+
+4. **Additional Questions**:
+   Based on the detected codebase structure, the system will ask relevant questions about:
+   - Project purpose and goals
+   - Target audience
+   - Technical constraints
+   - Security requirements
+   - Performance expectations
+
+### Other Command Workflows
+
+Similar workflows exist for other commands such as `CODING_STYLE`, `WORKFLOW`, and `TEMPLATE`.
+
+## Implementation Structure
+
+The conversation flows are implemented using JSON configuration files located in `.cursor/rules/templates/conversation_flows/`. These files define the exact structure, questions, and flow logic for each conversation.
+
+The main JSON files are:
+- `main_conversation_flow.json`: Primary conversation flow for PAELLA and CONTINUE commands
+- `technical_specifications_flow.json`: Technical specifications gathering workflow
+
+A central configuration file `.cursor/rules/paelladoc_conversation_config.json` manages these flows, defining which conversations are required for each command.
+
+## General Conversation Flow Principles
+
+1. **Progressive Disclosure**: Present information gradually, starting with essential questions and progressively moving to more detailed ones.
+2. **Context Awareness**: Use existing information from the project memory to avoid asking redundant questions.
+3. **Explanatory Guidance**: Provide brief explanations of options when presenting choices.
+4. **Confirmatory Feedback**: Summarize collected information at key points to confirm user intent.
+5. **Adaptability**: Adjust the flow based on user responses to previous questions.
+
+## Command-Specific Conversation Flows
+
+### PAELLA Command Flow
+
+1. **Initial Greeting and Purpose Explanation**:
+   - Introduction as PAELLADOC system
+   - Explanation of the documentation process
+   - Overview of what information will be gathered
+
+2. **Project Basics Conversation**:
+   - Ask for project name if not provided
+   - Ask for project type (frontend, backend, etc.)
+   - Ask for project purpose and brief description
+   - Ask about target users and stakeholders
+
+3. **Development Methodology Conversation**:
+   - Ask about preferred development methodologies
+   - Ask about Git workflow preferences
+   - Ask about coding style preferences
+   - Ask about testing approach
+
+4. **Documentation Scope Conversation**:
+   - Ask about documentation depth needed
+   - Ask about documentation priorities
+   - Ask about existing documentation to incorporate
+   - Ask about confidentiality requirements
+
+5. **Next Steps Guidance**:
+   - Explain how to continue the documentation process
+   - Explain how to use the CONTINUE command
+   - Explain how to use other PAELLADOC commands
+   - Offer to start setting up the documentation structure
+
+The implementation of this flow is in `main_conversation_flow.json`.
+
+### GENERATE_CODE Command Flow
+
+When the GENERATE_CODE command is invoked without all required parameters, the following conversation flow MUST be followed:
+
+1. **Project Information Verification**:
+   - Verify project name and type from memory or ask
+   - Confirm or ask for output path
+   - Example: "I see you want to generate code for the project 'paellaseo'. Is that correct? Where would you like the generated code to be stored?"
+
+2. **Development Methodology Selection**:
+   - Ask which development methodology the user wants to apply
+   - Explain the implications of each methodology for code generation
+   - Collect multiple methodologies if applicable
+   - Example: "Which development methodologies would you like to apply to this project? Options include:"
+     - **TDD (Test-Driven Development)**: Write tests before implementing features
+     - **BDD (Behavior-Driven Development)**: Focus on business behavior with scenarios
+     - **Scrum**: Iterative approach with sprints and regular meetings
+     - **CI (Continuous Integration)**: Automated testing and integration
+     - **Pair Programming**: Collaborative development approach
+
+3. **Git Workflow Selection**:
+   - Ask which Git workflow the user prefers
+   - Explain the benefits of each workflow option
+   - Configure the appropriate Git structure based on selection
+   - Example: "Which Git workflow would you like to use for this project? Options include:"
+     - **GitHub Flow**: Simple branch-based workflow with feature branches
+     - **GitFlow**: Structured workflow with develop and release branches
+     - **Trunk-Based**: Direct commits to main branch with feature flags
+     - **No Workflow**: Simple Git usage without formal workflow
+
+4. **Language & Technology Stack**:
+   - Confirm or ask for primary programming language
+   - Ask about specific frameworks or libraries to include
+   - Determine testing frameworks based on methodology
+   - Example: "The project is set to use TypeScript. Is this correct? Are there any specific frameworks or libraries you'd like to include?"
+
+5. **Testing Strategy**:
+   - Confirm if tests should be included (based on methodology)
+   - Ask about test coverage requirements
+   - Determine types of tests needed (unit, integration, e2e)
+   - Example: "Based on TDD methodology, tests will be included. What level of test coverage would you like to aim for? What types of tests would you like to include?"
+
+6. **Repository Management**:
+   - Ask if a new repository should be created
+   - Determine repository type and visibility
+   - Configure CI/CD based on Git workflow selection
+   - Example: "Would you like me to create a new repository for this code? If yes, what type of repository and what visibility setting would you prefer?"
+
+This conversation flow MUST be followed completely, and code generation MUST NOT begin until all required parameters have been gathered. The implementation of this flow uses both `main_conversation_flow.json` and `technical_specifications_flow.json`.
+
+## Implementation Guidelines
+
+1. **Parameter Storage**: Store collected parameters in the project memory for future reference
+2. **Progressive Refinement**: Allow for refinement of parameters in follow-up conversations
+3. **Persistent Context**: Maintain context across multiple interactions
+4. **Default Suggestions**: Offer intelligent defaults based on project type and previous choices
+5. **Cancellation Support**: Allow users to cancel the flow at any point without side effects
+6. **Resumability**: Support resuming an interrupted conversation flow
+
+## Conversation Flow Definition
+
+In command definitions, use the `conversation_flow` object to specify the required flow:
+
+```yaml
+conversation_flow:
+  enabled: true
+  required: true
+  steps:
+    - step: "step_id"
+      required_params: ["param1", "param2"]
+      message: "Step description message"
+    # Additional steps...
+```
+
+## Configuration Structure
+
+The JSON configuration in `.cursor/rules/paelladoc_conversation_config.json` manages the relationship between commands and conversation flows. This central configuration ensures consistent conversation handling across the system.
+
+# Conversation Workflow Module
+
+## Documentation Generation Flow
+
+### GENERATE_DOC Command
+workflow:
+  name: "Documentation Generation"
+  trigger: "GENERATE_DOC"
+  interactive: true
+  ai_driven: true
+  
+  init_actions:
+    - analyze_repository_content
+    - detect_project_type
+    - extract_metadata
+    - prepare_documentation_options
+  
+  repository_paths:
+    default: "/Users/jlcases/codigo/paelladoc/code_context/extracted/repo_content.txt"
+    alternate_paths:
+      - "code_context/extracted/repo_content.txt"
+      - "docs/repo_content.txt"
+  
+  steps:
+    1. Initial Analysis:
+       - AI analyzes project structure
+       - Identifies available documentation types
+       - Prepares context for generation
+       - Checks existing documentation
+       - Automatically processes content from repo_content.txt
+    
+    2. Interactive Menu:
+       - Present categorized documentation options
+       - Enforce documentation dependencies
+       - Allow multiple selections
+       - Support incremental documentation generation
+       - Validate selections against dependencies
+    
+    3. Documentation Generation:
+       - Process each selected option in dependency order
+       - Generate documentation using AI analysis
+       - Save to appropriate location
+       - Update documentation status
+    
+    4. Continuation:
+       - Update available options based on generated documentation
+       - Ask if user wants to generate more documentation
+       - Return to menu if yes
+       - Proceed to completion if no
+    
+    5. Completion:
+       - Generate documentation index
+       - Provide summary of generated documents
+       - Update project memory
+       - List available next steps
+
+  menu_structure:
+    categories:
+      - name: "Technical Documentation"
+        options:
+          - Technical Architecture
+          - API Documentation
+          - Component Specifications
+          - Database Schema
+          - Dependencies
+        dependencies: []
+      
+      - name: "Product Documentation"
+        options:
+          - User Stories
+          - Problem Definition
+          - Value Proposition
+        dependencies: []
+        required_for: ["Business Documentation"]
+      
+      - name: "User Documentation"
+        options:
+          - Installation Guide
+          - Usage Guide
+        dependencies: []
+      
+      - name: "Developer Documentation"
+        options:
+          - Setup Instructions
+          - Contribution Guidelines
+        dependencies: []
+      
+      - name: "Business Documentation"
+        options:
+          - Market Research
+          - Business Model
+          - Competitive Analysis
+        dependencies: ["Product Documentation"]
+        requires_all: ["Problem Definition", "Value Proposition"]
+        requires_any: ["User Stories"]
+      
+      - name: "Other Options"
+        options:
+          - All Technical Documentation
+          - All Product Documentation
+          - Everything
+          - I'm Done
+
+  interaction_rules:
+    - Allow multiple selections
+    - Support incremental generation
+    - Provide clear category separation
+    - Show numbered options
+    - Allow both number and name selection
+    - Support "all" selections
+    - Enable early exit with "Done"
+    - Enforce documentation dependencies
+    - Show dependency warnings
+    - Explain missing requirements
+    - Auto-detect project from repo_content.txt
+
+  memory_integration:
+    - Save user preferences
+    - Track generated documentation
+    - Remember previous selections
+    - Update project state
+    - Track documentation dependencies
+    - Validate documentation completeness
+    - Store project metadata from repo analysis
+
+  validation_rules:
+    - Check product documentation before allowing business documentation
+    - Ensure all required dependencies are met
+    - Validate documentation completeness
+    - Track documentation status
+    - Prevent invalid selections
+    - Show helpful error messages
+    - Verify repository content is accessible
+
+  repository_analysis:
+    auto_analyze: true
+    extract_patterns:
+      - chrome_extension: ["manifest.json", "chrome.runtime", "chrome.tabs"]
+      - web_app: ["package.json", "webpack", "react", "svelte"]
+      - api: ["routes", "endpoints", "controllers", "api"]
+    content_extraction:
+      enabled: true
+      max_tokens: 50000
+      preserve_structure: true 
