@@ -1,6 +1,48 @@
+---
+description: When user discusses interface design, contracts, adapter patterns, or interface testing, provide guidance based on PAELLADOC principles
+globs: 
+alwaysApply: false
+---
+
 # Interface Design and Management in PAELLADOC
 
-This MDC file defines the rules and guidelines for interface design, implementation, verification and management in the PAELLADOC system.
+This defines rules and guidelines for interface design, implementation, and verification.
+
+## Interface Design Principles
+
+1.  **Interface Segregation**: Prefer multiple small, focused interfaces.
+2.  **Explicit Contracts**: Document preconditions, postconditions, errors, parameters, and return values clearly.
+3.  **Consistency**: Maintain consistent naming and abstraction levels.
+
+## Interface Documentation Requirements
+
+- Purpose and context.
+- Detailed method documentation (params, returns, exceptions, thread safety, performance).
+- Contract specification (invariants, guarantees, side effects).
+
+## Adapter Pattern Requirements
+
+1.  Implement the entire target interface.
+2.  Delegate to the adaptee; avoid reimplementing logic.
+3.  Translate errors/exceptions to match the target interface contract.
+
+## Interface Testing Requirements
+
+1.  Create abstract contract test suites for interfaces.
+2.  Write implementation-agnostic tests (test through the interface).
+3.  Cover edge cases and error handling specified in the contract.
+
+## Interface Evolution Guidelines
+
+1.  Maintain backward compatibility (never remove methods, don't make breaking signature changes).
+2.  Use versioning (e.g., `InterfaceV2`) or extension interfaces for major changes.
+3.  Use a clear deprecation process for methods to be removed.
+
+## Validation and Enforcement
+
+- Static analysis (linting, doc coverage, type checking).
+- Automated contract testing in CI.
+- Code review checklists for interface design and implementation.
 
 ## Core Concepts
 
@@ -26,46 +68,6 @@ This MDC file defines the rules and guidelines for interface design, implementat
   }
 }
 ```
-
-## Interface Design Principles
-
-PAELLADOC enforces specific principles for interface design to ensure system flexibility, maintainability, and testability:
-
-1. **Interface Segregation**
-   - Each interface should serve a single responsibility
-   - Clients should not depend on methods they don't use
-   - Prefer multiple small interfaces to a single large one
-
-2. **Explicit Contracts**
-   - Document preconditions and postconditions
-   - Specify exceptions and error cases
-   - Define parameter and return value constraints
-
-3. **Consistency**
-   - Maintain consistent naming across interfaces
-   - Use consistent patterns for similar operations
-   - Keep abstraction level consistent within interfaces
-
-## Interface Documentation Requirements
-
-All interfaces in PAELLADOC must include:
-
-1. **Purpose Documentation**
-   - Clear statement of interface purpose
-   - Usage context and constraints
-   - Relationship to other system components
-
-2. **Method Documentation**
-   - Parameter descriptions and constraints
-   - Return value specification
-   - Exception behavior
-   - Threading model (if applicable)
-   - Performance characteristics
-
-3. **Contract Specification**
-   - Invariants that implementations must maintain
-   - Guarantees that clients can rely on
-   - State transitions and side effects
 
 ## Template Documentation Example
 
@@ -101,25 +103,6 @@ interface DocumentationProvider {
   canHandle(source: Source): boolean;
 }
 ```
-
-## Adapter Pattern Requirements
-
-When implementing adapters in PAELLADOC, the following rules apply:
-
-1. **Complete Interface Implementation**
-   - Adapters must implement the entire target interface
-   - All method signatures must match exactly
-   - Return types must be compatible with the interface specification
-
-2. **Delegation Over Reimplementation**
-   - Adapters should delegate to the adaptee whenever possible
-   - Business logic should not be duplicated in adapters
-   - Focus on conversion between interfaces
-
-3. **Error Translation**
-   - Adapters must translate exceptions/errors to match target interface
-   - Error context and information should be preserved
-   - Exception types should match interface contract
 
 ## Adapter Implementation Example
 
@@ -183,25 +166,6 @@ class LegacyAnalyzerAdapter implements AnalysisProvider {
 }
 ```
 
-## Interface Testing Requirements
-
-PAELLADOC requires thorough testing of interfaces and their implementations:
-
-1. **Contract Test Suites**
-   - Create abstract test classes for interface contracts
-   - Verify that all implementations satisfy the contract
-   - Test each method's behavior according to specifications
-
-2. **Implementation-Agnostic Tests**
-   - Test through the interface, not implementation details
-   - Use dependency injection to test with different implementations
-   - Verify polymorphic behavior
-
-3. **Edge Case Coverage**
-   - Test boundary conditions specified in the contract
-   - Verify error handling according to the interface specification
-   - Test performance characteristics if specified
-
 ## Interface Test Example
 
 ```typescript
@@ -246,44 +210,6 @@ describe('DocumentationProvider Interface Contract', () => {
   });
 });
 ```
-
-## Interface Evolution Guidelines
-
-When evolving interfaces in PAELLADOC:
-
-1. **Backward Compatibility**
-   - Never remove methods from existing interfaces
-   - Don't change method signatures in incompatible ways
-   - Don't strengthen preconditions or weaken postconditions
-
-2. **Versioning Strategy**
-   - Use explicit versioning for major changes (e.g., `InterfaceV2`)
-   - Consider extension interfaces for adding functionality
-   - Document migration paths between versions
-
-3. **Deprecation Process**
-   - Mark deprecated methods with appropriate annotations
-   - Provide alternatives in documentation
-   - Set timeline for removal in future versions
-
-## Validation and Enforcement
-
-PAELLADOC provides tools to validate and enforce interface contracts:
-
-1. **Static Analysis**
-   - Linting rules for interface implementation completeness
-   - Documentation coverage requirements
-   - Type checking rules
-
-2. **Automated Tests**
-   - Contract test verification in CI pipeline
-   - Interface compatibility checks between versions
-   - Performance testing against specified requirements
-
-3. **Code Review Guidelines**
-   - Interface design review checklist
-   - Implementation verification checklist
-   - Documentation completeness verification
 
 ## Implementation Requirements
 

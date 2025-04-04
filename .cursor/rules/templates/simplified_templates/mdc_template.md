@@ -3,47 +3,47 @@ globs: ["**/*"]
 alwaysApply: true
 instructions:
   global_architecture: |
-    # Arquitectura Global de ${PROJECT_NAME}
+    # Global Architecture of ${PROJECT_NAME}
     
-    Consultar docs/${PROJECT_NAME}/00_index.md para la arquitectura completa del proyecto.
+    Consult docs/${PROJECT_NAME}/00_index.md for the complete project architecture.
 
   code_standards: |
-    # Estándares de Código
+    # Code Standards
     
-    Para información sobre estándares de código y mejores prácticas, consultar:
+    For information on code standards and best practices, consult:
     docs/${PROJECT_NAME}/quick_task_documentation.md
 
 patterns:
-  - name: "Componentes Principales"
+  - name: "Main Components"
     pattern: "src/**/*"
     instructions: |
-      # Componentes Principales
+      # Main Components
       
-      Consultar docs/${PROJECT_NAME}/feature_documentation.md para detalles de implementación.
+      Consult docs/${PROJECT_NAME}/feature_documentation.md for implementation details.
 
-  - name: "Documentación de Bugs"
+  - name: "Bug Documentation"
     pattern: "**/*.test.*"
     instructions: |
-      # Pruebas y Errores
+      # Tests and Errors
       
-      Seguir el proceso de documentación de errores definido en:
+      Follow the error documentation process defined in:
       docs/${PROJECT_NAME}/bug_documentation.md
 
 rules:
   - name: "${PROJECT_NAME}-rules"
-    description: "Reglas de desarrollo para ${PROJECT_NAME}"
+    description: "Development rules for ${PROJECT_NAME}"
     patterns: ["**/*"]
     instructions:
-      - "# ${PROJECT_NAME} - Reglas de Desarrollo"
+      - "# ${PROJECT_NAME} - Development Rules"
       - ""
-      - "## Documentación Completa"
-      - "Toda la documentación está disponible en la carpeta docs/${PROJECT_NAME}/"
+      - "## Complete Documentation"
+      - "All documentation is available in the docs/${PROJECT_NAME}/ folder"
       - ""
-      - "## Documentos Principales"
-      - "- docs/${PROJECT_NAME}/00_index.md - Visión general del proyecto"
-      - "- docs/${PROJECT_NAME}/feature_documentation.md - Especificaciones de funcionalidades"
-      - "- docs/${PROJECT_NAME}/bug_documentation.md - Proceso de gestión de errores"
-      - "- docs/${PROJECT_NAME}/quick_task_documentation.md - Tareas y configuración"
+      - "## Main Documents"
+      - "- docs/${PROJECT_NAME}/00_index.md - Project overview"
+      - "- docs/${PROJECT_NAME}/feature_documentation.md - Feature specifications"
+      - "- docs/${PROJECT_NAME}/bug_documentation.md - Error management process"
+      - "- docs/${PROJECT_NAME}/quick_task_documentation.md - Tasks and configuration"
 
 references:
   - "docs/${PROJECT_NAME}/00_index.md"

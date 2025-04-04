@@ -1,6 +1,7 @@
 ---
-description: "Rules and best practices for Chrome Extension development"
-globs: ["**/*.js", "manifest.json", "**/*.html", "**/*.css", "background.js", "content.js", "popup/*"]
+description: When user works on Chrome extension files (manifest.json, background/content scripts, popup files), apply these best practices for structure, security, performance, and UX
+globs: manifest.json, background.js, content.js, **/popup/*
+alwaysApply: false
 ---
 # Rules for Chrome Extension Development
 

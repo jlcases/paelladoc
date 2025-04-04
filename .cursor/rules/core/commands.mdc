@@ -1,7 +1,6 @@
 ---
 description: When user executes any PAELLADOC command or asks about available commands, provide guidance on command usage and parameters
-globs: **/*
-alwaysApply: false
+globs: **/*.sh, **/*.py, **/*.js
 ---
 
 # PAELLADOC Commands

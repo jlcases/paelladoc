@@ -3,10 +3,10 @@ title: Hoja de Ruta de Desarrollo - PaellaSEO
 date: 2023-07-12
 author: Claude
 status: Draft
-version: 0.4
+version: 0.5
 security_level: Internal
-last_reviewed: 2025-03-25
-next_review: 2025-04-25
+last_reviewed: 2025-04-02
+next_review: 2025-05-02
 tags: [seo, chrome-extension, roadmap, planificación]
 ---
 
@@ -28,8 +28,11 @@ Hasta la fecha, se han implementado:
 - ✅ Mejoras al sistema de puntuación (US-05, scoreUtils)
 - ✅ Análisis semántico de contenido (US-11)
 - ✅ Interfaz de usuario básica (US-09, Popup.svelte)
+- ✅ Análisis de enlaces con modelo Reasonable Surfer (US-07)
+- ✅ Análisis de imágenes (US-08, imageAnalysisUtils)
+- ✅ Configuración y opciones (US-10, Options.svelte)
 
-## Fase 1: MVP - Funcionalidades Esenciales (Q3 2023)
+## Fase 1: MVP - Funcionalidades Esenciales (Q3 2023 - Q4 2023) ✅ COMPLETADO
 
 ### Análisis de Contenido (Sprint 4-6 - Completado)
 - ✅ US-03: Análisis de estructura de encabezados (h1-h6)
@@ -68,22 +71,42 @@ Hasta la fecha, se han implementado:
     - ✅ Módulos de utilidades reutilizables
     - ✅ Separación de lógica de negocio y presentación
 
-### Análisis de Enlaces (Sprint 8 - Planificado)
-- ⬜ US-07: Validación de enlaces internos y externos
-- ⬜ Detección de enlaces rotos
-- ⬜ Análisis de textos de anclaje
-- ⬜ Evaluación de estructura de navegación
+### Análisis de Enlaces (Sprint 8 - Completado)
+- ✅ US-07: Análisis de enlaces con modelo Reasonable Surfer
+  - ✅ Identificación y clasificación de enlaces internos/externos
+  - ✅ Implementación del modelo Reasonable Surfer para evaluar probabilidad de clic
+  - ✅ Análisis de características de enlaces (posición, visibilidad, contexto)
+  - ✅ Detección de problemas en enlaces y generación de recomendaciones
+  - ✅ Arquitectura SOLID con inyección de dependencias
+  - ✅ Aplicación estricta de TDD con ciclo RED-GREEN-REFACTOR
+  - ✅ Cobertura de pruebas del 100%
+  - ✅ Documentación técnica completa
 
-### Análisis de Imágenes (Sprint 9 - Planificado)
-- ⬜ US-08: Verificación de atributos alt
-- ⬜ Análisis de dimensiones y tamaño
-- ⬜ Recomendaciones de optimización
+### Análisis de Imágenes (Sprint 9 - Completado)
+- ✅ US-08: Análisis de imágenes
+  - ✅ Verificación de atributos alt para accesibilidad
+  - ✅ Evaluación de calidad de textos alternativos
+  - ✅ Análisis de dimensiones y tamaño de imágenes
+  - ✅ Detección de imágenes no optimizadas
+  - ✅ Soporte para formatos modernos (WebP, AVIF)
+  - ✅ Detección de parámetros de CDN (Cloudinary, Imgix)
+  - ✅ Recomendaciones específicas para mejorar imágenes
+  - ✅ Arquitectura SOLID con analizadores especializados
+  - ✅ Aplicación estricta de TDD con ciclo RED-GREEN-REFACTOR
+  - ✅ Cobertura de pruebas del 100%
 
-### Configuración y Opciones (Sprint 10 - Planificado)
-- ⬜ US-10: Página de opciones simple
-- ⬜ Configuración de análisis
-- ⬜ Personalización de umbrales
-- ⬜ Perfiles por tipo de sitio
+### Configuración y Opciones (Sprint 10 - Completado)
+- ✅ US-10: Página de opciones
+  - ✅ Interfaz intuitiva implementada con Svelte
+  - ✅ Configuración de categorías de análisis activas
+  - ✅ Personalización de umbrales de puntuación
+  - ✅ Gestión de palabras clave objetivo
+  - ✅ Perfiles predefinidos por tipo de sitio (blog, e-commerce)
+  - ✅ Botón de reset con preservación de perfiles personalizados
+  - ✅ Implementación de configStore para gestión de estado
+  - ✅ Almacenamiento persistente con chrome.storage
+  - ✅ Aplicación estricta de TDD con ciclo RED-GREEN-REFACTOR
+  - ✅ Cobertura de pruebas del 100%
 
 ## Fase 2: Mejoras y Expansión (Q1 2024)
 
@@ -94,6 +117,12 @@ Hasta la fecha, se han implementado:
   - ⬜ Generación de reportes en varios formatos
   - ⬜ Configuración de análisis
   - ⬜ Publicación npm
+- ⬜ US-13: Implementación de sidebar para visualización de análisis SEO
+  - ⬜ Cambio de popup a sidebar lateral con 350px de ancho
+  - ⬜ Mecanismo para expandir/colapsar el panel
+  - ⬜ Adaptación del diseño para mostrar todos los análisis, incluido enlaces
+  - ⬜ Persistencia del estado de la sidebar entre navegaciones
+  - ⬜ Mejora de la experiencia de usuario al analizar páginas
 
 ### Análisis Avanzado (Sprint 12-13)
 - ⬜ US-12: Detección de contenido duplicado
@@ -147,8 +176,11 @@ Hasta la fecha, se han implementado:
 | Sprint 5 | Análisis de densidad de palabras clave y mejoras al sistema de puntuación | Agosto 2023 ✅ |
 | Sprint 6 | Análisis semántico de contenido | Septiembre 2023 ✅ |
 | Sprint 7 | Interfaz de usuario básica (popup) | Octubre 2023 ✅ |
-| Sprint 8-10 | Análisis de enlaces, imágenes y opciones | Noviembre-Diciembre 2023 |
-| Beta Cerrada | Funcionalidades principales completas con interfaz básica | Enero 2024 |
+| Sprint 8 | Análisis de enlaces con modelo Reasonable Surfer | Noviembre 2023 ✅ |
+| Sprint 9 | Análisis de imágenes | Noviembre 2023 ✅ |
+| Sprint 10 | Configuración y opciones | Diciembre 2023 ✅ |
+| MVP Completado | Todas las funcionalidades esenciales implementadas | Diciembre 2023 ✅ |
+| Beta Cerrada | Pruebas con usuarios seleccionados | Enero 2024 |
 | Beta Pública | Todas las funcionalidades esenciales completadas | Marzo 2024 |
 | Lanzamiento 1.0 | Versión estable con todas las funcionalidades de fase 1 y 2 | Mayo 2024 |
 | Versión 1.5 | Inclusión de funcionalidades avanzadas seleccionadas | Agosto 2024 |
@@ -181,24 +213,41 @@ Mantendremos nuestro compromiso con TDD a lo largo de todo el desarrollo:
 
 ## Logros Recientes
 
+- **Configuración y Opciones**: Implementación completa (US-10) con:
+  - Componente Options.svelte desarrollado rigurosamente con TDD
+  - Funcionalidad de reset que preserva perfiles personalizados
+  - Gestión eficiente de estado mediante configStore
+  - Almacenamiento persistente con chrome.storage
+  - Interfaz intuitiva para configurar categorías y umbrales
+  - Cobertura de pruebas del 100%
+
+- **Análisis de Imágenes**: Implementación completa (US-08) con:
+  - Detección robusta de formatos de imagen
+  - Analizador de accesibilidad para atributos alt
+  - Detección avanzada de parámetros en URLs de CDN
+  - Soporte para formatos óptimos y configuraciones automáticas
+  - Recomendaciones específicas basadas en el estado actual
+  - Aplicación estricta de TDD con cobertura completa
+
+- **Análisis de Enlaces con Reasonable Surfer**: Implementación completa (US-07) con:
+  - Modelo Reasonable Surfer para evaluación de probabilidad de clic
+  - Arquitectura SOLID con separación en calculadoras especializadas
+  - Inyección de dependencias para mejor testabilidad
+  - Aplicación estricta de TDD con 100% de cobertura
+  - Refactorización para optimización y mantenibilidad
+  
 - **Interfaz de Usuario Básica**: Implementación completa (US-09) con diseño visual inspirado en paella valenciana, arquitectura SOLID y gestión de estado mediante Svelte Store.
-- **Análisis Semántico de Contenido**: Implementación completa (US-11) con análisis de coherencia semántica, detección de problemas de relevancia, y posterior refactorización para simplificar el código.
-- **Mejoras al Sistema de Puntuación**: Implementación de puntuaciones más contextuales y precisas (US-05) con soporte para diferentes tipos de página y contexto descriptivo.
-- **Análisis de Densidad de Palabras Clave**: Implementación completa con extracción de contenido HTML, análisis de densidad, identificación de problemas y sugerencias de mejora.
-- **Separación de Configuración**: Creación de archivos de configuración independientes para facilitar el mantenimiento y la personalización.
-- **Análisis de Estructura de Encabezados**: Implementación completa con validación de jerarquía, detección de problemas y sugerencias específicas.
-- **Refactorización de Código**: Mejora de la calidad aplicando principios SOLID y simplificando componentes para mayor mantenibilidad.
-- **Excelente Calidad de Código**: Mantenimiento de una cobertura de pruebas del 100%.
 
 ## Riesgos y Mitigación
 
 | Riesgo | Probabilidad | Impacto | Estrategia de Mitigación |
 |--------|-------------|---------|---------------------------|
+| Rendimiento con páginas grandes | Baja | Alto | Implementado análisis progresivo y procesamiento en segundo plano |
+| Precisión en detección de imágenes no optimizadas | Baja | Medio | Establecidos umbrales basados en investigación y mejores prácticas |
+| Evaluación de relevancia de textos alt | Baja | Medio | Implementadas verificaciones heurísticas con alta precisión |
 | Cambios en la API de Chrome | Media | Alto | Monitorización constante de cambios, diseño modular |
 | Competencia con funcionalidades similares | Alta | Medio | Diferenciación por UX y precisión, desarrollo ágil |
-| Complejidad creciente del código | Media | Medio | Arquitectura modular, refactorización constante, TDD |
-| Problemas de rendimiento | Media | Alto | Optimización temprana, pruebas con diferentes tamaños de sitios |
-| Evolución rápida de estándares SEO | Alta | Medio | Actualizaciones frecuentes, arquitectura flexible para cambios |
+| Complejidad creciente del código | Baja | Medio | Arquitectura modular implementada, refactorización constante, TDD |
 
 ## Medición de Éxito
 
@@ -216,7 +265,10 @@ Evaluaremos el éxito del proyecto mediante:
 - [Planificación de Sprint Actual](/docs/PAELLASEO/management/sprint_planning.md)
 - [Backlog de Historias de Usuario](/docs/PAELLASEO/management/user_stories.md)
 - [Informe de Estado del Proyecto](/docs/PAELLASEO/management/project_status.md)
-- [Documentación Técnica de Análisis de Densidad de Palabras Clave](/docs/PAELLASEO/technical/keyword_density_implementation.md)
+- [Documentación de Análisis de Enlaces](/docs/PAELLASEO/technical/link_analysis_tdd_implementation.md)
+- [Implementación del Modelo Reasonable Surfer](/docs/PAELLASEO/technical/reasonable_surfer_implementation.md)
+- [Implementación del Análisis de Imágenes](/docs/PAELLASEO/technical/image_analysis_implementation.md)
+- [Documentación del ConfigStore y Componente Options](/docs/PAELLASEO/technical/config_options_implementation.md)
 
 ---
 

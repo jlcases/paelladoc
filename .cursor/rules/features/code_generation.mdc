@@ -160,4 +160,4 @@ When the command is executed, it follows this conversation flow:
 
 ## Integration with extract_repo_content.py
 
-The command uses the script at `.cursor/rules/scripts/extract_repo_content.py` to perform the repository extraction, which leverages repopack-py to convert the codebase to text. 
+The command uses the script at `.cursor/rules/scripts/extract_repo_content.py` to perform the repository extraction, which leverages repopack-py to convert the codebase to text.

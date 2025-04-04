@@ -1,6 +1,7 @@
 ---
-description: "Rules and best practices for Backend development with Node.js"
-globs: ["src/**/*.js", "server/**/*.js", "api/**/*.js", "models/**/*.js"]
+description: When user works on Node.js backend files (in src/, server/, api/, models/), apply these best practices for structure, API design, security, performance, and testing
+globs: src/**/*.js, server/**/*.js, api/**/*.js, models/**/*.js
+alwaysApply: false
 ---
 # Rules for Backend Development with Node.js
 
