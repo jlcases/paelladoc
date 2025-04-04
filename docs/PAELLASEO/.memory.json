@@ -3,7 +3,7 @@
   "project_type": "Herramienta de análisis SEO",
   "language": "TypeScript",
   "created_at": "2025-03-23T18:55:24Z",
-  "last_updated": "2025-04-04T17:23:33Z",
+  "last_updated": "2025-04-04T17:27:49Z",
   "project_path": "/Users/jlcases/codigo/paellaSEO",
   "methodology": "Test-Driven Development (TDD)",
   "git_workflow": "GitHub Flow",
@@ -477,6 +477,13 @@
   "git_activity": [
     {
       "date": "2025-04-04",
+      "type": "fix",
+      "message": "fix: Correct version to 0.1.0 reflecting alpha state",
+      "files_count": 0,
+      "files": []
+    },
+    {
+      "date": "2025-04-04",
       "type": "feat",
       "message": "feat: Add new rules structure and scripts",
       "files_count": 2,
@@ -538,6 +545,13 @@
           "module": "README"
         }
       ]
+    },
+    {
+      "date": "2025-04-04",
+      "type": "fix",
+      "message": "fix: Correct version to 0.1.0 reflecting alpha state",
+      "files_count": 0,
+      "files": []
     },
     {
       "date": "2025-03-29",
@@ -569,7 +583,7 @@
     }
   ],
   "ai_context": {
-    "last_session": "2025-04-04T17:23:34Z",
+    "last_session": "2025-04-04T17:27:50Z",
     "conversation_summaries": [],
     "current_focus": "",
     "coding_preferences": {},

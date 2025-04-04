@@ -290,7 +290,7 @@ setup_java() {
       <plugin>\
         <groupId>org.apache.maven.plugins</groupId>\
         <artifactId>maven-surefire-plugin</artifactId>\
-        <version>3.0.0-M5</version>\
+        <version>0.1.0-M5</version>\
       </plugin>\
       <plugin>\
         <groupId>org.apache.maven.plugins</groupId>\
