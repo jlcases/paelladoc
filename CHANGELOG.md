@@ -4,15 +4,23 @@ All notable changes to PAELLADOC will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
-## [0.1.0] - 2025-03-23
+## [0.1.0] - 2025-04-04
 
 ### Breaking Changes
+- Implementation of repository documentation generation system (GENERATE_DOC)
+- Addition of code repository analysis and documentation extraction capabilities
 - Comprehensive reorganization of the `.cursor/rules` directory structure
 - Enhanced modularity with clearer separation of concerns
 - Addition of new interfaces and conversation workflows
 - Improved documentation of the system architecture
 
 ### Added
+- **Repository Analysis & Documentation**: New GENERATE_CONTEXT and GENERATE_DOC commands for code-to-documentation reverse engineering
+- Repository context extraction scripts and analysis tools
+- Interactive documentation generation from repository analysis
+- Repository content extraction to optimized text format
+- Architecture pattern detection and automatic documentation
+- Multi-step repository documentation process with user guidance
 - New help system in `core/help.mdc`
 - User interface definitions in `features/interfaces.mdc`
 - Enhanced conversation workflow in `features/conversation_workflow.mdc`
