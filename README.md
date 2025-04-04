@@ -1,6 +1,6 @@
 # 🥘 PAELLADOC: The development exoskeleton
 
-![Version](https://img.shields.io/badge/version-3.0.0-blue.svg)
+![Version](https://img.shields.io/badge/version-0.1.0-blue.svg)
 ![Status](https://img.shields.io/badge/status-active-success.svg)
 ![Cursor](https://img.shields.io/badge/cursor-0.47+-green.svg)
 ![Compatibility](https://img.shields.io/badge/compatibility-cursor%200.47+-orange.svg)
