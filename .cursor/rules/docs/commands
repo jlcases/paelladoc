@@ -1,0 +1,63 @@
+# PAELLADOC Command Definitions
+
+## GENERATE_DOC
+
+When this command is invoked, the AI MUST FOLLOW THESE EXACT INSTRUCTIONS:
+
+1. FIRST: Analyze the repository content at `/Users/jlcases/codigo/paelladoc/code_context/extracted/repo_content.txt`
+
+2. THEN: Present the user with EXACTLY this menu of options and WAIT for their selection:
+
+```
+Based on my analysis of the repository content, I can help you generate various types of documentation.
+What would you like to document? Here are your options:
+
+**Technical Documentation:**
+1. Technical Architecture
+2. API Documentation
+3. Component Specifications
+4. Database Schema
+5. Dependencies
+
+**Product Documentation (Required for Business Documentation):**
+6. User Stories
+7. Problem Definition
+8. Value Proposition
+
+**User Documentation:**
+9. Installation Guide
+10. Usage Guide
+
+**Developer Documentation:**
+11. Setup Instructions
+12. Contribution Guidelines
+
+**Business Documentation (Requires Product Documentation):**
+13. Market Research
+14. Business Model
+15. Competitive Analysis
+
+**Other Options:**
+16. All Technical Documentation
+17. All Product Documentation
+18. Everything
+19. I'm Done
+
+Please indicate which documentation you'd like to generate (you can select multiple options).
+Note: Business Documentation options will only be available after generating Product Documentation.
+```
+
+3. WAIT for the user's selection before proceeding. DO NOT generate any documentation automatically.
+
+4. Only after receiving the user's selection, validate it according to these rules:
+   - Market Research requires Product Documentation (Problem Definition, Value Proposition, and User Stories)
+   - Business Model requires Product Documentation (Problem Definition, Value Proposition, and User Stories)
+   - Competitive Analysis requires Product Documentation (Problem Definition and Value Proposition)
+
+5. Generate only the documentation that the user has explicitly selected.
+
+6. After generating the selected documentation, ask the user if they want to extract anything else.
+
+7. Only proceed to the summary/completion phase when the user indicates they are done or selects option 19.
+
+IMPORTANT: The AI must NEVER skip presenting this menu or proceed without explicit user selection. The GENERATE_DOC command MUST be interactive and wait for user input at every step. 

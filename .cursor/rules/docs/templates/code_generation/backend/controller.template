@@ -1,0 +1,123 @@
+{{#if useTypescript}}
+import { Request, Response, NextFunction } from 'express';
+import { {{serviceName}} } from '../services/{{serviceFileName}}';
+{{#if useValidation}}
+import { validate{{entityName}} } from '../validators/{{entityName}}Validator';
+{{/if}}
+{{#if useErrorHandling}}
+import { AppError, catchAsync } from '../utils/errorHandlers';
+{{/if}}
+
+{{#if useIoC}}
+import { injectable, inject } from 'inversify';
+import { TYPES } from '../types';
+
+@injectable()
+{{/if}}
+export class {{controllerName}}Controller {
+  {{#if useIoC}}
+  constructor(
+    @inject(TYPES.{{serviceName}}) private {{serviceVarName}}: {{serviceName}}
+  ) {}
+  {{else}}
+  private {{serviceVarName}} = new {{serviceName}}();
+  {{/if}}
+
+  {{#each methods}}
+  public {{name}} = {{#if useErrorHandling}}catchAsync({{/if}}async (
+    req: Request, 
+    res: Response{{#if useErrorHandling}},
+    next: NextFunction{{/if}}
+  ) => {
+    {{#if useValidation}}
+    const { error } = validate{{entityName}}(req.body);
+    if (error) {
+      {{#if useErrorHandling}}
+      return next(new AppError(error.details[0].message, 400));
+      {{else}}
+      return res.status(400).json({ message: error.details[0].message });
+      {{/if}}
+    }
+    {{/if}}
+
+    {{methodContent}}
+
+    return res.status({{successStatus}}).json({
+      status: 'success',
+      {{#if hasPagination}}
+      results: data.length,
+      {{/if}}
+      data
+    });
+  }{{#if useErrorHandling}}){{/if}};
+  {{/each}}
+}
+{{else}}
+const {{serviceName}} = require('../services/{{serviceFileName}}');
+{{#if useValidation}}
+const { validate{{entityName}} } = require('../validators/{{entityName}}Validator');
+{{/if}}
+{{#if useErrorHandling}}
+const { AppError, catchAsync } = require('../utils/errorHandlers');
+{{/if}}
+
+{{#if useClass}}
+class {{controllerName}}Controller {
+  constructor() {
+    this.{{serviceVarName}} = new {{serviceName}}();
+  }
+
+  {{#each methods}}
+  {{name}} = {{#if useErrorHandling}}catchAsync({{/if}}async (req, res{{#if useErrorHandling}}, next{{/if}}) => {
+    {{#if useValidation}}
+    const { error } = validate{{entityName}}(req.body);
+    if (error) {
+      {{#if useErrorHandling}}
+      return next(new AppError(error.details[0].message, 400));
+      {{else}}
+      return res.status(400).json({ message: error.details[0].message });
+      {{/if}}
+    }
+    {{/if}}
+
+    {{methodContent}}
+
+    return res.status({{successStatus}}).json({
+      status: 'success',
+      {{#if hasPagination}}
+      results: data.length,
+      {{/if}}
+      data
+    });
+  }{{#if useErrorHandling}}){{/if}};
+  {{/each}}
+}
+
+module.exports = new {{controllerName}}Controller();
+{{else}}
+exports.{{#each methods}}
+{{name}} = {{#if ../useErrorHandling}}catchAsync({{/if}}async (req, res{{#if ../useErrorHandling}}, next{{/if}}) => {
+  {{#if ../useValidation}}
+  const { error } = validate{{../entityName}}(req.body);
+  if (error) {
+    {{#if ../useErrorHandling}}
+    return next(new AppError(error.details[0].message, 400));
+    {{else}}
+    return res.status(400).json({ message: error.details[0].message });
+    {{/if}}
+  }
+  {{/if}}
+
+  {{methodContent}}
+
+  return res.status({{successStatus}}).json({
+    status: 'success',
+    {{#if hasPagination}}
+    results: data.length,
+    {{/if}}
+    data
+  });
+}{{#if ../useErrorHandling}}){{/if}};
+{{/each}}
+{{/if}}
+{{/if}} 

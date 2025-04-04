@@ -1,0 +1,66 @@
+---
+description: "When user asks to generate context from a repository, execute the extract_repo_content.py script to convert code repositories to text format"
+globs: ["**/*.py", "**/*.js", "**/*.ts", "**/*.java", "**/*.jsx", "**/*.tsx", "**/*.html", "**/*.css", "**/*.scss"]
+---
+
+# GENERATE_CONTEXT Command Implementation
+
+This module implements the GENERATE_CONTEXT command which transforms source code repositories into text format for processing using repopack-py.
+
+## Command Definition
+
+```
+GENERATE_CONTEXT repo_path=/path/to/repo output=/path/to/output [line_numbers=true|false] [style=plain|xml]
+```
+
+## Usage Examples
+
+```
+GENERATE_CONTEXT repo_path=/Users/jlcases/projects/my-repo
+GENERATE_CONTEXT repo_path=../my-project output=project_context.txt line_numbers=true
+```
+
+## Command Process
+
+When executed, this command:
+
+1. Validates the repository path exists
+2. Sets up a Python virtual environment if needed
+3. Installs repopack and dependencies
+4. Calls extract_repo_content.py to process the repository
+5. Generates a text file with the repository content
+
+## Integration with PAELLADOC
+
+This command is used before analyzing code or generating documentation from existing code, allowing PAELLADOC to understand the codebase structure and content.
+
+## Implementation Details
+
+This command uses the `extract_repo_content.py` script to:
+- Set up a virtual environment
+- Install the repopack library
+- Process the repository
+- Generate a text file with all code content
+
+The script can be called with the following parameters:
+- `repo_path`: The path to the repository to process (required)
+- `output`: The name of the output file (optional)
+- `line_numbers`: Whether to show line numbers in the output file (optional)
+- `style`: The output style - plain or xml (optional)
+- `ignore`: Additional patterns to ignore (optional) 
+
+## Script Execution
+
+When the user issues the GENERATE_CONTEXT command, the AI will:
+
+1. Parse the command arguments
+2. Execute the extract_repo_content.py script with the provided parameters
+3. Report back on the completion status
+4. Provide guidance on next steps after context generation
+
+The script is executed with:
+```python
+python3 .cursor/rules/scripts/extract_repo_content.py <repo_path> --output <output> [--line-numbers] [--style <style>] [--ignore <patterns>]
+```
+
+This automatically creates the context file that will be used by GENERATE-DOC for interactive documentation generation. 

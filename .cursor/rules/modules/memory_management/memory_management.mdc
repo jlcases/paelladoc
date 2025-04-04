@@ -1,0 +1,213 @@
+---
+description: When user mentions project memory, asks about development history, or uses memory-related commands (MEMORY, ACHIEVEMENT, ISSUE, DECISION, CONTEXT), manage the project memory and AI context
+globs: **/.memory.json, **/memory.json
+alwaysApply: false
+shellScripts:
+  - source: ".cursor/rules/core/memory_updater.sh"
+    description: "Automatically updates memory files with each commit"
+  - source: ".cursor/rules/core/git_hook_installer.sh"
+    description: "Installs necessary Git hooks for automatic updates"
+aiAssistance:
+  enabled: true
+  conversationMemory: true
+  contextRetention: true
+  capabilities:
+    - "conversation_summarization"
+    - "decision_extraction"
+    - "context_awareness"
+    - "technical_debt_identification"
+    - "code_quality_assessment"
+  initializeWithProject: true
+  sessionHandoff: true
+  intelligentUpdate: true
+commands:
+  CONTEXT:
+    description: "Manages AI context between work sessions"
+    action: "manage_context"
+    args:
+      - name: "operation"
+        type: "string"
+        description: "Operation to perform with the context"
+        enum: ["show", "update", "reset", "transfer"]
+        default: "show"
+      - name: "focus"
+        type: "string"
+        description: "Updates the current focus of the session"
+        required: false
+      - name: "preferences"
+        type: "array"
+        description: "Updates coding preferences"
+        items:
+          type: "string"
+        required: false
+      - name: "next_tasks"
+        type: "array"
+        description: "Updates the upcoming tasks to perform"
+        items:
+          type: "string"
+        required: false
+      - name: "to_file"
+        type: "string"
+        description: "Path where to save the extracted context"
+        required: false
+---
+
+# Automatic Memory System with AI
+
+PAELLADOC integrates an automatic project memory management system with artificial intelligence assistance. This system maintains context between work sessions and facilitates cognitive continuity in development.
+
+## Description
+
+The AI memory system automatically maintains `.memory.json` files that track:
+
+1. Historical development information
+2. Technical decisions made (extracted from commit messages)
+3. Technical debt identified in the code
+4. Quality metrics (test coverage, etc.)
+5. AI context between sessions
+
+All this information is automatically managed through Git hooks that are triggered with each commit.
+
+## Memory Files Location
+
+The memory system uses the following locations:
+
+- **Main file**: `docs/[PROJECT]/.memory.json`
+- **AI Context**: `docs/[PROJECT]/project_context.json`
+- **Context Backup**: `.cursor/project_context.json` (alternative location)
+
+Where `[PROJECT]` is the name of the project's root directory. This allows the system to work correctly even with multiple projects in different folders.
+
+## AI Context
+
+The AI context includes:
+
+```json
+{
+  "last_session": "2023-05-15T14:30:00Z",
+  "conversation_summaries": [
+    {
+      "date": "2023-05-15",
+      "topic": "SEO analysis implementation",
+      "key_points": ["Decision to use Strategy pattern", "TDD implementation for validators"],
+      "decisions": ["Refactor HeadingValidator class", "Use interfaces for extensibility"]
+    }
+  ],
+  "current_focus": "Implementation of metadata analysis for SEO",
+  "coding_preferences": {
+    "naming_convention": "camelCase",
+    "testing_framework": "Jest",
+    "code_style": "Airbnb"
+  },
+  "next_tasks": [
+    "Complete US-04",
+    "Refactor HeadingValidator class"
+  ]
+}
+```
+
+## Memory Lifecycle
+
+1. **Initialization**:
+   - Creation of the `.memory.json` file in the project folder
+   - Creation of the `project_context.json` file for AI context
+   - Recording of initial project metadata
+
+2. **Automatic Update**:
+   - Each commit triggers hooks that update the memory
+   - Extraction of decisions from commit messages
+   - Detection of technical debt patterns in the code
+   - Update of metrics when there are changes in tests
+
+3. **Intelligent Update**:
+   - AI analyzes conversations to extract relevant information
+   - Maintains context between work sessions
+   - Records coding preferences and current focus
+
+4. **Query and Use**:
+   - Access to decision history to maintain consistency
+   - Context query to resume work where it was left off
+   - Visualization of metrics and progress
+
+## System Benefits
+
+1. **Continuous Documentation**: Automatically generates documentation while developing
+2. **Knowledge Preservation**: Maintains a record of the reasoning behind decisions
+3. **Visible Technical Debt**: Identifies and tracks technical issues for resolution
+4. **Cognitive Continuity**: Reduces the time needed to resume work
+5. **Consistency**: Facilitates maintaining consistent patterns and decisions
+
+## Available Commands
+
+### CONTEXT
+
+This command allows you to manage the AI context for the current session.
+
+**Examples:**
+
+Show current context:
+```
+CONTEXT
+```
+
+Update session focus:
+```
+CONTEXT operation=update focus="Implementation of metadata analysis for SEO"
+```
+
+Update pending tasks:
+```
+CONTEXT operation=update next_tasks=["Complete US-04", "Refactor HeadingValidator class"]
+```
+
+### Other Commands
+
+The system integrates with other PAELLADOC commands such as:
+
+- `ACHIEVEMENT`: Records development achievements
+- `ISSUE`: Records encountered problems
+- `DECISION`: Records important technical decisions
+- `MEMORY`: Shows the contents of the historical record 
+
+# Memory Management
+
+This module handles how PAELLADOC stores and manages project memory.
+
+## Context Storage
+
+All extracted context and generated content is stored in the `/Users/jlcases/codigo/paelladoc/code_context` directory.
+
+## Command Definition
+
+```
+SAVE_CONTEXT content=string path=string [name=string]
+LOAD_CONTEXT path=string
+LIST_CONTEXT
+```
+
+## Usage Examples
+
+```
+SAVE_CONTEXT content="Documentation for API endpoint" path="api/endpoints" name="get_users"
+LOAD_CONTEXT path="api/endpoints/get_users"
+LIST_CONTEXT
+```
+
+## Context Storage Structure
+
+The context storage is organized as follows:
+
+```
+code_context/
+  ├── extracted/        # Raw extracted content
+  │   ├── repo1.txt     # Extracted repository content
+  │   └── repo2.txt
+  ├── analyzed/         # Analyzed content
+  │   ├── architecture/
+  │   ├── api/
+  │   └── database/
+  └── generated/        # Generated documentation
+      ├── architecture/
+      ├── api/
+      └── guides/
+``` 

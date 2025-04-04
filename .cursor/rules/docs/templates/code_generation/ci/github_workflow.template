@@ -1,0 +1,167 @@
+name: CI/CD Pipeline
+
+on:
+  push:
+    branches: [ {{mainBranch}} ]
+  pull_request:
+    branches: [ {{mainBranch}} ]
+  {{#if scheduleEnabled}}
+  schedule:
+    - cron: '{{scheduleCron}}'
+  {{/if}}
+
+jobs:
+  {{#if lintingEnabled}}
+  lint:
+    name: Lint Code
+    runs-on: ubuntu-latest
+    
+    steps:
+    - uses: actions/checkout@v3
+    
+    - name: Set up {{runtimeName}}
+      uses: {{setupAction}}
+      with:
+        {{runtimeVersion}}: {{version}}
+        
+    - name: Install dependencies
+      run: {{installCommand}}
+      
+    - name: Run linting
+      run: {{lintCommand}}
+  {{/if}}
+  
+  {{#if testingEnabled}}
+  test:
+    name: Run Tests
+    runs-on: ubuntu-latest
+    {{#if lintingEnabled}}
+    needs: lint
+    {{/if}}
+    
+    steps:
+    - uses: actions/checkout@v3
+    
+    - name: Set up {{runtimeName}}
+      uses: {{setupAction}}
+      with:
+        {{runtimeVersion}}: {{version}}
+        
+    - name: Install dependencies
+      run: {{installCommand}}
+      
+    {{#if databaseEnabled}}
+    - name: Set up {{databaseType}}
+      uses: {{databaseSetupAction}}
+      with:
+        {{databaseVersion}}: {{databaseVersionNumber}}
+    
+    - name: Set up test database
+      run: {{setupTestDatabaseCommand}}
+    {{/if}}
+      
+    - name: Run tests
+      run: {{testCommand}}
+      env:
+        {{#each testEnvironment}}
+        {{name}}: {{value}}
+        {{/each}}
+    
+    {{#if coverageEnabled}}
+    - name: Upload coverage reports
+      uses: {{coverageUploadAction}}
+      with:
+        {{coverageUploadParams}}
+    {{/if}}
+  {{/if}}
+  
+  {{#if buildEnabled}}
+  build:
+    name: Build Application
+    runs-on: ubuntu-latest
+    {{#if testingEnabled}}
+    needs: test
+    {{else if lintingEnabled}}
+    needs: lint
+    {{/if}}
+    
+    steps:
+    - uses: actions/checkout@v3
+    
+    - name: Set up {{runtimeName}}
+      uses: {{setupAction}}
+      with:
+        {{runtimeVersion}}: {{version}}
+        
+    - name: Install dependencies
+      run: {{installCommand}}
+      
+    - name: Build application
+      run: {{buildCommand}}
+      
+    - name: Upload build artifacts
+      uses: actions/upload-artifact@v3
+      with:
+        name: build-artifacts
+        path: {{buildArtifactPath}}
+  {{/if}}
+  
+  {{#if deploymentEnabled}}
+  {{#if stagingEnabled}}
+  deploy-staging:
+    name: Deploy to Staging
+    runs-on: ubuntu-latest
+    needs: build
+    if: github.event_name == 'push' && github.ref == 'refs/heads/{{stagingBranch}}'
+    
+    steps:
+    - uses: actions/checkout@v3
+    
+    - name: Download build artifacts
+      uses: actions/download-artifact@v3
+      with:
+        name: build-artifacts
+        path: {{buildArtifactPath}}
+    
+    - name: Set up deployment environment
+      run: {{stagingSetupCommand}}
+      
+    - name: Deploy to staging
+      run: {{stagingDeployCommand}}
+      env:
+        {{#each stagingEnvironment}}
+        {{name}}: {{value}}
+        {{/each}}
+  {{/if}}
+  
+  deploy-production:
+    name: Deploy to Production
+    runs-on: ubuntu-latest
+    {{#if stagingEnabled}}
+    needs: deploy-staging
+    if: github.event_name == 'push' && github.ref == 'refs/heads/{{mainBranch}}'
+    {{else}}
+    needs: build
+    if: github.event_name == 'push' && github.ref == 'refs/heads/{{mainBranch}}'
+    {{/if}}
+    
+    steps:
+    - uses: actions/checkout@v3
+    
+    - name: Download build artifacts
+      uses: actions/download-artifact@v3
+      with:
+        name: build-artifacts
+        path: {{buildArtifactPath}}
+    
+    - name: Set up deployment environment
+      run: {{productionSetupCommand}}
+      
+    - name: Deploy to production
+      run: {{productionDeployCommand}}
+      env:
+        {{#each productionEnvironment}}
+        {{name}}: {{value}}
+        {{/each}}
+  {{/if}}
+</rewritten_file> 

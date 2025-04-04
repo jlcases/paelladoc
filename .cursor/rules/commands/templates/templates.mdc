@@ -1,0 +1,90 @@
+---
+description: "Manages documentation templates and their lifecycle in PAELLADOC"
+globs: ["**/templates/*"]
+---
+
+# Template Management
+
+## Commands
+
+### TEMPLATE
+Manages documentation templates
+
+#### Arguments:
+- `operation` (string, required): Template operation to perform. Options: "create", "update", "delete", "list", "sync"
+- `template_type` (string, required): Type of template. Options: "product", "technical", "process", "simplified"
+- `template_name` (string): Name of the template
+
+## Template System
+
+The template system provides structured documentation patterns for different project types and phases.
+
+### Base Paths
+- Product templates: `.cursor/rules/templates/Product`
+- Simplified templates: `.cursor/rules/templates/simplified_templates`
+- Generated templates: `.cursor/rules/templates/generated`
+
+### Product Templates
+
+#### Research and Definition
+- Project index and overview
+- Market research template
+- Initial project definition
+- User research methodology
+- Technical architecture overview
+- Problem space analysis
+- Component detailed specification
+- Product definition and strategy
+- Database architecture and design
+- Architecture decisions tracking
+
+#### Product Planning
+- Product roadmap and timeline
+- API design and specification
+- User empathy mapping
+- Customer journey analysis
+- User stories template
+- Service design blueprint
+- Project-specific rules
+
+#### Technical Implementation
+- Frontend architecture design
+- Testing approach and strategy
+- DevOps and CI/CD pipeline
+- Security framework design
+- Documentation structure
+
+#### Project Management
+- Task tracking and management
+- Meeting documentation
+- Progress tracking template
+
+### Simplified Templates
+- Quick documentation index
+- Bug report template
+- Feature specification
+- Quick task template
+- Source verification
+
+### Template Hooks
+Template creation and management includes hooks for:
+- Pre-creation validation
+- Post-creation processing
+- Template synchronization
+- Custom template integration
+
+## Coding Style Templates
+
+Programming style templates are organized by technology:
+
+- **Frontend Styles**: React, Vue, Angular
+- **Backend Styles**: Node.js, Python, Java
+- **Mobile Styles**: React Native, Flutter
+- **Extension Styles**: Chrome, Firefox, VS Code
+
+## Git Workflow Templates
+
+- **GitHub Flow**: Simple branch-based workflow
+- **GitFlow**: Structured workflow with develop and release branches
+- **Trunk-Based**: Development directly on main with feature flags
+- **No Workflow**: Basic Git usage without formal methodology 

@@ -1,0 +1,154 @@
+{
+  "manifest_version": {{manifestVersion}},
+  "name": "{{extensionName}}",
+  "version": "{{version}}",
+  "description": "{{description}}",
+  {{#if author}}
+  "author": "{{author}}",
+  {{/if}}
+  {{#if homepage}}
+  "homepage_url": "{{homepage}}",
+  {{/if}}
+  "icons": {
+    {{#each icons}}
+    "{{size}}": "{{path}}"{{#unless @last}},{{/unless}}
+    {{/each}}
+  },
+  {{#if offlineEnabled}}
+  "offline_enabled": true,
+  {{/if}}
+  {{#if options}}
+  "options_page": "{{options.page}}",
+  {{/if}}
+  {{#if optionsUi}}
+  "options_ui": {
+    "page": "{{optionsUi.page}}",
+    "open_in_tab": {{optionsUi.openInTab}}
+  },
+  {{/if}}
+  {{#if action}}
+  "action": {
+    "default_icon": {
+      {{#each action.defaultIcon}}
+      "{{size}}": "{{path}}"{{#unless @last}},{{/unless}}
+      {{/each}}
+    },
+    "default_title": "{{action.defaultTitle}}",
+    "default_popup": "{{action.defaultPopup}}"
+  },
+  {{/if}}
+  {{#if background}}
+  "background": {
+    {{#if background.service_worker}}
+    "service_worker": "{{background.service_worker}}",
+    "type": "{{background.type}}"
+    {{else}}
+    "scripts": [
+      {{#each background.scripts}}
+      "{{this}}"{{#unless @last}},{{/unless}}
+      {{/each}}
+    ],
+    "persistent": {{background.persistent}}
+    {{/if}}
+  },
+  {{/if}}
+  {{#if contentScripts}}
+  "content_scripts": [
+    {{#each contentScripts}}
+    {
+      "matches": [
+        {{#each matches}}
+        "{{this}}"{{#unless @last}},{{/unless}}
+        {{/each}}
+      ],
+      "js": [
+        {{#each js}}
+        "{{this}}"{{#unless @last}},{{/unless}}
+        {{/each}}
+      ],
+      {{#if css}}
+      "css": [
+        {{#each css}}
+        "{{this}}"{{#unless @last}},{{/unless}}
+        {{/each}}
+      ],
+      {{/if}}
+      {{#if runAt}}
+      "run_at": "{{runAt}}",
+      {{/if}}
+      {{#if allFrames}}
+      "all_frames": {{allFrames}},
+      {{/if}}
+      {{#if matchAboutBlank}}
+      "match_about_blank": {{matchAboutBlank}},
+      {{/if}}
+      {{#if worldId}}
+      "world_id": "{{worldId}}"
+      {{/if}}
+    }{{#unless @last}},{{/unless}}
+    {{/each}}
+  ],
+  {{/if}}
+  {{#if permissions}}
+  "permissions": [
+    {{#each permissions}}
+    "{{this}}"{{#unless @last}},{{/unless}}
+    {{/each}}
+  ],
+  {{/if}}
+  {{#if hostPermissions}}
+  "host_permissions": [
+    {{#each hostPermissions}}
+    "{{this}}"{{#unless @last}},{{/unless}}
+    {{/each}}
+  ],
+  {{/if}}
+  {{#if webAccessibleResources}}
+  "web_accessible_resources": [
+    {{#each webAccessibleResources}}
+    {
+      "resources": [
+        {{#each resources}}
+        "{{this}}"{{#unless @last}},{{/unless}}
+        {{/each}}
+      ],
+      "matches": [
+        {{#each matches}}
+        "{{this}}"{{#unless @last}},{{/unless}}
+        {{/each}}
+      ]
+    }{{#unless @last}},{{/unless}}
+    {{/each}}
+  ],
+  {{/if}}
+  {{#if commands}}
+  "commands": {
+    {{#each commands}}
+    "{{name}}": {
+      "suggested_key": {
+        "default": "{{suggestedKey.default}}"
+        {{#if suggestedKey.mac}}
+        ,"mac": "{{suggestedKey.mac}}"
+        {{/if}}
+        {{#if suggestedKey.windows}}
+        ,"windows": "{{suggestedKey.windows}}"
+        {{/if}}
+        {{#if suggestedKey.linux}}
+        ,"linux": "{{suggestedKey.linux}}"
+        {{/if}}
+        {{#if suggestedKey.chromeos}}
+        ,"chromeos": "{{suggestedKey.chromeos}}"
+        {{/if}}
+      },
+      "description": "{{description}}"
+    }{{#unless @last}},{{/unless}}
+    {{/each}}
+  },
+  {{/if}}
+  "content_security_policy": {
+    "extension_pages": "{{contentSecurityPolicy.extensionPages}}"
+    {{#if contentSecurityPolicy.sandboxedPages}}
+    ,"sandbox": "{{contentSecurityPolicy.sandboxedPages}}"
+    {{/if}}
+  }
+} 

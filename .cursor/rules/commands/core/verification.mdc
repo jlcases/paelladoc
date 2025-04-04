@@ -1,0 +1,48 @@
+---
+description: "Defines the documentation verification processes and validation commands in PAELLADOC"
+globs: ["**/verification/*", "**/tests/*"]
+---
+
+# Documentation Verification
+
+## Commands
+
+### VERIFY
+Verifies documentation against existing codebase
+
+#### Arguments:
+- `scope` (string): Scope of verification. Options: "all", "apis", "architecture", "components", "db", "functions". Default: "all"
+- `format` (string): Output format. Options: "summary", "detailed", "json". Default: "summary"
+- `threshold` (number): Minimum match percentage. Default: 80
+- `generate_report` (boolean): Whether to generate verification report. Default: true
+
+## Verification Process
+
+The verification process follows a systematic approach:
+
+1. **Code Analysis**: Analyze codebase to extract actual implementations
+2. **Documentation Review**: Extract documented specifications and requirements
+3. **Gap Analysis**: Identify discrepancies between code and documentation
+4. **Coverage Calculation**: Calculate how much of the codebase is documented
+5. **Consistency Check**: Verify consistency within documentation
+6. **Report Generation**: Generate detailed verification report
+
+## Verification Rules
+
+Documentation must meet these criteria:
+
+- **Accuracy**: Documentation must reflect actual implementation
+- **Completeness**: All key components must be documented
+- **Consistency**: Documentation must not contain contradictions
+- **Currency**: Documentation must reflect the current state of the codebase
+- **Clarity**: Documentation must be clear and understandable
+
+## Verification Metrics
+
+Verification produces the following metrics:
+
+- **Coverage Percentage**: Percentage of code covered by documentation
+- **Accuracy Score**: Accuracy of existing documentation
+- **Consistency Score**: Internal consistency of documentation
+- **Completeness Score**: Completeness of documentation across required areas
+- **Overall Quality Score**: Composite score of all metrics 

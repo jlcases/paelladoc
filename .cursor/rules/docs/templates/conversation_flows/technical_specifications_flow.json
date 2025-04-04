@@ -1,0 +1,701 @@
+{
+  "flow_id": "technical_specifications",
+  "name": "Technical Project Specifications",
+  "description": "This conversation flow collects the necessary technical specifications for any type of project",
+  "required": true,
+  "priority": "high",
+  "trigger_commands": ["PAELLA", "CONTINUE", "GENERATE_CODE"],
+  "inject_into_commands": ["GENERATE_CODE"],
+  "steps": [
+    {
+      "id": "project_type_identification",
+      "name": "Project Type Identification",
+      "description": "Determine the specific type of technical project",
+      "required": true,
+      "questions": [
+        {
+          "id": "project_type",
+          "text": "What type of technical project are you developing?",
+          "type": "single_choice",
+          "options": [
+            "webapp",
+            "website",
+            "mobile_app",
+            "desktop_app",
+            "browser_extension",
+            "api",
+            "backend",
+            "library",
+            "package",
+            "cli",
+            "game",
+            "iot",
+            "other"
+          ],
+          "default": null,
+          "required": true
+        },
+        {
+          "id": "project_type_other",
+          "text": "Please specify the project type:",
+          "type": "text",
+          "condition": {
+            "field": "project_type",
+            "value": "other"
+          },
+          "required": true
+        }
+      ]
+    },
+    {
+      "id": "development_environment",
+      "name": "Development Environment",
+      "description": "Collect information about the development and runtime environment",
+      "required": true,
+      "questions": [
+        {
+          "id": "target_os",
+          "text": "What are the target operating systems for the project?",
+          "type": "multiple_choice",
+          "options": [
+            "Windows",
+            "macOS",
+            "Linux",
+            "iOS",
+            "Android",
+            "Web/Cross-platform"
+          ],
+          "default": ["Web/Cross-platform"],
+          "required": true
+        },
+        {
+          "id": "runtime",
+          "text": "What primary runtime environment will the project use?",
+          "type": "single_choice",
+          "options": [
+            "Node.js",
+            "Deno",
+            "Bun",
+            "Browser",
+            "JVM",
+            ".NET",
+            "Python",
+            "Ruby",
+            "PHP",
+            "Go",
+            "Rust",
+            "other"
+          ],
+          "default": null,
+          "required": true
+        },
+        {
+          "id": "runtime_other",
+          "text": "Please specify the runtime environment:",
+          "type": "text",
+          "condition": {
+            "field": "runtime",
+            "value": "other"
+          },
+          "required": true
+        },
+        {
+          "id": "runtime_version",
+          "text": "What version of the runtime environment will be used?",
+          "type": "text",
+          "default": "latest",
+          "required": true
+        },
+        {
+          "id": "package_manager",
+          "text": "What package manager will be used?",
+          "type": "single_choice",
+          "options": [
+            "npm",
+            "yarn",
+            "pnpm",
+            "pip",
+            "bundler",
+            "composer",
+            "cargo",
+            "go modules",
+            "maven",
+            "gradle",
+            "nuget",
+            "other"
+          ],
+          "default": null,
+          "required": true
+        },
+        {
+          "id": "package_manager_other",
+          "text": "Please specify the package manager:",
+          "type": "text",
+          "condition": {
+            "field": "package_manager",
+            "value": "other"
+          },
+          "required": true
+        }
+      ]
+    },
+    {
+      "id": "web_architecture",
+      "name": "Web Architecture",
+      "description": "Specific details for web projects",
+      "condition": {
+        "field": "project_type",
+        "values": ["webapp", "website"]
+      },
+      "required": true,
+      "questions": [
+        {
+          "id": "frontend_framework",
+          "text": "What frontend framework will be used?",
+          "type": "single_choice",
+          "options": [
+            "React",
+            "Vue",
+            "Angular",
+            "Svelte",
+            "No framework / Vanilla JS",
+            "other"
+          ],
+          "default": null,
+          "required": true
+        },
+        {
+          "id": "frontend_framework_other",
+          "text": "Please specify the frontend framework:",
+          "type": "text",
+          "condition": {
+            "field": "frontend_framework",
+            "value": "other"
+          },
+          "required": true
+        },
+        {
+          "id": "backend_framework",
+          "text": "What backend framework will be used?",
+          "type": "single_choice",
+          "options": [
+            "Express",
+            "NestJS",
+            "Django",
+            "Flask",
+            "Ruby on Rails",
+            "Laravel",
+            "Spring Boot",
+            "ASP.NET",
+            "No backend / Static",
+            "other"
+          ],
+          "default": null,
+          "required": true
+        },
+        {
+          "id": "backend_framework_other",
+          "text": "Please specify the backend framework:",
+          "type": "text",
+          "condition": {
+            "field": "backend_framework",
+            "value": "other"
+          },
+          "required": true
+        },
+        {
+          "id": "build_tool",
+          "text": "What build tool will be used?",
+          "type": "single_choice",
+          "options": [
+            "Webpack",
+            "Vite",
+            "Rollup",
+            "Parcel",
+            "esbuild",
+            "Next.js",
+            "Create React App",
+            "Angular CLI",
+            "Vue CLI",
+            "other"
+          ],
+          "default": null,
+          "required": true
+        },
+        {
+          "id": "build_tool_other",
+          "text": "Please specify the build tool:",
+          "type": "text",
+          "condition": {
+            "field": "build_tool",
+            "value": "other"
+          },
+          "required": true
+        }
+      ]
+    },
+    {
+      "id": "mobile_architecture",
+      "name": "Mobile Architecture",
+      "description": "Specific details for mobile projects",
+      "condition": {
+        "field": "project_type",
+        "values": ["mobile_app"]
+      },
+      "required": true,
+      "questions": [
+        {
+          "id": "mobile_framework",
+          "text": "What mobile framework will be used?",
+          "type": "single_choice",
+          "options": [
+            "React Native",
+            "Flutter",
+            "Native iOS (Swift/Objective-C)",
+            "Native Android (Kotlin/Java)",
+            "Xamarin",
+            "Ionic",
+            "other"
+          ],
+          "default": null,
+          "required": true
+        },
+        {
+          "id": "mobile_framework_other",
+          "text": "Please specify the mobile framework:",
+          "type": "text",
+          "condition": {
+            "field": "mobile_framework",
+            "value": "other"
+          },
+          "required": true
+        },
+        {
+          "id": "mobile_platforms",
+          "text": "Which mobile platforms will the app target?",
+          "type": "multiple_choice",
+          "options": [
+            "iOS",
+            "Android",
+            "Both"
+          ],
+          "default": ["Both"],
+          "required": true
+        }
+      ]
+    },
+    {
+      "id": "extension_architecture",
+      "name": "Extension Architecture",
+      "description": "Specific details for browser extensions",
+      "condition": {
+        "field": "project_type",
+        "values": ["browser_extension"]
+      },
+      "required": true,
+      "questions": [
+        {
+          "id": "target_browsers",
+          "text": "Which browsers will the extension target?",
+          "type": "multiple_choice",
+          "options": [
+            "Chrome",
+            "Firefox",
+            "Edge",
+            "Safari",
+            "Opera"
+          ],
+          "default": ["Chrome"],
+          "required": true
+        },
+        {
+          "id": "manifest_version",
+          "text": "Which manifest version will be used?",
+          "type": "single_choice",
+          "options": [
+            "Manifest V2",
+            "Manifest V3"
+          ],
+          "default": "Manifest V3",
+          "required": true
+        },
+        {
+          "id": "extension_components",
+          "text": "Which components will the extension include?",
+          "type": "multiple_choice",
+          "options": [
+            "Background Script",
+            "Content Script",
+            "Popup UI",
+            "Options Page",
+            "Devtools Panel",
+            "Sidebar"
+          ],
+          "default": ["Background Script", "Content Script", "Popup UI"],
+          "required": true
+        }
+      ]
+    },
+    {
+      "id": "api_architecture",
+      "name": "API/Backend Architecture",
+      "description": "Specific details for APIs and backends",
+      "condition": {
+        "field": "project_type",
+        "values": ["api", "backend"]
+      },
+      "required": true,
+      "questions": [
+        {
+          "id": "api_framework",
+          "text": "What API/backend framework will be used?",
+          "type": "single_choice",
+          "options": [
+            "Express",
+            "NestJS",
+            "Fastify",
+            "Koa",
+            "Django",
+            "Django REST Framework",
+            "Flask",
+            "FastAPI",
+            "Spring Boot",
+            "ASP.NET",
+            "Ruby on Rails",
+            "Laravel",
+            "other"
+          ],
+          "default": null,
+          "required": true
+        },
+        {
+          "id": "api_framework_other",
+          "text": "Please specify the API/backend framework:",
+          "type": "text",
+          "condition": {
+            "field": "api_framework",
+            "value": "other"
+          },
+          "required": true
+        },
+        {
+          "id": "api_type",
+          "text": "What type of API will be implemented?",
+          "type": "single_choice",
+          "options": [
+            "REST",
+            "GraphQL",
+            "gRPC",
+            "WebSockets",
+            "Hybrid",
+            "other"
+          ],
+          "default": "REST",
+          "required": true
+        },
+        {
+          "id": "database",
+          "text": "What database will be used?",
+          "type": "single_choice",
+          "options": [
+            "PostgreSQL",
+            "MySQL/MariaDB",
+            "MongoDB",
+            "SQLite",
+            "Redis",
+            "DynamoDB",
+            "Firestore",
+            "other"
+          ],
+          "default": null,
+          "required": true
+        },
+        {
+          "id": "database_other",
+          "text": "Please specify the database:",
+          "type": "text",
+          "condition": {
+            "field": "database",
+            "value": "other"
+          },
+          "required": true
+        }
+      ]
+    },
+    {
+      "id": "library_architecture",
+      "name": "Library Architecture",
+      "description": "Specific details for libraries and packages",
+      "condition": {
+        "field": "project_type",
+        "values": ["library", "package"]
+      },
+      "required": true,
+      "questions": [
+        {
+          "id": "distribution_format",
+          "text": "What distribution format will the library use?",
+          "type": "single_choice",
+          "options": [
+            "npm package",
+            "PyPI package",
+            "RubyGems",
+            "Maven/Gradle",
+            "NuGet",
+            "Cargo crate",
+            "Go module",
+            "other"
+          ],
+          "default": null,
+          "required": true
+        },
+        {
+          "id": "distribution_format_other",
+          "text": "Please specify the distribution format:",
+          "type": "text",
+          "condition": {
+            "field": "distribution_format",
+            "value": "other"
+          },
+          "required": true
+        },
+        {
+          "id": "module_system",
+          "text": "What module system will be used?",
+          "type": "single_choice",
+          "options": [
+            "ES Modules",
+            "CommonJS",
+            "UMD",
+            "AMD",
+            "Python modules",
+            "Ruby modules",
+            "other"
+          ],
+          "default": null,
+          "required": true
+        },
+        {
+          "id": "module_system_other",
+          "text": "Please specify the module system:",
+          "type": "text",
+          "condition": {
+            "field": "module_system",
+            "value": "other"
+          },
+          "required": true
+        }
+      ]
+    },
+    {
+      "id": "dependencies",
+      "name": "Main Dependencies",
+      "description": "Identify the critical dependencies of the project",
+      "required": true,
+      "questions": [
+        {
+          "id": "production_dependencies",
+          "text": "List the main production dependencies (name@version, one per line):",
+          "type": "textarea",
+          "default": "",
+          "required": true
+        },
+        {
+          "id": "development_dependencies",
+          "text": "List the main development dependencies (name@version, one per line):",
+          "type": "textarea",
+          "default": "",
+          "required": true
+        }
+      ]
+    },
+    {
+      "id": "testing_system",
+      "name": "Testing System",
+      "description": "Configuration for testing and code quality",
+      "required": true,
+      "questions": [
+        {
+          "id": "test_framework",
+          "text": "What testing framework will be used?",
+          "type": "single_choice",
+          "options": [
+            "Jest",
+            "Mocha",
+            "Jasmine",
+            "Vitest",
+            "pytest",
+            "unittest",
+            "RSpec",
+            "JUnit",
+            "other"
+          ],
+          "default": null,
+          "required": true
+        },
+        {
+          "id": "test_framework_other",
+          "text": "Please specify the testing framework:",
+          "type": "text",
+          "condition": {
+            "field": "test_framework",
+            "value": "other"
+          },
+          "required": true
+        },
+        {
+          "id": "e2e_testing",
+          "text": "What tools will be used for E2E testing, if applicable?",
+          "type": "single_choice",
+          "options": [
+            "Cypress",
+            "Playwright",
+            "Selenium",
+            "Puppeteer",
+            "TestCafe",
+            "No E2E testing",
+            "other"
+          ],
+          "default": "No E2E testing",
+          "required": true
+        },
+        {
+          "id": "e2e_testing_other",
+          "text": "Please specify the E2E testing tool:",
+          "type": "text",
+          "condition": {
+            "field": "e2e_testing",
+            "value": "other"
+          },
+          "required": true
+        }
+      ]
+    },
+    {
+      "id": "version_control",
+      "name": "Version Control",
+      "description": "Version control and branching strategy",
+      "required": true,
+      "questions": [
+        {
+          "id": "vcs",
+          "text": "What version control system will be used?",
+          "type": "single_choice",
+          "options": [
+            "Git",
+            "Mercurial",
+            "SVN",
+            "other"
+          ],
+          "default": "Git",
+          "required": true
+        },
+        {
+          "id": "vcs_other",
+          "text": "Please specify the version control system:",
+          "type": "text",
+          "condition": {
+            "field": "vcs",
+            "value": "other"
+          },
+          "required": true
+        },
+        {
+          "id": "branching_strategy",
+          "text": "What branching strategy will be used?",
+          "type": "single_choice",
+          "options": [
+            "GitHub Flow",
+            "GitFlow",
+            "Trunk-based Development",
+            "Feature Branching",
+            "No formal strategy",
+            "other"
+          ],
+          "default": "GitHub Flow",
+          "required": true
+        },
+        {
+          "id": "branching_strategy_other",
+          "text": "Please specify the branching strategy:",
+          "type": "text",
+          "condition": {
+            "field": "branching_strategy",
+            "value": "other"
+          },
+          "required": true
+        }
+      ]
+    },
+    {
+      "id": "deployment",
+      "name": "Deployment and Operations",
+      "description": "Deployment strategy and hosting",
+      "required": true,
+      "questions": [
+        {
+          "id": "deployment_strategy",
+          "text": "What deployment strategy will be used?",
+          "type": "single_choice",
+          "options": [
+            "Continuous Deployment",
+            "Continuous Delivery",
+            "Manual Deployment",
+            "Scheduled Releases",
+            "other"
+          ],
+          "default": "Continuous Deployment",
+          "required": true
+        },
+        {
+          "id": "deployment_strategy_other",
+          "text": "Please specify the deployment strategy:",
+          "type": "text",
+          "condition": {
+            "field": "deployment_strategy",
+            "value": "other"
+          },
+          "required": true
+        },
+        {
+          "id": "hosting_platforms",
+          "text": "What hosting platforms will be used?",
+          "type": "multiple_choice",
+          "options": [
+            "AWS",
+            "Google Cloud",
+            "Azure",
+            "Vercel",
+            "Netlify",
+            "Heroku",
+            "DigitalOcean",
+            "GitHub Pages",
+            "Firebase",
+            "Self-hosted",
+            "other"
+          ],
+          "default": [],
+          "required": true
+        },
+        {
+          "id": "hosting_platforms_other",
+          "text": "Please specify the hosting platforms:",
+          "type": "text",
+          "condition": {
+            "field": "hosting_platforms",
+            "includes": "other"
+          },
+          "required": true
+        }
+      ]
+    }
+  ],
+  "output_templates": [
+    {
+      "template_id": "technical_specifications_md",
+      "format": "markdown",
+      "path": "docs/{{project_name}}/architecture/technical_specifications.md",
+      "template_file": ".cursor/rules/templates/Product/02_technical_specifications.md"
+    }
+  ]
+}

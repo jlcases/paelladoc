@@ -1,0 +1,163 @@
+---
+description: When user executes any PAELLADOC command or asks about available commands, provide guidance on command usage and parameters
+globs: ["**/*"]
+alwaysApply: false
+---
+
+# PAELLADOC Commands Reference
+
+This file serves as a reference guide for the PAELLADOC commands. All commands are centrally defined and managed by the main orchestrator (`paelladoc.mdc`). This guide provides usage information and examples.
+
+## Available Commands
+
+### PAELLA
+Initiates the documentation process and generates Cursor rules
+
+Arguments:
+- project_name (string, optional): Name of the project to document
+- project_type (string): Type of project (frontend, backend, chrome_extension, fullstack, mobile_app)
+- methodologies (comma-separated): Development methodologies (tdd, github_workflow)
+- git_workflow (string): Git workflow style (github_flow, gitflow, trunk_based, no_workflow)
+- generate_rules (boolean): Whether to generate Cursor rules from documentation
+- ai_mode (string): AI operation mode (autonomous, collaborative, advisory)
+- -help (flag): Display help information
+
+### HELP
+Displays help information about available PAELLADOC commands
+
+Arguments:
+- command (string, optional): Specific command to get help for
+- format (string): Output format (detailed, summary, examples)
+
+### CONTINUE
+Continues with an existing project documentation
+
+Arguments:
+- project_name (string, required): Name of the project to continue with
+- update_rules (boolean): Whether to update Cursor rules from documentation
+- sync_templates (boolean): Whether to synchronize templates with current state
+
+### ACHIEVEMENT
+Records an achievement in the project memory
+
+Arguments:
+- description (string, required): Description of the achievement
+- category (string, required): Category (architecture, development, documentation, testing, security, performance, product, design, research)
+- impact_level (string): Level of impact (high, medium, low)
+
+### ISSUE
+Records an issue in the project memory
+
+Arguments:
+- description (string, required): Description of the issue
+- severity (string, required): Severity level (critical, high, medium, low)
+- area (string, required): Area affected (product, technical, process, security, performance)
+
+### DECISION
+Records a technical decision in the project memory
+
+Arguments:
+- description (string, required): Description of the decision
+- impact (comma-separated): Areas impacted (architecture, development, documentation, testing, security, performance, product, design, process)
+- rationale (string, required): Reasoning behind the decision
+
+### MEMORY
+Shows the development record
+
+Arguments:
+- filter (string): Filter memory by category (all, achievements, issues, decisions, product, technical)
+- format (string): Output format (detailed, summary, timeline)
+
+### CODING_STYLE
+Manages programming style guides for the project
+
+Arguments:
+- operation (string, required): Style operation (apply, customize, list, show)
+- style_name (string, required): Name of the style (frontend, backend, chrome_extension, tdd, github_workflow)
+- project_name (string, required): Name of the project to apply style to
+- customizations (string): Path to customization file or inline JSON customizations
+
+### GENERATE_CONTEXT
+Converts a code repository to text format for processing
+
+Arguments:
+- repo_path (string, required): Path to the repository to process
+- output (string): Output file name for the extracted content
+- line_numbers (boolean): Whether to show line numbers in the output file
+- style (string): Output style (plain, xml)
+- ignore (string): Additional patterns to ignore (comma-separated)
+
+### GENERATE-DOC
+Analyzes code and generates comprehensive documentation with interactive guidance
+
+Arguments:
+- repo_path (string): Path to the repository to analyze (optional if context already exists)
+- context_path (string): Path to the context directory (default: code_context/extracted)
+- output (string): Path where to save the generated documentation
+- template (string): Documentation template to use
+
+### GENERATE_CODE
+Generates code based on completed documentation
+
+Arguments:
+- project_name (string): Name of the project to generate code for
+- output_path (string): Path where generated code will be stored
+- code_type (string): Type of code to generate (frontend, backend, full_stack, extension, library)
+- language (string): Primary language to use
+- include_tests (boolean): Whether to generate tests for the code
+- github_repo (string): Optional GitHub repository to create/push to
+
+### CREATE_REPO
+Creates a new repository for generated code
+
+Arguments:
+- repo_name (string): Name of the repository to create
+- repo_type (string): Type of repository (github, gitlab, local)
+- visibility (string): Repository visibility (public, private)
+- include_ci (boolean): Whether to include CI/CD configuration
+- license (string): License to use
+
+### STORY
+Manages user stories for the project
+
+Arguments:
+- operation (string): Operation to perform (create, update, delete, list, search, prioritize)
+- story_title (string): Title of the user story
+- description (string): Description of the user story
+- priority (string): Priority level (high, medium, low)
+
+### SPRINT
+Plans and manages sprint information
+
+Arguments:
+- operation (string): Operation to perform (plan, start, end, update, list, report)
+- sprint_name (string): Name or number of the sprint
+- stories (array): User stories to include in the sprint
+- start_date (string): Start date of the sprint (YYYY-MM-DD)
+- end_date (string): End date of the sprint (YYYY-MM-DD)
+
+### MEETING
+Records and manages meeting notes
+
+Arguments:
+- operation (string): Operation to perform (create, update, delete, list, search)
+- meeting_type (string): Type of meeting (planning, review, retrospective, standup, other)
+- title (string): Title of the meeting
+- date (string): Date of the meeting (YYYY-MM-DD)
+
+## Command Architecture
+
+All PAELLADOC commands are defined and managed centrally by the main orchestrator (`paelladoc.mdc`). Each command is implemented by a specific module that handles the command's functionality. This architecture ensures:
+
+1. Centralized command definition for consistency
+2. Modular implementation for maintainability
+3. Clear delegation of responsibilities
+4. Streamlined command processing flow
+
+When a command is executed, the orchestrator:
+1. Recognizes the command pattern
+2. Parses and validates the arguments
+3. Calls the appropriate module for execution
+4. Returns the results to the user
+
+For detailed implementation of specific commands, refer to their respective module documentation.
