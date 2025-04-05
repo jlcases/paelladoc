@@ -1,0 +1,113 @@
+{
+  "name": "paella_initiation_flow",
+  "description": "Interactive flow to gather project details for PAELLA command",
+  "language_dependent_prompts": true,
+  "steps": [
+    {
+      "id": "ask_language",
+      "type": "question",
+      "parameter": "language",
+      "prompt": {
+        "en": "First, in which language should we conduct this documentation process? (Options: en, es)",
+        "es": "Primero, ¿en qué idioma debemos realizar este proceso de documentación? (Opciones: en, es)"
+      },
+      "validation": {
+        "type": "enum",
+        "values": ["en", "es"],
+        "error_message": {
+          "en": "Please enter 'en' for English or 'es' for Spanish.",
+          "es": "Por favor, introduce 'en' para inglés o 'es' para español."
+        }
+      }
+    },
+    {
+      "id": "ask_project_name",
+      "type": "question",
+      "parameter": "project_name",
+      "prompt": {
+        "en": "What is the name of the project you want to document? (Optional, press Enter to skip)",
+        "es": "¿Cómo se llama el proyecto que quieres documentar? (Opcional, pulsa Intro para omitir)"
+      }
+    },
+    {
+      "id": "ask_project_type",
+      "type": "select",
+      "parameter": "project_type",
+      "prompt": {
+        "en": "What type of project is it?",
+        "es": "¿Qué tipo de proyecto es?"
+      },
+      "options": [
+        "frontend",
+        "backend",
+        "chrome_extension",
+        "fullstack",
+        "mobile_app"
+      ],
+      "default": "frontend"
+    },
+    {
+      "id": "ask_methodologies",
+      "type": "multiselect",
+      "parameter": "methodologies",
+      "prompt": {
+        "en": "Which development methodologies would you like to apply? (Select none, one, or multiple)",
+        "es": "¿Qué metodologías de desarrollo te gustaría aplicar? (Selecciona ninguna, una o varias)"
+      },
+      "options": [
+        "tdd",
+        "github_workflow"
+      ],
+      "default": []
+    },
+    {
+      "id": "ask_git_workflow",
+      "type": "select",
+      "parameter": "git_workflow",
+      "prompt": {
+        "en": "Which Git workflow style do you prefer?",
+        "es": "¿Qué estilo de flujo de Git prefieres?"
+      },
+      "options": [
+        "github_flow",
+        "gitflow",
+        "trunk_based",
+        "no_workflow"
+      ],
+      "default": "github_flow"
+    },
+    {
+      "id": "ask_generate_rules",
+      "type": "confirm",
+      "parameter": "generate_rules",
+      "prompt": {
+        "en": "Should I automatically generate Cursor rules from the documentation?",
+        "es": "¿Debería generar automáticamente reglas de Cursor a partir de la documentación?"
+      },
+      "default": true
+    },
+    {
+      "id": "ask_ai_mode",
+      "type": "select",
+      "parameter": "ai_mode",
+      "prompt": {
+        "en": "How should the AI operate?",
+        "es": "¿Cómo debería operar la IA?"
+      },
+      "options": [
+        { "value": "autonomous", "label": { "en": "Autonomous (AI works independently)", "es": "Autónomo (La IA trabaja de forma independiente)" } },
+        { "value": "collaborative", "label": { "en": "Collaborative (We work together)", "es": "Colaborativo (Trabajamos juntos)" } },
+        { "value": "advisory", "label": { "en": "Advisory (AI only offers advice)", "es": "Consultivo (La IA solo ofrece consejos)" } }
+      ],
+      "default": "collaborative"
+    }
+  ],
+  "confirmation_message": {
+    "en": "Great! We have all the initial details. Ready to start the documentation process?",
+    "es": "¡Genial! Tenemos todos los detalles iniciales. ¿Listo para comenzar el proceso de documentación?"
+  },
+  "settings": {
+    "ask_in_sequence": true,
+    "language_parameter": "language"
+  }
+} 

@@ -36,7 +36,7 @@ tmp/
 .cache/
 
 /docs
-.memory.json
+**/.memory.json
 
 # Private projects
 # These are automatically generated based on .memory.json
@@ -59,3 +59,6 @@ tmp/
 
 temp_docs/
 backup_redundancies/
+
+temp_cloned_repos/
+temp_repo/

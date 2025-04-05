@@ -24,9 +24,14 @@ alwaysApply: true
 commands:
   # Core Commands
   PAELLA:
-    description: "Initiates the documentation process and generates Cursor rules"
+    description: "Initiates the documentation process interactively and generates Cursor rules"
     action: "initiate_documentation"
     args:
+      - name: "language"
+        type: "string"
+        description: "Language for the documentation process (e.g., es, en)"
+        enum: ["es", "en"]
+        required: true
       - name: "project_name"
         type: "string"
         description: "Name of the project to document"
@@ -65,11 +70,12 @@ commands:
     behavior:
       conversation_required: true
       auto_documentation: false
-      conversation_flow: "main_conversation"
+      conversation_flow: "paella_initiation_flow"
       wait_for_user_confirmation: true
       prevent_automatic_generation: true
       allow_minimal_mode: true
       module: "commands/core/help.mdc"
+      language_confirmation_first: true
   
   HELP:
     description: "Displays help information about available PAELLADOC commands"
