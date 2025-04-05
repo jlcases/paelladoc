@@ -36,7 +36,7 @@ tmp/
 .cache/
 
 /docs
-.memory.json
+**/.memory.json
 
 # Private projects
 # These are automatically generated based on .memory.json
