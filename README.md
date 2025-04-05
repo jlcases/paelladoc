@@ -1,10 +1,10 @@
 # 🥘 PAELLADOC: The development exoskeleton
 
-![Version](https://img.shields.io/badge/version-0.1.0-blue.svg)
+![Version](https://img.shields.io/badge/version-0.2.0-blue.svg)
 ![Status](https://img.shields.io/badge/status-active-success.svg)
 ![Cursor](https://img.shields.io/badge/cursor-0.47+-green.svg)
 ![Compatibility](https://img.shields.io/badge/compatibility-cursor%200.47+-orange.svg)
-![Updated](https://img.shields.io/badge/updated-2025--04--04-brightgreen.svg)
+![Updated](https://img.shields.io/badge/updated-2025--04--05-brightgreen.svg)
 [![GitHub Stars](https://img.shields.io/github/stars/jlcases/paelladoc?style=social)](https://github.com/jlcases/paelladoc)
 [![GitHub Forks](https://img.shields.io/github/forks/jlcases/paelladoc?style=social)](https://github.com/jlcases/paelladoc/fork)
 [![X Community](https://img.shields.io/badge/X%20Community-PAellaDOC-blue)](https://x.com/i/communities/1907494161458090406)
@@ -159,8 +159,10 @@ Like a well-trained chef, PAELLADOC will:
 9. **Repository Analysis and Documentation**
    - Extract repository context with GENERATE_CONTEXT
    - Generate comprehensive documentation with GENERATE_DOC
-   - Interactive documentation workflow
-   - Multiple documentation templates
+   - Dynamic template-based documentation menu
+   - Complete multilingual support (Spanish/English)
+   - Direct GitHub repository URL support
+   - Legacy codebase documentation recovery
 
 ## 🚀 Getting Started
 
@@ -218,7 +220,7 @@ The documentation generation process has two main steps:
 
 2. **Generate documentation**:
    ```
-   GENERATE_DOC repo_path=/path/to/repository
+   GENERATE_DOC repo_path=/path/to/repository language=en
    ```
 
 ### Parameters for GENERATE_CONTEXT
@@ -231,10 +233,14 @@ The documentation generation process has two main steps:
 
 ### Parameters for GENERATE_DOC
 
-- `repo_path`: Path to the repository you want to document (optional if context exists)
-- `context_path`: Path to the context directory (optional)
-- `output`: Path where to save the documentation (optional)
+- `repo_path`: Path or GitHub URL to the repository you want to document (required)
+- `language`: Language for documentation output - "en" for English or "es" for Spanish (required)
+- `output`: Path where to save the documentation (optional, default: `docs/generated`)
+- `context_output_file`: Path for the extracted context file (optional)
+- `clone_dir`: Directory for cloning remote repositories (optional)
 - `template`: Documentation template to use (optional)
+- `force_context_regeneration`: Force regenerate context even if exists (optional)
+- `force_clone`: Force re-cloning of remote repository (optional)
 
 ### Examples
 
@@ -242,9 +248,27 @@ The documentation generation process has two main steps:
 # Extract repository context
 GENERATE_CONTEXT repo_path=~/projects/my-api
 
-# Generate documentation
-GENERATE_DOC repo_path=~/projects/my-api template=api-docs output=~/documentation/my-api
+# Generate documentation in English from local repository
+GENERATE_DOC repo_path=~/projects/my-api language=en
+
+# Generate documentation in Spanish from GitHub URL
+GENERATE_DOC repo_path=https://github.com/username/repo language=es
+
+# Generate documentation with custom output path
+GENERATE_DOC repo_path=~/projects/my-api language=en output=~/custom/docs
 ```
+
+### Dynamic Template Menu
+
+When you run `GENERATE_DOC`, the system will:
+
+1. Confirm your preferred language (English or Spanish)
+2. Clone and analyze the repository (if URL provided)
+3. Present a dynamic menu of documentation options based on available templates
+4. Generate documentation according to your selections
+5. Save files to the output directory with proper naming
+
+This process makes it easy to generate exactly the documentation you need from any repository, local or remote.
 
 ## Code Analysis Process
 
