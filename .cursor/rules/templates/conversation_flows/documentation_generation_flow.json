@@ -1,0 +1,49 @@
+{
+  "flow_name": "documentation_generation",
+  "description": "Interactive menu for selecting documentation types to generate for GENERATE_DOC.",
+  "menu": {
+      "id": "documentation_selection",
+      "prompt": "Okay, I understand you will first analyze the repository context provided ({{repo_path}}) and might provide a summary or initial findings. That is fine.\n\n**However, IMMEDIATELY AFTER providing your initial summary/analysis, you MUST present the following menu *exactly* as written below.** Do not propose your own structure or next steps based on your summary; use *this specific menu* to ask the user what they want to document next.\n\n---\n\nWhat would you like to document *next*? (You can select multiple options by listing the numbers, e.g., 1, 5, 9)\n\n**Technical Documentation:**\n1.  Technical Architecture\n2.  API Documentation\n3.  Component Specifications\n4.  Database Schema\n5.  Dependencies\n\n**Product Documentation (Required for Business Documentation):**\n6.  User Stories\n7.  Problem Definition\n8.  Value Proposition\n\n**User Documentation:**\n9.  Installation Guide\n10. Usage Guide\n\n**Developer Documentation:**\n11. Setup Instructions\n12. Contribution Guidelines\n\n**Business Documentation (Requires Product Documentation):**\n13. Market Research\n14. Business Model\n15. Competitive Analysis\n\n**Other Options:**\n16. All Technical Documentation\n17. All Product Documentation\n18. Everything\n19. I'm Done\n\nPlease indicate which documentation you'd like to generate.\nNote: Business Documentation options will only be available after generating Product Documentation.\n---\n\nRemember: After your summary, show this exact menu and wait for the user's selection.",
+      "options": [
+        "Technical Architecture",
+        "API Documentation",
+        "Component Specifications",
+        "Database Schema",
+        "Dependencies",
+        "User Stories",
+        "Problem Definition",
+        "Value Proposition",
+        "Installation Guide",
+        "Usage Guide",
+        "Setup Instructions",
+        "Contribution Guidelines",
+        "Market Research",
+        "Business Model",
+        "Competitive Analysis",
+        "All Technical Documentation",
+        "All Product Documentation",
+        "Everything",
+        "I'm Done"
+      ],
+      "multiple_selection": true,
+      "repeat_until": "I'm Done",
+      "dependencies": [
+        {
+          "condition": "Market Research",
+          "requires": ["Problem Definition", "Value Proposition", "User Stories"],
+          "message": "Market Research requires Product Documentation (Problem Definition, Value Proposition, and User Stories) to be generated first."
+        },
+        {
+          "condition": "Business Model",
+          "requires": ["Problem Definition", "Value Proposition", "User Stories"],
+          "message": "Business Model requires Product Documentation (Problem Definition, Value Proposition, and User Stories) to be generated first."
+        },
+        {
+          "condition": "Competitive Analysis",
+          "requires": ["Problem Definition", "Value Proposition"],
+          "message": "Competitive Analysis requires Product Documentation (Problem Definition and Value Proposition) to be generated first."
+        }
+      ],
+      "notes": "The core command execution logic should reference this menu definition and handle the subsequent generation based on user selection."
+   }
+} 

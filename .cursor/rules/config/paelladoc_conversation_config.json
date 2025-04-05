@@ -13,6 +13,11 @@
       "path": ".cursor/rules/templates/conversation_flows/technical_specifications_flow.json",
       "enabled": true,
       "priority": "high"
+    },
+    {
+      "path": ".cursor/rules/templates/conversation_flows/documentation_generation_flow.json",
+      "enabled": true,
+      "priority": "normal"
     }
   ],
   "commands": {
@@ -30,6 +35,12 @@
     },
     "GENERATE_CODE": {
       "required_flows": ["main_conversation", "technical_specifications"],
+      "optional_flows": [],
+      "sequential_questions": true,
+      "save_to_memory": true
+    },
+    "GENERATE_DOC": {
+      "required_flows": ["documentation_generation"],
       "optional_flows": [],
       "sequential_questions": true,
       "save_to_memory": true

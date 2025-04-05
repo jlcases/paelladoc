@@ -4,7 +4,7 @@
 
 When this command is invoked, the AI MUST FOLLOW THESE EXACT INSTRUCTIONS:
 
-1. FIRST: Analyze the repository content at `/Users/jlcases/codigo/paelladoc/code_context/extracted/repo_content.txt`
+1. FIRST: Analyze the repository content at `/Users/jlcases/codigo/paelladoc/code_context/extracted/*.txt`
 
 2. THEN: Present the user with EXACTLY this menu of options and WAIT for their selection:
 

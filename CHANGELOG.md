@@ -4,6 +4,27 @@ All notable changes to PAELLADOC will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.2.0] - 2024-04-15
+
+### Added
+- **Dynamic Template-Based Menu System**: Replaced fixed menu with a dynamic menu generated from existing templates
+- **Improved Multilingual Support**: Implemented full support for both Spanish and English in documentation generation
+- New `enforce_fixed_menu.py` script modified to generate a dynamic menu from templates
+- Documentation file creation now uses templates as structural guides
+- Reorganized output instructions to save documentation to `/docs/generated/`
+- Improved integration between dynamic menu and documentation file generation
+
+### Changed
+- GENERATE_DOC command configuration now supports additional templates
+- Generated files are now always saved in `/docs/generated/` while following template structure
+- Improved template organization and integration with the documentation system
+- System now respects user's language selection, without forcing Spanish or English
+
+### Fixed
+- Fixed issues with documentation output file location
+- Solved inconsistency between menu and available templates
+- Improved documentation file saving process
+
 ## [0.1.0] - 2025-04-04
 
 ### Breaking Changes

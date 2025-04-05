@@ -1,0 +1,66 @@
+{
+  "name": "generate_doc_command",
+  "description": "Fixed menu presentation for documentation generation",
+  "introduction": "Analyzing repository {{repo_path}} for documentation in {{language}}...",
+  "prevent_web_search": true,
+  "force_fixed_menu": true,
+  "menu_language": "es",
+  "disable_automatic_analysis": true,
+  "steps": [
+    {
+      "id": "documentation_selection",
+      "type": "fixed_menu",
+      "title": "Opciones de Documentación",
+      "description": "¿Qué te gustaría documentar? (Puedes seleccionar múltiples opciones indicando los números, por ejemplo: 1, 5, 9)",
+      "prevent_web_search": true,
+      "prevent_analysis": true,
+      "force_fixed_menu": true,
+      "options": [
+        "Arquitectura Técnica",
+        "Documentación de API",
+        "Especificaciones de Componentes",
+        "Esquema de Base de Datos",
+        "Dependencias",
+        "Historias de Usuario",
+        "Definición del Problema",
+        "Propuesta de Valor",
+        "Guía de Instalación",
+        "Guía de Uso",
+        "Instrucciones de Configuración",
+        "Guías de Contribución",
+        "Investigación de Mercado",
+        "Modelo de Negocio", 
+        "Análisis Competitivo",
+        "Toda la Documentación Técnica",
+        "Toda la Documentación de Producto",
+        "Todo",
+        "He Terminado"
+      ],
+      "dependencies": [
+        {
+          "condition": "Investigación de Mercado",
+          "requires": ["Definición del Problema", "Propuesta de Valor", "Historias de Usuario"],
+          "message": "La Investigación de Mercado requiere primero la Definición del Problema, Propuesta de Valor e Historias de Usuario."
+        },
+        {
+          "condition": "Modelo de Negocio",
+          "requires": ["Definición del Problema", "Propuesta de Valor", "Historias de Usuario"],
+          "message": "El Modelo de Negocio requiere primero la Definición del Problema, Propuesta de Valor e Historias de Usuario."
+        },
+        {
+          "condition": "Análisis Competitivo",
+          "requires": ["Definición del Problema", "Propuesta de Valor"],
+          "message": "El Análisis Competitivo requiere primero la Definición del Problema y Propuesta de Valor."
+        }
+      ]
+    }
+  ],
+  "settings": {
+    "always_show_fixed_menu": true,
+    "prevent_web_search": true,
+    "menu_language": "es",
+    "disable_automatic_analysis": true,
+    "return_to_menu_after_generation": true,
+    "check_dependencies": true
+  }
+} 

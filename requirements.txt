@@ -1,1 +1,2 @@
-repopack==0.1.1 
+repopack==0.1.1
+PyYAML==6.0.1 
