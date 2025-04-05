@@ -59,3 +59,6 @@ tmp/
 
 temp_docs/
 backup_redundancies/
+
+temp_cloned_repos/
+temp_repo/
