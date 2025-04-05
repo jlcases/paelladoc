@@ -1,406 +1,207 @@
 #!/usr/bin/env python3
 """
-PAELLADOC Documentation Generator
+PAELLADOC Documentation Generator - Preparation Script
 ---------------------------------
-This script integrates the repository analysis with the documentation generation process.
-It runs the analyze_repo_context.py script first, and then presents the user with
-appropriate documentation options based on the detected project type.
+This script ONLY prepares the repository context by:
+1. Cloning the repository if it's a URL
+2. Running extract_repo_content.py to extract the context
+3. Then returning to allow the AI chat to handle the interactive documentation generation
 
 Usage:
-    python run_generate_doc.py [context_file_path] [output_dir]
+    python run_generate_doc.py repo_path language [options]
 """
 
 import os
 import sys
-import json
 import subprocess
 import argparse
+import re
 from pathlib import Path
+import shutil
 
 def ensure_directory_exists(directory):
     """Ensures the specified directory exists."""
-    os.makedirs(directory, exist_ok=True)
+    Path(directory).mkdir(parents=True, exist_ok=True)
     return directory
 
-def run_repo_analysis(context_file_path):
-    """Runs the repository analysis script and returns the results."""
-    # Path to the analyzer script
-    analyzer_script = os.path.join(os.path.dirname(__file__), "analyze_repo_context.py")
-    
-    # Output path for analysis
-    analysis_dir = ensure_directory_exists("code_context/analyzed")
-    analysis_file = os.path.join(analysis_dir, "project_analysis.json")
-    
-    # Run the analyzer script
-    try:
-        subprocess.run([
-            sys.executable, 
-            analyzer_script, 
-            context_file_path,
-            analysis_file
-        ], check=True)
-        
-        # Read the analysis results
-        with open(analysis_file, 'r', encoding='utf-8') as f:
-            analysis = json.load(f)
-        
-        return analysis
-    except Exception as e:
-        print(f"Error running repository analysis: {str(e)}")
-        sys.exit(1)
+def is_git_url(path):
+    """Check if the path looks like a git URL."""
+    return path.startswith(('http://', 'https://', 'git@')) or path.endswith('.git')
 
-def generate_documentation_menu(analysis, output_dir):
-    """Generates the documentation menu based on project analysis."""
-    project_type = analysis.get("project_type", "unknown")
-    frameworks = analysis.get("frameworks", [])
-    languages = analysis.get("languages", [])
-    
-    # Start interactive documentation generation
-    print("\n" + "=" * 60)
-    print(f"PAELLADOC - Documentation Generation for {project_type.replace('_', ' ').title()}")
-    print("=" * 60)
-    
-    print("\nProject Analysis Results:")
-    print(f"- Project Type: {project_type.replace('_', ' ').title()}")
-    print(f"- Languages: {', '.join(languages)}")
-    print(f"- Frameworks: {', '.join(frameworks)}")
-    print(f"- Dependencies: {len(analysis.get('dependencies', []))}")
-    print(f"- Files: {analysis.get('file_count', 0)}")
-    
-    # Generate documentation options based on project type
-    print("\nWhat documentation would you like to generate?")
-    
-    # Common options for all project types
-    options = [
-        "1. Technical Architecture",
-        "2. Installation Guide",
-        "3. Project Structure",
-        "4. Development Guide",
-        "5. Future Improvements"
+def clone_repository(repo_url, clone_dir, force=False):
+    """Clones the repository from the URL into the clone_dir."""
+    clone_path = Path(clone_dir)
+    if clone_path.exists():
+        if force:
+            print(f"Removing existing directory: {clone_path}")
+            shutil.rmtree(clone_path)
+        else:
+            print(f"Directory already exists: {clone_path}. Using existing clone.")
+            # Optionally add git pull logic here if needed
+            return str(clone_path)
+
+    ensure_directory_exists(os.path.dirname(clone_path))
+    print(f"Cloning {repo_url} into {clone_path}...")
+    try:
+        subprocess.run(["git", "clone", repo_url, str(clone_path)], check=True, capture_output=True, text=True)
+        print("Repository cloned successfully.")
+        return str(clone_path)
+    except subprocess.CalledProcessError as e:
+        print(f"Error cloning repository: {e}")
+        print(f"Stderr: {e.stderr}")
+        return None
+    except FileNotFoundError:
+        print("Error: 'git' command not found. Please ensure Git is installed and in your PATH.")
+        return None
+
+def run_context_extraction(local_repo_path, context_output_file):
+    """Runs the extract_repo_content.py script."""
+    script_path = Path(__file__).parent / "extract_repo_content.py"
+    venv_path = Path(__file__).parent.parent.parent / ".venv" # Assuming venv is at project root
+
+    if not script_path.exists():
+        print(f"Error: Context extraction script not found at {script_path}")
+        return False
+        
+    # Prepare arguments for extract_repo_content.py
+    cmd = [
+        sys.executable, 
+        str(script_path), 
+        local_repo_path, # Positional argument
+        "--output", context_output_file, # Use the correct output path
+        "--venv", str(venv_path) # Point to the venv used by the main project
+        # Add other options like --line-numbers if needed, passed from main args
     ]
     
-    # Add project-specific options
-    if project_type == "chrome_extension":
-        options.extend([
-            "6. Extension Components",
-            "7. API Documentation",
-            "8. User Guide"
-        ])
-    elif project_type == "frontend_webapp":
-        options.extend([
-            "6. UI Components",
-            "7. State Management",
-            "8. User Guide"
-        ])
-    elif project_type == "backend_api":
-        options.extend([
-            "6. API Endpoints",
-            "7. Database Schema",
-            "8. Authentication System"
-        ])
-    elif project_type == "mobile_app":
-        options.extend([
-            "6. Screen Components",
-            "7. Navigation System",
-            "8. Device Integration"
-        ])
-    elif project_type == "fullstack_app":
-        options.extend([
-            "6. Frontend Components",
-            "7. Backend API",
-            "8. Database Schema"
-        ])
-    
-    # Add product documentation options
-    options.extend([
-        "9. Business Context",
-        "10. User Stories",
-        "11. Market Analysis",
-        "12. Competitive Analysis",
-        "13. Generate ALL Documentation",
-        "14. Cancel"
-    ])
-    
-    # Print options
-    for option in options:
-        print(option)
-    
-    # Get user selection
-    while True:
-        try:
-            choice = input("\nEnter option number(s) separated by commas: ")
-            
-            # Check if user wants to cancel
-            if choice.strip() == "14":
-                print("Documentation generation cancelled.")
-                return
-            
-            # Check if user wants all documentation
-            if choice.strip() == "13":
-                generate_all_documentation(project_type, frameworks, languages, output_dir)
-                return
-            
-            # Parse user choices
-            choices = [int(c.strip()) for c in choice.split(",") if c.strip().isdigit()]
-            
-            if not choices:
-                print("Invalid selection. Please enter valid option numbers.")
-                continue
-            
-            # Generate selected documentation
-            generate_selected_documentation(choices, project_type, frameworks, languages, output_dir)
-            break
-            
-        except ValueError:
-            print("Invalid input. Please enter valid option numbers.")
-
-def generate_selected_documentation(choices, project_type, frameworks, languages, output_dir):
-    """Generates the selected documentation components."""
-    # Map of option numbers to documentation types
-    option_map = {
-        1: "technical_architecture",
-        2: "installation_guide",
-        3: "project_structure",
-        4: "development_guide",
-        5: "future_improvements",
-        6: "components",
-        7: "api_documentation",
-        8: "user_guide",
-        9: "business_context",
-        10: "user_stories",
-        11: "market_analysis",
-        12: "competitive_analysis"
-    }
-    
-    # Map project-specific option 6-8 based on project type
-    if project_type == "chrome_extension":
-        option_map[6] = "extension_components"
-        option_map[7] = "extension_api"
-        option_map[8] = "extension_user_guide"
-    elif project_type == "frontend_webapp":
-        option_map[6] = "ui_components"
-        option_map[7] = "state_management"
-        option_map[8] = "webapp_user_guide"
-    elif project_type == "backend_api":
-        option_map[6] = "api_endpoints"
-        option_map[7] = "database_schema"
-        option_map[8] = "authentication_system"
-    elif project_type == "mobile_app":
-        option_map[6] = "screen_components"
-        option_map[7] = "navigation_system"
-        option_map[8] = "device_integration"
-    elif project_type == "fullstack_app":
-        option_map[6] = "frontend_components"
-        option_map[7] = "backend_api"
-        option_map[8] = "database_schema"
-    
-    # Generate each selected documentation
-    for choice in choices:
-        if choice in option_map:
-            doc_type = option_map[choice]
-            print(f"\nGenerating {doc_type.replace('_', ' ').title()} documentation...")
-            
-            # Generate specific documentation file
-            file_name = f"{doc_type.upper()}.md"
-            file_path = os.path.join(output_dir, file_name)
-            
-            generate_documentation_file(doc_type, project_type, frameworks, languages, file_path)
-            
-            print(f"✓ {doc_type.replace('_', ' ').title()} documentation saved to {file_path}")
-    
-    # Generate an index file if multiple docs were selected
-    if len(choices) > 1:
-        generate_index_file(choices, option_map, output_dir)
-
-def generate_all_documentation(project_type, frameworks, languages, output_dir):
-    """Generates all documentation components."""
-    print("\nGenerating ALL documentation components. This may take a moment...")
-    
-    # Technical documentation
-    tech_docs = ["technical_architecture", "installation_guide", "project_structure", 
-                "development_guide", "future_improvements"]
-    
-    # Project-specific documentation
-    if project_type == "chrome_extension":
-        tech_docs.extend(["extension_components", "extension_api", "extension_user_guide"])
-    elif project_type == "frontend_webapp":
-        tech_docs.extend(["ui_components", "state_management", "webapp_user_guide"])
-    elif project_type == "backend_api":
-        tech_docs.extend(["api_endpoints", "database_schema", "authentication_system"])
-    elif project_type == "mobile_app":
-        tech_docs.extend(["screen_components", "navigation_system", "device_integration"])
-    elif project_type == "fullstack_app":
-        tech_docs.extend(["frontend_components", "backend_api", "database_schema"])
-    
-    # Product documentation
-    product_docs = ["business_context", "user_stories", "market_analysis", "competitive_analysis"]
-    
-    # Generate all technical documentation
-    for doc_type in tech_docs:
-        print(f"Generating {doc_type.replace('_', ' ').title()}...")
-        file_name = f"{doc_type.upper()}.md"
-        file_path = os.path.join(output_dir, file_name)
-        generate_documentation_file(doc_type, project_type, frameworks, languages, file_path)
-    
-    # Generate all product documentation
-    for doc_type in product_docs:
-        print(f"Generating {doc_type.replace('_', ' ').title()}...")
-        file_name = f"{doc_type.upper()}.md"
-        file_path = os.path.join(output_dir, file_name)
-        generate_documentation_file(doc_type, project_type, frameworks, languages, file_path)
-    
-    # Generate README and index
-    generate_readme_file(project_type, frameworks, languages, output_dir)
-    generate_index_file(list(range(1, 13)), {}, output_dir)
-    
-    print("\n✓ All documentation generated successfully!")
-
-def generate_documentation_file(doc_type, project_type, frameworks, languages, file_path):
-    """Generates a specific documentation file."""
-    # Create example content for each documentation type
-    content = f"# {doc_type.replace('_', ' ').title()}\n\n"
-    
-    # Add specific content based on documentation type
-    if doc_type == "technical_architecture":
-        content += f"## Overview\n\nThis is a {project_type.replace('_', ' ')} project "
-        content += f"built with {', '.join(languages)} "
-        if frameworks:
-            content += f"using {', '.join(frameworks)} "
-        content += ".\n\n"
-        
-        content += "## Architecture\n\n"
-        
-        if project_type == "chrome_extension":
-            content += "### Extension Components\n\n"
-            content += "- **Background Script**: Manages extension state and browser events\n"
-            content += "- **Content Scripts**: Interact with web page content\n"
-            content += "- **Popup UI**: User interface for the extension\n"
-            content += "- **Options Page**: Configuration settings\n\n"
-        elif project_type == "frontend_webapp":
-            content += "### Application Structure\n\n"
-            content += "- **Components**: Reusable UI elements\n"
-            content += "- **Pages/Views**: Top-level screen components\n"
-            content += "- **State Management**: Data flow and state handling\n"
-            content += "- **Services**: API integration and business logic\n\n"
-        elif project_type in ["backend_api", "fullstack_app"]:
-            content += "### API Structure\n\n"
-            content += "- **Routes**: API endpoint definitions\n"
-            content += "- **Controllers**: Request handling logic\n"
-            content += "- **Models**: Data models and schemas\n"
-            content += "- **Middleware**: Request/response processing\n\n"
-    
-    # Write content to file
-    os.makedirs(os.path.dirname(file_path), exist_ok=True)
-    with open(file_path, 'w', encoding='utf-8') as f:
-        f.write(content)
-
-def generate_index_file(choices, option_map, output_dir):
-    """Generates an index file for all documentation."""
-    index_path = os.path.join(output_dir, "INDEX.md")
-    
-    content = "# Documentation Index\n\n"
-    content += "## Table of Contents\n\n"
-    
-    # If option_map is empty (for "Generate ALL"), create a full index
-    if not option_map:
-        # Technical documentation
-        content += "### Technical Documentation\n\n"
-        content += "- [Technical Architecture](TECHNICAL_ARCHITECTURE.md)\n"
-        content += "- [Installation Guide](INSTALLATION_GUIDE.md)\n"
-        content += "- [Project Structure](PROJECT_STRUCTURE.md)\n"
-        content += "- [Development Guide](DEVELOPMENT_GUIDE.md)\n"
-        content += "- [Future Improvements](FUTURE_IMPROVEMENTS.md)\n\n"
-        
-        # Project-specific documentation might vary, so add a generic section
-        content += "### Project-Specific Documentation\n\n"
-        
-        # Try to list files that might exist
-        specific_docs = [
-            "EXTENSION_COMPONENTS.md", "EXTENSION_API.md", "EXTENSION_USER_GUIDE.md",
-            "UI_COMPONENTS.md", "STATE_MANAGEMENT.md", "WEBAPP_USER_GUIDE.md",
-            "API_ENDPOINTS.md", "DATABASE_SCHEMA.md", "AUTHENTICATION_SYSTEM.md",
-            "SCREEN_COMPONENTS.md", "NAVIGATION_SYSTEM.md", "DEVICE_INTEGRATION.md",
-            "FRONTEND_COMPONENTS.md", "BACKEND_API.md"
-        ]
-        
-        for doc in specific_docs:
-            if os.path.exists(os.path.join(output_dir, doc)):
-                content += f"- [{doc.replace('_', ' ').title().replace('.Md', '')}]({doc})\n"
-        
-        content += "\n### Product Documentation\n\n"
-        content += "- [Business Context](BUSINESS_CONTEXT.md)\n"
-        content += "- [User Stories](USER_STORIES.md)\n"
-        content += "- [Market Analysis](MARKET_ANALYSIS.md)\n"
-        content += "- [Competitive Analysis](COMPETITIVE_ANALYSIS.md)\n"
-    else:
-        # Add links based on selected options
-        for choice in choices:
-            if choice in option_map:
-                doc_type = option_map[choice]
-                file_name = f"{doc_type.upper()}.md"
-                link_text = doc_type.replace('_', ' ').title()
-                content += f"- [{link_text}]({file_name})\n"
-    
-    # Write index file
-    with open(index_path, 'w', encoding='utf-8') as f:
-        f.write(content)
-    
-    print(f"✓ Documentation index created at {index_path}")
-
-def generate_readme_file(project_type, frameworks, languages, output_dir):
-    """Generates a README.md file."""
-    readme_path = os.path.join(output_dir, "README.md")
-    
-    content = f"# {project_type.replace('_', ' ').title()} Documentation\n\n"
-    
-    content += "## Project Overview\n\n"
-    content += f"This is a {project_type.replace('_', ' ')} project "
-    content += f"built with {', '.join(languages)} "
-    if frameworks:
-        content += f"using {', '.join(frameworks)} "
-    content += ".\n\n"
-    
-    content += "## Documentation Contents\n\n"
-    content += "This documentation package includes:\n\n"
-    content += "- Technical architecture and design documentation\n"
-    content += "- Installation and setup instructions\n"
-    content += "- Usage guides and examples\n"
-    content += "- API references and component specifications\n"
-    content += "- Business context and requirements\n\n"
-    
-    content += "For a complete list of available documentation, see [Index](INDEX.md).\n"
-    
-    # Write README file
-    with open(readme_path, 'w', encoding='utf-8') as f:
-        f.write(content)
-    
-    print(f"✓ README created at {readme_path}")
+    print(f"\nRunning context extraction...")
+    print(f"Command: {' '.join(cmd)}")
+    try:
+        # Ensure the output directory exists
+        ensure_directory_exists(os.path.dirname(context_output_file))
+        process = subprocess.run(cmd, check=True, capture_output=True, text=True)
+        print("Context extraction script finished.")
+        print(f"Stdout:\n{process.stdout}")
+        if process.stderr:
+             print(f"Stderr:\n{process.stderr}")
+        if not Path(context_output_file).exists():
+             print(f"Warning: Context file {context_output_file} was not created by the script.")
+             return False
+        print(f"Context successfully extracted to: {context_output_file}")
+        return True
+    except subprocess.CalledProcessError as e:
+        print(f"Error running context extraction script: {e}")
+        print(f"Stderr: {e.stderr}")
+        return False
+    except FileNotFoundError:
+        print(f"Error: Python executable '{sys.executable}' or script '{script_path}' not found.")
+        return False
+    except Exception as e:
+        print(f"An unexpected error occurred during context extraction: {e}")
+        return False
 
 def main():
-    """Main function."""
-    # Parse command line arguments
-    parser = argparse.ArgumentParser(description="PAELLADOC Documentation Generator")
-    parser.add_argument('--context', default="code_context/extracted/repo_content.txt",
-                      help="Path to the repository context file")
-    parser.add_argument('--output', default="docs/generated",
-                      help="Output directory for generated documentation")
+    """Main function - ONLY handles repository preparation."""
+    parser = argparse.ArgumentParser(description="PAELLADOC Context Preparation Script")
+    # Arguments expected from the orchestrator/user
+    parser.add_argument("repo_path", help="Path or URL to the repository")
+    parser.add_argument("language", help="Output language for documentation (e.g., es, en)")
+    parser.add_argument("--output", default="docs/generated", help="Output directory for generated documentation")
+    parser.add_argument("--context-output-file", default="code_context/extracted/repo_content.txt", help="Path to save the extracted repository context")
+    parser.add_argument("--clone-dir", default="temp_cloned_repos", help="Directory to clone remote repositories into")
+    parser.add_argument("--template", default="standard", help="Documentation template to use")
+    parser.add_argument("--force-context-regeneration", action="store_true", help="Force regeneration of context file")
+    parser.add_argument("--force-clone", action="store_true", help="Force re-cloning by removing existing clone directory")
     
     args = parser.parse_args()
+
+    actual_repo_path = args.repo_path
+    clone_base_dir = args.clone_dir
+
+    # --- Handle Git URL ---    
+    if is_git_url(args.repo_path):
+        repo_name = os.path.basename(args.repo_path)
+        if repo_name.endswith('.git'):
+            repo_name = repo_name[:-4]
+        repo_clone_path = os.path.join(clone_base_dir, repo_name)
+        print(f"Detected Git URL. Attempting to clone into {repo_clone_path}")
+        local_path = clone_repository(args.repo_path, repo_clone_path, args.force_clone)
+        if not local_path:
+            print("Failed to clone repository. Exiting.")
+            sys.exit(1)
+        actual_repo_path = local_path # Use the local path from now on
+    elif not Path(actual_repo_path).is_dir():
+         print(f"Error: Local repository path does not exist or is not a directory: {actual_repo_path}")
+         sys.exit(1)
+    # --- End Handle Git URL ---
     
-    # Ensure context file exists
-    if not os.path.exists(args.context):
-        print(f"Error: Context file not found at {args.context}")
-        sys.exit(1)
+    # --- Context Extraction --- 
+    context_file = args.context_output_file
+    context_exists = Path(context_file).exists()
+
+    if not context_exists or args.force_context_regeneration:
+        print(f"Regenerating context file: {context_file}")
+        if not run_context_extraction(actual_repo_path, context_file):
+            print("Failed to extract repository context. Exiting.")
+            sys.exit(1)
+    else:
+        print(f"Using existing context file: {context_file}")
+    # --- End Context Extraction ---
+        
+    # --- Returning to AI Chat for Interactive Documentation ---
+    print(f"\nPAELLADOC run_generate_doc finished.")
+    print(f"Context file prepared at: {context_file}")
+    print(f"Local repository path: {actual_repo_path}")
+    print(f"Documentation language: {args.language}")
+    print(f"Documentation output directory: {args.output}")
+    print(f"Documentation template: {args.template}")
+    print("\nNow returning to AI chat for interactive documentation generation...")
+    print("\n=== IMPORTANT MESSAGE FOR AI CHAT ===")
+    print("1. ALWAYS ASK FOR LANGUAGE CONFIRMATION FIRST!")
+    print("2. WAIT for explicit language confirmation from the user.")
+    print("3. Only then proceed with repository analysis.")
+    print("4. DO NOT SEARCH THE WEB for repository information!")
+    print(f"5. PRESENT the DYNAMIC menu based on template files in the selected language ({args.language})!")
+    print("6. ONE brief paragraph about repository then IMMEDIATELY show the dynamic menu")
+    print("7. NO extensive analysis before showing the menu")
+    print("8. WAIT for user selection before proceeding")
+    print("9. The menu options are based on ACTUAL template files available in the system")
+    print("10. When a user selects an option, USE THE EXISTING TEMPLATE file as the foundation")
+    print("11. SAVE filled-in templates as MD files in the original template directories")
+    print("12. DON'T just display documentation in the conversation, SAVE actual files")
+    print("==========================================")
     
-    # Ensure output directory exists
-    output_dir = ensure_directory_exists(args.output)
+    print("\n=== CODE IS KING - CRITICAL INSTRUCTIONS ===")
+    print("1. ALL documentation MUST be based SOLELY on the extracted context file.")
+    print("2. The context file at code_context/extracted/repo_content.txt is the ONLY source of truth.")
+    print("3. DO NOT infer, guess, or create information not explicitly in the context file.")
+    print("4. If information requested is not in the context file, state this explicitly.")
+    print("5. DO NOT use general knowledge about software, technologies, or frameworks.")
+    print("6. NEVER generate fictitious content when data is missing.")
+    print("7. STRICTLY adhere to 'CODE IS KING' - context file is the only source of truth")
+    print("=====================================================")
     
-    # Run repository analysis
-    print(f"Analyzing repository context from {args.context}...")
-    analysis = run_repo_analysis(args.context)
+    print("\n=== ABSOLUTELY CRITICAL: USE THIS EXACT FILE ===")
+    print("THE ONLY SOURCE OF TRUTH IS:")
+    print("/Users/jlcases/codigo/paelladoc/code_context/extracted/repo_content.txt")
+    print("1. ALWAYS check this exact file path for EVERY piece of information")
+    print("2. NEVER rely on memory without consulting the context file again")
+    print("3. For EACH section of documentation, go back to this file")
+    print("4. The file at this exact path contains all the information needed")
+    print("5. DO NOT use any other sources of information")
+    print("=====================================================")
     
-    # Present documentation options based on analysis
-    generate_documentation_menu(analysis, output_dir)
+    # Run the menu enforcer script to ensure the menu is displayed
+    try:
+        menu_enforcer_script = os.path.join(os.path.dirname(__file__), "enforce_fixed_menu.py")
+        if os.path.exists(menu_enforcer_script):
+            print("\nRunning menu enforcer to guarantee fixed menu presentation...")
+            enforcer_process = subprocess.run(
+                [sys.executable, menu_enforcer_script],
+                check=True,
+                text=True
+            )
+    except Exception as e:
+        print(f"Warning: Could not run menu enforcer: {e}")
 
 if __name__ == "__main__":
     main() 

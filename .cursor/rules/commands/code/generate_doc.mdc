@@ -1,9 +1,178 @@
 ---
-description: "When user asks about analyzing code to generate documentation, guide them through the interactive documentation generation process"
+description: "When user asks about analyzing code to generate documentation, present EXACTLY the 19-option menu defined in the JSON file"
 globs: ["**/*.py", "**/*.js", "**/*.ts", "**/*.java", "**/*.jsx", "**/*.tsx", "**/*.html", "**/*.css", "**/*.scss"]
 conversation_required: true
 interactive: true
+ai_driven: true
+prevent_web_search: true
+force_menu_display: true
 ---
+
+# IMPORTANT: FIXED MENU PRESENTATION REQUIRED - STRICTLY USING EXTRACTED CONTEXT
+
+When executing the GENERATE-DOC command, the AI MUST follow these EXACT steps:
+
+1. ALWAYS ask for language (e.g., 'es', 'en') EVEN IF a default language is configured.
+2. WAIT for explicit language confirmation from the user before proceeding.
+3. Extract/clone the repository as needed.
+4. READ EXCLUSIVELY THE EXTRACTED CONTEXT FILE AT /Users/jlcases/codigo/paelladoc/code_context/extracted/repo_content.txt.
+5. DO NOT use external knowledge or search the web.
+6. Give ONE brief paragraph summarizing what the repository appears to be, BASED ONLY ON THE EXTRACTED CONTEXT FILE.
+7. IMMEDIATELY present the following FIXED menu to the user WITHOUT searching the web or generating any analysis:
+
+Spanish Menu (if user selects 'es'):
+```
+¿Qué te gustaría documentar? (Puedes seleccionar múltiples opciones indicando los números, por ejemplo: 1, 5, 9)
+
+Documentación Técnica:
+1.  Arquitectura Técnica
+2.  Documentación de API
+3.  Especificaciones de Componentes
+4.  Esquema de Base de Datos
+5.  Dependencias
+
+Documentación de Producto (Requerida para Documentación de Negocio):
+6.  Historias de Usuario
+7.  Definición del Problema
+8.  Propuesta de Valor
+
+Documentación para Usuarios:
+9.  Guía de Instalación
+10. Guía de Uso
+
+Documentación para Desarrolladores:
+11. Instrucciones de Configuración
+12. Guías de Contribución
+
+Documentación de Negocio (Requiere Documentación de Producto):
+13. Investigación de Mercado
+14. Modelo de Negocio
+15. Análisis Competitivo
+
+Otras Opciones:
+16. Toda la Documentación Técnica
+17. Toda la Documentación de Producto
+18. Todo
+19. He Terminado
+```
+
+English Menu (if user selects 'en'):
+```
+What would you like to document? (You can select multiple options by indicating the numbers, for example: 1, 5, 9)
+
+Technical Documentation:
+1.  Technical Architecture
+2.  API Documentation
+3.  Component Specifications
+4.  Database Schema
+5.  Dependencies
+
+Product Documentation (Required for Business Documentation):
+6.  User Stories
+7.  Problem Definition
+8.  Value Proposition
+
+User Documentation:
+9.  Installation Guide
+10. Usage Guide
+
+Developer Documentation:
+11. Setup Instructions
+12. Contribution Guidelines
+
+Business Documentation (Requires Product Documentation):
+13. Market Research
+14. Business Model
+15. Competitive Analysis
+
+Other Options:
+16. All Technical Documentation
+17. All Product Documentation
+18. Everything
+19. I'm Done
+```
+
+8. WAIT for the user's selection.
+9. Generate documentation ONLY for the options the user selects, USING ONLY INFORMATION FROM THE EXTRACTED CONTEXT FILE AT /Users/jlcases/codigo/paelladoc/code_context/extracted/repo_content.txt.
+10. Check dependencies (Business Documentation requires Product Documentation first).
+11. Ask if the user wants to continue with more documentation (return to menu).
+
+## ABSOLUTELY CRITICAL: CONTEXT FILE IS THE ONLY SOURCE
+
+1. THE EXTRACTED CONTEXT FILE AT /Users/jlcases/codigo/paelladoc/code_context/extracted/repo_content.txt IS THE ABSOLUTE ONLY SOURCE OF INFORMATION.
+2. ALL documentation MUST be based SOLELY on the extracted context file at this specific path.
+3. DO NOT infer, guess, or create information not explicitly present in the context file.
+4. DO NOT use general knowledge about technologies or frameworks.
+5. If information for a requested section is not in the context file, state this explicitly.
+6. NEVER generate fictitious content when data is missing.
+7. The context file at /Users/jlcases/codigo/paelladoc/code_context/extracted/repo_content.txt is the ONLY source of truth.
+8. GENERATE ONLY DOCUMENTATION, NEVER CODE OR OTHER FILES.
+9. DO NOT create any directories or files except the documentation files in the specified output directory.
+10. OUTPUT SHOULD BE DOCUMENTATION TEXT ONLY, directly in the conversation.
+11. ALWAYS CONSULT THE CONTEXT FILE for every section of documentation you generate.
+12. NEVER RELY ON MEMORY or previously generated content - go back to the context file for each section.
+
+## Documentation Output Format
+
+1. SAVE documentation as text files in /Users/jlcases/codigo/paelladoc/docs/generated/.
+2. For each selected menu option, use the structure from templates but save in the GENERATED directory:
+   - All generated documentation must go to /Users/jlcases/codigo/paelladoc/docs/generated/
+   - Follow the template format but SAVE to the docs/generated directory
+   - Create the appropriate file structure inside docs/generated directory
+3. USE THE EXISTING TEMPLATES as the base structure for your documentation:
+   - COPY the structure and format of the template file
+   - DO NOT create new template formats or structures
+   - FOLLOW all section headers and formatting from the template
+   - FILL IN the content based ONLY on the extracted context file
+4. Use an appropriate filename based on the documentation type (e.g., "architecture.md", "api_documentation.md").
+5. ALL documentation MUST be in the language selected by the user (es for Spanish or en for English).
+6. SAVE MARKDOWN FILES, not just display content in the conversation.
+7. VERIFY that each file is actually created in /Users/jlcases/codigo/paelladoc/docs/generated/.
+8. CONTINUE presenting documentation text in the conversation BUT ALSO save to file.
+9. DO NOT attempt to create code files, repositories, or other non-documentation files.
+10. DO NOT try to execute code or implement solutions.
+11. ONLY create documentation files in the specified output directory.
+12. MAINTAIN the same documentation quality and content while also saving to files.
+13. GUARANTEE that all content is in the language selected by the user.
+
+## Language Control
+
+1. ALL documentation generated MUST be in the language selected by the user (es for Spanish or en for English).
+2. MAINTAIN consistency in the selected language across all documentation.
+3. DO NOT mix languages in the documentation files or chat interactions.
+4. DO NOT switch to other languages even if user examples are in other languages.
+5. MENU and ALL documentation output must be in the selected language.
+
+## Workflow Process After Documentation
+
+1. After generating documentation for a selected option, MARK it as completed in the menu with a ✓ symbol.
+2. IMMEDIATELY ask the user if they want to continue with another option by SHOWING THE FULL MENU AGAIN with completed items marked.
+3. The menu shown should be IDENTICAL to the original menu but with completed items marked with a ✓.
+4. This menu re-presentation MUST happen AFTER generating each documentation section.
+5. Example of marking a completed item: "8. Propuesta de Valor ✓"
+6. The menu must show ALL options, not just the remaining ones.
+7. When showing the updated menu, use the EXACT same format but with the completion marks.
+
+## Dependencies
+
+Market Research, Business Model → Require Problem Definition, Value Proposition, User Stories
+Competitive Analysis → Requires Problem Definition, Value Proposition
+
+## Available Documentation Types
+
+The system must offer ONLY the 19 options listed in the menu above. No variation or substitution is allowed.
+
+## Important Notes
+
+- DO NOT analyze and present findings extensively before showing the menu
+- DO NOT propose a different structure of documentation
+- DO NOT search the web or use online information
+- DO NOT use knowledge beyond what's in the context file
+- ALWAYS limit initial repository analysis to one paragraph based ONLY on the context file
+- ALWAYS show the EXACT 19-option menu in Spanish
+- NEVER replace the menu with your own analysis
+- NEVER invent or infer information not in the context file
+- ALWAYS check /Users/jlcases/codigo/paelladoc/code_context/extracted/repo_content.txt for every piece of information
 
 # GENERATE-DOC Command Implementation
 
@@ -36,123 +205,24 @@ When executing this command, PAELLADOC will:
    - Determine project type, technologies used, and other key properties
 
 3. Begin an interactive documentation extraction process:
-   - Present findings from code analysis
-   - Ask the user what type of documentation they want to generate
-   - Offer a menu of available documentation types based on the project
-   - Generate documentation components on demand
+   - Present findings from code analysis in ONE paragraph
+   - IMMEDIATELY show the 19-option menu in Spanish
+   - Ask the user what type of documentation they want to generate from the fixed menu
+   - Generate documentation components on demand based on selection
 
-4. Documentation types offered (automatically adapted to project):
-   - Technical documentation (architecture, API, components)
-   - Product documentation (user stories, problem definition, value proposition)
-   - Business documentation (market analysis, competitive analysis)
-   - User documentation (installation, usage guides)
-   - Developer documentation (contribution guides, coding standards)
+## Interactive Process Control
 
-## Documentation Categories
+The documentation generation follows a strict sequence:
+1. The AI MUST NOT search the web for information
+2. The AI MUST present exactly the 19-option menu shown above
+3. The AI MUST wait for user input before proceeding
+4. The AI MUST follow the dependency rules for documentation types
 
-The system will offer categories appropriate to the detected project type, including:
+This is a hardcoded menu-based system that ALWAYS presents the same 19 options regardless of repository type.
 
-### Technical Documentation
-- Architecture overview
-- Component specifications
-- API references
-- Data models
-- Integration points
-- Security considerations
+## IMPORTANT: No Analysis Before Menu
 
-### Product Documentation
-- Problem definition
-- User stories
-- Value proposition
-- Target audience analysis
-- Product roadmap
-
-### Business Documentation
-- Market analysis
-- Competitive analysis
-- Business model description
-- Marketing strategies
-- Customer acquisition plans
-
-### User Documentation
-- Installation guides
-- Configuration instructions
-- User manuals
-- Troubleshooting guides
-- FAQs
-
-### Developer Documentation
-- Setup instructions
-- Contribution guidelines
-- Testing procedures
-- Release processes
-- Code style guides
-
-## Interactive Process
-
-The documentation generation follows a conversation workflow where the AI will:
-
-1. First analyze the code to extract as much information as possible automatically
-2. Present findings about project type, structure, and technology stack
-3. Ask the user which types of documentation they want to generate
-4. For each chosen type, ask specific questions to gather any missing information
-5. Generate the documentation based on code analysis and user input
-6. Offer to generate additional documentation types
-
-This conversation flow is automatically triggered when the GENERATE_DOC command is invoked.
-
-## Available Templates
-
-The GENERATE-DOC command supports several documentation templates:
-- standard: General-purpose documentation suitable for most projects
-- api: Focused on API documentation for backend services
-- frontend: Frontend application documentation with component details
-- library: Documentation for code libraries and frameworks
-- extension: Chrome extension documentation format
-
-## Working With Repository Content
-
-When working with repository content, the system:
-
-1. Always uses the provided repository content from code_context/extracted/repo_content.txt
-2. Analyzes the content directly without relying on templates or external references
-3. Generates documentation based on the analyzed repository rather than system descriptions 
-4. Prioritizes information from the repository over any other source
-5. Focuses on the actual project being analyzed rather than PAELLADOC itself
-
-## Code Analysis Capabilities
-
-The system analyzes the code to determine:
-
-1. **Project Type Detection**:
-   - Chrome extension (presence of manifest.json, content scripts)
-   - Frontend app (React, Vue, Angular patterns)
-   - Backend API (server patterns, routes definition)
-   - Mobile app (native or hybrid app patterns)
-   - Library/package (exports, module pattern)
-
-2. **Technology Detection**:
-   - Programming languages used
-   - Frameworks and libraries
-   - Build tools and configuration
-   - Testing frameworks
-
-3. **Architecture Analysis**:
-   - Component structure
-   - Design patterns
-   - Project organization
-   - API patterns
-
-4. **User Stories and Requirements**:
-   - Extracting user stories from comments and documentation
-   - Identifying requirements and acceptance criteria
-   - Detecting problem statements and solution approaches
-
-This analysis happens automatically before any user interaction, ensuring the system already has a strong understanding of the project rather than requiring the user to provide this information. 
-
-## Important Behavior Notes
-
-1. When generating documentation, the system will ALWAYS use the extracted repository content from code_context/extracted/repo_content.txt
-2. All documentation generated will be about the repository itself, NOT about PAELLADOC
-3. The system will focus on accurately representing the analyzed project's structure, components, and features
-4. Templates are only used as structural guidance, not for content creation 
+The AI must NOT perform extensive repository analysis before showing the menu. It must:
+1. Give a brief one-paragraph summary of what the repository appears to be
+2. IMMEDIATELY present the 19-option menu
+3. Wait for user selection 

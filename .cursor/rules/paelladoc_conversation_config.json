@@ -13,6 +13,11 @@
       "path": ".cursor/rules/templates/conversation_flows/technical_specifications_flow.json",
       "enabled": true,
       "priority": "high"
+    },
+    {
+      "path": ".cursor/rules/templates/conversation_flows/generate_doc_command.json",
+      "enabled": true,
+      "priority": "high"
     }
   ],
   "commands": {
@@ -33,6 +38,15 @@
       "optional_flows": [],
       "sequential_questions": true,
       "save_to_memory": true
+    },
+    "GENERATE_DOC": {
+      "prevent_web_search": true,
+      "force_menu_display": true,
+      "conversation_flow": "generate_doc_command",
+      "menu_language": "es",
+      "fixed_menu_required": true,
+      "menu_display_action": "show_fixed_spanish_menu",
+      "disable_automatic_analysis": true
     }
   },
   "global_requirements": {
@@ -61,5 +75,16 @@
     "show_progress": true,
     "confirm_each_answer": true,
     "show_memory_updates": true
+  },
+  "command_behaviors": {
+    "GENERATE_DOC": {
+      "prevent_web_search": true,
+      "force_menu_display": true,
+      "conversation_flow": "generate_doc_command",
+      "menu_language": "es",
+      "fixed_menu_required": true,
+      "menu_display_action": "show_fixed_spanish_menu",
+      "disable_automatic_analysis": true
+    }
   }
 }

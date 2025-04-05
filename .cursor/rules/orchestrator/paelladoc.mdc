@@ -15,7 +15,6 @@ imports:
   - ".cursor/rules/commands/product/product_management.mdc"
   - ".cursor/rules/modules/conversation/conversation_workflow.mdc"
   - ".cursor/rules/modules/code_analysis/code_analysis.mdc"
-  - ".cursor/rules/commands/code/generate_context.mdc"
   - ".cursor/rules/commands/code/generate_doc.mdc"
 ---
 # PAELLADOC - MECE Documentation System
@@ -325,78 +324,103 @@ commands:
       module: "commands/product/product_management.mdc"
   
   # Code Analysis and Documentation Commands
-  GENERATE_CONTEXT:
-    description: "Converts a code repository to text format for processing"
-    action: "generate_repository_context"
+  GENERATE_DOC:
+    description: "Interactive documentation generator that works with local paths or GitHub URLs"
+    action: "run_script"
     args:
       - name: "repo_path"
         type: "string"
-        description: "Path to the repository to process"
+        description: "Path or URL to the repository to analyze and document."
+        required: true
+      - name: "language"
+        type: "string"
+        description: "The language for the documentation process and output (e.g., 'es', 'en')."
         required: true
       - name: "output"
         type: "string"
-        description: "Output file name for the extracted content"
-        required: false
-        default: "code_context/extracted/repo_content.txt"
-      - name: "line_numbers"
-        type: "boolean"
-        description: "Whether to show line numbers in the output file"
-        required: false
-        default: false
-      - name: "style"
-        type: "string"
-        description: "Output style (plain or xml)"
-        required: false
-        default: "plain"
-      - name: "ignore"
-        type: "string"
-        description: "Additional patterns to ignore (comma-separated)"
-        required: false
-    behavior:
-      auto_extract: true
-      run_script: true
-      script_path: ".cursor/rules/scripts/extract_repo_content.py"
-      module: "commands/code/generate_context.mdc"
-  
-  GENERATE_DOC:
-    description: "Analyzes code and generates comprehensive documentation with interactive guidance"
-    action: "generate_documentation"
-    args:
-      - name: "repo_path"
-        type: "string"
-        description: "Path to the repository to analyze (optional if context already exists)"
-        required: false
-        default: "/Users/jlcases/codigo/paelladoc/code_context/extracted/repo_content.txt"
-      - name: "context_path"
-        type: "string"
-        description: "Path to the context directory"
-        required: false
-        default: "code_context/extracted"
-      - name: "output"
-        type: "string"
-        description: "Path where to save the generated documentation"
+        description: "Output directory for generated documentation"
         required: false
         default: "docs/generated"
+      - name: "context_output_file"
+        type: "string"
+        description: "Path where the extracted context file should be saved."
+        required: false
+        default: "code_context/extracted/repo_content.txt"
+      - name: "clone_dir"
+        type: "string"
+        description: "Base directory for cloning remote repositories."
+        required: false
+        default: "temp_cloned_repos"
       - name: "template"
         type: "string"
-        description: "Documentation template to use"
+        description: "Documentation template to potentially use during generation."
         required: false
         default: "standard"
+      - name: "force_context_regeneration"
+        type: "boolean"
+        description: "Force regeneration of the context file even if it exists."
+        default: false
+      - name: "force_clone"
+        type: "boolean"
+        description: "Force re-cloning of remote repo by deleting existing directory."
+        default: false
     behavior:
+      script_path: ".cursor/rules/scripts/run_generate_doc.py"
+      script_must_run_first: true
       conversation_required: true
-      ai_driven: true
       interactive: true
-      auto_documentation: false
-      conversation_flow: "documentation_generation"
-      wait_for_user_confirmation: true
-      prevent_automatic_generation: true
-      auto_analyze_repo: true
-      module: "modules/code_analysis/code_analysis.mdc"
-      instruction_file: "docs/commands"
-      priority_instructions: true
-      skip_auto_generation: true
-      require_explicit_user_selection: true
-      interactive_mode: "mandatory"
+      menu_handling: "ai_chat"
+      post_script_action: "present_documentation_menu"
+      menu_definition: "modules/code_analysis/code_analysis.mdc"
+      prevent_web_search: true
+      force_menu_display: true
+      fixed_menu_required: true
+      default_language: "es"
+      always_ask_language: true
+      require_language_confirmation: true
+      language_confirmation_first: true
+      menu_presentation_action: "show_fixed_menu"
+      special_behavior: "no_analysis_before_menu"
+      wait_for_script_completion: true
+      read_context_after_script: "code_context/extracted/repo_content.txt"
+      strict_context_only: true
+      code_is_king: true
+      prevent_external_knowledge: true
+      prevent_inference: true
+      context_file_is_sole_source: true
+      report_missing_info: true
+      documentation_only: true
+      no_file_creation: false
+      output_in_conversation_only: false
+      generate_text_not_code: true
+      do_not_execute_or_implement: true
+      prevent_directory_creation: false
+      context_file_path: "/Users/jlcases/codigo/paelladoc/code_context/extracted/repo_content.txt"
+      always_check_context_file: true
+      never_rely_on_memory: true
+      consult_context_for_every_section: true
+      absolute_context_path_required: true
+      show_menu_after_documentation: true
+      mark_completed_items: true
+      use_checkmark_symbol: true
+      show_full_menu_again: true
+      always_maintain_menu_format: true
+      ask_for_next_selection: true
+      documentation_output_path: "/Users/jlcases/codigo/paelladoc/docs/generated"
+      save_documentation_files: true
+      create_documentation_files: true
+      allow_documentation_dir_creation: true
+      use_existing_templates: true
+      follow_template_structure: true
+      save_md_files: true
+      preserve_template_format: true
+      template_is_source_of_structure: true
+      force_spanish_language: false
+      translate_all_to_spanish: false
+      spanish_only_output: false
+      verify_file_creation: true
+      enforce_spanish_content: false
+      verify_md_files: true
   
   # Code Generation Commands
   GENERATE_CODE:
@@ -569,9 +593,8 @@ The PAELLADOC system is architected with the following key components:
    - Code generation
    - Product management
 
-4. **Code Analysis**
-   - Repository context generation
-   - Documentation generation
+4. **Code Analysis & Documentation**
+   - Handles repository cloning (if needed), context extraction, and interactive documentation generation via the `GENERATE_DOC` command.
 
 ## Command Execution Flow
 
@@ -586,10 +609,12 @@ When a command is issued:
 
 The documentation generation follows a structured process:
 
-1. Repository context is generated using GENERATE_CONTEXT
-2. Interactive documentation is created with GENERATE_DOC
-3. Templates are applied based on project type
-4. Documentation is saved to the specified output location
+1.  The `GENERATE_DOC` command is invoked with a repository path (local or URL).
+2.  If a URL is provided, the repository is cloned locally.
+3.  The system extracts the code context into a text file using the script `.cursor/rules/scripts/extract_repo_content.py`.
+4.  An interactive session begins to analyze the context and generate documentation.
+5.  Templates are applied based on project type.
+6.  Documentation is saved to the specified output location.
 
 ## Memory Management
 

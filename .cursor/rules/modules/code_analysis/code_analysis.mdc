@@ -1,9 +1,180 @@
 ---
-description: When user asks about analyzing code to generate documentation, explain the capabilities and process based on PAELLADOC code analysis rules
+description: When user asks about analyzing code to generate documentation, present EXACTLY the 19-option menu defined below
 globs: ["**/*.py", "**/*.js", "**/*.ts", "**/*.java", "**/*.jsx", "**/*.tsx", "**/*.html", "**/*.css", "**/*.scss"]
 conversation_required: true
 interactive: true
+ai_driven: true
+prevent_web_search: true
+force_menu_display: true
+strict_context_only: true
 ---
+
+# FIXED Documentation Menu System - CODE IS KING - SPECIFIC CONTEXT FILE ONLY
+
+This module handles the presentation of a fixed documentation menu when a user executes the GENERATE_DOC command. 
+
+## ABSOLUTELY CRITICAL: CONTEXT FILE IS THE ONLY SOURCE
+
+1. THE EXTRACTED CONTEXT FILE AT /Users/jlcases/codigo/paelladoc/code_context/extracted/repo_content.txt IS THE ABSOLUTE ONLY SOURCE OF INFORMATION.
+2. ALL documentation MUST be based SOLELY on the extracted context file at this specific path.
+3. DO NOT infer, guess, or create information not explicitly in the context file.
+4. If information for a requested section is not in the context file, say so explicitly.
+5. DO NOT use general knowledge about software development, technologies, or frameworks.
+6. NEVER generate fictitious content when data is missing.
+7. GENERATE ONLY DOCUMENTATION TEXT, NEVER CODE OR OTHER FILES.
+8. DO NOT create any directories, files, or code snippets.
+9. OUTPUT SHOULD BE DOCUMENTATION TEXT ONLY, directly in the chat.
+10. ALWAYS CONSULT THE CONTEXT FILE at /Users/jlcases/codigo/paelladoc/code_context/extracted/repo_content.txt for every section of documentation you generate.
+11. NEVER RELY ON MEMORY or previously generated content - go back to the context file for each section.
+12. This exact path /Users/jlcases/codigo/paelladoc/code_context/extracted/repo_content.txt contains all the information needed.
+
+## Documentation Output Format
+
+1. SAVE documentation as text files in /Users/jlcases/codigo/paelladoc/docs/generated/.
+2. For each selected menu option, use the structure from templates but save in the GENERATED directory:
+   - All generated documentation must go to /Users/jlcases/codigo/paelladoc/docs/generated/
+   - Follow the template format but SAVE to the docs/generated directory
+   - Create the appropriate file structure inside docs/generated directory
+3. USE THE EXISTING TEMPLATES as the base structure for your documentation:
+   - COPY the structure and format of the template file
+   - DO NOT create new template formats or structures
+   - FOLLOW all section headers and formatting from the template
+   - FILL IN the content based ONLY on the extracted context file
+4. Use an appropriate filename based on the documentation type (e.g., "architecture.md", "api_documentation.md").
+5. ALL documentation MUST be in the language selected by the user (es or en).
+6. SAVE MARKDOWN FILES, not just display content in the conversation.
+7. VERIFY that each file is actually created in /Users/jlcases/codigo/paelladoc/docs/generated/.
+8. CONTINUE presenting documentation text in the conversation BUT ALSO save to file.
+9. DO NOT attempt to create code files, repositories, or other non-documentation files.
+10. DO NOT try to execute code or implement solutions.
+11. ONLY create documentation files in the specified output directory.
+12. MAINTAIN the same documentation quality and content while also saving to files.
+13. GUARANTEE that all content is in the language specified by the user.
+
+## Language Control
+
+1. ALL documentation generated MUST be in the language specified by the user (es for Spanish or en for English).
+2. DO NOT mix languages in the documentation.
+3. MAINTAIN the selected language across all documentation files and chat interactions.
+4. DO NOT switch to other languages even if user examples are in other languages.
+5. MENU and ALL documentation output must be in the selected language.
+
+## Workflow Process After Documentation Generation
+
+1. After generating documentation for a selected option, MARK it as completed in the menu.
+2. Use a ✓ symbol next to completed items when showing the menu again.
+3. ALWAYS show the FULL menu again after generating documentation for an option.
+4. The re-displayed menu must include ALL options (completed AND remaining).
+5. Format for marking completed items: "8. Propuesta de Valor ✓"
+6. The menu re-presentation MUST happen AFTER each documentation section is generated.
+7. When showing the updated menu, maintain the EXACT same format as the original menu.
+8. IMMEDIATELY ask the user if they want to continue with another option.
+
+## IMPORTANT: Menu Display Rules
+
+1. ALWAYS ask for language (e.g., 'es', 'en') EVEN IF a default language is configured, and WAIT for explicit confirmation.
+2. READ EXCLUSIVELY the extracted context file at /Users/jlcases/codigo/paelladoc/code_context/extracted/repo_content.txt (not search the web)
+3. Present ONE brief paragraph about the repository based on LOCAL CONTEXT ONLY
+4. IMMEDIATELY show the 19-option menu in the language specified by the user without any additional analysis
+5. Do NOT search the web or use external information
+6. Do NOT modify the menu options
+7. Do NOT skip the menu presentation
+8. ONLY use information found in the extracted context file for all documentation
+
+## Documentation Generation Menu
+
+The AI MUST ALWAYS present EXACTLY this menu in the language specified by the user (Spanish or English) after one brief paragraph:
+
+Spanish Menu:
+```
+¿Qué te gustaría documentar? (Puedes seleccionar múltiples opciones indicando los números, por ejemplo: 1, 5, 9)
+
+Documentación Técnica:
+1.  Arquitectura Técnica
+2.  Documentación de API
+3.  Especificaciones de Componentes
+4.  Esquema de Base de Datos
+5.  Dependencias
+
+Documentación de Producto (Requerida para Documentación de Negocio):
+6.  Historias de Usuario
+7.  Definición del Problema
+8.  Propuesta de Valor
+
+Documentación para Usuarios:
+9.  Guía de Instalación
+10. Guía de Uso
+
+Documentación para Desarrolladores:
+11. Instrucciones de Configuración
+12. Guías de Contribución
+
+Documentación de Negocio (Requiere Documentación de Producto):
+13. Investigación de Mercado
+14. Modelo de Negocio
+15. Análisis Competitivo
+
+Otras Opciones:
+16. Toda la Documentación Técnica
+17. Toda la Documentación de Producto
+18. Todo
+19. He Terminado
+```
+
+English Menu:
+```
+What would you like to document? (You can select multiple options by indicating the numbers, for example: 1, 5, 9)
+
+Technical Documentation:
+1.  Technical Architecture
+2.  API Documentation
+3.  Component Specifications
+4.  Database Schema
+5.  Dependencies
+
+Product Documentation (Required for Business Documentation):
+6.  User Stories
+7.  Problem Definition
+8.  Value Proposition
+
+User Documentation:
+9.  Installation Guide
+10. Usage Guide
+
+Developer Documentation:
+11. Setup Instructions
+12. Contribution Guidelines
+
+Business Documentation (Requires Product Documentation):
+13. Market Research
+14. Business Model
+15. Competitive Analysis
+
+Other Options:
+16. All Technical Documentation
+17. All Product Documentation
+18. Everything
+19. I'm Done
+```
+
+## Documentation Dependencies
+
+- Market Research, Business Model → Require Problem Definition, Value Proposition, User Stories
+- Competitive Analysis → Requires Problem Definition, Value Proposition
+
+## Strictly Prohibited Actions
+
+- DO NOT analyze and present findings extensively before showing the menu
+- DO NOT propose a different structure of documentation
+- DO NOT skip showing the fixed menu
+- DO NOT search the web or use online information
+- DO NOT generate your own menu options
+- DO NOT replace the menu with custom analysis
+- DO NOT invent or assume information not explicitly in the context file
+- DO NOT use general technology knowledge not found in the context file
+- STRICTLY adhere to "CODE IS KING" - context file is the only source of truth
+- ALWAYS check /Users/jlcases/codigo/paelladoc/code_context/extracted/repo_content.txt for every piece of information
+- NEVER rely on memory without consulting the context file again
 
 # Code Analysis for Documentation Generation
 
@@ -11,9 +182,10 @@ This module handles the analysis of code repositories to generate comprehensive 
 
 ## Command Definition
 
-```
-GENERATE-DOC [repo_path=/path/to/repo] [context_path=/path/to/context] [output=/path/to/output] [template=template_name]
-```
+# This section might be purely descriptive, but let's comment it out to avoid confusion
+# ```
+# GENERATE-DOC [repo_path=/path/to/repo] [context_path=/path/to/context] [output=/path/to/output] [template=template_name]
+# ```
 
 ## Documentation Generation Process
 
@@ -376,136 +548,27 @@ This automatic detection ensures users are never asked about information that ca
 ## Overview
 This module handles code analysis and documentation generation through AI-driven interactive conversations.
 
-## Commands
-
-### GENERATE_DOC
-description: "Interactive documentation generation through AI analysis"
-behavior:
-  conversation_required: true
-  ai_driven: true
-  interactive: true
-  prevent_automatic_generation: true
-
-repository_analysis:
-  analyze_repo_content: true
-  default_repo_path: "code_context/extracted/repo_content.txt"
-  auto_detect_project_type: true
-  extract_technologies: true
-  detect_frameworks: true
-  identify_patterns: true
-  project_structure_analysis: true
-  always_analyze_current_repository: true
-  prefer_context_over_templates: true
-
-conversation_flow:
-  introduction: |
-    Based on my analysis of the repository content at {{repo_path}}, I can help you generate various types of documentation.
-    What would you like to document? Here are your options:
-
-    **Technical Documentation:**
-    1. Technical Architecture
-    2. API Documentation
-    3. Component Specifications
-    4. Database Schema
-    5. Dependencies
-
-    **Product Documentation (Required for Business Documentation):**
-    6. User Stories
-    7. Problem Definition
-    8. Value Proposition
-
-    **User Documentation:**
-    9. Installation Guide
-    10. Usage Guide
-
-    **Developer Documentation:**
-    11. Setup Instructions
-    12. Contribution Guidelines
-
-    **Business Documentation (Requires Product Documentation):**
-    13. Market Research
-    14. Business Model
-    15. Competitive Analysis
-
-    **Other Options:**
-    16. All Technical Documentation
-    17. All Product Documentation
-    18. Everything
-    19. I'm Done
-
-    Please indicate which documentation you'd like to generate (you can select multiple options).
-    Note: Business Documentation options will only be available after generating Product Documentation.
-
-  steps:
-    - id: initial_analysis
-      type: ai_analysis
-      description: "Analyzing project structure and codebase"
-      auto_proceed: true
-      analyze_repo_content: true
-      repo_path: "{{repo_path}}"
-      force_current_repository: true
-
-    - id: documentation_selection
-      type: interactive_menu
-      repeat_until: done
-      options:
-        - Technical Architecture
-        - API Documentation
-        - Component Specifications
-        - Database Schema
-        - Dependencies
-        - User Stories
-        - Problem Definition
-        - Value Proposition
-        - Installation Guide
-        - Usage Guide
-        - Setup Instructions
-        - Contribution Guidelines
-        - Market Research
-        - Business Model
-        - Competitive Analysis
-        - All Technical Documentation
-        - All Product Documentation
-        - Everything
-        - I'm Done
-      multiple_selection: true
-      dependencies:
-        - condition: "Market Research"
-          requires: ["Problem Definition", "Value Proposition", "User Stories"]
-          message: "Market Research requires Product Documentation (Problem Definition, Value Proposition, and User Stories) to be generated first."
-        - condition: "Business Model"
-          requires: ["Problem Definition", "Value Proposition", "User Stories"]
-          message: "Business Model requires Product Documentation (Problem Definition, Value Proposition, and User Stories) to be generated first."
-        - condition: "Competitive Analysis"
-          requires: ["Problem Definition", "Value Proposition"]
-          message: "Competitive Analysis requires Product Documentation (Problem Definition and Value Proposition) to be generated first."
-        - condition: "All Product Documentation"
-          includes: ["User Stories", "Problem Definition", "Value Proposition"]
-        - condition: "Everything"
-          includes: ["User Stories", "Problem Definition", "Value Proposition", "Market Research", "Business Model", "Competitive Analysis"]
-
-    - id: documentation_generation
-      type: ai_generation
-      for_each: selected_option
-      exclude: ["I'm Done"]
-      actions:
-        - validate_dependencies
-        - analyze_code
-        - extract_information
-        - generate_documentation
-        - save_to_memory
-      force_context_analysis: true
-      prioritize_code_content: true
-
-    - id: continue_prompt
-      type: question
-      skip_for: ["All Technical Documentation", "All Product Documentation", "Everything"]
-      text: "Would you like to extract anything else?"
-      options: ["Yes", "No"]
-
-    - id: completion
-      type: summary
-      description: "Generate documentation index and summary"
+# <<< Commenting out the redundant/conflicting GENERATE_DOC definition below >>>
+# ## Commands
+# 
+# ### GENERATE_DOC
+# description: "Interactive documentation generation through AI analysis"
+# behavior:
+#   conversation_required: true
+#   ai_driven: true # <<< This was likely causing the conflict
+#   interactive: true
+#   prevent_automatic_generation: true
+# 
+# repository_analysis:
+#   analyze_repo_content: true
+#   default_repo_path: "code_context/extracted/repo_content.txt"
+#   auto_detect_project_type: true
+#   extract_technologies: true
+#   detect_frameworks: true
+#   identify_patterns: true
+#   project_structure_analysis: true
+#   always_analyze_current_repository: true
+#   prefer_context_over_templates: true
 
 output_structure:
   base_path: "docs/generated"
