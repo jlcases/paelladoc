@@ -1,0 +1,178 @@
+---
+description: "Module defining the PAELLA command for initiating documentation."
+interactive_conversation: true
+enforce_sequential_questions: true
+prevent_multiple_questions: true
+interactive_mode: "strict"
+wait_between_questions: true
+force_one_question_at_a_time: true
+globs: ["**/*"]
+action: "initiate_documentation"
+---
+
+# PAELLA Command - Interactive Project Documentation Initializer
+
+THESE INSTRUCTIONS MUST BE FOLLOWED EXACTLY AS WRITTEN:
+
+1. For the PAELLA command, YOU MUST ASK JUST ONE QUESTION AT A TIME.
+2. After asking ONE question, STOP and WAIT for the user's response.
+3. ONLY AFTER receiving the user's answer to that specific question should you proceed to the next question.
+4. NEVER combine multiple questions into a single message.
+5. Follow the strict sequence below.
+
+## Interactive Questionnaire Sequence
+
+When the PAELLA command is invoked, follow this exact sequence:
+
+1. Display a brief welcome message
+2. Ask ONLY: "What language would you prefer for the documentation? (es/en)"
+   - WAIT for response before continuing
+   
+3. Ask ONLY: "What is the name of your project?"
+   - WAIT for response before continuing
+   - IMMEDIATELY after getting the project name, create a project folder at "/Users/jlcases/codigo/paelladoc/docs/{project_name}"
+   
+4. Ask ONLY: "What type of project is it? Options are: frontend, backend, chrome_extension, fullstack, or mobile_app."
+   - WAIT for response before continuing
+   - STORE this decision in memory
+   
+5. Ask ONLY: "Which development methodologies would you like to apply? Options are: tdd, github_workflow, or both."
+   - WAIT for response before continuing
+   - STORE this decision in memory
+   
+6. Ask ONLY: "Which Git workflow style do you want to use? Options are: github_flow, gitflow, trunk_based, or no_workflow."
+   - WAIT for response before continuing
+   - STORE this decision in memory
+   
+7. Ask ONLY: "Would you like to generate Cursor rules from the documentation? (yes/no)"
+   - WAIT for response before continuing
+   - STORE this decision in memory
+   
+8. Ask ONLY: "What AI operation mode do you prefer? Options are: autonomous, collaborative, or advisory."
+   - WAIT for response before continuing
+   - STORE this decision in memory
+   
+9. Ask ONLY: "Should I create a project subfolder in the docs directory? (yes/no)"
+   - WAIT for response before continuing
+   - STORE this decision in memory
+   
+10. Show a summary of all selections and ask for confirmation to proceed.
+    - AFTER user confirmation, SAVE all decisions to "/Users/jlcases/codigo/paelladoc/docs/{project_name}/memory.json"
+
+## Project Memory Management
+
+AFTER collecting all parameters and receiving user confirmation:
+
+1. CREATE the project folder at "/Users/jlcases/codigo/paelladoc/docs/{project_name}" if it doesn't exist
+2. SAVE all collected parameters and decisions to a memory.json file:
+   - Path: "/Users/jlcases/codigo/paelladoc/docs/{project_name}/memory.json"
+   - Format: JSON object with all parameters as keys
+   - Include: timestamp, all user decisions, parameters, and settings
+3. This memory.json file will be used to:
+   - Avoid asking the same questions again in future sessions
+   - Maintain consistency across documentation
+   - Store project history and decision record
+   - Enable the CONTINUE command to resume work on this project
+
+## Memory File Structure
+
+The memory.json file should include:
+```json
+{
+  "project_name": "name_provided_by_user",
+  "language": "selected_language",
+  "project_type": "selected_type",
+  "methodologies": ["selected_methodologies"],
+  "git_workflow": "selected_workflow",
+  "generate_rules": true/false,
+  "ai_mode": "selected_mode",
+  "create_project_subfolder": true/false,
+  "timestamp": "creation_timestamp",
+  "last_updated": "last_update_timestamp",
+  "decisions": [],
+  "achievements": [],
+  "issues": []
+}
+```
+
+## Parameter Definitions
+
+```yaml
+args:
+  - name: "language"
+    type: "string"
+    description: "Language for the documentation process (e.g., es, en)"
+    enum: ["es", "en"]
+    required: true
+  - name: "project_name"
+    type: "string"
+    description: "Name of the project to document"
+    required: true
+  - name: "project_type"
+    type: "string"
+    description: "Type of project to document"
+    enum: ["frontend", "backend", "chrome_extension", "fullstack", "mobile_app"]
+    default: "frontend"
+  - name: "methodologies"
+    type: "array"
+    description: "Development methodologies to apply"
+    items:
+      type: "string"
+      enum: ["tdd", "github_workflow"]
+    default: []
+  - name: "git_workflow"
+    type: "string"
+    description: "Git workflow style to use"
+    enum: ["github_flow", "gitflow", "trunk_based", "no_workflow"]
+    default: "github_flow"
+  - name: "generate_rules"
+    type: "boolean"
+    description: "Whether to generate Cursor rules from documentation"
+    default: true
+  - name: "ai_mode"
+    type: "string"
+    description: "AI operation mode"
+    enum: ["autonomous", "collaborative", "advisory"]
+    default: "collaborative"
+  - name: "help"
+    type: "boolean"
+    description: "Display help information about available commands"
+    default: false
+    flag: "-help"
+  - name: "create_project_subfolder"
+    type: "boolean"
+    description: "Create a subfolder named after the project inside the main documentation directory"
+    default: false
+    required: false
+```
+
+## Behavior Definition
+
+```yaml
+behavior:
+  conversation_required: true
+  auto_documentation: false
+  conversation_flow: "paella_initiation_flow"
+  wait_for_user_confirmation: true
+  prevent_automatic_generation: true
+  allow_minimal_mode: true
+  interactive: true
+  sequential_questions: true
+  one_parameter_at_a_time: true
+  single_question_mode: true
+  wait_for_response: true
+  confirm_each_parameter: true
+  language_confirmation_first: true
+  prevent_web_search: true
+  strict_question_sequence: true
+  wait_for_user_response: true
+  enforce_one_question_rule: true
+  strict_parameter_sequence: true
+  require_step_confirmation: true
+  prohibit_multiple_questions: true
+  force_single_question_mode: true
+  max_questions_per_message: 1
+  create_memory_file: true
+  memory_path: "/Users/jlcases/codigo/paelladoc/docs/{project_name}/memory.json"
+  save_decisions: true
+``` 

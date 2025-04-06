@@ -1,16 +1,22 @@
 # 🥘 PAELLADOC: The development exoskeleton
 
-![Version](https://img.shields.io/badge/version-0.2.0-blue.svg)
+![Version](https://img.shields.io/badge/version-0.2.1-blue.svg)
 ![Status](https://img.shields.io/badge/status-active-success.svg)
 ![Cursor](https://img.shields.io/badge/cursor-0.47+-green.svg)
 ![Compatibility](https://img.shields.io/badge/compatibility-cursor%200.47+-orange.svg)
-![Updated](https://img.shields.io/badge/updated-2025--04--05-brightgreen.svg)
+![Updated](https://img.shields.io/badge/updated-2025--04--06-brightgreen.svg)
 [![GitHub Stars](https://img.shields.io/github/stars/jlcases/paelladoc?style=social)](https://github.com/jlcases/paelladoc)
 [![GitHub Forks](https://img.shields.io/github/forks/jlcases/paelladoc?style=social)](https://github.com/jlcases/paelladoc/fork)
 [![X Community](https://img.shields.io/badge/X%20Community-PAellaDOC-blue)](https://x.com/i/communities/1907494161458090406)
 
 ![image](https://github.com/user-attachments/assets/7abbd46b-1cbe-4e19-a5ec-e19c9a5ed791)
 
+## 🚀 Latest Updates (v0.2.1)
+
+- **Enhanced Command Interactivity**: Improved PAELLA and CONTINUE commands to present one question at a time
+- **Better Project Detection**: Added support for finding projects in subdirectories
+- **Improved Portability**: Refactored scripts to use relative paths instead of absolute ones
+- **Message Handling**: Fixed CONTINUE command to show appropriate messages when no projects are available
 
 ## 👥 Join the PAellaDOC Team
 

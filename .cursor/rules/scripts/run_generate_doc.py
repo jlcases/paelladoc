@@ -24,6 +24,18 @@ def ensure_directory_exists(directory):
     Path(directory).mkdir(parents=True, exist_ok=True)
     return directory
 
+def find_project_root():
+    """Find the project root by locating the .cursor directory."""
+    current_dir = Path(os.getcwd())
+    # Try to find the project root by looking for .cursor directory
+    while current_dir != current_dir.parent:
+        if (current_dir / '.cursor').exists():
+            return current_dir
+        current_dir = current_dir.parent
+    
+    # If not found, use current directory as fallback
+    return Path(os.getcwd())
+
 def is_git_url(path):
     """Check if the path looks like a git URL."""
     return path.startswith(('http://', 'https://', 'git@')) or path.endswith('.git')
@@ -57,7 +69,8 @@ def clone_repository(repo_url, clone_dir, force=False):
 def run_context_extraction(local_repo_path, context_output_file):
     """Runs the extract_repo_content.py script."""
     script_path = Path(__file__).parent / "extract_repo_content.py"
-    venv_path = Path(__file__).parent.parent.parent / ".venv" # Assuming venv is at project root
+    project_root = find_project_root()
+    venv_path = project_root / ".venv" # Assuming venv is at project root
 
     if not script_path.exists():
         print(f"Error: Context extraction script not found at {script_path}")
@@ -101,13 +114,19 @@ def run_context_extraction(local_repo_path, context_output_file):
 
 def main():
     """Main function - ONLY handles repository preparation."""
+    # Find project root for default paths
+    project_root = find_project_root()
+    default_output_dir = str(project_root / "docs" / "generated")
+    default_context_file = str(project_root / "code_context" / "extracted" / "repo_content.txt")
+    default_clone_dir = str(project_root / "temp_cloned_repos")
+    
     parser = argparse.ArgumentParser(description="PAELLADOC Context Preparation Script")
     # Arguments expected from the orchestrator/user
     parser.add_argument("repo_path", help="Path or URL to the repository")
     parser.add_argument("language", help="Output language for documentation (e.g., es, en)")
-    parser.add_argument("--output", default="docs/generated", help="Output directory for generated documentation")
-    parser.add_argument("--context-output-file", default="code_context/extracted/repo_content.txt", help="Path to save the extracted repository context")
-    parser.add_argument("--clone-dir", default="temp_cloned_repos", help="Directory to clone remote repositories into")
+    parser.add_argument("--output", default=default_output_dir, help="Output directory for generated documentation")
+    parser.add_argument("--context-output-file", default=default_context_file, help="Path to save the extracted repository context")
+    parser.add_argument("--clone-dir", default=default_clone_dir, help="Directory to clone remote repositories into")
     parser.add_argument("--template", default="standard", help="Documentation template to use")
     parser.add_argument("--force-context-regeneration", action="store_true", help="Force regeneration of context file")
     parser.add_argument("--force-clone", action="store_true", help="Force re-cloning by removing existing clone directory")
@@ -172,7 +191,7 @@ def main():
     
     print("\n=== CODE IS KING - CRITICAL INSTRUCTIONS ===")
     print("1. ALL documentation MUST be based SOLELY on the extracted context file.")
-    print("2. The context file at code_context/extracted/repo_content.txt is the ONLY source of truth.")
+    print(f"2. The context file at {context_file} is the ONLY source of truth.")
     print("3. DO NOT infer, guess, or create information not explicitly in the context file.")
     print("4. If information requested is not in the context file, state this explicitly.")
     print("5. DO NOT use general knowledge about software, technologies, or frameworks.")
@@ -182,7 +201,7 @@ def main():
     
     print("\n=== ABSOLUTELY CRITICAL: USE THIS EXACT FILE ===")
     print("THE ONLY SOURCE OF TRUTH IS:")
-    print("/Users/jlcases/codigo/paelladoc/code_context/extracted/repo_content.txt")
+    print(f"{context_file}")
     print("1. ALWAYS check this exact file path for EVERY piece of information")
     print("2. NEVER rely on memory without consulting the context file again")
     print("3. For EACH section of documentation, go back to this file")
