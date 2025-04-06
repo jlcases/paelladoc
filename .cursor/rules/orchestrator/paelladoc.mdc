@@ -6,6 +6,8 @@ imports:
   - ".cursor/rules/config/imports.mdc"
   - ".cursor/rules/commands/core/help.mdc"
   - ".cursor/rules/commands/core/verification.mdc"
+  - ".cursor/rules/commands/core/paella.mdc"
+  - ".cursor/rules/commands/core/continue.mdc"
   - ".cursor/rules/modules/memory_management/memory_management.mdc"
   - ".cursor/rules/commands/templates/template.mdc"
   - ".cursor/rules/commands/memory/project_memory.mdc"
@@ -25,56 +27,17 @@ commands:
   # Core Commands
   PAELLA:
     description: "Initiates the documentation process interactively and generates Cursor rules"
-    action: "initiate_documentation"
-    args:
-      - name: "language"
-        type: "string"
-        description: "Language for the documentation process (e.g., es, en)"
-        enum: ["es", "en"]
-        required: true
-      - name: "project_name"
-        type: "string"
-        description: "Name of the project to document"
-        required: false
-      - name: "project_type"
-        type: "string"
-        description: "Type of project to document"
-        enum: ["frontend", "backend", "chrome_extension", "fullstack", "mobile_app"]
-        default: "frontend"
-      - name: "methodologies"
-        type: "array"
-        description: "Development methodologies to apply"
-        items:
-          type: "string"
-          enum: ["tdd", "github_workflow"]
-        default: []
-      - name: "git_workflow"
-        type: "string"
-        description: "Git workflow style to use"
-        enum: ["github_flow", "gitflow", "trunk_based", "no_workflow"]
-        default: "github_flow"
-      - name: "generate_rules"
-        type: "boolean"
-        description: "Whether to generate Cursor rules from documentation"
-        default: true
-      - name: "ai_mode"
-        type: "string"
-        description: "AI operation mode"
-        enum: ["autonomous", "collaborative", "advisory"]
-        default: "collaborative"
-      - name: "help"
-        type: "boolean"
-        description: "Display help information about available commands"
-        default: false
-        flag: "-help"
     behavior:
+      module: "commands/core/paella.mdc"
+      interactive: true
       conversation_required: true
-      auto_documentation: false
-      conversation_flow: "paella_initiation_flow"
+      one_parameter_at_a_time: true
+      single_question_mode: true
       wait_for_user_confirmation: true
-      prevent_automatic_generation: true
-      allow_minimal_mode: true
-      module: "commands/core/help.mdc"
+      prohibit_multiple_questions: true
+      force_single_question_mode: true
+      max_questions_per_message: 1
+      require_step_confirmation: true
       language_confirmation_first: true
   
   HELP:
@@ -95,22 +58,20 @@ commands:
   
   CONTINUE:
     description: "Continues with an existing project documentation"
-    action: "continue_documentation"
-    args:
-      - name: "project_name"
-        type: "string"
-        description: "Name of the project to continue with"
-        required: true
-      - name: "update_rules"
-        type: "boolean"
-        description: "Whether to update Cursor rules from documentation"
-        default: true
-      - name: "sync_templates"
-        type: "boolean"
-        description: "Whether to synchronize templates with current state"
-        default: true
+    action: "run_script"
     behavior:
-      module: "modules/memory_management/memory_management.mdc"
+      script_path: ".cursor/rules/scripts/run_continue.py"
+      script_must_run_first: true
+      module: "commands/core/continue.mdc"
+      interactive: true
+      conversation_required: true
+      one_parameter_at_a_time: true
+      single_question_mode: true
+      wait_for_user_confirmation: true
+      prohibit_multiple_questions: true
+      force_single_question_mode: true
+      max_questions_per_message: 1
+      require_step_confirmation: true
   
   # Project Memory Commands
   ACHIEVEMENT:
@@ -444,12 +405,12 @@ commands:
       - name: "code_type"
         type: "string"
         description: "Type of code to generate"
-        enum: ["frontend", "backend", "full_stack", "extension", "library"]
+        enum: ["frontend", "backend", "full_stack", "extension", "library", "jekyll_site", "static_site", "wordpress_theme", "wordpress_plugin", "chrome_extension", "firefox_extension", "mobile_app", "desktop_app", "api", "cli", "serverless", "microservice", "pwa", "spa", "game", "data_visualization", "ml_model", "ai_application", "iot_application", "blockchain_application"]
         default: "full_stack"
       - name: "language"
         type: "string"
-        description: "Primary language to use"
-        enum: ["javascript", "typescript", "python", "java", "ruby", "go", "php"]
+        description: "Primary language or framework to use"
+        enum: ["javascript", "typescript", "python", "java", "ruby", "go", "php", "jekyll", "html", "css", "c", "c++", "c#", "rust", "swift", "kotlin", "dart", "elixir", "scala", "clojure", "haskell", "lua", "perl", "r", "shell", "sql", "markdown", "liquid", "react", "angular", "vue", "svelte", "next.js", "nuxt.js", "express", "django", "flask", "spring", "laravel", "rails", "gatsby", "hugo", "eleventy", "flutter", "react-native", "electron", "node.js", "deno", "wordpress", "drupal", "dotnet"]
         default: "typescript"
       - name: "include_tests"
         type: "boolean"

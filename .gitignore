@@ -35,8 +35,18 @@ tmp/
 *.log
 .cache/
 
+# Cursor specific
+.cursor/
+# Exception for Cursor rules
+!/.cursor/rules/
+
+# PAELLADOC specific
 /docs
 **/.memory.json
+/code_context/
+/temp_cloned_repos/
+/temp_repo/
+backup_redundancies/
 
 # Private projects
 # These are automatically generated based on .memory.json
@@ -47,18 +57,9 @@ tmp/
 # Uncomment and modify as needed
 # /docs/secretproject/
 # /pages/projects/secretproject/
-/code_context/
 /venv/
 .venv/
 .cursor/rules/scripts/venv
-# Archivos de contexto de Cursor
-.cursor/project_context.json
 
-# Archivos de contexto de IA
-.cursor/project_context.json docs/paelladoc/project_context.json
-
-temp_docs/
-backup_redundancies/
-
-temp_cloned_repos/
-temp_repo/
+# Exception for template files that should be tracked
+!/docs/templates/

@@ -1,0 +1,145 @@
+---
+description: "Module defining the CONTINUE command for resuming work on existing projects"
+interactive_conversation: true
+enforce_sequential_questions: true
+prevent_multiple_questions: true
+interactive_mode: "strict"
+wait_between_questions: true
+force_one_question_at_a_time: true
+globs: ["**/*"]
+action: "continue_documentation"
+---
+
+# CONTINUE Command - Interactive Project Selection and Continuation
+
+THESE INSTRUCTIONS MUST BE FOLLOWED EXACTLY AS WRITTEN:
+
+1. For the CONTINUE command, YOU MUST ASK JUST ONE QUESTION AT A TIME.
+2. After asking ONE question, STOP and WAIT for the user's response.
+3. ONLY AFTER receiving the user's answer to that specific question should you proceed to the next question.
+4. NEVER combine multiple questions into a single message.
+5. Follow the strict sequence below.
+
+## Interactive Project Selection Sequence
+
+When the CONTINUE command is invoked, follow this exact sequence:
+
+1. Display a brief welcome message explaining that this command allows continuing work on existing projects.
+
+2. SCAN the directory "/Users/jlcases/codigo/paelladoc/docs/" to find all project folders.
+   - Look for directories that contain a memory.json file
+   - Extract project information from each memory.json
+
+3. IF NO PROJECTS ARE FOUND:
+   - Display: "No projects found to continue. Use the PAELLA command to create a new project."
+   - END the command execution
+   - DO NOT ask any further questions
+
+4. IF PROJECTS ARE FOUND, DISPLAY a numbered list of all available projects in this format:
+   ```
+   Available projects:
+   1. [project_name_1] - [project_type] - Last updated: [date]
+   2. [project_name_2] - [project_type] - Last updated: [date]
+   ...
+   ```
+
+5. Ask ONLY: "Which project would you like to continue working on? (Enter the number or name)"
+   - WAIT for response before continuing
+   
+6. AFTER the user selects a project:
+   - LOAD the memory.json file from the selected project
+   - DISPLAY a summary of the project details (name, type, methodologies, etc.)
+   
+7. Ask ONLY: "Would you like to update Cursor rules from the documentation? (yes/no)"
+   - WAIT for response before continuing
+   - Default is "yes" if user is unsure
+   
+8. Ask ONLY: "Would you like to synchronize templates with the current state? (yes/no)"
+   - WAIT for response before continuing
+   - Default is "yes" if user is unsure
+   
+9. Show a summary of all selections and ask for confirmation to proceed.
+   - AFTER user confirmation, load the project and continue with documentation
+
+## Project Memory Management
+
+When continuing work on a selected project:
+
+1. READ the memory.json file from "/Users/jlcases/codigo/paelladoc/docs/[project_name]/memory.json"
+2. EXTRACT all stored parameters, decisions, and settings
+3. Use these parameters to initialize the development environment
+4. UPDATE the "last_updated" timestamp in the memory.json file
+5. DISPLAY project history from the decisions, achievements, and issues arrays
+
+## Memory File Loading
+
+The memory.json file should be loaded and parsed with this structure:
+```json
+{
+  "project_name": "name_of_project",
+  "language": "language_used",
+  "project_type": "type_of_project",
+  "methodologies": ["methodologies_used"],
+  "git_workflow": "workflow_used",
+  "generate_rules": true/false,
+  "ai_mode": "mode_used",
+  "create_project_subfolder": true/false,
+  "timestamp": "creation_timestamp",
+  "last_updated": "last_update_timestamp",
+  "decisions": [],
+  "achievements": [],
+  "issues": []
+}
+```
+
+## Project Directory Scanning
+
+When scanning for available projects:
+1. CHECK for directories in "/Users/jlcases/codigo/paelladoc/docs/"
+2. For each directory, look for a "memory.json" file
+3. If memory.json exists, read it to extract project details
+4. ONLY include directories that have a valid memory.json file
+5. SORT projects by last_updated timestamp (most recent first)
+
+## Parameter Definitions
+
+```yaml
+args:
+  - name: "project_name"
+    type: "string"
+    description: "Name of the project to continue with"
+    required: true
+  - name: "update_rules"
+    type: "boolean"
+    description: "Whether to update Cursor rules from documentation"
+    default: true
+  - name: "sync_templates"
+    type: "boolean"
+    description: "Whether to synchronize templates with current state"
+    default: true
+```
+
+## Behavior Definition
+
+```yaml
+behavior:
+  conversation_required: true
+  interactive: true
+  sequential_questions: true
+  one_parameter_at_a_time: true
+  single_question_mode: true
+  wait_for_response: true
+  confirm_each_parameter: true
+  prevent_web_search: true
+  strict_question_sequence: true
+  wait_for_user_response: true
+  enforce_one_question_rule: true
+  strict_parameter_sequence: true
+  require_step_confirmation: true
+  prohibit_multiple_questions: true
+  force_single_question_mode: true
+  max_questions_per_message: 1
+  load_memory_file: true
+  memory_path: "/Users/jlcases/codigo/paelladoc/docs/{project_name}/memory.json"
+  update_last_modified: true
+``` 

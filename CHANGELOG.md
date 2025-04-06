@@ -4,6 +4,22 @@ All notable changes to PAELLADOC will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.2.1] - 2025-04-06
+
+### Added
+- Nuevo script `run_continue.py` para mejorar la funcionalidad del comando CONTINUE
+
+### Changed
+- Mejorado el sistema de interactividad de los comandos PAELLA y CONTINUE para presentar una pregunta a la vez
+- Refactorizado los scripts subyacentes para usar rutas relativas en lugar de absolutas
+- Mejorada la detección de proyectos en subdirectorios para el comando CONTINUE
+- Actualizado el script `run_generate_doc.py` para mejorar su portabilidad
+
+### Fixed
+- Corregido el comportamiento de los comandos para respetar la configuración de interactividad
+- Solucionado el problema con la detección de la raíz del proyecto
+- Arreglado el script de CONTINUE para mostrar un mensaje adecuado cuando no hay proyectos disponibles
+
 ## [0.2.0] - 2025-04-05
 
 ### Added
