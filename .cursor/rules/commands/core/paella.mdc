@@ -8,154 +8,259 @@ wait_between_questions: true
 force_one_question_at_a_time: true
 globs: ["**/*"]
 action: "initiate_documentation"
+createFiles: true
+createFolders: true
+canCreateFiles: true
+canCreateFolders: true
+autoCreateFolders: true
+fixed_script: true
+forced_sequence: true
+sequence:
+  - language
+  - project_name
+  - project_purpose
+  - target_audience
+  - project_objectives
+  - template_selection
 ---
 
 # PAELLA Command - Interactive Project Documentation Initializer
 
-THESE INSTRUCTIONS MUST BE FOLLOWED EXACTLY AS WRITTEN:
+THESE INSTRUCTIONS MUST BE FOLLOWED EXACTLY AS WRITTEN, WITH NO EXCEPTIONS:
 
-1. For the PAELLA command, YOU MUST ASK JUST ONE QUESTION AT A TIME.
-2. After asking ONE question, STOP and WAIT for the user's response.
-3. ONLY AFTER receiving the user's answer to that specific question should you proceed to the next question.
-4. NEVER combine multiple questions into a single message.
-5. Follow the strict sequence below.
+1. YOU MUST ASK FIRST: "What language would you prefer for the documentation? (es/en)"
+2. YOU MUST ASK SECOND: "What is the name of your project?"
+3. After asking ONE question, STOP and WAIT for the user's response.
+4. ONLY AFTER receiving the response to a specific question, proceed to the next question.
+5. COLLECT ONLY THE BASIC PROJECT INFORMATION BEFORE SHOWING THE TEMPLATE MENU.
+6. PRESENT THE TEMPLATE MENU AND LET THE USER CHOOSE.
+7. FOR EACH CHOSEN TEMPLATE, ASK SPECIFIC QUESTIONS TO COMPLETE IT.
+8. AFTER COMPLETING A TEMPLATE, ASK IF THEY WANT TO IMPROVE IT OR MOVE TO ANOTHER.
+9. WHENEVER YOU ASK A QUESTION, PROVIDE CLEAR OPTIONS WHEN POSSIBLE.
+10. IT IS CRITICAL TO CREATE AND CORRECTLY UPDATE THE .memory.json FILE AT EACH STEP.
 
-## Interactive Questionnaire Sequence
+## PAELLA INITIAL SEQUENCE
 
-When the PAELLA command is invoked, follow this exact sequence:
+When the PAELLA command is invoked, YOU MUST follow EXACTLY this sequence:
 
-1. Display a brief welcome message
+1. Show ONLY: "Welcome to PAELLADOC! I'll guide you through the interactive documentation process."
+
 2. Ask ONLY: "What language would you prefer for the documentation? (es/en)"
-   - WAIT for response before continuing
+   - PROVIDE clear options: "🇪🇸 es - Spanish" or "🇬🇧 en - English"
+   - WAIT for the response before continuing
+   - STORE this decision in memory as "language"
    
 3. Ask ONLY: "What is the name of your project?"
-   - WAIT for response before continuing
-   - IMMEDIATELY after getting the project name, create a project folder at "/Users/jlcases/codigo/paelladoc/docs/{project_name}"
-   
-4. Ask ONLY: "What type of project is it? Options are: frontend, backend, chrome_extension, fullstack, or mobile_app."
-   - WAIT for response before continuing
-   - STORE this decision in memory
-   
-5. Ask ONLY: "Which development methodologies would you like to apply? Options are: tdd, github_workflow, or both."
-   - WAIT for response before continuing
-   - STORE this decision in memory
-   
-6. Ask ONLY: "Which Git workflow style do you want to use? Options are: github_flow, gitflow, trunk_based, or no_workflow."
-   - WAIT for response before continuing
-   - STORE this decision in memory
-   
-7. Ask ONLY: "Would you like to generate Cursor rules from the documentation? (yes/no)"
-   - WAIT for response before continuing
-   - STORE this decision in memory
-   
-8. Ask ONLY: "What AI operation mode do you prefer? Options are: autonomous, collaborative, or advisory."
-   - WAIT for response before continuing
-   - STORE this decision in memory
-   
-9. Ask ONLY: "Should I create a project subfolder in the docs directory? (yes/no)"
-   - WAIT for response before continuing
-   - STORE this decision in memory
-   
-10. Show a summary of all selections and ask for confirmation to proceed.
-    - AFTER user confirmation, SAVE all decisions to "/Users/jlcases/codigo/paelladoc/docs/{project_name}/memory.json"
+   - WAIT for the response before continuing
+   - IMMEDIATELY CREATE these directories and files:
+     - CREATE directory: docs/{project_name}
+     - CREATE directory: docs/{project_name}/product
+     - CREATE file: docs/{project_name}/.memory.json with the initial information
+   - VERIFY that the .memory.json file has been correctly created with this command:
+     ```
+     touch docs/{project_name}/.memory.json
+     ```
+   - WRITE the initial content to the .memory.json file:
+     ```
+     echo '{
+       "project_name": "{project_name}",
+       "language": "{language}",
+       "timestamp": "'$(date -u +%Y-%m-%dT%H:%M:%SZ)'",
+       "last_updated": "'$(date -u +%Y-%m-%dT%H:%M:%SZ)'",
+       "project_purpose": "",
+       "target_audience": "",
+       "project_objectives": "",
+       "documents_created": [],
+       "documentation_progress": {}
+     }' > docs/{project_name}/.memory.json
+     ```
+   - CONFIRM to the user: "✅ I've created the project folder at /docs/{project_name}."
+   - ONLY THEN continue to the next question
 
-## Project Memory Management
+4. Ask ONLY: "What is the main purpose of the {project_name} project?"
+   - PROVIDE examples: "💡 For example: user management, e-commerce platform, internal tool, etc."
+   - WAIT for the response before continuing
+   - STORE this decision in memory as "project_purpose"
+   - UPDATE the existing JSON file to include the new information
 
-AFTER collecting all parameters and receiving user confirmation:
+5. Ask ONLY: "Who are the main users or target audience?"
+   - PROVIDE examples: "👥 For example: internal developers, retail customers, small businesses, etc."
+   - WAIT for the response before continuing
+   - STORE this decision in memory as "target_audience"
+   - UPDATE the existing JSON file to include the new information
 
-1. CREATE the project folder at "/Users/jlcases/codigo/paelladoc/docs/{project_name}" if it doesn't exist
-2. SAVE all collected parameters and decisions to a memory.json file:
-   - Path: "/Users/jlcases/codigo/paelladoc/docs/{project_name}/memory.json"
-   - Format: JSON object with all parameters as keys
-   - Include: timestamp, all user decisions, parameters, and settings
-3. This memory.json file will be used to:
-   - Avoid asking the same questions again in future sessions
-   - Maintain consistency across documentation
-   - Store project history and decision record
-   - Enable the CONTINUE command to resume work on this project
+6. Ask ONLY: "What are the main objectives of the project?"
+   - PROVIDE examples: "🎯 For example: reduce processing time, improve security, facilitate integration, etc."
+   - WAIT for the response before continuing
+   - STORE this decision in memory as "project_objectives"
+   - UPDATE the existing JSON file to include the new information
 
-## Memory File Structure
+## DOCUMENTATION TEMPLATE MENU
 
-The memory.json file should include:
-```json
-{
-  "project_name": "name_provided_by_user",
-  "language": "selected_language",
-  "project_type": "selected_type",
-  "methodologies": ["selected_methodologies"],
-  "git_workflow": "selected_workflow",
-  "generate_rules": true/false,
-  "ai_mode": "selected_mode",
-  "create_project_subfolder": true/false,
-  "timestamp": "creation_timestamp",
-  "last_updated": "last_update_timestamp",
-  "decisions": [],
-  "achievements": [],
-  "issues": []
-}
-```
+After collecting the basic information, YOU MUST display the available template menu:
 
-## Parameter Definitions
+1. Show: "📋 Now, select which document you would like to create for your {project_name} project:"
 
-```yaml
-args:
-  - name: "language"
-    type: "string"
-    description: "Language for the documentation process (e.g., es, en)"
-    enum: ["es", "en"]
-    required: true
-  - name: "project_name"
-    type: "string"
-    description: "Name of the project to document"
-    required: true
-  - name: "project_type"
-    type: "string"
-    description: "Type of project to document"
-    enum: ["frontend", "backend", "chrome_extension", "fullstack", "mobile_app"]
-    default: "frontend"
-  - name: "methodologies"
-    type: "array"
-    description: "Development methodologies to apply"
-    items:
-      type: "string"
-      enum: ["tdd", "github_workflow"]
-    default: []
-  - name: "git_workflow"
-    type: "string"
-    description: "Git workflow style to use"
-    enum: ["github_flow", "gitflow", "trunk_based", "no_workflow"]
-    default: "github_flow"
-  - name: "generate_rules"
-    type: "boolean"
-    description: "Whether to generate Cursor rules from documentation"
-    default: true
-  - name: "ai_mode"
-    type: "string"
-    description: "AI operation mode"
-    enum: ["autonomous", "collaborative", "advisory"]
-    default: "collaborative"
-  - name: "help"
-    type: "boolean"
-    description: "Display help information about available commands"
-    default: false
-    flag: "-help"
-  - name: "create_project_subfolder"
-    type: "boolean"
-    description: "Create a subfolder named after the project inside the main documentation directory"
-    default: false
-    required: false
-```
+2. Present the list of available templates with their descriptions in an attractive format:
+   ```markdown
+   ## 📚 Available Documents:
+   
+   ### 📝 Fundamental Documents
+   1. 📑 **General Index** - Main page with links to all documentation
+   2. 📊 **Market Research** - Analysis of the market, competition, and opportunities
+   3. 🔍 **Project Definition** - General description of the project, its objectives, and scope
+   4. 🏗️ **Technical Architecture** - Diagram and description of the system architecture
+   
+   ### 📋 Specifications
+   5. ⚙️ **Technical Specifications** - Detailed technical requirements and specifications
+   6. 👥 **User Research** - User research, interviews, and needs analysis
+   7. 🧩 **Component Specification** - Detailed description of system components
+   8. ❓ **Problem Definition** - Clear description of the problem the project solves
+   
+   ### 💾 Data and Product
+   9. 🗄️ **Database Design** - Data model, schemas, and relationships
+   10. 📦 **Product Definition** - Product vision, features, and value proposition
+   11. 📝 **Architecture Decision Record** - Record of important technical decisions
+   
+   ### 🔄 API and Flows
+   12. 🔌 **API Specification** - Documentation of endpoints, parameters, and responses
+   13. 🗺️ **Product Roadmap** - Future development plan and timeline
+   14. 🧠 **Empathy Map** - Analysis of what users think, feel, and do
+   
+   ### 👤 User Experience
+   15. 🛤️ **Customer Journey Map** - Flow of user experience through the product
+   16. 📖 **User Stories** - Requirements from the user's perspective
+   17. 🗺️ **Service Blueprint** - Visualization of processes and interactions
+   
+   ### ⚙️ Rules and Architecture
+   18. 📏 **Project Rules** - Conventions, standards, and project rules
+   19. 🖥️ **Frontend Architecture** - Structure and organization of the frontend
+   20. 🧪 **Testing Strategy** - Approach to unit, integration, and E2E testing
+   
+   ### 🚀 Deployment and Security
+   21. 🔄 **DevOps Pipeline** - CI/CD configuration and deployment
+   22. 🔒 **Security Framework** - Security policies and measures
+   
+   ### 📚 Documentation and Management
+   23. 📖 **Documentation Framework** - Documentation guides and policies
+   24. 📋 **Task Management** - Organization and tracking of tasks
+   25. 📝 **Meeting Notes** - Record of important meetings
+   26. 📈 **Project Progress** - Tracking of progress and metrics
+   ```
+
+3. Ask: "🔍 Please indicate the number or name of the document you want to create:"
+   - WAIT for the user's response
+   - IDENTIFY the selected document
+
+## DOCUMENT CREATION PROCESS
+
+For each document selected by the user:
+
+1. COPY the template from `.cursor/rules/templates/Product/[file_name]` to `docs/{project_name}/product/[file_name]`
+
+2. UPDATE the .memory.json file to record that the creation of this document has been initiated:
+   ```
+   CONTENT=$(cat docs/{project_name}/.memory.json)
+   UPDATED_CONTENT=$(echo $CONTENT | jq '.documents_created += ["[file_name]"]')
+   echo $UPDATED_CONTENT > docs/{project_name}/.memory.json
+   ```
+
+3. Depending on the selected document, ASK SPECIFIC QUESTIONS to complete it. For example:
+
+   - If it's "Market Research":
+     - Ask: "🔍 Who are the main competitors in this market?"
+     - Ask: "📊 What is the approximate size of the market?"
+     - Ask: "📈 What are the most relevant current trends?"
+
+   - If it's "Project Definition":
+     - Ask: "📝 What is the background or context of this project?"
+     - Ask: "🔭 What is the specific scope of the project?"
+     - Ask: "⚠️ Are there important limitations or constraints to consider?"
+
+   - If it's "User Research":
+     - Ask: "🔬 What methodology was used to research the users?"
+     - Ask: "💡 What were the key findings from the research?"
+     - Ask: "👤 Can you describe 2-3 main user profiles?"
+
+4. After completing the document, UPDATE the `docs/{project_name}/product/[file_name]` file with the provided information.
+
+5. UPDATE the .memory.json file to record that this document has been completed:
+   ```
+   CONTENT=$(cat docs/{project_name}/.memory.json)
+   UPDATED_CONTENT=$(echo $CONTENT | jq '.documentation_progress["[document_type]"] = true')
+   echo $UPDATED_CONTENT > docs/{project_name}/.memory.json
+   ```
+
+6. ASK the user: "✅ The document has been created. Would you like to improve this document or move on to creating another document? (improve/another)"
+   - If they choose "improve", ask additional questions to enrich the current document
+   - If they choose "another", return to the DOCUMENTATION TEMPLATE MENU
+
+7. If there are no more documents to create or the user decides to finish, END the process by showing a summary of the created documents.
+
+## FILE CREATION INSTRUCTIONS
+
+When the user provides the project name, you must immediately create the following directories and files:
+
+1. A main directory for the project: `/docs/{project_name}`
+2. A subdirectory for products: `/docs/{project_name}/product`
+3. A memory file: `/docs/{project_name}/.memory.json` with this content:
+   ```json
+   {
+     "project_name": "{project_name}",
+     "language": "{language}",
+     "timestamp": "{current_timestamp}",
+     "last_updated": "{current_timestamp}",
+     "project_purpose": "",
+     "target_audience": "",
+     "project_objectives": "",
+     "documents_created": [],
+     "documentation_progress": {}
+   }
+   ```
+
+4. ENSURE that the .memory.json file is correctly updated after each operation:
+   - After collecting each piece of basic project information
+   - After creating each document
+   - After improving each document
+
+5. To ensure correct creation, verify that the file exists:
+   ```
+   if [ ! -f docs/{project_name}/.memory.json ]; then
+     echo '{
+       "project_name": "{project_name}",
+       "language": "{language}",
+       "timestamp": "'$(date -u +%Y-%m-%dT%H:%M:%SZ)'",
+       "last_updated": "'$(date -u +%Y-%m-%dT%H:%M:%SZ)'",
+       "project_purpose": "",
+       "target_audience": "",
+       "project_objectives": "",
+       "documents_created": [],
+       "documentation_progress": {}
+     }' > docs/{project_name}/.memory.json
+   fi
+   ```
 
 ## Behavior Definition
 
 ```yaml
 behavior:
+  create_files: true
+  create_folders: true
+  can_create_files: true
+  can_create_folders: true
+  createFiles: true
+  createFolders: true
+  canCreateFiles: true
+  canCreateFolders: true
+  autoCreateFolders: true
+  createMemoryJson: true
+  createProjectFolder: true
+  documentation_first: true
+  product_documentation_priority: true
+  track_documentation_completion: true
   conversation_required: true
-  auto_documentation: false
   conversation_flow: "paella_initiation_flow"
   wait_for_user_confirmation: true
-  prevent_automatic_generation: true
-  allow_minimal_mode: true
   interactive: true
   sequential_questions: true
   one_parameter_at_a_time: true
@@ -163,7 +268,6 @@ behavior:
   wait_for_response: true
   confirm_each_parameter: true
   language_confirmation_first: true
-  prevent_web_search: true
   strict_question_sequence: true
   wait_for_user_response: true
   enforce_one_question_rule: true
@@ -173,6 +277,43 @@ behavior:
   force_single_question_mode: true
   max_questions_per_message: 1
   create_memory_file: true
-  memory_path: "/Users/jlcases/codigo/paelladoc/docs/{project_name}/memory.json"
-  save_decisions: true
+  mandatory_language_question_first: true
+  absolute_sequence_enforcement: true
+  allow_native_file_creation: true
+  use_cursor_file_creation: true
+  use_native_file_creation: true
+  prevent_scripts: true
+  disallow_external_scripts: true
+  fixed_question_sequence: true
+  sequence_language_project_name: true
+  force_exact_sequence: true
+  template_based_documentation: true
+  offer_all_document_templates: true
+  copy_templates_to_project: true
+  update_templates_with_project_info: true
+  guide_through_document_creation: true
+  track_documentation_created: true
+  iterative_document_creation: true
+  provide_clear_options: true
+  always_list_options: true
+  document_by_document_approach: true
+  update_memory_after_each_document: true
+  always_ask_before_document_creation: true
+  present_document_descriptions: true
+  show_template_menu: true
+  allow_document_improvement: true
+  ask_for_next_action: true
+  simplified_initial_questions: true
+  prioritize_document_selection: true
+  enforce_memory_json_creation: true
+  verify_memory_json_exists: true
+  use_attractive_markdown: true
+  enhance_lists_with_emojis: true
+  fixed_question_order:
+    - language
+    - project_name
+    - project_purpose
+    - target_audience
+    - project_objectives
+    - template_selection
 ``` 

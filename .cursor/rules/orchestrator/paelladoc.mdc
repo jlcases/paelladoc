@@ -1,7 +1,20 @@
 ---
 description: "PAELLADOC is an AI-powered interactive documentation system that uses natural language conversations to gather, generate and maintain project documentation."
+interactive_conversation: true
+enforce_sequential_questions: true
+prevent_multiple_questions: true
+interactive_mode: "strict"
+wait_between_questions: true
+force_one_question_at_a_time: true
 globs: ["**/*"]
-alwaysApply: true
+action: "documentation_system"
+createFiles: true
+createFolders: true
+canCreateFiles: true
+canCreateFolders: true
+autoCreateFolders: true
+fixed_script: true
+forced_sequence: true
 imports:
   - ".cursor/rules/config/imports.mdc"
   - ".cursor/rules/commands/core/help.mdc"
@@ -19,520 +32,155 @@ imports:
   - ".cursor/rules/modules/code_analysis/code_analysis.mdc"
   - ".cursor/rules/commands/code/generate_doc.mdc"
 ---
-# PAELLADOC - MECE Documentation System
-description: PAELLA DOC - MECE Documentation System
-globs: ["**/*"]
-alwaysApply: true
-commands:
-  # Core Commands
-  PAELLA:
-    description: "Initiates the documentation process interactively and generates Cursor rules"
-    behavior:
-      module: "commands/core/paella.mdc"
-      interactive: true
-      conversation_required: true
-      one_parameter_at_a_time: true
-      single_question_mode: true
-      wait_for_user_confirmation: true
-      prohibit_multiple_questions: true
-      force_single_question_mode: true
-      max_questions_per_message: 1
-      require_step_confirmation: true
-      language_confirmation_first: true
-  
-  HELP:
-    description: "Displays help information about available PAELLADOC commands"
-    action: "display_help"
-    args:
-      - name: "command"
-        type: "string"
-        description: "Specific command to get help for. If not provided, shows all commands."
-        required: false
-      - name: "format"
-        type: "string"
-        description: "Output format for help information"
-        enum: ["detailed", "summary", "examples"]
-        default: "detailed"
-    behavior:
-      module: "commands/core/help.mdc"
-  
-  CONTINUE:
-    description: "Continues with an existing project documentation"
-    action: "run_script"
-    behavior:
-      script_path: ".cursor/rules/scripts/run_continue.py"
-      script_must_run_first: true
-      module: "commands/core/continue.mdc"
-      interactive: true
-      conversation_required: true
-      one_parameter_at_a_time: true
-      single_question_mode: true
-      wait_for_user_confirmation: true
-      prohibit_multiple_questions: true
-      force_single_question_mode: true
-      max_questions_per_message: 1
-      require_step_confirmation: true
-  
-  # Project Memory Commands
-  ACHIEVEMENT:
-    description: "Records an achievement in the project memory"
-    action: "record_achievement"
-    args:
-      - name: "description"
-        type: "string"
-        description: "Description of the achievement"
-        required: true
-      - name: "category"
-        type: "string"
-        description: "Category of the achievement"
-        enum: ["architecture", "development", "documentation", "testing", "security", "performance", "product", "design", "research"]
-        required: true
-      - name: "impact_level"
-        type: "string"
-        description: "Level of impact of the achievement"
-        enum: ["high", "medium", "low"]
-        default: "medium"
-    behavior:
-      module: "commands/memory/project_memory.mdc"
-  
-  ISSUE:
-    description: "Records an issue in the project memory"
-    action: "record_problem"
-    args:
-      - name: "description"
-        type: "string"
-        description: "Description of the issue"
-        required: true
-      - name: "severity"
-        type: "string"
-        description: "Severity level of the issue"
-        enum: ["critical", "high", "medium", "low"]
-        required: true
-      - name: "area"
-        type: "string"
-        description: "Area affected by the issue"
-        enum: ["product", "technical", "process", "security", "performance"]
-        required: true
-    behavior:
-      module: "commands/memory/project_memory.mdc"
-  
-  DECISION:
-    description: "Records a technical decision in the project memory"
-    action: "record_decision"
-    args:
-      - name: "description"
-        type: "string"
-        description: "Description of the decision"
-        required: true
-      - name: "impact"
-        type: "array"
-        description: "Areas impacted by the decision"
-        items:
-          type: "string"
-          enum: ["architecture", "development", "documentation", "testing", "security", "performance", "product", "design", "process"]
-        required: true
-      - name: "rationale"
-        type: "string"
-        description: "Reasoning behind the decision"
-        required: true
-    behavior:
-      module: "commands/memory/project_memory.mdc"
-  
-  MEMORY:
-    description: "Shows the development record"
-    action: "show_memory"
-    args:
-      - name: "filter"
-        type: "string"
-        description: "Filter memory by category"
-        enum: ["all", "achievements", "issues", "decisions", "product", "technical"]
-        default: "all"
-      - name: "format"
-        type: "string"
-        description: "Output format"
-        enum: ["detailed", "summary", "timeline"]
-        default: "detailed"
-    behavior:
-      module: "commands/memory/project_memory.mdc"
-  
-  # Style and Workflow Commands
-  CODING_STYLE:
-    description: "Manages programming style guides for the project"
-    action: "manage_coding_style"
-    args:
-      - name: "operation"
-        type: "string"
-        description: "Style operation to perform"
-        enum: ["apply", "customize", "list", "show"]
-        required: true
-      - name: "style_name"
-        type: "string"
-        description: "Name of the style"
-        enum: ["frontend", "backend", "chrome_extension", "tdd", "github_workflow"]
-        required: true
-      - name: "project_name"
-        type: "string"
-        description: "Name of the project to apply style to"
-        required: true
-      - name: "customizations"
-        type: "string"
-        description: "Path to customization file or inline JSON customizations"
-        required: false
-    behavior:
-      module: "commands/styles/coding_styles.mdc"
-  
-  WORKFLOW:
-    description: "Manages Git workflow methodology for the project"
-    action: "manage_git_workflow"
-    args:
-      - name: "operation"
-        type: "string"
-        description: "Workflow operation to perform"
-        enum: ["apply", "customize", "list", "show"]
-        required: true
-      - name: "workflow_name"
-        type: "string"
-        description: "Name of the Git workflow"
-        enum: ["github_flow", "gitflow", "trunk_based", "no_workflow"]
-        required: true
-      - name: "project_name"
-        type: "string"
-        description: "Name of the project to apply workflow to"
-        required: true
-      - name: "customizations"
-        type: "string"
-        description: "Path to customization file or inline JSON customizations"
-        required: false
-    behavior:
-      module: "commands/styles/git_workflows.mdc"
-  
-  # Verification and Rules Commands
-  VERIFY:
-    description: "Verifies an information source"
-    action: "verify_source"
-    args:
-      - name: "source"
-        type: "string"
-        description: "URL or reference of the source to verify"
-        required: true
-      - name: "type"
-        type: "string"
-        description: "Type of source"
-        enum: ["academic", "technical", "blog", "documentation", "market_research", "user_research"]
-        required: true
-      - name: "reliability"
-        type: "string"
-        description: "Required reliability level"
-        enum: ["high", "medium", "low"]
-        default: "high"
-    behavior:
-      module: "commands/core/verification.mdc"
-  
-  GENERATE_RULES:
-    description: "Generates or updates Cursor rules from documentation"
-    action: "generate_cursor_rules"
-    args:
-      - name: "project_name"
-        type: "string"
-        description: "Name of the project"
-        required: true
-      - name: "rule_type"
-        type: "array"
-        description: "Types of rules to generate"
-        items:
-          type: "string"
-          enum: ["product", "technical", "process", "security", "all"]
-        default: ["all"]
-    behavior:
-      module: "commands/templates/template.mdc"
-  
-  # Template Management Commands
-  TEMPLATE:
-    description: "Manages documentation templates"
-    action: "manage_templates"
-    args:
-      - name: "operation"
-        type: "string"
-        description: "Template operation to perform"
-        enum: ["create", "update", "delete", "list", "sync"]
-        required: true
-      - name: "template_type"
-        type: "string"
-        description: "Type of template"
-        enum: ["product", "technical", "process", "simplified"]
-        required: true
-      - name: "template_name"
-        type: "string"
-        description: "Name of the template"
-        required: false
-    behavior:
-      module: "commands/templates/template.mdc"
-  
-  # Research and Documentation Commands
-  RESEARCH:
-    description: "Manages research and definition documentation"
-    action: "manage_research"
-    args:
-      - name: "operation"
-        type: "string"
-        description: "Research operation to perform"
-        enum: ["create", "update", "delete", "list", "show"]
-        required: true
-      - name: "research_type"
-        type: "string"
-        description: "Type of research"
-        enum: ["market_research", "user_research", "competitive_analysis", "technology_assessment"]
-        required: true
-      - name: "project_name"
-        type: "string"
-        description: "Name of the project"
-        required: true
-    behavior:
-      module: "commands/product/product_management.mdc"
-  
-  # Code Analysis and Documentation Commands
-  GENERATE_DOC:
-    description: "Interactive documentation generator that works with local paths or GitHub URLs"
-    action: "run_script"
-    args:
-      - name: "repo_path"
-        type: "string"
-        description: "Path or URL to the repository to analyze and document."
-        required: true
-      - name: "language"
-        type: "string"
-        description: "The language for the documentation process and output (e.g., 'es', 'en')."
-        required: true
-      - name: "output"
-        type: "string"
-        description: "Output directory for generated documentation"
-        required: false
-        default: "docs/generated"
-      - name: "context_output_file"
-        type: "string"
-        description: "Path where the extracted context file should be saved."
-        required: false
-        default: "code_context/extracted/repo_content.txt"
-      - name: "clone_dir"
-        type: "string"
-        description: "Base directory for cloning remote repositories."
-        required: false
-        default: "temp_cloned_repos"
-      - name: "template"
-        type: "string"
-        description: "Documentation template to potentially use during generation."
-        required: false
-        default: "standard"
-      - name: "force_context_regeneration"
-        type: "boolean"
-        description: "Force regeneration of the context file even if it exists."
-        default: false
-      - name: "force_clone"
-        type: "boolean"
-        description: "Force re-cloning of remote repo by deleting existing directory."
-        default: false
-    behavior:
-      script_path: ".cursor/rules/scripts/run_generate_doc.py"
-      script_must_run_first: true
-      conversation_required: true
-      interactive: true
-      menu_handling: "ai_chat"
-      post_script_action: "present_documentation_menu"
-      menu_definition: "modules/code_analysis/code_analysis.mdc"
-      prevent_web_search: true
-      force_menu_display: true
-      fixed_menu_required: true
-      default_language: "es"
-      always_ask_language: true
-      require_language_confirmation: true
-      language_confirmation_first: true
-      menu_presentation_action: "show_fixed_menu"
-      special_behavior: "no_analysis_before_menu"
-      wait_for_script_completion: true
-      read_context_after_script: "code_context/extracted/repo_content.txt"
-      strict_context_only: true
-      code_is_king: true
-      prevent_external_knowledge: true
-      prevent_inference: true
-      context_file_is_sole_source: true
-      report_missing_info: true
-      documentation_only: true
-      no_file_creation: false
-      output_in_conversation_only: false
-      generate_text_not_code: true
-      do_not_execute_or_implement: true
-      prevent_directory_creation: false
-      context_file_path: "/Users/jlcases/codigo/paelladoc/code_context/extracted/repo_content.txt"
-      always_check_context_file: true
-      never_rely_on_memory: true
-      consult_context_for_every_section: true
-      absolute_context_path_required: true
-      show_menu_after_documentation: true
-      mark_completed_items: true
-      use_checkmark_symbol: true
-      show_full_menu_again: true
-      always_maintain_menu_format: true
-      ask_for_next_selection: true
-      documentation_output_path: "/Users/jlcases/codigo/paelladoc/docs/generated"
-      save_documentation_files: true
-      create_documentation_files: true
-      allow_documentation_dir_creation: true
-      use_existing_templates: true
-      follow_template_structure: true
-      save_md_files: true
-      preserve_template_format: true
-      template_is_source_of_structure: true
-      force_spanish_language: false
-      translate_all_to_spanish: false
-      spanish_only_output: false
-      verify_file_creation: true
-      enforce_spanish_content: false
-      verify_md_files: true
-  
-  # Code Generation Commands
-  GENERATE_CODE:
-    description: "Generates code based on completed documentation"
-    action: "generate_code"
-    args:
-      - name: "project_name"
-        type: "string"
-        description: "Name of the project to generate code for"
-        required: true
-      - name: "output_path"
-        type: "string"
-        description: "Path where generated code will be stored"
-        required: true
-      - name: "code_type"
-        type: "string"
-        description: "Type of code to generate"
-        enum: ["frontend", "backend", "full_stack", "extension", "library", "jekyll_site", "static_site", "wordpress_theme", "wordpress_plugin", "chrome_extension", "firefox_extension", "mobile_app", "desktop_app", "api", "cli", "serverless", "microservice", "pwa", "spa", "game", "data_visualization", "ml_model", "ai_application", "iot_application", "blockchain_application"]
-        default: "full_stack"
-      - name: "language"
-        type: "string"
-        description: "Primary language or framework to use"
-        enum: ["javascript", "typescript", "python", "java", "ruby", "go", "php", "jekyll", "html", "css", "c", "c++", "c#", "rust", "swift", "kotlin", "dart", "elixir", "scala", "clojure", "haskell", "lua", "perl", "r", "shell", "sql", "markdown", "liquid", "react", "angular", "vue", "svelte", "next.js", "nuxt.js", "express", "django", "flask", "spring", "laravel", "rails", "gatsby", "hugo", "eleventy", "flutter", "react-native", "electron", "node.js", "deno", "wordpress", "drupal", "dotnet"]
-        default: "typescript"
-      - name: "include_tests"
-        type: "boolean"
-        description: "Whether to generate tests for the code"
-        default: true
-      - name: "github_repo"
-        type: "string"
-        description: "Optional GitHub repository to create/push to"
-        required: false
-    behavior:
-      documentation_first: true
-      module: "commands/code/code_generation.mdc"
-  
-  CREATE_REPO:
-    description: "Creates a new repository for generated code"
-    action: "create_repository"
-    args:
-      - name: "repo_name"
-        type: "string"
-        description: "Name of the repository to create"
-        required: true
-      - name: "repo_type"
-        type: "string"
-        description: "Type of repository"
-        enum: ["github", "gitlab", "local"]
-        default: "github"
-      - name: "visibility"
-        type: "string"
-        description: "Repository visibility"
-        enum: ["public", "private"]
-        default: "private"
-      - name: "include_ci"
-        type: "boolean"
-        description: "Whether to include CI/CD configuration"
-        default: true
-      - name: "license"
-        type: "string"
-        description: "License to use"
-        enum: ["MIT", "Apache-2.0", "GPL-3.0", "BSD-3-Clause", "None"]
-        default: "MIT"
-    behavior:
-      module: "commands/code/code_generation.mdc"
-  
-  # Product Management Commands
-  STORY:
-    description: "Manages user stories for the project"
-    action: "manage_user_stories"
-    args:
-      - name: "operation"
-        type: "string"
-        description: "Operation to perform on user stories"
-        enum: ["create", "update", "delete", "list", "search", "prioritize"]
-        required: true
-      - name: "story_title"
-        type: "string"
-        description: "Title of the user story"
-        required: false
-      - name: "description"
-        type: "string"
-        description: "Description of the user story"
-        required: false
-      - name: "priority"
-        type: "string"
-        description: "Priority of the story"
-        enum: ["high", "medium", "low"]
-        required: false
-    behavior:
-      module: "commands/product/product_management.mdc"
-  
-  SPRINT:
-    description: "Plans and manages sprint information"
-    action: "manage_sprints"
-    args:
-      - name: "operation"
-        type: "string"
-        description: "Operation to perform on sprints"
-        enum: ["plan", "start", "end", "update", "list", "report"]
-        required: true
-      - name: "sprint_name"
-        type: "string"
-        description: "Name or number of the sprint"
-        required: false
-      - name: "stories"
-        type: "array"
-        description: "User stories to include in the sprint"
-        required: false
-      - name: "start_date"
-        type: "string"
-        description: "Start date of the sprint (YYYY-MM-DD)"
-        required: false
-      - name: "end_date"
-        type: "string"
-        description: "End date of the sprint (YYYY-MM-DD)"
-        required: false
-    behavior:
-      module: "commands/product/product_management.mdc"
-  
-  MEETING:
-    description: "Records and manages meeting notes"
-    action: "manage_meetings"
-    args:
-      - name: "operation"
-        type: "string"
-        description: "Operation to perform on meetings"
-        enum: ["create", "update", "delete", "list", "search"]
-        required: true
-      - name: "meeting_type"
-        type: "string"
-        description: "Type of meeting"
-        enum: ["planning", "review", "retrospective", "standup", "other"]
-        required: false
-      - name: "title"
-        type: "string"
-        description: "Title of the meeting"
-        required: false
-      - name: "date"
-        type: "string"
-        description: "Date of the meeting (YYYY-MM-DD)"
-        required: false
-    behavior:
-      module: "commands/product/product_management.mdc"
----
+# PAELLADOC - Interactive Documentation System
+
+PAELLADOC is an AI-powered interactive documentation system that uses natural language conversations to gather, generate and maintain project documentation. It aims to solve the common problem of poor or outdated documentation in software projects.
+
+## Command Overview
+
+PAELLADOC supports the following commands:
+
+1. **PAELLA** - Primary command to start the documentation process
+   - Initiates an interactive conversation to create new documentation
+   - Creates project folders and organizes documentation
+
+2. **VERIFY** - Validates documentation against code
+   - Checks if documentation matches the current state of the code
+   - Identifies inconsistencies and suggests updates
+
+3. **HELP** - Shows available commands and their usage
+   - Provides detailed explanations of how to use each command
+   - Shows examples of command usage
+
+4. **GENERATE_CODE** - Creates code from documentation
+   - Transforms documentation into working code
+   - Uses project requirements to generate implementation
+
+5. **CONTINUE** - Resumes work on an existing documentation project
+   - Picks up where you left off in a previous session
+   - Analyzes what's missing and suggests next steps
+
+6. **CODING_STYLE** - Manages programming style guides
+   - Applies consistent coding standards
+   - Creates custom style guides for your project
+
+7. **WORKFLOW** - Manages Git workflow methodologies
+   - Implements branching strategies
+   - Defines commit message standards
+
+8. **TEMPLATE** - Manages documentation templates
+   - Creates, modifies, and applies templates
+   - Customizes templates for specific project needs
+
+## Project Memory
+
+PAELLADOC maintains a memory of your project in a `.memory.json` file, which tracks:
+
+- Project metadata (name, purpose, target audience)
+- Created documentation
+- Documentation progress
+- Code-to-documentation mappings
+- Last time of update
+
+## Documentation Process
+
+The PAELLADOC workflow follows these steps:
+
+1. **Project Setup**: Define project name and basic information
+2. **Template Selection**: Choose document templates to create
+3. **Content Creation**: Complete each document with specific information
+4. **Verification**: Ensure documentation aligns with code
+5. **Maintenance**: Regular updates to keep documentation current
+
+## Usage Examples
+
+To start documenting a new project:
+```
+PAELLA
+```
+
+To check if documentation is up-to-date:
+```
+VERIFY
+```
+
+To see all available commands:
+```
+HELP
+```
+
+To generate code based on documentation:
+```
+GENERATE_CODE
+```
+
+## Best Practices
+
+- Start documentation before writing code
+- Update documentation when code changes
+- Use templates for consistency
+- Verify documentation regularly
+- Include both technical and non-technical documentation
+
+## Behavior Definition
+
+```yaml
+behavior:
+  documentation_first: true
+  product_documentation_priority: true
+  track_documentation_completion: true
+  conversation_required: true
+  conversation_flow: "paella_flow"
+  wait_for_user_confirmation: true
+  interactive: true
+  sequential_questions: true
+  one_parameter_at_a_time: true
+  single_question_mode: true
+  wait_for_response: true
+  confirm_each_parameter: true
+  language_confirmation_first: true
+  strict_question_sequence: true
+  wait_for_user_response: true
+  enforce_one_question_rule: true
+  strict_parameter_sequence: true
+  require_step_confirmation: true
+  prohibit_multiple_questions: true
+  force_single_question_mode: true
+  max_questions_per_message: 1
+  create_memory_file: true
+  mandatory_language_question_first: true
+  absolute_sequence_enforcement: true
+  allow_native_file_creation: true
+  use_cursor_file_creation: true
+  use_native_file_creation: true
+  prevent_scripts: true
+  disallow_external_scripts: true
+  fixed_question_sequence: true
+  sequence_language_project_name: true
+  force_exact_sequence: true
+  template_based_documentation: true
+  offer_all_document_templates: true
+  copy_templates_to_project: true
+  update_templates_with_project_info: true
+  guide_through_document_creation: true
+  track_documentation_created: true
+  iterative_document_creation: true
+  provide_clear_options: true
+  always_list_options: true
+  document_by_document_approach: true
+  update_memory_after_each_document: true
+  always_ask_before_document_creation: true
+  present_document_descriptions: true
+  show_template_menu: true
+  allow_document_improvement: true
+  ask_for_next_action: true
+  simplified_initial_questions: true
+  prioritize_document_selection: true
+  enforce_memory_json_creation: true
+  verify_memory_json_exists: true
+  use_attractive_markdown: true
+  enhance_lists_with_emojis: true
+```
 
 # PAELLADOC Documentation System
 
