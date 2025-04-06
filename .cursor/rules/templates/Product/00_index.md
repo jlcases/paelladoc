@@ -20,23 +20,23 @@ This directory contains a comprehensive system of templates for software constru
 - **[Project Rules](05e_project_rules.md)** - Conventions and standards for the project
 
 ### Technical Architecture and Implementation
-6. **[Project Definition](06_project_definition.md)** - Defining the project scope, objectives, and constraints
-7. **[Technical Architecture](07_technical_architecture.md)** - Defining the high-level technical architecture
-8. **[Component Specification](08_component_specification.md)** - Detailed specifications for individual components
-9. **[Database Design](09_database_design.md)** - Database architecture and design considerations
-10. **[API Specification](10_api_specification.md)** - API design, endpoints, and integration patterns
-11. **[Frontend Architecture](11_frontend_architecture.md)** - Client-side application structure and patterns
+6. **[Project Definition](01_project_definition.md)** - Defining the project scope, objectives, and constraints
+7. **[Technical Architecture](02_technical_architecture.md)** - Defining the high-level technical architecture
+8. **[Component Specification](03_component_specification.md)** - Detailed specifications for individual components
+9. **[Database Design](04_database_design.md)** - Database architecture and design considerations
+10. **[API Specification](05_api_specification.md)** - API design, endpoints, and integration patterns
+11. **[Frontend Architecture](06_frontend_architecture.md)** - Client-side application structure and patterns
 
 ### Quality and Operations
-12. **[Testing Strategy](12_testing_strategy.md)** - Comprehensive testing approach across all levels
-13. **[DevOps Pipeline](13_devops_pipeline.md)** - CI/CD pipeline design and automation
-14. **[Security Framework](14_security_framework.md)** - Security considerations and implementation
-15. **[Documentation Framework](15_documentation_framework.md)** - Documentation strategy and organization
+12. **[Testing Strategy](07_testing_strategy.md)** - Comprehensive testing approach across all levels
+13. **[DevOps Pipeline](08_devops_pipeline.md)** - CI/CD pipeline design and automation
+14. **[Security Framework](09_security_framework.md)** - Security considerations and implementation
+15. **[Documentation Framework](10_documentation_framework.md)** - Documentation strategy and organization
 
 ### Project Management
-16. **[Task Management](16_task_management.md)** - Task tracking and management for sprints
-17. **[Meeting Notes](17_meeting_notes.md)** - Structured meeting notes to capture decisions and actions
-18. **[Project Progress](18_project_progress.md)** - Project status tracking and reporting
+16. **[Task Management](11_task_management.md)** - Task tracking and management for sprints
+17. **[Meeting Notes](12_meeting_notes.md)** - Structured meeting notes to capture decisions and actions
+18. **[Project Progress](13_project_progress.md)** - Project status tracking and reporting
 
 ## How to Use These Templates
 

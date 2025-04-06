@@ -1,148 +1,163 @@
-# Plantilla de Definición del Problema
+# Problem Definition Template
 
-## Información General
-- **Nombre del Proyecto**: [Nombre]
-- **Fecha**: [Fecha]
-- **Responsable**: [Nombre del responsable]
-- **Equipo**: [Miembros del equipo]
+## General Information
 
-## Contexto del Problema (MECE)
+- **Project Name**: [Name]
+- **Date**: [Date]
+- **Responsible**: [Name of the responsible person]
+- **Team**: [Team members]
 
-### Antecedentes
-- **Situación Actual**: [Descripción de la situación existente]
-- **Historia del Problema**: [Cómo ha evolucionado el problema]
-- **Intentos Previos de Solución**: [Soluciones previas y sus resultados]
-- **Restricciones Conocidas**: [Limitaciones existentes]
-- **Stakeholders Involucrados**: [Personas afectadas o interesadas]
+## Problem Context (MECE)
 
-### Evidencia del Problema
-- **Datos Cuantitativos**: [Estadísticas, métricas, indicadores]
-- **Datos Cualitativos**: [Testimonios, observaciones, entrevistas]
-- **Impacto Económico**: [Costos asociados al problema]
-- **Impacto en Usuarios**: [Cómo afecta a los usuarios]
-- **Impacto en Negocio**: [Cómo afecta al negocio]
-- **Tendencias Relevantes**: [Tendencias relacionadas con el problema]
+### Background
 
-## Definición del Problema (MECE)
+- **Current Situation**: [Description of the existing situation]
+- **Problem History**: [How the problem has evolved]
+- **Previous Solution Attempts**: [Previous solutions and their results]
+- **Known Constraints**: [Existing limitations]
+- **Stakeholders Involved**: [People affected or interested]
 
-### Declaración del Problema
-- **Declaración Clara**: [Declaración concisa del problema]
-- **Alcance**: [Límites del problema - qué incluye y qué excluye]
-- **Personas Afectadas**: [Quiénes experimentan este problema]
-- **Contexto de Ocurrencia**: [Cuándo y dónde ocurre]
-- **Frecuencia**: [Con qué frecuencia ocurre]
-- **Severidad**: [Cuán grave es]
+### Problem Evidence
 
-### Análisis Causa-Raíz
-- **Causas Primarias**:
-  - **Causa 1**: [Descripción]
-    - **Evidencia**: [Datos que respaldan esta causa]
-    - **Relaciones**: [Conexiones con otras causas]
-  - **Causa 2**: [Descripción]
+- **Quantitative Data**: [Statistics, metrics, indicators]
+- **Qualitative Data**: [Testimonials, observations, interviews]
+- **Economic Impact**: [Costs associated with the problem]
+- **Impact on Users**: [How it affects users]
+- **Impact on Business**: [How it affects the business]
+- **Relevant Trends**: [Trends related to the problem]
+
+## Problem Definition (MECE)
+
+### Problem Statement
+
+- **Clear Statement**: [Concise statement of the problem]
+- **Scope**: [Problem boundaries - what is included and what is excluded]
+- **Affected People**: [Who experiences this problem]
+- **Context of Occurrence**: [When and where it occurs]
+- **Frequency**: [How often it occurs]
+- **Severity**: [How severe it is]
+
+### Root Cause Analysis
+
+- **Primary Causes**:
+  - **Cause 1**: [Description]
+    - **Evidence**: [Data supporting this cause]
+    - **Relationships**: [Connections with other causes]
+  - **Cause 2**: [Description]
     - ...
 
-- **Causas Secundarias**:
-  - **Causa 1**: [Descripción]
-    - **Evidencia**: [Datos que respaldan esta causa]
-    - **Relaciones**: [Conexiones con otras causas]
-  - **Causa 2**: [Descripción]
+- **Secondary Causes**:
+  - **Cause 1**: [Description]
+    - **Evidence**: [Data supporting this cause]
+    - **Relationships**: [Connections with other causes]
+  - **Cause 2**: [Description]
     - ...
 
-- **Diagrama de Causa-Efecto**: [Descripción del diagrama Ishikawa/espina de pescado]
+- **Cause-Effect Diagram**: [Description of the Ishikawa/fishbone diagram]
 
-### Impacto del Problema
-- **Impacto en Usuarios**:
-  - **Segmento 1**: [Cómo impacta a este segmento]
-  - **Segmento 2**: [Cómo impacta a este segmento]
+### Problem Impact
 
-- **Impacto en Negocio**:
-  - **Financiero**: [Impacto financiero]
-  - **Operacional**: [Impacto en operaciones]
-  - **Reputacional**: [Impacto en reputación/marca]
-  - **Estratégico**: [Impacto en objetivos estratégicos]
+- **Impact on Users**:
+  - **Segment 1**: [How it impacts this segment]
+  - **Segment 2**: [How it impacts this segment]
 
-- **Costos de No Resolver**:
-  - **Costos a Corto Plazo**: [Costos inmediatos]
-  - **Costos a Largo Plazo**: [Costos futuros]
-  - **Costos Intangibles**: [Costos no cuantificables]
+- **Impact on Business**:
+  - **Financial**: [Financial impact]
+  - **Operational**: [Impact on operations]
+  - **Reputational**: [Impact on reputation/brand]
+  - **Strategic**: [Impact on strategic objectives]
 
-## Marco de Evaluación
+- **Costs of Not Solving**:
+  - **Short-term Costs**: [Immediate costs]
+  - **Long-term Costs**: [Future costs]
+  - **Intangible Costs**: [Non-quantifiable costs]
 
-### Criterios de Éxito
-- **Criterio 1**: [Descripción]
-  - **Métrica**: [Cómo se medirá]
-  - **Valor Actual**: [Valor actual]
-  - **Valor Objetivo**: [Valor deseado]
-  - **Justificación**: [Por qué este criterio es importante]
+## Evaluation Framework
 
-- **Criterio 2**: [Descripción]
+### Success Criteria
+
+- **Criterion 1**: [Description]
+  - **Metric**: [How it will be measured]
+  - **Current Value**: [Current value]
+  - **Target Value**: [Desired value]
+  - **Justification**: [Why this criterion is important]
+
+- **Criterion 2**: [Description]
   - ...
 
-### Restricciones y Limitaciones
-- **Restricciones Técnicas**: [Limitaciones técnicas]
-- **Restricciones de Recursos**: [Limitaciones de presupuesto, personal, etc.]
-- **Restricciones de Tiempo**: [Plazos o deadlines]
-- **Restricciones Regulatorias**: [Requisitos legales o normativos]
-- **Restricciones Organizacionales**: [Políticas o procedimientos internos]
+### Constraints and Limitations
 
-### Consideraciones Especiales
-- **Riesgos Potenciales**: [Riesgos asociados a resolver este problema]
-- **Interdependencias**: [Relación con otros problemas o proyectos]
-- **Factores Críticos de Éxito**: [Elementos necesarios para resolver el problema]
-- **Supuestos**: [Supuestos importantes realizados]
+- **Technical Constraints**: [Technical limitations]
+- **Resource Constraints**: [Budget, personnel limitations, etc.]
+- **Time Constraints**: [Deadlines or timeframes]
+- **Regulatory Constraints**: [Legal or regulatory requirements]
+- **Organizational Constraints**: [Internal policies or procedures]
 
-## Oportunidades y Espacio de Solución
+### Special Considerations
 
-### Oportunidades Identificadas
-- **Oportunidad 1**: [Descripción]
-  - **Ventajas**: [Beneficios potenciales]
-  - **Desafíos**: [Dificultades potenciales]
-  - **Segmentos Beneficiados**: [Quiénes se beneficiarían]
-  - **Valor Potencial**: [Valor que podría generarse]
+- **Potential Risks**: [Risks associated with solving this problem]
+- **Interdependencies**: [Relationship with other problems or projects]
+- **Critical Success Factors**: [Elements necessary to solve the problem]
+- **Assumptions**: [Important assumptions made]
 
-- **Oportunidad 2**: [Descripción]
+## Opportunities and Solution Space
+
+### Identified Opportunities
+
+- **Opportunity 1**: [Description]
+  - **Advantages**: [Potential benefits]
+  - **Challenges**: [Potential difficulties]
+  - **Benefited Segments**: [Who would benefit]
+  - **Potential Value**: [Value that could be generated]
+
+- **Opportunity 2**: [Description]
   - ...
 
-### Enfoques Potenciales
-- **Enfoque 1**: [Descripción general del enfoque]
-  - **Ventajas**: [Beneficios de este enfoque]
-  - **Desventajas**: [Desventajas de este enfoque]
-  - **Viabilidad**: [Alta/Media/Baja]
-  - **Recursos Necesarios**: [Qué se necesitaría]
+### Potential Approaches
 
-- **Enfoque 2**: [Descripción general del enfoque]
+- **Approach 1**: [General description of the approach]
+  - **Advantages**: [Benefits of this approach]
+  - **Disadvantages**: [Disadvantages of this approach]
+  - **Feasibility**: [High/Medium/Low]
+  - **Required Resources**: [What would be needed]
+
+- **Approach 2**: [General description of the approach]
   - ...
 
 ### Benchmarking
-- **Solución Competidor 1**: [Cómo resuelve un competidor este problema]
-  - **Fortalezas**: [Qué hace bien]
-  - **Debilidades**: [Qué podría mejorar]
-  - **Aprendizajes**: [Qué podemos aprender]
 
-- **Solución Competidor 2**: [Cómo resuelve otro competidor este problema]
+- **Competitor Solution 1**: [How a competitor solves this problem]
+  - **Strengths**: [What they do well]
+  - **Weaknesses**: [What could be improved]
+  - **Learnings**: [What we can learn]
+
+- **Competitor Solution 2**: [How another competitor solves this problem]
   - ...
 
-## Priorización y Recomendaciones
+## Prioritization and Recommendations
 
-### Evaluación de Oportunidades
-- **Matriz de Priorización**: [Criterios y puntajes]
-- **Ranking Final**: [Oportunidades ordenadas]
-- **Justificación**: [Razones para esta priorización]
+### Opportunity Assessment
 
-### Recomendaciones
-- **Enfoque Recomendado**: [Qué enfoque se recomienda]
-- **Justificación**: [Por qué se recomienda este enfoque]
-- **Próximos Pasos**: [Acciones inmediatas a tomar]
-- **Hoja de Ruta Preliminar**: [Visión general de tiempos]
-- **Recursos Necesarios**: [Qué recursos se necesitarían]
+- **Prioritization Matrix**: [Criteria and scores]
+- **Final Ranking**: [Ordered opportunities]
+- **Justification**: [Reasons for this prioritization]
 
-## Anexos
-- **Fuentes de Datos**: [Referencias de las fuentes utilizadas]
-- **Entrevistas Completas**: [Enlace a transcripciones]
-- **Análisis Detallados**: [Enlace a análisis adicionales]
-- **Material de Investigación**: [Enlace a materiales utilizados]
-- **Diagramas y Modelos**: [Enlace a representaciones visuales]
+### Recommendations
+
+- **Recommended Approach**: [Which approach is recommended]
+- **Justification**: [Why this approach is recommended]
+- **Next Steps**: [Immediate actions to take]
+- **Preliminary Roadmap**: [General timeline vision]
+- **Required Resources**: [What resources would be needed]
+
+## Appendices
+
+- **Data Sources**: [References of sources used]
+- **Complete Interviews**: [Link to transcripts]
+- **Detailed Analyses**: [Link to additional analyses]
+- **Research Material**: [Link to materials used]
+- **Diagrams and Models**: [Link to visual representations]
 
 ---
 
-Esta plantilla sigue principios MECE al dividir la definición del problema en categorías mutuamente excluyentes (contexto, definición, marco de evaluación, oportunidades y priorización) y colectivamente exhaustivas (cubriendo todos los aspectos necesarios para comprender completamente un problema y establecer bases para su solución). 
+This template follows MECE principles by dividing the problem definition into mutually exclusive categories (context, definition, evaluation framework, opportunities, and prioritization) and collectively exhaustive (covering all aspects necessary to fully understand a problem and establish the basis for its solution).

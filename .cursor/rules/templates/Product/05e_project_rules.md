@@ -1,256 +1,282 @@
-# Plantilla de Reglas del Proyecto
+# Project Rules Template
 
-## Información General
-- **Nombre del Proyecto**: [Nombre]
-- **Fecha de Creación**: [Fecha]
-- **Responsable**: [Nombre del responsable]
-- **Versión**: [Número de versión]
+## General Information
 
-## Propósito
-Esta plantilla documenta las reglas y convenciones a seguir durante el desarrollo del proyecto. Sirve como referencia para el equipo de desarrollo para asegurar la consistencia, calidad y cumplimiento de estándares en todo el código y la documentación.
+- **Project Name**: [Name]
+- **Creation Date**: [Date]
+- **Responsible**: [Name of the responsible person]
+- **Version**: [Version number]
 
-## Reglas de Testing (MECE)
+## Purpose
 
-### Estructura de Tests
-- **Organización de Carpetas**:
-  - `tests/domain/`: Tests de la capa de dominio (reglas de negocio)
-    - `models/`: Tests de modelos de dominio
-    - `services/`: Tests de servicios de dominio
-    - `ports/`: Tests de contratos de interfaces
-    - `repositories/`: Tests de interfaces de repositorios
-    - `requests/`: Tests de modelos de solicitud
-  - `tests/application/`: Tests de la capa de aplicación (orquestación)
-  - `tests/infrastructure/`: Tests de la capa de infraestructura (integración externa)
-  - `tests/interfaces/`: Tests de la capa de interfaces de usuario
+This template documents the rules and conventions to follow during project development. It serves as a reference for the development team to ensure consistency, quality, and compliance with standards across all code and documentation.
 
-### Convenciones de Nomenclatura
-- **Archivos de Test**: `test_[nombre_del_modulo].py`
-- **Clases de Test**: `Test[NombreClase]`
-- **Métodos de Test**: `test_[funcionalidad_a_probar]_[condición]_[resultado_esperado]`
+## Testing Rules (MECE)
 
-### Dependencias Permitidas
-- **Tests de Dominio**:
-  - Dependencias permitidas:
-    - Pydantic v2 (para validación de modelos)
-    - Typing (para hints de tipos)
-    - Datetime (para lógica temporal)
-    - Módulos de puertos de dominio
-  - Enfoque: Reglas de negocio y validación
+### Test Structure
 
-- **Tests de Aplicación**:
-  - Pueden usar mocks tanto para dominio como para servicios externos
-  - Enfoque: Coordinación entre dominio e infraestructura
+- **Folder Organization**:
+  - `tests/domain/`: Tests for the domain layer (business rules)
+    - `models/`: Domain model tests
+    - `services/`: Domain service tests
+    - `ports/`: Interface contract tests
+    - `repositories/`: Repository interface tests
+    - `requests/`: Request model tests
+  - `tests/application/`: Tests for the application layer (orchestration)
+  - `tests/infrastructure/`: Tests for the infrastructure layer (external integration)
+  - `tests/interfaces/`: Tests for the user interface layer
 
-- **Tests de Infraestructura**:
-  - Integración real o mocks sofisticados
-  - Enfoque: Interacciones con bases de datos y servicios externos
+### Naming Conventions
 
-### Cobertura y Calidad
-- **Cobertura Mínima**:
-  - Capa de Dominio: [X%]
-  - Capa de Aplicación: [X%]
-  - Capa de Infraestructura: [X%]
-  - Capa de Interfaces: [X%]
+- **Test Files**: `test_[module_name].py`
+- **Test Classes**: `Test[ClassName]`
+- **Test Methods**: `test_[functionality_to_test]_[condition]_[expected_result]`
 
-- **Validaciones de Calidad**:
-  - Todos los tests deben ser independientes entre sí
-  - No debe haber código de producción sin tests asociados
-  - Evitar tests que dependan del orden de ejecución
+### Allowed Dependencies
 
-## Reglas de Gestión de Tareas (MECE)
+- **Domain Tests**:
+  - Allowed dependencies:
+    - Pydantic v2 (for model validation)
+    - Typing (for type hints)
+    - Datetime (for temporal logic)
+    - Domain port modules
+  - Focus: Business rules and validation
 
-### Estructura de Tareas
-- **Formato de ID**: [Prefijo]-[Número] (Ej: TASK-001)
-- **Estados Permitidos**:
-  - Pendiente
-  - En Progreso
-  - En Revisión
-  - Completado
-  - Bloqueado
+- **Application Tests**:
+  - Can use mocks for both domain and external services
+  - Focus: Coordination between domain and infrastructure
 
-### Priorización
-- **Niveles de Prioridad**:
-  - **Mandatory**: Debe completarse sin excepción
-  - **Alta**: Crítica para el negocio/proyecto
-  - **Media**: Importante pero no crítica
-  - **Baja**: Puede posponerse si es necesario
+- **Infrastructure Tests**:
+  - Real integration or sophisticated mocks
+  - Focus: Interactions with databases and external services
 
-### Asignación y Seguimiento
-- **Reglas de Asignación**:
-  - Cada tarea debe tener un responsable claro
-  - No se debe trabajar en más de [X] tareas simultáneamente
-  - Actualizar estado diariamente
+### Coverage and Quality
 
-- **Métricas de Seguimiento**:
-  - Velocidad del equipo (story points por sprint)
-  - Tasa de completitud (% de tareas completadas vs planificadas)
-  - Lead time (tiempo desde creación hasta completado)
+- **Minimum Coverage**:
+  - Domain Layer: [X%]
+  - Application Layer: [X%]
+  - Infrastructure Layer: [X%]
+  - Interface Layer: [X%]
 
-## Reglas de Comandos de Terminal (MECE)
+- **Quality Validations**:
+  - All tests must be independent of each other
+  - No production code without associated tests
+  - Avoid tests that depend on execution order
 
-### Convenciones Generales
-- **Estructura de Comandos**: [Describa la estructura estándar para comandos]
-- **Ubicación de Scripts**: [Directorio para scripts]
-- **Documentación**: Todos los comandos deben tener ayuda accesible con `--help`
+## Task Management Rules (MECE)
 
-### Comandos Prohibidos
-- **Lista de Comandos Prohibidos**:
-  - [Comando 1]: [Razón]
-  - [Comando 2]: [Razón]
+### Task Structure
 
-### Comandos Recomendados
-- **Gestión de Entorno**:
-  - [Comando]: [Descripción y uso]
-- **Build y Deploy**:
-  - [Comando]: [Descripción y uso]
+- **ID Format**: [Prefix]-[Number] (Ex: TASK-001)
+- **Allowed States**:
+  - Pending
+  - In Progress
+  - In Review
+  - Completed
+  - Blocked
+
+### Prioritization
+
+- **Priority Levels**:
+  - **Mandatory**: Must be completed without exception
+  - **High**: Critical for business/project
+  - **Medium**: Important but not critical
+  - **Low**: Can be postponed if necessary
+
+### Assignment and Tracking
+
+- **Assignment Rules**:
+  - Each task must have a clear responsible person
+  - Don't work on more than [X] tasks simultaneously
+  - Update status daily
+
+- **Tracking Metrics**:
+  - Team velocity (story points per sprint)
+  - Completion rate (% of completed vs planned tasks)
+  - Lead time (time from creation to completion)
+
+## Terminal Command Rules (MECE)
+
+### General Conventions
+
+- **Command Structure**: [Describe the standard structure for commands]
+- **Script Location**: [Directory for scripts]
+- **Documentation**: All commands must have help accessible with `---help`
+
+### Prohibited Commands
+
+- **List of Prohibited Commands**:
+
+### Recommended Commands
+
+- **Environment Management**:
+  - [Command]: [Description and usage]
+- **Build and Deploy**:
+  - [Command]: [Description and usage]
 - **Testing**:
-  - [Comando]: [Descripción y uso]
+  - [Command]: [Description and usage]
 
-## Reglas de Protección de Pre-commit (MECE)
+## Pre-commit Protection Rules (MECE)
 
-### Verificaciones Obligatorias
-- **Linting**: Todos los archivos deben pasar las verificaciones de linter
-- **Formatting**: Todos los archivos deben estar formateados según las convenciones
-- **Tests**: [Conjunto de tests que deben pasar]
-- **Tamaño de Commit**: [Reglas sobre el tamaño máximo de commits]
+### Mandatory Verifications
 
-### Excepciones
-- **Archivos Excluidos**: [Lista de archivos o patrones excluidos]
-- **Condiciones de Bypass**: [Condiciones bajo las cuales se pueden omitir las verificaciones]
+- **Linting**: All files must pass linter checks
+- **Formatting**: All files must be formatted according to conventions
+- **Tests**: [Set of tests that must pass]
+- **Commit Size**: [Rules about maximum commit size]
 
-## Reglas de Lenguaje y Estilo (MECE)
+### Exceptions
 
-### Convenciones Generales
-- **Idioma**: [Idioma estándar para código, comentarios, documentación]
-- **Indentación**: [Espacios/Tabs y cantidad]
-- **Longitud Máxima de Línea**: [Número de caracteres]
+- **Excluded Files**: [List of excluded files or patterns]
+- **Bypass Conditions**: [Conditions under which verifications can be skipped]
 
-### Por Lenguaje
+## Language and Style Rules (MECE)
+
+### General Conventions
+
+- **Language**: [Standard language for code, comments, documentation]
+- **Indentation**: [Spaces/Tabs and amount]
+- **Maximum Line Length**: [Number of characters]
+
+### By Language
+
 - **Python**:
-  - **Estilo**: [PEP 8, etc.]
-  - **Docstrings**: [Formato: Google, NumPy, etc.]
-  - **Imports**: [Orden y agrupación]
+  - **Style**: [PEP 8, etc.]
+  - **Docstrings**: [Format: Google, NumPy, etc.]
+  - **Imports**: [Order and grouping]
 
 - **JavaScript/TypeScript**:
-  - **Estilo**: [Airbnb, Standard, etc.]
-  - **Formato de Documentación**: [JSDoc, etc.]
-  - **Módulos**: [ES Modules vs CommonJS]
+  - **Style**: [Airbnb, Standard, etc.]
+  - **Documentation Format**: [JSDoc, etc.]
+  - **Modules**: [ES Modules vs CommonJS]
 
-### Nomenclatura
-- **Variables**: [Convención: camelCase, snake_case, etc.]
-- **Funciones**: [Convención]
-- **Clases**: [Convención]
-- **Constantes**: [Convención]
-- **Archivos**: [Convención]
+### Naming
 
-## Reglas Operacionales (MECE)
+- **Variables**: [Convention: camelCase, snake_case, etc.]
+- **Functions**: [Convention]
+- **Classes**: [Convention]
+- **Constants**: [Convention]
+- **Files**: [Convention]
 
-### Entornos
-- **Desarrollo**:
-  - **URL**: [URL del entorno]
-  - **Acceso**: [Cómo acceder]
-  - **Limitaciones**: [Restricciones específicas]
+## Operational Rules (MECE)
+
+### Environments
+
+- **Development**:
+  - **URL**: [Environment URL]
+  - **Access**: [How to access]
+  - **Limitations**: [Specific restrictions]
 
 - **Staging**:
-  - **URL**: [URL del entorno]
-  - **Acceso**: [Cómo acceder]
-  - **Limitaciones**: [Restricciones específicas]
+  - **URL**: [Environment URL]
+  - **Access**: [How to access]
+  - **Limitations**: [Specific restrictions]
 
-- **Producción**:
-  - **URL**: [URL del entorno]
-  - **Acceso**: [Cómo acceder]
-  - **Limitaciones**: [Restricciones específicas]
+- **Production**:
+  - **URL**: [Environment URL]
+  - **Access**: [How to access]
+  - **Limitations**: [Specific restrictions]
 
-### Despliegue
-- **Frecuencia**: [Política de despliegue: continuo, programado, etc.]
-- **Ventanas de Mantenimiento**: [Cuándo se pueden realizar despliegues]
-- **Rollback**: [Procedimiento de rollback]
+### Deployment
 
-## Reglas de Commits (MECE)
+- **Frequency**: [Deployment policy: continuous, scheduled, etc.]
+- **Maintenance Windows**: [When deployments can be performed]
+- **Rollback**: [Rollback procedure]
 
-### Granularidad
-- **Tamaño Recomendado**: Commits pequeños y enfocados
-- **Frecuencia**: Hacer commits frecuentes durante el desarrollo
-- **Atomicidad**: Cada commit debe representar un cambio lógico único
+## Commit Rules (MECE)
 
-### Mensajes de Commit
-- **Formato**:
-  ```
-  [tipo]: [mensaje corto]
+### Granularity
+
+- **Recommended Size**: Small and focused commits
+- **Frequency**: Make frequent commits during development
+- **Atomicity**: Each commit should represent a single logical change
+
+### Commit Messages
+
+- **Format**:
+
+  ```plaintext
+  [type]: [short message]
   
-  [descripción detallada (opcional)]
+  [detailed description (optional)]
   
-  [referencias a issues (opcional)]
+  [issue references (optional)]
   ```
 
-- **Tipos de Commits**:
-  - `feat`: Nueva funcionalidad
-  - `fix`: Corrección de errores
-  - `docs`: Cambios en documentación
-  - `style`: Cambios de formato (no funcionales)
-  - `refactor`: Refactorización de código
-  - `test`: Adición o corrección de tests
-  - `chore`: Cambios en proceso de build, herramientas, etc.
+- **Commit Types**:
+  - `feat`: New feature
+  - `fix`: Bug fix
+  - `docs`: Documentation changes
+  - `style`: Formatting changes (non-functional)
+  - `refactor`: Code refactoring
+  - `test`: Adding or fixing tests
+  - `chore`: Changes to build process, tools, etc.
 
-- **Recomendaciones**:
-  - Usar tiempo presente en mensajes
-  - Primera línea máximo 50 caracteres
-  - Cuerpo del mensaje máximo 72 caracteres por línea
-  - Explicar el "qué" y "por qué" en vez del "cómo"
+- **Recommendations**:
+  - Use present tense in messages
+  - First line maximum 50 characters
+  - Message body maximum 72 characters per line
+  - Explain the "what" and "why" instead of the "how"
 
-## Reglas de DeepThinker (MECE)
+## DeepThinker Rules (MECE)
 
-### Metodología
-- **Proceso de Pensamiento**:
-  - Descomponer problemas complejos en subproblemas manejables
-  - Considerar múltiples perspectivas
-  - Evaluar pros y contras de cada enfoque
-  - Reflexionar sobre decisiones tomadas
+### Methodology
 
-### Fases
-- **Análisis del Problema**:
-  - Definir el problema claramente
-  - Identificar restricciones y requisitos
-  - Determinar criterios de éxito
+- **Thinking Process**:
+  - Break down complex problems into manageable subproblems
+  - Consider multiple perspectives
+  - Evaluate pros and cons of each approach
+  - Reflect on decisions made
 
-- **Exploración de Soluciones**:
-  - Generar múltiples enfoques
-  - Investigar literatura y mejores prácticas
-  - Considerar soluciones creativas
+### Phases
 
-- **Evaluación y Decisión**:
-  - Analizar ventajas y desventajas
-  - Evaluar factibilidad y complejidad
-  - Seleccionar enfoque óptimo
+- **Problem Analysis**:
+  - Define the problem clearly
+  - Identify constraints and requirements
+  - Determine success criteria
 
-- **Implementación y Reflexión**:
-  - Implementar solución elegida
-  - Verificar resultados contra criterios
-  - Documentar lecciones aprendidas
+- **Solution Exploration**:
+  - Generate multiple approaches
+  - Research literature and best practices
+  - Consider creative solutions
 
-### Documentación
-- **Formato**: [Detalles del formato de documentación]
-- **Ubicación**: [Dónde se almacena la documentación]
-- **Frecuencia de Actualización**: [Cuándo actualizar]
+- **Evaluation and Decision**:
+  - Analyze advantages and disadvantages
+  - Evaluate feasibility and complexity
+  - Select optimal approach
 
-## Prioridades del Proyecto (MECE)
+- **Implementation and Reflection**:
+  - Implement chosen solution
+  - Verify results against criteria
+  - Document lessons learned
 
-### Criterios de Priorización
-- **Valor para el Usuario**: [Alta/Media/Baja] - [Descripción]
-- **Complejidad Técnica**: [Alta/Media/Baja] - [Descripción]
-- **Riesgo**: [Alto/Medio/Bajo] - [Descripción]
-- **Dependencias**: [Alta/Media/Baja] - [Descripción]
+### Documentation
 
-### Directivas del Proyecto
-- **Nombre del Proyecto**: [Nombre]
-- **Enfoque AI-First**: [Sí/No] - [Implicaciones]
-- **Formato de Timestamps**: [Formato estándar]
+- **Format**: [Documentation format details]
+- **Location**: [Where documentation is stored]
+- **Update Frequency**: [When to update]
 
-## Anexos
-- **Herramientas Recomendadas**: [Lista de herramientas con enlaces]
-- **Referencias**: [Enlaces a documentación externa relevante]
-- **Ejemplos**: [Enlaces a ejemplos de buenas prácticas]
+## Project Priorities (MECE)
+
+### Prioritization Criteria
+
+- **User Value**: [High/Medium/Low] - [Description]
+- **Technical Complexity**: [High/Medium/Low] - [Description]
+- **Risk**: [High/Medium/Low] - [Description]
+- **Dependencies**: [High/Medium/Low] - [Description]
+
+### Project Directives
+
+- **Project Name**: [Name]
+- **AI-First Approach**: [Yes/No] - [Implications]
+- **Timestamp Format**: [Standard format]
+
+## Appendices
+
+- **Recommended Tools**: [List of tools with links]
+- **References**: [Links to relevant external documentation]
+- **Examples**: [Links to best practice examples]
 
 ---
 
-Esta plantilla sigue principios MECE al dividir las reglas del proyecto en categorías mutuamente excluyentes (testing, gestión de tareas, comandos, etc.) y colectivamente exhaustivas (cubriendo todos los aspectos necesarios para definir completamente las reglas del proyecto). 
+This template follows MECE principles by dividing project rules into mutually exclusive categories (testing, task management, commands, etc.) and collectively exhaustive (covering all aspects necessary to completely define the project rules).

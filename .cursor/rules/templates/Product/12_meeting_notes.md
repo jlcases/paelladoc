@@ -1,106 +1,118 @@
-# Plantilla de Notas de Reunión
+# Meeting Notes Template
 
-## Información General
-- **Fecha**: [Fecha y hora de la reunión]
-- **Duración**: [Duración de la reunión]
-- **Tipo de Reunión**: [Planificación / Revisión / Retrospectiva / Diaria / Técnica / Stakeholders]
-- **Participantes**: [Lista de participantes]
-- **Facilitador**: [Nombre del facilitador]
-- **Secretario**: [Nombre del responsable de tomar notas]
+## General Information
+
+- **Date**: [Date and time of the meeting]
+- **Duration**: [Duration of the meeting]
+- **Meeting Type**: [Planning / Review / Retrospective / Daily / Technical / Stakeholders]
+- **Participants**: [List of participants]
+- **Facilitator**: [Name of the facilitator]
+- **Secretary**: [Name of the person responsible for taking notes]
 
 ## Agenda
-1. [Tema 1]
-2. [Tema 2]
-3. [Tema 3]
+
+1. [Topic 1]
+2. [Topic 2]
+3. [Topic 3]
 4. ...
 
-## Temas Tratados (MECE)
+## Topics Discussed (MECE)
 
-### 1. [Tema 1]
-- **Contexto**: [Información relevante sobre el tema]
-- **Discusión**:
-  - [Punto clave discutido 1]
-  - [Punto clave discutido 2]
-  - [Punto clave discutido 3]
-- **Decisiones**:
-  - [Decisión tomada 1]
-  - [Decisión tomada 2]
-- **Acciones**:
-  - [ ] [Acción 1] - Responsable: [Nombre] - Fecha límite: [Fecha]
-  - [ ] [Acción 2] - Responsable: [Nombre] - Fecha límite: [Fecha]
-- **Problemas Abiertos**:
-  - [Problema no resuelto 1]
-  - [Problema no resuelto 2]
+### 1. [Topic 1]
 
-### 2. [Tema 2]
+- **Context**: [Relevant information about the topic]
+- **Discussion**:
+  - [Key point discussed 1]
+  - [Key point discussed 2]
+  - [Key point discussed 3]
+- **Decisions**:
+  - [Decision made 1]
+  - [Decision made 2]
+- **Actions**:
+  - [ ] [Action 1] - Responsible: [Name] - Deadline: [Date]
+  - [ ] [Action 2] - Responsible: [Name] - Deadline: [Date]
+- **Open Issues**:
+  - [Unresolved issue 1]
+  - [Unresolved issue 2]
+
+### 2. [Topic 2]
+
 ...
 
-## Actualización de Estado del Proyecto
+## Project Status Update
 
-### Estado de los Hexágonos
+### Hexagon Status
+
 - **User Management**:
-  - **Avance**: [Porcentaje completado]
-  - **Hitos Logrados**: [Hitos completados]
-  - **Bloqueantes**: [Bloqueantes actuales]
-  - **Próximos Pasos**: [Próximos objetivos]
+  - **Progress**: [Percentage completed]
+  - **Achieved Milestones**: [Completed milestones]
+  - **Blockers**: [Current blockers]
+  - **Next Steps**: [Next objectives]
 
 - **Problem Management**:
-  - **Avance**: [Porcentaje completado]
-  - **Hitos Logrados**: [Hitos completados]
-  - **Bloqueantes**: [Bloqueantes actuales]
-  - **Próximos Pasos**: [Próximos objetivos]
+  - **Progress**: [Percentage completed]
+  - **Achieved Milestones**: [Completed milestones]
+  - **Blockers**: [Current blockers]
+  - **Next Steps**: [Next objectives]
 
-### Estado del Sprint Actual
-- **Días Restantes**: [Número de días hasta fin del sprint]
-- **Burndown**: [Estado actual vs. planificado]
-- **Tareas Completadas**: [Número y porcentaje]
-- **Tareas En Progreso**: [Número y porcentaje]
-- **Tareas Bloqueadas**: [Número y porcentaje]
+### Current Sprint Status
 
-### Métricas de Calidad
-- **Cobertura de Tests**: [Porcentaje global]
-- **Deuda Técnica**: [Estimación actual]
-- **Defectos Abiertos**: [Número de defectos sin resolver]
-- **Pull Requests Pendientes**: [Número de PRs en revisión]
+- **Days Remaining**: [Number of days until the end of the sprint]
+- **Burndown**: [Current status vs. planned]
+- **Completed Tasks**: [Number and percentage]
+- **Tasks In Progress**: [Number and percentage]
+- **Blocked Tasks**: [Number and percentage]
 
-## Decisiones Arquitectónicas
-- **Decisión 1**: [Descripción de la decisión]
-  - **Contexto**: [Problema que se intenta resolver]
-  - **Opciones Consideradas**: [Alternativas evaluadas]
-  - **Decisión Tomada**: [Opción seleccionada]
-  - **Justificación**: [Razones para la selección]
-  - **Consecuencias**: [Implicaciones positivas y negativas]
-  - **Estado**: [Propuesta/Aceptada/Implementada/Reemplazada]
+### Quality Metrics
 
-- **Decisión 2**: [Descripción de la decisión]
+- **Test Coverage**: [Global percentage]
+- **Technical Debt**: [Current estimation]
+- **Open Defects**: [Number of unresolved defects]
+- **Pending Pull Requests**: [Number of PRs under review]
+
+## Architectural Decisions
+
+- **Decision 1**: [Description of the decision]
+  - **Context**: [Problem being addressed]
+  - **Options Considered**: [Alternatives evaluated]
+  - **Decision Made**: [Selected option]
+  - **Justification**: [Reasons for selection]
+  - **Consequences**: [Positive and negative implications]
+  - **Status**: [Proposed/Accepted/Implemented/Replaced]
+
+- **Decision 2**: [Description of the decision]
   - ...
 
-## Riesgos Identificados
-- **Riesgo 1**: [Descripción del riesgo]
-  - **Probabilidad**: [Alta/Media/Baja]
-  - **Impacto**: [Alto/Medio/Bajo]
-  - **Estrategia de Mitigación**: [Plan para reducir probabilidad o impacto]
-  - **Responsable**: [Persona encargada del seguimiento]
+## Identified Risks
 
-- **Riesgo 2**: [Descripción del riesgo]
+- **Risk 1**: [Description of the risk]
+  - **Probability**: [High/Medium/Low]
+  - **Impact**: [High/Medium/Low]
+  - **Mitigation Strategy**: [Plan to reduce probability or impact]
+  - **Responsible**: [Person in charge of monitoring]
+
+- **Risk 2**: [Description of the risk]
   - ...
 
-## Aspectos Destacados
-- **Logros**: [Logros significativos desde la última reunión]
-- **Preocupaciones**: [Preocupaciones principales del equipo]
-- **Aprendizajes**: [Lecciones aprendidas]
+## Highlights
 
-## Próxima Reunión
-- **Fecha**: [Fecha y hora de la próxima reunión]
-- **Temas Propuestos**: 
-  - [Tema 1]
-  - [Tema 2]
+- **Achievements**: [Significant achievements since the last meeting]
+- **Concerns**: [Main concerns of the team]
+- **Learnings**: [Lessons learned]
 
-## Anexos
-- [Enlace a diagramas o documentos relevantes]
-- [Enlace a presentaciones compartidas]
-- [Enlace a prototipos o demos]
+## Next Meeting
+
+- **Date**: [Date and time of the next meeting]
+- **Proposed Topics**:
+  - [Topic 1]
+  - [Topic 2]
+
+## Attachments
+
+- [Link to relevant diagrams or documents]
+- [Link to shared presentations]
+- [Link to prototypes or demos]
 
 ---
 
-Esta plantilla sigue principios MECE al organizar las notas de reunión en categorías mutuamente excluyentes (información general, agenda, temas tratados, estado del proyecto, decisiones arquitectónicas, riesgos y aspectos destacados) y colectivamente exhaustivas (cubriendo todos los aspectos relevantes de una reunión de proyecto, desde la planificación hasta el seguimiento y la documentación de decisiones). 
+This template follows MECE principles by organizing meeting notes into mutually exclusive categories (general information, agenda, topics discussed, project status, architectural decisions, risks, and highlights) and collectively exhaustive (covering all relevant aspects of a project meeting, from planning to follow-up and documentation of decisions).

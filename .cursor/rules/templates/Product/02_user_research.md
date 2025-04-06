@@ -1,187 +1,206 @@
-# Plantilla de Investigación de Usuarios
+# User Research Template
 
-## Información General
-- **Nombre del Proyecto**: [Nombre]
-- **Fecha de Investigación**: [Fecha]
-- **Responsable**: [Nombre del responsable]
-- **Equipo de Investigación**: [Miembros del equipo]
+## General Information
 
-## Objetivos de la Investigación (MECE)
-- **Objetivos Primarios**: [Objetivos principales de la investigación]
-- **Objetivos Secundarios**: [Objetivos adicionales]
-- **Preguntas a Responder**: [Preguntas clave que la investigación debe responder]
-- **Resultados Esperados**: [Lo que se espera obtener de esta investigación]
+- **Project Name**: [Name]
+- **Research Date**: [Date]
+- **Responsible**: [Name of the responsible person]
+- **Research Team**: [Team members]
 
-## Metodología de Investigación
+## Research Objectives (MECE)
 
-### Métodos Cualitativos
-- **Entrevistas a Profundidad**: [Número, perfil de participantes, estructura]
-- **Observación Contextual**: [Contextos observados, duración, enfoque]
-- **Focus Groups**: [Número, tamaño, composición, temas]
-- **Diarios de Usuario**: [Duración, número de participantes, instrucciones]
-- **Pruebas de Usabilidad**: [Tipo de pruebas, tareas evaluadas, métricas]
+- **Primary Objectives**: [Main objectives of the research]
+- **Secondary Objectives**: [Additional objectives]
+- **Questions to Answer**: [Key questions the research should answer]
+- **Expected Results**: [What is expected to be obtained from this research]
 
-### Métodos Cuantitativos
-- **Encuestas**: [Tamaño de muestra, método de distribución, tasa de respuesta]
-- **Análisis de Datos de Uso**: [Fuentes de datos, métricas analizadas, período]
-- **Card Sorting**: [Tipo (abierto/cerrado), número de participantes, ítems]
-- **Evaluaciones Comparativas**: [Productos comparados, criterios, metodología]
-- **Pruebas A/B**: [Variables probadas, tamaño de muestra, duración]
+## Research Methodology
 
-### Herramientas Utilizadas
-- **Herramientas de Reclutamiento**: [Herramientas usadas para reclutar participantes]
-- **Software de Análisis**: [Herramientas para análisis de datos]
-- **Herramientas de Prueba**: [Software para pruebas de usabilidad]
-- **Plataformas de Encuestas**: [Herramientas usadas para encuestas]
-- **Herramientas de Grabación**: [Equipos para documentar sesiones]
+### Qualitative Methods
 
-## Perfiles de Usuario (MECE)
+- **In-depth Interviews**: [Number, participant profile, structure]
+- **Contextual Observation**: [Contexts observed, duration, focus]
+- **Focus Groups**: [Number, size, composition, topics]
+- **User Diaries**: [Duration, number of participants, instructions]
+- **Usability Tests**: [Type of tests, evaluated tasks, metrics]
 
-### Perfil de Usuario 1: [Nombre del Perfil]
-- **Descripción Demográfica**:
-  - **Edad**: [Rango de edad]
-  - **Género**: [Distribución]
-  - **Ubicación**: [Distribución geográfica]
-  - **Nivel Educativo**: [Distribución]
-  - **Nivel de Ingresos**: [Rango]
-  - **Ocupación**: [Tipos de ocupaciones]
+### Quantitative Methods
 
-- **Comportamiento**:
-  - **Objetivos Principales**: [¿Qué buscan lograr?]
-  - **Tareas Frecuentes**: [Tareas que realizan habitualmente]
-  - **Contexto de Uso**: [Dónde, cuándo y cómo utilizarían el producto]
-  - **Frecuencia de Uso**: [Con qué frecuencia usarían el producto]
-  - **Dispositivos Utilizados**: [Qué dispositivos usan principalmente]
-  - **Patrones de Comportamiento**: [Patrones observados]
+- **Surveys**: [Sample size, distribution method, response rate]
+- **Usage Data Analysis**: [Data sources, metrics analyzed, period]
+- **Card Sorting**: [Type (open/closed), number of participants, items]
+- **Comparative Evaluations**: [Products compared, criteria, methodology]
+- **A/B Testing**: [Variables tested, sample size, duration]
 
-- **Actitudes y Motivaciones**:
-  - **Motivaciones Principales**: [Qué los motiva]
-  - **Preocupaciones**: [Qué les preocupa]
-  - **Valores**: [Valores importantes para ellos]
-  - **Aspiraciones**: [Lo que aspiran lograr]
-  - **Aversiones**: [Lo que evitan]
-  - **Preferencias de Marca**: [Marcas preferidas]
+### Tools Used
 
-- **Necesidades y Dolores**:
-  - **Necesidades No Satisfechas**: [Necesidades no cubiertas]
-  - **Puntos de Dolor**: [Frustraciones y problemas]
-  - **Obstáculos**: [Barreras que enfrentan]
-  - **Soluciones Actuales**: [Cómo resuelven el problema actualmente]
-  - **Limitaciones**: [Restricciones que tienen]
-  - **Criterios de Éxito**: [Cómo miden el éxito]
+- **Recruitment Tools**: [Tools used to recruit participants]
+- **Analysis Software**: [Tools for data analysis]
+- **Testing Tools**: [Software for usability testing]
+- **Survey Platforms**: [Tools used for surveys]
+- **Recording Tools**: [Equipment to document sessions]
 
-### Perfil de Usuario 2: [Nombre del Perfil]
+## User Profiles (MECE)
+
+### User Profile 1: [Profile Name]
+
+- **Demographic Description**:
+  - **Age**: [Age range]
+  - **Gender**: [Distribution]
+  - **Location**: [Geographic distribution]
+  - **Education Level**: [Distribution]
+  - **Income Level**: [Range]
+  - **Occupation**: [Types of occupations]
+
+- **Behavior**:
+  - **Main Goals**: [What they seek to achieve]
+  - **Frequent Tasks**: [Tasks they perform regularly]
+  - **Context of Use**: [Where, when and how they would use the product]
+  - **Frequency of Use**: [How often they would use the product]
+  - **Devices Used**: [What devices they mainly use]
+  - **Behavior Patterns**: [Observed patterns]
+
+- **Attitudes and Motivations**:
+  - **Main Motivations**: [What motivates them]
+  - **Concerns**: [What worries them]
+  - **Values**: [Values important to them]
+  - **Aspirations**: [What they aspire to achieve]
+  - **Aversions**: [What they avoid]
+  - **Brand Preferences**: [Preferred brands]
+
+- **Needs and Pain Points**:
+  - **Unmet Needs**: [Needs not covered]
+  - **Pain Points**: [Frustrations and problems]
+  - **Obstacles**: [Barriers they face]
+  - **Current Solutions**: [How they currently solve the problem]
+  - **Limitations**: [Restrictions they have]
+  - **Success Criteria**: [How they measure success]
+
+### User Profile 2: [Profile Name]
+
 ...
 
-## Hallazgos Clave (MECE)
+## Key Findings (MECE)
 
-### Patrones de Comportamiento
-- **Patrón 1**: [Descripción del patrón]
-  - **Evidencia**: [Datos que respaldan este patrón]
-  - **Implicaciones**: [Qué significa para el diseño]
-  - **Segmentos Afectados**: [Qué perfiles presentan este patrón]
+### Behavior Patterns
+
+- **Pattern 1**: [Description of the pattern]
+  - **Evidence**: [Data supporting this pattern]
+  - **Implications**: [What it means for the design]
+  - **Affected Segments**: [Which profiles exhibit this pattern]
   
-- **Patrón 2**: [Descripción del patrón]
+- **Pattern 2**: [Description of the pattern]
   - ...
 
-### Necesidades Identificadas
-- **Necesidad 1**: [Descripción de la necesidad]
-  - **Prioridad**: [Alta/Media/Baja]
-  - **Evidencia**: [Datos que respaldan esta necesidad]
-  - **Segmentos Afectados**: [Qué perfiles presentan esta necesidad]
-  - **Oportunidades**: [Posibles soluciones]
+### Identified Needs
+
+- **Need 1**: [Description of the need]
+  - **Priority**: [High/Medium/Low]
+  - **Evidence**: [Data supporting this need]
+  - **Affected Segments**: [Which profiles present this need]
+  - **Opportunities**: [Possible solutions]
   
-- **Necesidad 2**: [Descripción de la necesidad]
+- **Need 2**: [Description of the need]
   - ...
 
-### Barreras y Frustraciones
-- **Barrera 1**: [Descripción de la barrera]
-  - **Impacto**: [Alto/Medio/Bajo]
-  - **Evidencia**: [Datos que respaldan esta barrera]
-  - **Segmentos Afectados**: [Qué perfiles enfrentan esta barrera]
-  - **Posibles Soluciones**: [Cómo podría superarse]
+### Barriers and Frustrations
+
+- **Barrier 1**: [Description of the barrier]
+  - **Impact**: [High/Medium/Low]
+  - **Evidence**: [Data supporting this barrier]
+  - **Affected Segments**: [Which profiles face this barrier]
+  - **Possible Solutions**: [How it could be overcome]
   
-- **Barrera 2**: [Descripción de la barrera]
+- **Barrier 2**: [Description of the barrier]
   - ...
 
-### Expectativas y Aspiraciones
-- **Expectativa 1**: [Descripción de la expectativa]
-  - **Evidencia**: [Datos que respaldan esta expectativa]
-  - **Segmentos Relacionados**: [Qué perfiles tienen esta expectativa]
-  - **Oportunidades**: [Cómo satisfacer esta expectativa]
+### Expectations and Aspirations
+
+- **Expectation 1**: [Description of the expectation]
+  - **Evidence**: [Data supporting this expectation]
+  - **Related Segments**: [Which profiles have this expectation]
+  - **Opportunities**: [How to meet this expectation]
   
-- **Expectativa 2**: [Descripción de la expectativa]
+- **Expectation 2**: [Description of the expectation]
   - ...
 
-## Análisis de Journey Map
+## Journey Map Analysis
 
-### Journey Map para Perfil 1: [Nombre del Perfil]
-- **Etapa 1**: [Nombre de la etapa]
-  - **Acciones**: [Lo que el usuario hace]
-  - **Pensamientos**: [Lo que el usuario piensa]
-  - **Sentimientos**: [Cómo se siente el usuario]
-  - **Puntos de Dolor**: [Frustraciones en esta etapa]
-  - **Oportunidades**: [Posibles mejoras]
+### Journey Map for Profile 1: [Profile Name]
+
+- **Stage 1**: [Stage name]
+  - **Actions**: [What the user does]
+  - **Thoughts**: [What the user thinks]
+  - **Feelings**: [How the user feels]
+  - **Pain Points**: [Frustrations at this stage]
+  - **Opportunities**: [Possible improvements]
   
-- **Etapa 2**: [Nombre de la etapa]
+- **Stage 2**: [Stage name]
   - ...
 
-- **Momentos Críticos**:
-  - **Momento 1**: [Descripción del momento crítico]
-  - **Momento 2**: [Descripción del momento crítico]
+- **Critical Moments**:
+  - **Moment 1**: [Description of the critical moment]
+  - **Moment 2**: [Description of the critical moment]
 
-### Journey Map para Perfil 2: [Nombre del Perfil]
+### Journey Map for Profile 2: [Profile Name]
+
 ...
 
-## Insights y Oportunidades
+## Insights and Opportunities
 
-### Insights Clave
-- **Insight 1**: [Descripción del insight]
-  - **Evidencia**: [Datos que respaldan este insight]
-  - **Implicaciones**: [Qué significa para el producto]
-  - **Segmentos Relacionados**: [Qué perfiles se relacionan con este insight]
+### Key Insights
+
+- **Insight 1**: [Description of the insight]
+  - **Evidence**: [Data supporting this insight]
+  - **Implications**: [What it means for the product]
+  - **Related Segments**: [Which profiles relate to this insight]
   
-- **Insight 2**: [Descripción del insight]
+- **Insight 2**: [Description of the insight]
   - ...
 
-### Oportunidades de Diseño
-- **Oportunidad 1**: [Descripción de la oportunidad]
-  - **Perfil Objetivo**: [Perfil(es) para quien es relevante]
-  - **Impacto Potencial**: [Alto/Medio/Bajo]
-  - **Complejidad de Implementación**: [Alta/Media/Baja]
-  - **Relación con Necesidades**: [Necesidades que atiende]
+### Design Opportunities
+
+- **Opportunity 1**: [Description of the opportunity]
+  - **Target Profile**: [Profile(s) for whom it is relevant]
+  - **Potential Impact**: [High/Medium/Low]
+  - **Implementation Complexity**: [High/Medium/Low]
+  - **Relationship with Needs**: [Needs it addresses]
   
-- **Oportunidad 2**: [Descripción de la oportunidad]
+- **Opportunity 2**: [Description of the opportunity]
   - ...
 
-### Priorización de Oportunidades
-- **Matriz de Priorización**: [Criterios utilizados para priorizar]
-- **Oportunidades Prioritarias**: [Lista priorizada]
-- **Justificación**: [Razones para esta priorización]
+### Opportunity Prioritization
 
-## Recomendaciones para el Diseño
-- **Recomendación 1**: [Descripción de la recomendación]
-  - **Justificación**: [Por qué se recomienda]
-  - **Aplicación**: [Dónde aplicarla en el producto]
-  - **Consideraciones**: [Aspectos a tener en cuenta]
+- **Prioritization Matrix**: [Criteria used to prioritize]
+- **Priority Opportunities**: [Prioritized list]
+- **Justification**: [Reasons for this prioritization]
+
+## Design Recommendations
+
+- **Recommendation 1**: [Description of the recommendation]
+  - **Justification**: [Why it is recommended]
+  - **Application**: [Where to apply it in the product]
+  - **Considerations**: [Aspects to take into account]
   
-- **Recomendación 2**: [Descripción de la recomendación]
+- **Recommendation 2**: [Description of the recommendation]
   - ...
 
-## Próximos Pasos
-- **Investigación Adicional**: [Áreas que requieren más investigación]
-- **Validaciones Necesarias**: [Aspectos a validar]
-- **Próximas Actividades**: [Siguientes actividades planificadas]
-- **Cronograma**: [Fechas propuestas]
+## Next Steps
 
-## Anexos
-- **Guías de Entrevista**: [Enlace a las guías utilizadas]
-- **Transcripciones**: [Enlace a las transcripciones]
-- **Datos Crudos**: [Enlace a los datos sin procesar]
-- **Grabaciones**: [Enlace a las grabaciones de sesiones]
-- **Materiales Visuales**: [Enlace a materiales utilizados]
-- **Encuestas Completas**: [Enlace a encuestas completas]
+- **Additional Research**: [Areas requiring more research]
+- **Necessary Validations**: [Aspects to validate]
+- **Next Activities**: [Next planned activities]
+- **Timeline**: [Proposed dates]
+
+## Appendices
+
+- **Interview Guides**: [Link to the guides used]
+- **Transcripts**: [Link to transcripts]
+- **Raw Data**: [Link to unprocessed data]
+- **Recordings**: [Link to session recordings]
+- **Visual Materials**: [Link to materials used]
+- **Complete Surveys**: [Link to complete surveys]
 
 ---
 
-Esta plantilla sigue principios MECE al dividir la investigación de usuarios en categorías mutuamente excluyentes (metodología, perfiles de usuario, hallazgos, journey maps, insights/oportunidades y recomendaciones) y colectivamente exhaustivas (cubriendo todos los aspectos críticos para entender a los usuarios y sus necesidades). 
+This template follows MECE principles by dividing user research into mutually exclusive categories (methodology, user profiles, findings, journey maps, insights/opportunities, and recommendations) and collectively exhaustive (covering all critical aspects to understand users and their needs).

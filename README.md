@@ -71,7 +71,7 @@ paelladoc/
 │       │   ├── memory/          # Project memory interaction commands
 │       │   ├── code/            # Code analysis and generation commands
 │       │   ├── styles/          # Coding style and Git workflow commands
-│       │   ├── product/         # Product/Project management commands
+│       │   ├── product/         # product/Project management commands
 │       │   └── templates/       # Documentation template management commands
 │       ├── modules/             # Core functional implementations
 │       │   ├── code_analysis/   # Logic for code analysis and doc generation

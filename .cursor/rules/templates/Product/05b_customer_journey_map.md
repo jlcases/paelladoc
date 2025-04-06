@@ -1,183 +1,210 @@
-# Plantilla de Mapa de Experiencia del Cliente (Customer Journey Map)
+# Customer Journey Map Template
 
-## Información General
-- **Nombre del Proyecto**: [Nombre]
-- **Fecha de Creación**: [Fecha]
-- **Responsable**: [Nombre del responsable]
-- **Persona/Segmento Objetivo**: [Persona o segmento representado]
-- **Escenario**: [Escenario específico que se está mapeando]
+## General Information
 
-## Propósito del Journey Map
-[Breve descripción del propósito de este journey map y cómo se utilizará en el proyecto]
+- **Project Name**: [Name]
+- **Creation Date**: [Date]
+- **Responsible**: [Name of the responsible person]
+- **Target Persona/Segment**: [Represented persona or segment]
+- **Scenario**: [Specific scenario being mapped]
 
-## Alcance del Journey
-- **Punto de Inicio**: [Dónde comienza la experiencia]
-- **Punto Final**: [Dónde termina la experiencia]
-- **Canales Incluidos**: [Canales que abarca este journey]
-- **Duración Típica**: [Tiempo típico desde el inicio hasta el final]
+## Purpose of the Journey Map
 
-## Fases del Journey (MECE)
+[Brief description of the purpose of this journey map and how it will be used in the project]
 
-### FASE 1: [Nombre de la Fase] - *Ej: Descubrimiento*
+## Journey Scope
 
-#### Objetivos del Usuario
-- [¿Qué intenta lograr el usuario en esta fase?]
+- **Starting Point**: [Where the experience begins]
+- **End Point**: [Where the experience ends]
+- **Included Channels**: [Channels covered by this journey]
+- **Typical Duration**: [Typical time from start to finish]
 
-#### Actividades Clave
-- **Actividad 1**: [Descripción de la actividad]
-  - **Canal**: [Dónde ocurre: web, móvil, tienda física, etc.]
-  - **Duración Típica**: [Cuánto tiempo suele llevar]
-  - **Frecuencia**: [Con qué frecuencia se realiza]
+## Journey Phases (MECE)
+
+### PHASE 1: [Phase Name] - *Ex: Discovery*
+
+#### User Objectives
+
+- [What is the user trying to achieve in this phase?]
+
+#### Key Activities
+
+- **Activity 1**: [Description of the activity]
+  - **Channel**: [Where it occurs: web, mobile, physical store, etc.]
+  - **Typical Duration**: [How long it usually takes]
+  - **Frequency**: [How often it is performed]
   
-- **Actividad 2**: [Descripción de la actividad]
+- **Activity 2**: [Description of the activity]
   - ...
 
-#### Puntos de Contacto (Touchpoints)
-- **Touchpoint 1**: [Descripción del punto de contacto]
-  - **Tipo**: [Digital/Físico/Personal]
-  - **Propietario**: [Área responsable]
-  - **Rol**: [Función que cumple]
+#### Touchpoints
+
+- **Touchpoint 1**: [Description of the touchpoint]
+  - **Type**: [Digital/Physical/Personal]
+  - **Owner**: [Responsible area]
+  - **Role**: [Function it serves]
   
-- **Touchpoint 2**: [Descripción del punto de contacto]
+- **Touchpoint 2**: [Description of the touchpoint]
   - ...
 
-#### Estado Emocional
-- **Emociones Predominantes**: [Emociones principales en esta fase]
-- **Nivel de Satisfacción**: [Alto/Medio/Bajo]
-- **Estresores**: [Factores que generan estrés o preocupación]
-- **Motivadores**: [Factores que motivan a seguir adelante]
+#### Emotional State
 
-#### Pensamientos
-- [Pensamiento 1]
-- [Pensamiento 2]
-- [Pensamiento 3]
+- **Predominant Emotions**: [Main emotions in this phase]
+- **Satisfaction Level**: [High/Medium/Low]
+- **Stressors**: [Factors that generate stress or concern]
+- **Motivators**: [Factors that motivate to move forward]
 
-#### Puntos de Dolor (Pain Points)
-- **Pain Point 1**: [Descripción del problema]
-  - **Severidad**: [Alta/Media/Baja]
-  - **Frecuencia**: [Frecuente/Ocasional/Raro]
-  - **Impacto**: [Cómo afecta la progresión en el journey]
+#### Thoughts
+
+- [Thought 1]
+- [Thought 2]
+- [Thought 3]
+
+#### Pain Points
+
+- **Pain Point 1**: [Description of the problem]
+  - **Severity**: [High/Medium/Low]
+  - **Frequency**: [Frequent/Occasional/Rare]
+  - **Impact**: [How it affects progression in the journey]
   
-- **Pain Point 2**: [Descripción del problema]
+- **Pain Point 2**: [Description of the problem]
   - ...
 
-#### Oportunidades
-- **Oportunidad 1**: [Posible mejora]
-  - **Impacto Potencial**: [Alto/Medio/Bajo]
-  - **Complejidad**: [Alta/Media/Baja]
+#### Opportunities
+
+- **Opportunity 1**: [Possible improvement]
+  - **Potential Impact**: [High/Medium/Low]
+  - **Complexity**: [High/Medium/Low]
   
-- **Oportunidad 2**: [Posible mejora]
+- **Opportunity 2**: [Possible improvement]
   - ...
 
-### FASE 2: [Nombre de la Fase] - *Ej: Consideración*
+### PHASE 2: [Phase Name] - *Ex: Consideration*
+
 ...
 
-### FASE 3: [Nombre de la Fase] - *Ej: Decisión*
+### PHASE 3: [Phase Name] - *Ex: Decision*
+
 ...
 
-### FASE 4: [Nombre de la Fase] - *Ej: Uso*
+### PHASE 4: [Phase Name] - *Ex: Usage*
+
 ...
 
-### FASE 5: [Nombre de la Fase] - *Ej: Fidelización*
+### PHASE 5: [Phase Name] - *Ex: Loyalty*
+
 ...
 
-## Momentos de la Verdad (Moments of Truth)
+## Moments of Truth
 
-### Momento 1: [Nombre del Momento]
-- **Ubicación en el Journey**: [Fase y actividad donde ocurre]
-- **Descripción**: [Qué ocurre en este momento crítico]
-- **Importancia**: [Por qué es crucial para la experiencia]
-- **Estado Actual**: [Cómo se gestiona actualmente]
-- **Estado Deseado**: [Cómo debería gestionarse idealmente]
+### Moment 1: [Moment Name]
 
-### Momento 2: [Nombre del Momento]
+- **Location in the Journey**: [Phase and activity where it occurs]
+- **Description**: [What happens in this critical moment]
+- **Importance**: [Why it is crucial for the experience]
+- **Current State**: [How it is currently managed]
+- **Desired State**: [How it should ideally be managed]
+
+### Moment 2: [Moment Name]
+
 ...
 
-## Métricas por Fase (MECE)
+## Metrics by Phase (MECE)
 
-### Métricas de Fase 1
-- **Métrica 1**: [Nombre]
-  - **Definición**: [Cómo se mide]
-  - **Valor Actual**: [Medición actual]
-  - **Objetivo**: [Valor deseado]
-  - **Fuente de Datos**: [De dónde provienen los datos]
+### Phase 1 Metrics
+
+- **Metric 1**: [Name]
+  - **Definition**: [How it is measured]
+  - **Current Value**: [Current measurement]
+  - **Target**: [Desired value]
+  - **Data Source**: [Where the data comes from]
   
-- **Métrica 2**: [Nombre]
+- **Metric 2**: [Name]
   - ...
 
-### Métricas de Fase 2
+### Phase 2 Metrics
+
 ...
 
-## Análisis de la Experiencia Actual vs. Deseada
+## Analysis of Current vs. Desired Experience
 
-### Fase 1: Experiencia Actual vs. Deseada
-- **Experiencia Actual**: [Descripción de cómo es hoy]
-- **Experiencia Deseada**: [Descripción de cómo debería ser]
-- **Diferencias Clave**: [Principales diferencias]
-- **Causas Raíz**: [Razones de las diferencias]
+### Phase 1: Current vs. Desired Experience
 
-### Fase 2: Experiencia Actual vs. Deseada
+- **Current Experience**: [Description of how it is today]
+- **Desired Experience**: [Description of how it should be]
+- **Key Differences**: [Main differences]
+- **Root Causes**: [Reasons for the differences]
+
+### Phase 2: Current vs. Desired Experience
+
 ...
 
-## Análisis de Competidores
+## Competitor Analysis
 
-### Competidor 1: [Nombre]
-- **Diferenciadores**: [Qué hace diferente en esta experiencia]
-- **Fortalezas**: [Aspectos en los que supera nuestra experiencia]
-- **Debilidades**: [Aspectos en los que nuestra experiencia es superior]
-- **Aprendizajes**: [Qué podemos aprender]
+### Competitor 1: [Name]
 
-### Competidor 2: [Nombre]
+- **Differentiators**: [What they do differently in this experience]
+- **Strengths**: [Aspects where they surpass our experience]
+- **Weaknesses**: [Aspects where our experience is superior]
+- **Learnings**: [What we can learn]
+
+### Competitor 2: [Name]
+
 ...
 
-## Análisis de Segmentos
+## Segment Analysis
 
-### Variaciones por Segmento
-- **Segmento 1**: [Nombre]
-  - **Diferencias Clave**: [Cómo varía su journey]
-  - **Pain Points Específicos**: [Problemas únicos de este segmento]
+### Variations by Segment
+
+- **Segment 1**: [Name]
+  - **Key Differences**: [How their journey varies]
+  - **Specific Pain Points**: [Unique problems for this segment]
   
-- **Segmento 2**: [Nombre]
+- **Segment 2**: [Name]
   - ...
 
-## Plan de Acción (MECE)
+## Action Plan (MECE)
 
-### Mejoras Prioritarias
-- **Mejora 1**: [Descripción]
-  - **Ubicación en el Journey**: [Fase y touchpoint afectados]
-  - **Problema que Resuelve**: [Pain point abordado]
-  - **Impacto Esperado**: [Beneficio esperado]
-  - **Complejidad**: [Alta/Media/Baja]
-  - **Plazo Estimado**: [Tiempo requerido]
-  - **Responsable**: [Área o persona]
+### Priority Improvements
+
+- **Improvement 1**: [Description]
+  - **Location in the Journey**: [Affected phase and touchpoint]
+  - **Problem it Solves**: [Pain point addressed]
+  - **Expected Impact**: [Expected benefit]
+  - **Complexity**: [High/Medium/Low]
+  - **Estimated Timeframe**: [Required time]
+  - **Responsible**: [Area or person]
   
-- **Mejora 2**: [Descripción]
+- **Improvement 2**: [Description]
   - ...
 
-### Quick Wins (Mejoras Rápidas)
-- **Quick Win 1**: [Descripción]
-  - **Ubicación en el Journey**: [Fase y touchpoint afectados]
-  - **Tiempo de Implementación**: [Tiempo estimado]
-  - **Responsable**: [Área o persona]
+### Quick Wins
+
+- **Quick Win 1**: [Description]
+  - **Location in the Journey**: [Affected phase and touchpoint]
+  - **Implementation Time**: [Estimated time]
+  - **Responsible**: [Area or person]
   
-- **Quick Win 2**: [Descripción]
+- **Quick Win 2**: [Description]
   - ...
 
-### Mejoras a Largo Plazo
-- **Mejora 1**: [Descripción]
-  - **Beneficios Potenciales**: [Valor esperado]
-  - **Dependencias**: [Qué debe ocurrir antes]
-  - **Horizonte Temporal**: [Cuándo podría implementarse]
+### Long-term Improvements
+
+- **Improvement 1**: [Description]
+  - **Potential Benefits**: [Expected value]
+  - **Dependencies**: [What must happen first]
+  - **Time Horizon**: [When it could be implemented]
   
-- **Mejora 2**: [Descripción]
+- **Improvement 2**: [Description]
   - ...
 
-## Anexos
-- **Investigación Relacionada**: [Enlaces a investigaciones que respaldan este journey map]
-- **Visualización del Journey**: [Enlace al journey map visual]
-- **Mapas de Empatía**: [Enlaces a mapas de empatía relacionados]
-- **Datos Cuantitativos**: [Enlaces a análisis de datos que respaldan este journey]
+## Appendices
+
+- **Related Research**: [Links to research supporting this journey map]
+- **Journey Visualization**: [Link to the visual journey map]
+- **Empathy Maps**: [Links to related empathy maps]
+- **Quantitative Data**: [Links to data analysis supporting this journey]
 
 ---
 
-Esta plantilla sigue principios MECE al dividir el journey del cliente en fases mutuamente excluyentes y colectivamente exhaustivas, asegurando que cada aspecto de la experiencia del cliente sea considerado desde la perspectiva cronológica y emocional. 
+This template follows MECE principles by dividing the customer journey into mutually exclusive and collectively exhaustive phases, ensuring that every aspect of the customer experience is considered from both chronological and emotional perspectives.

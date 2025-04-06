@@ -84,7 +84,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - New template directories:
   - `templates/conversation_flows/` for conversation configurations
   - `templates/methodologies/` for development methodologies
-  - `templates/Product/` for main product documentation
+  - `templates/product/` for main product documentation
   - `templates/scripts/` for template-specific scripts
   - `templates/selectors/` for selection guide templates
   - `templates/simplified_templates/` for simplified documentation
