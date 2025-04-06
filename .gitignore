@@ -1,125 +1,65 @@
-# Byte-compiled / optimized / DLL files
-__pycache__/
-*.py[cod]
-*$py.class
+# Jekyll specific
+_site/
+.sass-cache/
+.jekyll-cache/
+.jekyll-metadata
+.jekyll-redirect-cache/
 
-# C extensions
-*.so
+# Ruby specific
+.bundle/
+vendor/
+Gemfile.lock
 
-# Distribution / packaging
-.Python
-build/
-dist/
-downloads/
-eggs/
-*.egg-info/
-.installed.cfg
-*.egg
-MANIFEST
-
-# PyInstaller
-# Usually these files are written by a python script from a template
-# before PyInstaller builds the exe, so as to inject date/other infos into it.
-*.manifest
-*.spec
-
-# Installer logs
-pip-log.txt
-pip-delete-this-directory.txt
-
-# Unit test / coverage reports
-htmlcov/
-.tox/
-.nox/
-.coverage
-.coverage.*
-.cache
-nosetests.xml
-coverage.xml
-*.cover
-*.py,cover
-.hypothesis/
-.pytest_cache/
-
-# Environments
-.env
-.venv
-venv/
-ENV/
-env.bak/
-venv.bak/
-
-# Spyder project settings
-.spyderproject
-.spyproject
-
-# Rope project settings
-.ropeproject
-
-# mkdocs documentation
-/site
-
-# Jupyter Notebook
-.ipynb_checkpoints
-
-# IPython
-profile_default/
-ipython_config.py
-
-# pyenv
-.python-version
-
-# celery beat schedule file
-celerybeat-schedule
-
-# SageMath parsed files
-*.sage.py
-
-# Environments tools
-.envrc
-
-# macOS specific files
-.DS_Store
-
-# VS Code
+# IDE and Editor files
+.idea/
 .vscode/
-
-# Temporary files
-*.tmp
-*.bak
 *.swp
+*.swo
 *~
 
-# Log files
-*.log
-
-# OS generated files
+# OS specific
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
 Thumbs.db
 
-# Node.js
+# Project specific
+_site/
 node_modules/
-npm-debug.log
-yarn-debug.log
-yarn-error.log
-.pnpm-debug.log
-.npm
-.yarn
-.pnp.*
-package-lock.json
-yarn.lock
+dist/
+tmp/
+.env
+*.log
+.cache/
 
 # Cursor specific
 .cursor/
-# Uncomment the following line if you want to track Cursor rules
+# Exception for Cursor rules
 !/.cursor/rules/
 
 # PAELLADOC specific
+/docs
+**/.memory.json
 /code_context/
 /temp_cloned_repos/
-/docs/
 /temp_repo/
-.memory.json
 backup_redundancies/
 
+# Private projects
+# These are automatically generated based on .memory.json
+/docs/*/private/
+/pages/projects/*/private/
+
+# Ignore specific private projects (examples)
+# Uncomment and modify as needed
+# /docs/secretproject/
+# /pages/projects/secretproject/
+/venv/
+.venv/
+.cursor/rules/scripts/venv
+
 # Exception for template files that should be tracked
-!/docs/templates/ 
+!/docs/templates/
