@@ -19,6 +19,15 @@ THESE INSTRUCTIONS MUST BE FOLLOWED EXACTLY AS WRITTEN:
 3. ONLY AFTER receiving the user's answer to that specific question should you proceed to the next question.
 4. NEVER combine multiple questions into a single message.
 5. Follow the strict sequence below.
+6. DOCUMENTATION MUST BE CREATED FIRST, BEFORE ANY CODE IS GENERATED.
+
+## DOCUMENTATION-FIRST APPROACH
+
+THE PRIMARY GOAL OF PAELLADOC is to build comprehensive documentation BEFORE generating any code. Always follow this sequence:
+1. Check documentation completion status from the memory file
+2. Guide the user through filling in incomplete documentation templates
+3. Systematically work through each template following the numbered sequence
+4. Only after documentation is solid and complete (all sections completed), should code be generated
 
 ## Interactive Project Selection Sequence
 
@@ -26,9 +35,9 @@ When the CONTINUE command is invoked, follow this exact sequence:
 
 1. Display a brief welcome message explaining that this command allows continuing work on existing projects.
 
-2. SCAN the directory "/Users/jlcases/codigo/paelladoc/docs/" to find all project folders.
-   - Look for directories that contain a memory.json file
-   - Extract project information from each memory.json
+2. SCAN the directory "/docs/" to find all project folders.
+   - Look for directories that contain a .memory.json file
+   - Extract project information from each .memory.json
 
 3. IF NO PROJECTS ARE FOUND:
    - Display: "No projects found to continue. Use the PAELLA command to create a new project."
@@ -38,8 +47,8 @@ When the CONTINUE command is invoked, follow this exact sequence:
 4. IF PROJECTS ARE FOUND, DISPLAY a numbered list of all available projects in this format:
    ```
    Available projects:
-   1. [project_name_1] - [project_type] - Last updated: [date]
-   2. [project_name_2] - [project_type] - Last updated: [date]
+   1. [project_name_1] - [project_type] - Documentation completion: [X%] - Last updated: [date]
+   2. [project_name_2] - [project_type] - Documentation completion: [Y%] - Last updated: [date]
    ...
    ```
 
@@ -47,33 +56,72 @@ When the CONTINUE command is invoked, follow this exact sequence:
    - WAIT for response before continuing
    
 6. AFTER the user selects a project:
-   - LOAD the memory.json file from the selected project
+   - LOAD the .memory.json file from the selected project
    - DISPLAY a summary of the project details (name, type, methodologies, etc.)
+   - DISPLAY the documentation completion status, showing which templates are complete and which need work
    
-7. Ask ONLY: "Would you like to update Cursor rules from the documentation? (yes/no)"
+7. ANALYZE the documentation progress in the memory file:
+   - IF documentation is not complete, skip to step 10
+   - IF documentation is complete, continue to step 8
+   
+8. Ask ONLY: "Documentation is complete. Would you like to generate code now? (yes/no)"
+   - WAIT for response before continuing
+   - If "yes", initiate the code generation process
+   - If "no", continue to step 9
+   
+9. Ask ONLY: "Would you like to update Cursor rules from the documentation? (yes/no)"
    - WAIT for response before continuing
    - Default is "yes" if user is unsure
    
-8. Ask ONLY: "Would you like to synchronize templates with the current state? (yes/no)"
-   - WAIT for response before continuing
-   - Default is "yes" if user is unsure
-   
-9. Show a summary of all selections and ask for confirmation to proceed.
-   - AFTER user confirmation, load the project and continue with documentation
+10. IF documentation is NOT complete, ask ONLY: "Which documentation section would you like to work on next? (Enter the number)"
+    - DISPLAY a numbered list of incomplete documentation sections, sorted by recommended sequence
+    - WAIT for response before continuing
+    
+11. AFTER user selects a documentation section:
+    - OPEN the corresponding template file
+    - GUIDE the user through completing that section
+    - UPDATE the memory file to mark this section as complete when done
+    
+12. Show a summary of work done and ask if the user wants to continue with another section.
+    - If "yes", go back to step 10
+    - If "no", save progress and end the session
+
+## Documentation Section Sequence
+
+The documentation should be completed in this recommended sequence:
+1. Project Definition (01_project_definition.md)
+2. Market Research (01_market_research.md)
+3. User Research (02_user_research.md)
+4. Problem Definition (03_problem_definition.md)
+5. Product Definition (04_product_definition.md)
+6. Architecture Decision Records (04a_architecture_decision_record.md)
+7. Product Roadmap (05_product_roadmap.md)
+8. User Stories (05c_user_stories.md)
+9. Technical Architecture (02_technical_architecture.md)
+10. Technical Specifications (02_technical_specifications.md)
+11. Component Specification (03_component_specification.md)
+12. API Specification (05_api_specification.md)
+13. Database Design (04_database_design.md)
+14. Frontend Architecture (06_frontend_architecture.md)
+15. Testing Strategy (07_testing_strategy.md)
+16. DevOps Pipeline (08_devops_pipeline.md)
+17. Security Framework (09_security_framework.md)
+18. Documentation Framework (10_documentation_framework.md)
 
 ## Project Memory Management
 
 When continuing work on a selected project:
 
-1. READ the memory.json file from "/Users/jlcases/codigo/paelladoc/docs/[project_name]/memory.json"
+1. READ the .memory.json file from "/docs/[project_name]/.memory.json"
 2. EXTRACT all stored parameters, decisions, and settings
-3. Use these parameters to initialize the development environment
-4. UPDATE the "last_updated" timestamp in the memory.json file
-5. DISPLAY project history from the decisions, achievements, and issues arrays
+3. CALCULATE documentation completion percentage based on the documentation_progress field
+4. Use these parameters to initialize the development environment
+5. UPDATE the "last_updated" timestamp in the .memory.json file
+6. DISPLAY project history from the decisions, achievements, and issues arrays
 
 ## Memory File Loading
 
-The memory.json file should be loaded and parsed with this structure:
+The .memory.json file should be loaded and parsed with this structure:
 ```json
 {
   "project_name": "name_of_project",
@@ -88,18 +136,34 @@ The memory.json file should be loaded and parsed with this structure:
   "last_updated": "last_update_timestamp",
   "decisions": [],
   "achievements": [],
-  "issues": []
+  "issues": [],
+  "documentation_complete": false,
+  "documentation_progress": {
+    "market_research": false,
+    "project_definition": false,
+    "technical_specifications": false,
+    "user_stories": false,
+    "product_roadmap": false,
+    "architecture_decisions": false,
+    "api_specification": false,
+    "database_design": false,
+    "frontend_architecture": false,
+    "testing_strategy": false,
+    "devops_pipeline": false,
+    "security_framework": false
+  }
 }
 ```
 
 ## Project Directory Scanning
 
 When scanning for available projects:
-1. CHECK for directories in "/Users/jlcases/codigo/paelladoc/docs/"
-2. For each directory, look for a "memory.json" file
-3. If memory.json exists, read it to extract project details
-4. ONLY include directories that have a valid memory.json file
+1. CHECK for directories in "/docs/"
+2. For each directory, look for a ".memory.json" file
+3. If .memory.json exists, read it to extract project details
+4. ONLY include directories that have a valid .memory.json file
 5. SORT projects by last_updated timestamp (most recent first)
+6. CALCULATE documentation completion percentage for each project
 
 ## Parameter Definitions
 
@@ -117,12 +181,24 @@ args:
     type: "boolean"
     description: "Whether to synchronize templates with current state"
     default: true
+  - name: "section"
+    type: "string"
+    description: "Specific documentation section to work on"
+    required: false
+  - name: "generate_code"
+    type: "boolean"
+    description: "Whether to generate code after documentation is complete"
+    default: false
 ```
 
 ## Behavior Definition
 
 ```yaml
 behavior:
+  documentation_first: true
+  code_after_documentation: true
+  track_documentation_completion: true
+  guide_documentation_sequence: true
   conversation_required: true
   interactive: true
   sequential_questions: true
@@ -140,6 +216,28 @@ behavior:
   force_single_question_mode: true
   max_questions_per_message: 1
   load_memory_file: true
-  memory_path: "/Users/jlcases/codigo/paelladoc/docs/{project_name}/memory.json"
+  memory_path: "/docs/{project_name}/.memory.json"
   update_last_modified: true
+  calculate_documentation_completion: true
+  provide_section_guidance: true
+  documentation_section_sequence: [
+    "project_definition",
+    "market_research",
+    "user_research",
+    "problem_definition",
+    "product_definition",
+    "architecture_decisions",
+    "product_roadmap",
+    "user_stories",
+    "technical_architecture",
+    "technical_specifications",
+    "component_specification",
+    "api_specification",
+    "database_design",
+    "frontend_architecture",
+    "testing_strategy",
+    "devops_pipeline",
+    "security_framework",
+    "documentation_framework"
+  ]
 ``` 

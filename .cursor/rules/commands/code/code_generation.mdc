@@ -6,6 +6,17 @@ alwaysApply: false
 
 # Code Generation
 
+## DOCUMENTATION-FIRST MANDATE
+
+THE PRIMARY GOAL OF PAELLADOC is to build comprehensive documentation BEFORE generating any code. The system MUST:
+
+1. VERIFY that documentation is complete before allowing code generation
+2. CHECK the documentation_complete flag in the project's .memory.json file
+3. ANALYZE documentation completeness based on the documentation_progress object
+4. REFUSE to generate code if documentation is incomplete
+5. GUIDE the user to complete missing documentation sections if necessary
+6. ONLY proceed with code generation when documentation is 100% complete
+
 ## Commands
 
 ### GENERATE_CODE
@@ -22,25 +33,45 @@ Generates code based on completed documentation
 - `methodologies` (comma-separated): Development methodologies to apply. Options: "tdd", "bdd", "scrum", "ci", "pair". Required.
 - `git_workflow` (string): Git workflow to use. Options: "github_flow", "gitflow", "trunk_based", "no_workflow". Required.
 
-#### Behavior with Existing Documentation:
-When the GENERATE_CODE command is invoked without parameters, the system MUST:
+#### Required Documentation Verification:
+When the GENERATE_CODE command is invoked, the system MUST FIRST:
 
-1.  **Check Project Memory**: Extract project details from existing documentation. If none, suggest PAELLA command.
-2.  **Auto-Populate Parameters**: Use values from documentation, prompt only for missing ones.
-3.  **Summarize Documentation Analysis**: Confirm extracted components, APIs, data models. Highlight missing info.
-4.  **Review and Confirmation**: Present parameters for confirmation, allow overrides, confirm critical decisions (output path, repo).
+1. **Verify Project Documentation**: Check if the project has complete documentation
+   - Load the .memory.json file from "/docs/{project_name}/.memory.json"
+   - Check the "documentation_complete" flag
+   - Verify the "documentation_progress" object has all values set to true
+   
+2. **If Documentation Incomplete**: 
+   - Display a clear message identifying missing documentation sections
+   - Guide the user to complete the documentation using the CONTINUE command
+   - ABORT the code generation process
+   - Do NOT proceed to parameter gathering or code generation
+
+3. **Only If Documentation Complete**:
+   - Proceed with extracting parameters from documentation
+   - Continue with the normal code generation flow
+
+#### Behavior with Existing Documentation:
+When the GENERATE_CODE command is invoked with complete documentation, the system MUST:
+
+1. **Extract Project Details**: Load all information from the project documentation
+2. **Auto-Populate Parameters**: Use values from documentation, prompt only for missing ones
+3. **Summarize Documentation Analysis**: Confirm extracted components, APIs, data models
+4. **Review and Confirmation**: Present parameters for confirmation, allow overrides, confirm critical decisions (output path, repo)
 
 #### Required Conversation Flow:
-If parameters are missing, initiate a conversation to gather:
+If documentation is complete but parameters are missing, initiate a conversation to gather:
 
-1.  **Project Info**: Verify name, type; ask for output path.
-2.  **Methodologies**: Ask for TDD, BDD, etc., explain implications.
-3.  **Git Workflow**: Ask for preferred workflow (GitHub Flow, GitFlow, etc.), explain benefits.
-4.  **Language/Stack**: Confirm language, ask for frameworks/libraries.
-5.  **Testing Strategy**: Confirm test inclusion, ask for coverage goals, test types.
-6.  **Repo Management**: Ask about creating a new repo, type, visibility, CI/CD setup.
+1. **Project Info**: Verify name, type; ask for output path
+2. **Methodologies**: Ask for TDD, BDD, etc., explain implications
+3. **Git Workflow**: Ask for preferred workflow (GitHub Flow, GitFlow, etc.), explain benefits
+4. **Language/Stack**: Confirm language, ask for frameworks/libraries
+5. **Testing Strategy**: Confirm test inclusion, ask for coverage goals, test types
+6. **Repo Management**: Ask about creating a new repo, type, visibility, CI/CD setup
 
-Code generation starts ONLY after all required parameters are gathered.
+Code generation starts ONLY after:
+1. Documentation is 100% complete
+2. All required parameters are gathered
 
 ### CREATE_REPO
 Creates a new repository for generated code
@@ -52,26 +83,93 @@ Creates a new repository for generated code
 - `include_ci` (boolean): Whether to include CI/CD configuration. Default: true
 - `license` (string): License to use. Options: "MIT", "Apache-2.0", "GPL-3.0", etc. Default: "MIT"
 
+#### Documentation Verification:
+The CREATE_REPO command also requires complete documentation if it's part of a PAELLADOC project:
+
+1. If `repo_name` matches an existing PAELLADOC project name:
+   - Verify documentation is complete
+   - Only proceed if documentation is complete
+   - Use project parameters from documentation
+
 ## Code Generation Architecture & Process
 
-1.  **Documentation Analysis**: Extract requirements, architecture, components, APIs.
-2.  **Scaffolding**: Generate project structure.
-3.  **Component Generation**: Create individual components.
-4.  **Integration**: Connect components.
-5.  **Testing**: Generate tests.
-6.  **Deployment/Repo**: Configure CI/CD, manage repository.
+1. **Documentation Verification**: Ensure all documentation is complete
+2. **Documentation Analysis**: Extract requirements, architecture, components, APIs
+3. **Scaffolding**: Generate project structure
+4. **Component Generation**: Create individual components
+5. **Integration**: Connect components
+6. **Testing**: Generate tests
+7. **Deployment/Repo**: Configure CI/CD, manage repository
 
 ## Documentation Sources Used
 
-- Architecture Documents
-- API Specifications
-- Component Specifications
-- Data Models
+The code generation process utilizes these documentation sections:
+- Project Definition
+- Market Research
+- User Research
+- Problem Definition
+- Product Definition
+- Architecture Decision Records
+- Product Roadmap
 - User Stories
+- Technical Architecture
+- Technical Specifications
+- Component Specification
+- API Specification
+- Database Design
+- Frontend Architecture
+- Testing Strategy
+- DevOps Pipeline
+- Security Framework
+- Documentation Framework
 
 ## Code Quality Assurance
 
 Generated code undergoes linting, testing (unit, integration, E2E), security scanning, and documentation generation.
+
+## Behavior Definition
+
+```yaml
+behavior:
+  documentation_first: true
+  require_complete_documentation: true
+  verify_documentation_completeness: true
+  documentation_verification_path: "/docs/{project_name}/.memory.json"
+  abort_if_documentation_incomplete: true
+  guide_to_continue_command: true
+  extract_from_complete_documentation: true
+  code_after_documentation: true
+  conversation_required: true
+  interactive: true
+  sequential_questions: true
+  one_parameter_at_a_time: true
+  single_question_mode: true
+  wait_for_response: true
+  confirm_each_parameter: true
+  prevent_web_search: true
+  strict_question_sequence: true
+  wait_for_user_response: true
+  enforce_one_question_rule: true
+  strict_parameter_sequence: true
+  require_step_confirmation: true
+  prohibit_multiple_questions: true
+  force_single_question_mode: true
+  max_questions_per_message: 1
+  required_documentation_sections: [
+    "project_definition",
+    "market_research",
+    "user_research",
+    "problem_definition",
+    "product_definition",
+    "architecture_decisions",
+    "product_roadmap",
+    "user_stories",
+    "technical_architecture",
+    "technical_specifications",
+    "api_specification",
+    "database_design"
+  ]
+```
 
 # Code Generation from Documentation
 
