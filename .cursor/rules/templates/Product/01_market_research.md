@@ -8,146 +8,162 @@ last_updated: {{DATE}}
 tags: ["market", "research", "analysis"]
 ---
 
-# Plantilla de Investigación de Mercado
+# Market Research Template
 
-## Información General
-- **Nombre del Proyecto**: [Nombre]
-- **Fecha de Investigación**: [Fecha]
-- **Responsable**: [Nombre del responsable]
-- **Equipo de Investigación**: [Miembros del equipo]
+## General Information
 
-## Objetivos de la Investigación (MECE)
-- **Objetivos Primarios**: [Objetivos principales de la investigación]
-- **Objetivos Secundarios**: [Objetivos adicionales]
-- **Preguntas a Responder**: [Preguntas clave que la investigación debe responder]
-- **Resultados Esperados**: [Lo que se espera obtener de esta investigación]
+- **Project Name**: [Name]
+- **Research Date**: [Date]
+- **Responsible**: [Name of the responsible person]
+- **Research Team**: [Team members]
 
-## Análisis del Mercado
+## Research Objectives (MECE)
 
-### Tamaño y Crecimiento del Mercado
-- **Tamaño Actual**: [Valor del mercado en cifras]
-- **Tasa de Crecimiento**: [Porcentaje de crecimiento anual]
-- **Proyecciones a 5 Años**: [Proyección del tamaño del mercado]
-- **Factores de Crecimiento**: [Factores clave que impulsan el crecimiento]
-- **Barreras de Crecimiento**: [Factores que limitan el crecimiento]
+- **Primary Objectives**: [Main objectives of the research]
+- **Secondary Objectives**: [Additional objectives]
+- **Questions to Answer**: [Key questions the research should answer]
+- **Expected Results**: [What is expected to be obtained from this research]
 
-### Segmentación del Mercado
-- **Segmento 1**: [Nombre del segmento]
-  - **Descripción**: [Descripción del segmento]
-  - **Tamaño**: [Tamaño del segmento]
-  - **Características Clave**: [Características distintivas]
-  - **Necesidades Específicas**: [Necesidades particulares de este segmento]
-  - **Potencial de Crecimiento**: [Potencial de este segmento]
+## Market Analysis
+
+### Market Size and Growth
+
+- **Current Size**: [Market value in figures]
+- **Growth Rate**: [Annual growth percentage]
+- **5-Year Projections**: [Market size projection]
+- **Growth Factors**: [Key factors driving growth]
+- **Growth Barriers**: [Factors limiting growth]
+
+### Market Segmentation
+
+- **Segment 1**: [Segment name]
+  - **Description**: [Segment description]
+  - **Size**: [Segment size]
+  - **Key Characteristics**: [Distinctive characteristics]
+  - **Specific Needs**: [Particular needs of this segment]
+  - **Growth Potential**: [Potential of this segment]
   
-- **Segmento 2**: [Nombre del segmento]
+- **Segment 2**: [Segment name]
   - ...
 
-### Tendencias del Mercado
-- **Tendencia 1**: [Descripción de la tendencia]
-  - **Impacto**: [Alto/Medio/Bajo]
-  - **Horizonte Temporal**: [Corto/Medio/Largo plazo]
-  - **Implicaciones**: [Cómo afecta esta tendencia al proyecto]
+### Market Trends
+
+- **Trend 1**: [Description of the trend]
+  - **Impact**: [High/Medium/Low]
+  - **Time Horizon**: [Short/Medium/Long term]
+  - **Implications**: [How this trend affects the project]
   
-- **Tendencia 2**: [Descripción de la tendencia]
+- **Trend 2**: [Description of the trend]
   - ...
 
-## Análisis de la Competencia
+## Competition Analysis
 
-### Competidores Directos
-- **Competidor 1**: [Nombre]
-  - **Descripción**: [Breve descripción]
-  - **Cuota de Mercado**: [Porcentaje estimado]
-  - **Fortalezas**: [Principales fortalezas]
-  - **Debilidades**: [Principales debilidades]
-  - **Propuesta de Valor**: [Su propuesta de valor principal]
-  - **Estrategia de Precios**: [Cómo establecen sus precios]
-  - **Canales de Distribución**: [Cómo llegan a sus clientes]
+### Direct Competitors
+
+- **Competitor 1**: [Name]
+  - **Description**: [Brief description]
+  - **Market Share**: [Estimated percentage]
+  - **Strengths**: [Main strengths]
+  - **Weaknesses**: [Main weaknesses]
+  - **Value Proposition**: [Their main value proposition]
+  - **Pricing Strategy**: [How they set their prices]
+  - **Distribution Channels**: [How they reach their customers]
   
-- **Competidor 2**: [Nombre]
+- **Competitor 2**: [Name]
   - ...
 
-### Competidores Indirectos
-- **Competidor 1**: [Nombre]
-  - **Descripción**: [Breve descripción]
-  - **Solución Alternativa**: [Cómo resuelven el problema de forma diferente]
-  - **Impacto en Nuestro Mercado**: [Cómo afectan a nuestro mercado objetivo]
+### Indirect Competitors
+
+- **Competitor 1**: [Name]
+  - **Description**: [Brief description]
+  - **Alternative Solution**: [How they solve the problem differently]
+  - **Impact on Our Market**: [How they affect our target market]
   
-- **Competidor 2**: [Nombre]
+- **Competitor 2**: [Name]
   - ...
 
-### Mapa Competitivo
-- **Ejes de Comparación**: [Definir los ejes principales para comparar competidores]
-- **Posicionamiento de Competidores**: [Posición relativa de cada competidor]
-- **Oportunidades de Diferenciación**: [Espacios no cubiertos en el mercado]
-- **Amenazas Competitivas**: [Principales amenazas de la competencia]
+### Competitive Map
 
-## Análisis de Clientes
+- **Comparison Axes**: [Define the main axes for comparing competitors]
+- **Competitor Positioning**: [Relative position of each competitor]
+- **Differentiation Opportunities**: [Uncovered spaces in the market]
+- **Competitive Threats**: [Main threats from competition]
 
-### Perfiles de Cliente
-- **Perfil 1**: [Nombre del perfil]
-  - **Demografía**: [Características demográficas]
-  - **Comportamiento**: [Patrones de comportamiento]
-  - **Necesidades**: [Necesidades principales]
-  - **Dolores**: [Problemas o frustraciones]
-  - **Expectativas**: [Lo que esperan de una solución]
-  - **Proceso de Decisión**: [Cómo toman decisiones de compra]
+## Customer Analysis
+
+### Customer Profiles
+
+- **Profile 1**: [Profile name]
+  - **Demographics**: [Demographic characteristics]
+  - **Behavior**: [Behavior patterns]
+  - **Needs**: [Main needs]
+  - **Pain Points**: [Problems or frustrations]
+  - **Expectations**: [What they expect from a solution]
+  - **Decision Process**: [How they make purchasing decisions]
   
-- **Perfil 2**: [Nombre del perfil]
+- **Profile 2**: [Profile name]
   - ...
 
-### Investigación Cualitativa
-- **Entrevistas Realizadas**: [Número y tipo de entrevistas]
-- **Hallazgos Clave**: [Principales descubrimientos]
-- **Citas Relevantes**: [Citas textuales importantes]
-- **Patrones Identificados**: [Patrones de comportamiento o necesidades]
-- **Insights**: [Insights derivados de la investigación]
+### Qualitative Research
 
-### Investigación Cuantitativa
-- **Encuestas Realizadas**: [Número y tipo de encuestas]
-- **Métricas Clave**: [Principales métricas obtenidas]
-- **Correlaciones Significativas**: [Correlaciones importantes]
-- **Segmentos Identificados**: [Segmentos derivados del análisis]
-- **Conclusiones Estadísticas**: [Conclusiones basadas en datos]
+- **Interviews Conducted**: [Number and type of interviews]
+- **Key Findings**: [Main discoveries]
+- **Relevant Quotes**: [Important verbatim quotes]
+- **Identified Patterns**: [Patterns of behavior or needs]
+- **Insights**: [Insights derived from the research]
 
-## Análisis de Oportunidades
+### Quantitative Research
 
-### Oportunidades Identificadas
-- **Oportunidad 1**: [Descripción de la oportunidad]
-  - **Segmento Objetivo**: [Segmento al que aplica]
-  - **Tamaño Estimado**: [Tamaño potencial]
-  - **Barreras de Entrada**: [Dificultades para aprovecharla]
-  - **Factores de Éxito**: [Elementos necesarios para tener éxito]
+- **Surveys Conducted**: [Number and type of surveys]
+- **Key Metrics**: [Main metrics obtained]
+- **Significant Correlations**: [Important correlations]
+- **Identified Segments**: [Segments derived from analysis]
+- **Statistical Conclusions**: [Data-based conclusions]
+
+## Opportunity Analysis
+
+### Identified Opportunities
+
+- **Opportunity 1**: [Description of the opportunity]
+  - **Target Segment**: [Segment to which it applies]
+  - **Estimated Size**: [Potential size]
+  - **Entry Barriers**: [Difficulties in leveraging it]
+  - **Success Factors**: [Elements necessary for success]
   
-- **Oportunidad 2**: [Descripción de la oportunidad]
+- **Opportunity 2**: [Description of the opportunity]
   - ...
 
-### Priorización de Oportunidades
-- **Criterios de Evaluación**: [Criterios usados para priorizar]
-- **Matriz de Evaluación**: [Puntuación de cada oportunidad según criterios]
-- **Oportunidades Prioritarias**: [Lista priorizada de oportunidades]
-- **Justificación**: [Razones para esta priorización]
+### Prioritization of Opportunities
 
-## Recomendaciones Estratégicas
-- **Segmentos a Priorizar**: [Qué segmentos de mercado priorizar]
-- **Propuesta de Valor Recomendada**: [Propuesta de valor sugerida]
-- **Diferenciadores Clave**: [Cómo diferenciarse de la competencia]
-- **Enfoque Go-to-Market**: [Estrategia recomendada para llegar al mercado]
-- **Consideraciones de Precios**: [Recomendaciones sobre precios]
-- **Riesgos a Considerar**: [Riesgos potenciales identificados]
+- **Evaluation Criteria**: [Criteria used to prioritize]
+- **Evaluation Matrix**: [Score of each opportunity according to criteria]
+- **Priority Opportunities**: [Prioritized list of opportunities]
+- **Justification**: [Reasons for this prioritization]
 
-## Próximos Pasos
-- **Investigación Adicional Requerida**: [Áreas que requieren más investigación]
-- **Validaciones Necesarias**: [Hipótesis que necesitan validación]
-- **Acciones Inmediatas**: [Acciones a tomar inmediatamente]
-- **Cronograma Sugerido**: [Plazos recomendados]
+## Strategic Recommendations
 
-## Anexos
-- **Fuentes de Datos**: [Referencias de las fuentes utilizadas]
-- **Metodología Detallada**: [Descripción de la metodología empleada]
-- **Datos Completos**: [Enlace a datos completos]
-- **Entrevistas Transcritas**: [Enlace a transcripciones]
-- **Materiales de Investigación**: [Enlace a materiales utilizados]
+- **Segments to Prioritize**: [Which market segments to prioritize]
+- **Recommended Value Proposition**: [Suggested value proposition]
+- **Key Differentiators**: [How to differentiate from competition]
+- **Go-to-Market Approach**: [Recommended strategy to reach the market]
+- **Pricing Considerations**: [Recommendations on pricing]
+- **Risks to Consider**: [Potential risks identified]
+
+## Next Steps
+
+- **Additional Research Required**: [Areas requiring further research]
+- **Necessary Validations**: [Hypotheses that need validation]
+- **Immediate Actions**: [Actions to take immediately]
+- **Suggested Timeline**: [Recommended timeframes]
+
+## Appendices
+
+- **Data Sources**: [References to sources used]
+- **Detailed Methodology**: [Description of the methodology used]
+- **Complete Data**: [Link to complete data]
+- **Transcribed Interviews**: [Link to transcriptions]
+- **Research Materials**: [Link to materials used]
 
 ---
 
-Esta plantilla sigue principios MECE al dividir la investigación de mercado en categorías mutuamente excluyentes (análisis de mercado, competencia, clientes y oportunidades) y colectivamente exhaustivas (cubriendo todos los aspectos relevantes para entender el potencial de mercado de un producto). 
+This template follows MECE principles by dividing market research into mutually exclusive categories (market analysis, competition, customers, and opportunities) and collectively exhaustive (covering all relevant aspects to understand the market potential of a product).

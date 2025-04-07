@@ -1,176 +1,202 @@
-# Plantilla de User Stories y Story Mapping
+# User Stories and Story Mapping Template
 
-## Información General
-- **Nombre del Proyecto**: [Nombre]
-- **Fecha de Creación**: [Fecha]
-- **Responsable**: [Nombre del responsable]
-- **Versión**: [Número de versión]
+## General Information
 
-## Propósito
-[Breve descripción del propósito de este documento de user stories y cómo se utilizará en el proyecto]
+- **Project Name**: [Name]
+- **Creation Date**: [Date]
+- **Responsible**: [Name of the responsible person]
+- **Version**: [Version number]
 
-## Visión del Producto
-[Resumen de la visión del producto que estas user stories ayudarán a realizar]
+## Purpose
 
-## Usuarios y Personas (MECE)
+[Brief description of the purpose of this user stories document and how it will be used in the project]
 
-### Persona 1: [Nombre]
-- **Descripción Breve**: [Resumen conciso de esta persona]
-- **Objetivos Principales**: [Lo que esta persona busca lograr]
-- **Frustraciones**: [Principales dolores o frustraciones]
-- **Comportamientos Clave**: [Comportamientos característicos relevantes]
+## Product Vision
 
-### Persona 2: [Nombre]
+[Summary of the product vision that these user stories will help realize]
+
+## Users and Personas (MECE)
+
+### Persona 1: [Name]
+
+- **Brief Description**: [Concise summary of this persona]
+- **Main Goals**: [What this persona seeks to achieve]
+- **Frustrations**: [Main pain points or frustrations]
+- **Key Behaviors**: [Relevant characteristic behaviors]
+
+### Persona 2: [Name]
+
 ...
 
-## Estructura de User Stories
+## User Stories Structure
 
-### Formato Estándar
-- **Formato**: Como [tipo de usuario], quiero [acción/objetivo], para [beneficio/valor]
-- **Criterios de Aceptación**: Lista de condiciones que deben cumplirse para considerar la story completada
-- **Tamaño/Estimación**: [Método de estimación: puntos de historia, t-shirt sizes, etc.]
-- **Priorización**: [Método de priorización: MoSCoW, valor/esfuerzo, etc.]
+### Standard Format
+
+- **Format**: As a [user type], I want [action/goal], so that [benefit/value]
+- **Acceptance Criteria**: List of conditions that must be met to consider the story completed
+- **Size/Estimation**: [Estimation method: story points, t-shirt sizes, etc.]
+- **Prioritization**: [Prioritization method: MoSCoW, value/effort, etc.]
 
 ## Story Map (MECE)
 
-### Narrativa Backbone (Actividades Principales)
-- **Actividad 1**: [Nombre de la actividad]
-- **Actividad 2**: [Nombre de la actividad]
-- **Actividad 3**: [Nombre de la actividad]
+### Backbone Narrative (Main Activities)
+
+- **Activity 1**: [Activity name]
+- **Activity 2**: [Activity name]
+- **Activity 3**: [Activity name]
 - ...
 
-### Desglose por Actividad
+### Breakdown by Activity
 
-#### Actividad 1: [Nombre de la Actividad]
+#### Activity 1: [Activity Name]
 
-##### Tareas de Usuario
-- **Tarea 1.1**: [Descripción breve de la tarea]
-- **Tarea 1.2**: [Descripción breve de la tarea]
-- **Tarea 1.3**: [Descripción breve de la tarea]
+##### User Tasks
+
+- **Task 1.1**: [Brief description of the task]
+- **Task 1.2**: [Brief description of the task]
+- **Task 1.3**: [Brief description of the task]
 - ...
 
-##### User Stories por Tarea
+##### User Stories by Task
 
-###### Tarea 1.1: [Nombre de la Tarea]
+###### Task 1.1: [Task Name]
 
-**Versión MVP (Release 1)**
-- **US-101**: Como [usuario], quiero [acción], para [beneficio]
-  - **Criterios de Aceptación**:
-    - [Criterio 1]
-    - [Criterio 2]
-    - [Criterio 3]
-  - **Prioridad**: [Must/Should/Could/Won't]
-  - **Estimación**: [Puntos/Tamaño]
-  - **Dependencias**: [IDs de otras stories de las que depende]
-  - **Notas**: [Información adicional, consideraciones técnicas, etc.]
+**MVP Version (Release 1)**
 
-- **US-102**: Como [usuario], quiero [acción], para [beneficio]
+- **US-101**: As a [user], I want [action], so that [benefit]
+  - **Acceptance Criteria**:
+    - [Criterion 1]
+    - [Criterion 2]
+    - [Criterion 3]
+  - **Priority**: [Must/Should/Could/Won't]
+  - **Estimation**: [Points/Size]
+  - **Dependencies**: [IDs of other stories this depends on]
+  - **Notes**: [Additional information, technical considerations, etc.]
+
+- **US-102**: As a [user], I want [action], so that [benefit]
   - ...
 
-**Versión Futura (Release 2+)**
-- **US-103**: Como [usuario], quiero [acción], para [beneficio]
+**Future Version (Release 2+)**
+
+- **US-103**: As a [user], I want [action], so that [benefit]
   - ...
 
-###### Tarea 1.2: [Nombre de la Tarea]
+###### Task 1.2: [Task Name]
+
 ...
 
-#### Actividad 2: [Nombre de la Actividad]
+#### Activity 2: [Activity Name]
+
 ...
 
-## Releases Planificados (MECE)
+## Planned Releases (MECE)
 
 ### Release 1: MVP
-- **Alcance**: [Descripción del alcance de este release]
-- **Objetivo**: [Objetivo principal de este release]
-- **User Stories Incluidas**: 
+
+- **Scope**: [Description of this release's scope]
+- **Objective**: [Main objective of this release]
+- **Included User Stories**:
   - US-101, US-102, US-201, ...
-- **Fecha Objetivo**: [Fecha prevista]
-- **Valor para el Usuario**: [Valor que aporta al usuario]
+- **Target Date**: [Expected date]
+- **User Value**: [Value it provides to the user]
 
-### Release 2: [Nombre]
-- **Alcance**: [Descripción del alcance de este release]
-- **Objetivo**: [Objetivo principal de este release]
-- **User Stories Incluidas**: 
+### Release 2: [Name]
+
+- **Scope**: [Description of this release's scope]
+- **Objective**: [Main objective of this release]
+- **Included User Stories**:
   - US-103, US-104, US-202, ...
-- **Fecha Objetivo**: [Fecha prevista]
-- **Valor para el Usuario**: [Valor que aporta al usuario]
+- **Target Date**: [Expected date]
+- **User Value**: [Value it provides to the user]
 
-### Release 3: [Nombre]
+### Release 3: [Name]
+
 ...
 
-## Detalles de User Stories por Épicas (MECE)
+## User Stories Details by Epics (MECE)
 
-### Épica 1: [Nombre de la Épica]
-- **Descripción**: [Breve descripción de la épica]
-- **Objetivo**: [Objetivo principal de la épica]
-- **User Stories Asociadas**:
+### Epic 1: [Epic Name]
 
-#### US-101: Como [usuario], quiero [acción], para [beneficio]
-- **Detalle**: [Descripción más detallada si es necesario]
-- **Criterios de Aceptación**:
-  - [Criterio 1]
-  - [Criterio 2]
-  - [Criterio 3]
-- **Mockups/Wireframes**: [Enlaces o referencias a diseños]
-- **Notas Técnicas**: [Consideraciones técnicas relevantes]
-- **Prioridad**: [Must/Should/Could/Won't]
-- **Estimación**: [Puntos/Tamaño]
-- **Dependencias**: [IDs de otras stories de las que depende]
-- **Asignado a**: [Persona responsable]
-- **Estado**: [No iniciado/En progreso/Completado]
+- **Description**: [Brief description of the epic]
+- **Objective**: [Main objective of the epic]
+- **Associated User Stories**:
 
-#### US-102: Como [usuario], quiero [acción], para [beneficio]
+#### US-101: As a [user], I want [action], so that [benefit]
+
+- **Detail**: [More detailed description if needed]
+- **Acceptance Criteria**:
+  - [Criterion 1]
+  - [Criterion 2]
+  - [Criterion 3]
+- **Mockups/Wireframes**: [Links or references to designs]
+- **Technical Notes**: [Relevant technical considerations]
+- **Priority**: [Must/Should/Could/Won't]
+- **Estimation**: [Points/Size]
+- **Dependencies**: [IDs of other stories this depends on]
+- **Assigned to**: [Responsible person]
+- **Status**: [Not started/In progress/Completed]
+
+#### US-102: As a [user], I want [action], so that [benefit]
+
 ...
 
-### Épica 2: [Nombre de la Épica]
+### Epic 2: [Epic Name]
+
 ...
 
-## Mapeo de User Stories a Objetivos de Negocio
+## Mapping User Stories to Business Objectives
 
-### Objetivo 1: [Nombre del Objetivo]
-- **User Stories Relacionadas**: US-101, US-102, US-201, ...
-- **Métrica de Éxito**: [Cómo se medirá el impacto de estas stories]
-- **Prioridad General**: [Alta/Media/Baja]
+### Objective 1: [Objective Name]
 
-### Objetivo 2: [Nombre del Objetivo]
+- **Related User Stories**: US-101, US-102, US-201, ...
+- **Success Metric**: [How the impact of these stories will be measured]
+- **Overall Priority**: [High/Medium/Low]
+
+### Objective 2: [Objective Name]
+
 ...
 
-## Consideraciones Técnicas
+## Technical Considerations
 
-### Aspectos Arquitectónicos
-- **Consideración 1**: [Descripción]
-  - **User Stories Afectadas**: [IDs de stories]
-  - **Impacto**: [Descripción del impacto]
+### Architectural Aspects
 
-- **Consideración 2**: [Descripción]
+- **Consideration 1**: [Description]
+  - **Affected User Stories**: [Story IDs]
+  - **Impact**: [Description of the impact]
+
+- **Consideration 2**: [Description]
   - ...
 
-### Requisitos No Funcionales
-- **Requisito 1**: [Descripción, por ejemplo: rendimiento, seguridad, etc.]
-  - **User Stories Afectadas**: [IDs de stories]
-  - **Criterios de Aceptación**: [Criterios específicos]
+### Non-Functional Requirements
 
-- **Requisito 2**: [Descripción]
+- **Requirement 1**: [Description, e.g., performance, security, etc.]
+  - **Affected User Stories**: [Story IDs]
+  - **Acceptance Criteria**: [Specific criteria]
+
+- **Requirement 2**: [Description]
   - ...
 
-## Proceso de Refinamiento
+## Refinement Process
 
 ### Backlog Grooming
-- **Frecuencia**: [Con qué frecuencia se realiza]
-- **Participantes**: [Quiénes participan]
-- **Proceso**: [Descripción del proceso]
 
-### Priorización
-- **Método**: [Descripción del método de priorización]
-- **Criterios**: [Criterios utilizados para priorizar]
-- **Responsable Final**: [Quién toma la decisión final]
+- **Frequency**: [How often it is done]
+- **Participants**: [Who participates]
+- **Process**: [Description of the process]
 
-## Anexos
-- **Mapas Visuales**: [Enlaces a mapas de stories visuales]
-- **Bocetos y Wireframes**: [Enlaces a materiales de diseño]
-- **Investigación de Usuario**: [Enlaces a investigaciones relacionadas]
-- **Glosario**: [Términos específicos usados en las user stories]
+### Prioritization
+
+- **Method**: [Description of the prioritization method]
+- **Criteria**: [Criteria used to prioritize]
+- **Final Decision Maker**: [Who makes the final decision]
+
+## Appendices
+
+- **Visual Maps**: [Links to visual story maps]
+- **Sketches and Wireframes**: [Links to design materials]
+- **User Research**: [Links to related research]
+- **Glossary**: [Specific terms used in the user stories]
 
 ---
 
-Esta plantilla sigue principios MECE al organizar las user stories en categorías mutuamente excluyentes (actividades, tareas, releases, épicas) y colectivamente exhaustivas (cubriendo todos los aspectos necesarios para una comprensión completa de los requisitos de usuario). 
+This template follows MECE principles by organizing user stories into mutually exclusive categories (activities, tasks, releases, epics) and collectively exhaustive (covering all aspects necessary for a complete understanding of user requirements).
