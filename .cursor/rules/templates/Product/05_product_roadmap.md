@@ -1,233 +1,259 @@
-# Plantilla de Roadmap de Producto
+# Product Roadmap Template
 
-## Información General
-- **Nombre del Producto**: [Nombre]
-- **Fecha de Creación**: [Fecha]
-- **Última Actualización**: [Fecha]
-- **Responsable**: [Nombre del responsable]
-- **Horizonte Temporal**: [Período que cubre el roadmap]
+## General Information
 
-## Visión y Objetivos Estratégicos
+- **Product Name**: [Name]
+- **Creation Date**: [Date]
+- **Last Update**: [Date]
+- **Responsible**: [Name of person responsible]
+- **Time Horizon**: [Period covered by the roadmap]
 
-### Visión del Producto
-[Breve declaración de la visión a largo plazo del producto]
+## Vision and Strategic Objectives
 
-### Objetivos Estratégicos (MECE)
-- **Objetivo 1**: [Descripción]
-  - **Métrica de Éxito**: [Cómo se medirá]
-  - **Valor Objetivo**: [Meta a alcanzar]
-  - **Horizonte**: [Cuándo debe alcanzarse]
+### Product Vision
+
+[Brief statement of the long-term vision for the product]
+
+### Strategic Objectives (MECE)
+
+- **Objective 1**: [Description]
+  - **Success Metric**: [How it will be measured]
+  - **Target Value**: [Goal to achieve]
+  - **Horizon**: [When it should be achieved]
   
-- **Objetivo 2**: [Descripción]
+- **Objective 2**: [Description]
   - ...
 
-### Alineación con Estrategia Empresarial
-- **Contribución a Objetivo Empresarial 1**: [Cómo contribuye]
-- **Contribución a Objetivo Empresarial 2**: [Cómo contribuye]
-- **Impacto en KPIs de Negocio**: [Impacto esperado]
+### Alignment with Business Strategy
 
-## Temas Estratégicos (MECE)
+- **Contribution to Business Objective 1**: [How it contributes]
+- **Contribution to Business Objective 2**: [How it contributes]
+- **Impact on Business KPIs**: [Expected impact]
 
-### Tema 1: [Nombre del Tema]
-- **Descripción**: [Breve descripción del tema estratégico]
-- **Justificación**: [Por qué es importante]
-- **OKRs Relacionados**: [Objetivos y resultados clave relacionados]
-- **Iniciativas Asociadas**: [Lista de iniciativas dentro de este tema]
+## Strategic Themes (MECE)
 
-### Tema 2: [Nombre del Tema]
+### Theme 1: [Theme Name]
+
+- **Description**: [Brief description of the strategic theme]
+- **Justification**: [Why it's important]
+- **Related OKRs**: [Related objectives and key results]
+- **Associated Initiatives**: [List of initiatives within this theme]
+
+### Theme 2: [Theme Name]
+
 - ...
 
-## Vista Temporal (MECE)
+## Temporal View (MECE)
 
-### Horizonte Actual (0-3 meses)
-- **Iniciativa 1**: [Nombre]
-  - **Descripción**: [Descripción breve]
-  - **Valor para el Negocio**: [Valor esperado]
-  - **Valor para el Usuario**: [Beneficio para usuarios]
-  - **Estado**: [Planificado/En desarrollo/Completado]
-  - **Dependencias**: [Dependencias críticas]
-  - **Fecha Objetivo**: [Fecha prevista]
-  - **Responsable**: [Equipo/persona responsable]
+### Current Horizon (0-3 months)
+
+- **Initiative 1**: [Name]
+  - **Description**: [Brief description]
+  - **Business Value**: [Expected value]
+  - **User Value**: [Benefit for users]
+  - **Status**: [Planned/In development/Completed]
+  - **Dependencies**: [Critical dependencies]
+  - **Target Date**: [Expected date]
+  - **Responsible**: [Team/person responsible]
   
-- **Iniciativa 2**: [Nombre]
+- **Initiative 2**: [Name]
   - ...
 
-### Horizonte Cercano (3-6 meses)
-- **Iniciativa 1**: [Nombre]
-  - **Descripción**: [Descripción breve]
-  - **Valor para el Negocio**: [Valor esperado]
-  - **Valor para el Usuario**: [Beneficio para usuarios]
-  - **Estado**: [Planificado/En investigación]
-  - **Dependencias**: [Dependencias críticas]
-  - **Fecha Objetivo**: [Trimestre objetivo]
-  - **Nivel de Confianza**: [Alto/Medio/Bajo]
+### Near Horizon (3-6 months)
+
+- **Initiative 1**: [Name]
+  - **Description**: [Brief description]
+  - **Business Value**: [Expected value]
+  - **User Value**: [Benefit for users]
+  - **Status**: [Planned/In research]
+  - **Dependencies**: [Critical dependencies]
+  - **Target Date**: [Target quarter]
+  - **Confidence Level**: [High/Medium/Low]
   
-- **Iniciativa 2**: [Nombre]
+- **Initiative 2**: [Name]
   - ...
 
-### Horizonte Medio (6-12 meses)
-- **Iniciativa 1**: [Nombre]
-  - **Descripción**: [Descripción breve]
-  - **Valor para el Negocio**: [Valor esperado]
-  - **Valor para el Usuario**: [Beneficio para usuarios]
-  - **Categoría**: [Nueva funcionalidad/Mejora/Escalabilidad/etc.]
-  - **Nivel de Confianza**: [Alto/Medio/Bajo]
+### Medium Horizon (6-12 months)
+
+- **Initiative 1**: [Name]
+  - **Description**: [Brief description]
+  - **Business Value**: [Expected value]
+  - **User Value**: [Benefit for users]
+  - **Category**: [New feature/Improvement/Scalability/etc.]
+  - **Confidence Level**: [High/Medium/Low]
   
-- **Iniciativa 2**: [Nombre]
+- **Initiative 2**: [Name]
   - ...
 
-### Horizonte Lejano (>12 meses)
-- **Iniciativa 1**: [Nombre]
-  - **Descripción**: [Descripción breve]
-  - **Valor Estratégico**: [Alineación con estrategia]
-  - **Exploración Requerida**: [Investigación previa necesaria]
+### Far Horizon (>12 months)
+
+- **Initiative 1**: [Name]
+  - **Description**: [Brief description]
+  - **Strategic Value**: [Alignment with strategy]
+  - **Required Exploration**: [Necessary prior research]
   
-- **Iniciativa 2**: [Nombre]
+- **Initiative 2**: [Name]
   - ...
 
-## Vista por Segmentos de Usuarios (MECE)
+## View by User Segments (MECE)
 
-### Segmento 1: [Nombre del Segmento]
-- **Horizonte Actual**:
-  - [Iniciativa 1]
-  - [Iniciativa 2]
-  
-- **Horizonte Cercano**:
-  - [Iniciativa 3]
-  - [Iniciativa 4]
-  
-- **Horizonte Medio y Lejano**:
-  - [Iniciativa 5]
-  - [Iniciativa 6]
+### Segment 1: [Segment Name]
 
-### Segmento 2: [Nombre del Segmento]
+- **Current Horizon**:
+  - [Initiative 1]
+  - [Initiative 2]
+  
+- **Near Horizon**:
+  - [Initiative 3]
+  - [Initiative 4]
+  
+- **Medium and Far Horizon**:
+  - [Initiative 5]
+  - [Initiative 6]
+
+### Segment 2: [Segment Name]
+
 - ...
 
-## Vista por Áreas de Producto (MECE)
+## View by Product Areas (MECE)
 
-### Área 1: [Nombre del Área]
-- **Horizonte Actual**:
-  - [Iniciativa 1]
-  - [Iniciativa 2]
-  
-- **Horizonte Cercano**:
-  - [Iniciativa 3]
-  - [Iniciativa 4]
-  
-- **Horizonte Medio y Lejano**:
-  - [Iniciativa 5]
-  - [Iniciativa 6]
+### Area 1: [Area Name]
 
-### Área 2: [Nombre del Área]
+- **Current Horizon**:
+  - [Initiative 1]
+  - [Initiative 2]
+  
+- **Near Horizon**:
+  - [Initiative 3]
+  - [Initiative 4]
+  
+- **Medium and Far Horizon**:
+  - [Initiative 5]
+  - [Initiative 6]
+
+### Area 2: [Area Name]
+
 - ...
 
-## Priorización y Recursos (MECE)
+## Prioritization and Resources (MECE)
 
-### Marco de Priorización
-- **Criterios de Priorización**:
-  - **Criterio 1**: [Descripción] - Peso: [X%]
-  - **Criterio 2**: [Descripción] - Peso: [X%]
-  - **Criterio 3**: [Descripción] - Peso: [X%]
-  
-- **Matriz de Priorización**: [Descripción de cómo se ha aplicado la matriz]
+### Prioritization Framework
 
-### Asignación de Recursos
-- **Equipo 1**: [Nombre]
-  - **Capacidad**: [Capacidad disponible]
-  - **Asignaciones Actuales**: [Iniciativas asignadas]
-  - **Asignaciones Futuras**: [Próximas asignaciones]
+- **Prioritization Criteria**:
+  - **Criterion 1**: [Description] - Weight: [X%]
+  - **Criterion 2**: [Description] - Weight: [X%]
+  - **Criterion 3**: [Description] - Weight: [X%]
   
-- **Equipo 2**: [Nombre]
+- **Prioritization Matrix**: [Description of how the matrix has been applied]
+
+### Resource Allocation
+
+- **Team 1**: [Name]
+  - **Capacity**: [Available capacity]
+  - **Current Assignments**: [Assigned initiatives]
+  - **Future Assignments**: [Upcoming assignments]
+  
+- **Team 2**: [Name]
   - ...
 
-### Distribución de Esfuerzo
-- **Nuevas Funcionalidades**: [X%]
-- **Mejoras a Funcionalidades Existentes**: [X%]
-- **Mantenimiento y Estabilidad**: [X%]
-- **Deuda Técnica**: [X%]
-- **Exploración e Innovación**: [X%]
+### Effort Distribution
 
-## Dependencias y Riesgos (MECE)
+- **New Features**: [X%]
+- **Improvements to Existing Features**: [X%]
+- **Maintenance and Stability**: [X%]
+- **Technical Debt**: [X%]
+- **Exploration and Innovation**: [X%]
 
-### Dependencias Críticas
-- **Dependencia 1**: [Descripción]
-  - **Tipo**: [Interna/Externa]
-  - **Impacto**: [Iniciativas afectadas]
-  - **Plan de Mitigación**: [Cómo se abordará]
-  - **Fecha Límite**: [Cuándo debe estar resuelta]
+## Dependencies and Risks (MECE)
+
+### Critical Dependencies
+
+- **Dependency 1**: [Description]
+  - **Type**: [Internal/External]
+  - **Impact**: [Affected initiatives]
+  - **Mitigation Plan**: [How it will be addressed]
+  - **Deadline**: [When it must be resolved]
   
-- **Dependencia 2**: [Descripción]
+- **Dependency 2**: [Description]
   - ...
 
-### Riesgos Identificados
-- **Riesgo 1**: [Descripción]
-  - **Probabilidad**: [Alta/Media/Baja]
-  - **Impacto**: [Alto/Medio/Bajo]
-  - **Estrategia de Mitigación**: [Plan para reducir el riesgo]
-  - **Indicadores de Alerta**: [Señales a monitorear]
+### Identified Risks
+
+- **Risk 1**: [Description]
+  - **Probability**: [High/Medium/Low]
+  - **Impact**: [High/Medium/Low]
+  - **Mitigation Strategy**: [Plan to reduce the risk]
+  - **Warning Indicators**: [Signals to monitor]
   
-- **Riesgo 2**: [Descripción]
+- **Risk 2**: [Description]
   - ...
 
-## Plan de Validación y Aprendizaje (MECE)
+## Validation and Learning Plan (MECE)
 
-### Hipótesis a Validar
-- **Hipótesis 1**: [Descripción]
-  - **Métrica de Validación**: [Cómo se medirá]
-  - **Experimento Planeado**: [Cómo se probará]
-  - **Criterios de Éxito**: [Cuándo se considerará validada]
-  - **Timeline**: [Cuándo se realizará]
+### Hypotheses to Validate
+
+- **Hypothesis 1**: [Description]
+  - **Validation Metric**: [How it will be measured]
+  - **Planned Experiment**: [How it will be tested]
+  - **Success Criteria**: [When it will be considered validated]
+  - **Timeline**: [When it will be conducted]
   
-- **Hipótesis 2**: [Descripción]
+- **Hypothesis 2**: [Description]
   - ...
 
-### Ciclos de Feedback
-- **Metodología de Feedback**: [Enfoque para recopilar feedback]
-- **Cadencia de Revisión**: [Frecuencia de revisiones del roadmap]
-- **Proceso de Ajuste**: [Cómo se incorporan los aprendizajes]
+### Feedback Cycles
 
-## Hitos y Lanzamientos (MECE)
+- **Feedback Methodology**: [Approach to collecting feedback]
+- **Review Cadence**: [Frequency of roadmap reviews]
+- **Adjustment Process**: [How learnings are incorporated]
 
-### Hitos Clave
-- **Hito 1**: [Nombre]
-  - **Descripción**: [Descripción breve]
-  - **Fecha Objetivo**: [Fecha prevista]
-  - **Criterios de Éxito**: [Cómo se medirá]
-  - **Dependencias**: [Dependencias críticas]
+## Milestones and Releases (MECE)
+
+### Key Milestones
+
+- **Milestone 1**: [Name]
+  - **Description**: [Brief description]
+  - **Target Date**: [Expected date]
+  - **Success Criteria**: [How it will be measured]
+  - **Dependencies**: [Critical dependencies]
   
-- **Hito 2**: [Nombre]
+- **Milestone 2**: [Name]
   - ...
 
-### Plan de Lanzamientos
-- **Lanzamiento 1**: [Nombre/Versión]
-  - **Alcance**: [Funcionalidades incluidas]
-  - **Fecha Objetivo**: [Fecha prevista]
-  - **Audiencia**: [Usuarios objetivo]
-  - **Estrategia de Rollout**: [Enfoque de lanzamiento]
+### Release Plan
+
+- **Release 1**: [Name/Version]
+  - **Scope**: [Included features]
+  - **Target Date**: [Expected date]
+  - **Audience**: [Target users]
+  - **Rollout Strategy**: [Launch approach]
   
-- **Lanzamiento 2**: [Nombre/Versión]
+- **Release 2**: [Name/Version]
   - ...
 
-## Comunicación del Roadmap
+## Roadmap Communication
 
-### Versiones del Roadmap
-- **Versión Interna Detallada**: [Audiencia y contenido]
-- **Versión para Stakeholders**: [Audiencia y contenido]
-- **Versión para Clientes**: [Audiencia y contenido]
-- **Versión Pública**: [Audiencia y contenido]
+### Roadmap Versions
 
-### Cadencia de Comunicación
-- **Actualizaciones Internas**: [Frecuencia y canal]
-- **Actualizaciones a Stakeholders**: [Frecuencia y canal]
-- **Actualizaciones a Clientes**: [Frecuencia y canal]
+- **Detailed Internal Version**: [Audience and content]
+- **Stakeholder Version**: [Audience and content]
+- **Customer Version**: [Audience and content]
+- **Public Version**: [Audience and content]
 
-## Anexos
-- **Backlog Detallado**: [Enlace al backlog completo]
-- **Documentos de Visión**: [Enlace a documentos relacionados]
-- **Investigación de Usuarios**: [Enlace a investigaciones relevantes]
-- **Análisis Competitivo**: [Enlace a análisis de mercado]
-- **Documentación Técnica**: [Enlace a documentos técnicos]
+### Communication Cadence
+
+- **Internal Updates**: [Frequency and channel]
+- **Stakeholder Updates**: [Frequency and channel]
+- **Customer Updates**: [Frequency and channel]
+
+## Annexes
+
+- **Detailed Backlog**: [Link to complete backlog]
+- **Vision Documents**: [Link to related documents]
+- **User Research**: [Link to relevant research]
+- **Competitive Analysis**: [Link to market analysis]
+- **Technical Documentation**: [Link to technical documents]
 
 ---
 
-Esta plantilla sigue principios MECE al dividir el roadmap de producto en categorías mutuamente excluyentes (visión/objetivos, temas estratégicos, vistas temporales, segmentos, áreas, priorización, dependencias/riesgos, validación y comunicación) y colectivamente exhaustivas (cubriendo todos los aspectos necesarios para una planificación completa del producto). 
+This template follows MECE principles by dividing the product roadmap into mutually exclusive categories (vision/objectives, strategic themes, temporal views, segments, areas, prioritization, dependencies/risks, validation and communication) and collectively exhaustive (covering all necessary aspects for complete product planning).

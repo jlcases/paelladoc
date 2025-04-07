@@ -1,100 +1,111 @@
-# Plantilla de Gestión de Tareas
+# Task Management Template
 
-## Información General del Sprint
-- **Número de Sprint**: [Número]
-- **Fechas**: [Fecha inicio - Fecha fin]
-- **Objetivo del Sprint**: [Descripción del objetivo principal]
-- **Capacidad del Equipo**: [Número de story points/horas disponibles]
-- **Equipo**: [Miembros del equipo asignados]
+## General Sprint Information
 
-## Categorización de Tareas (MECE)
+- **Sprint Number**: [Number]
+- **Dates**: [Start date - End date]
+- **Sprint Objective**: [Description of the main objective]
+- **Team Capacity**: [Number of story points/hours available]
+- **Team**: [Assigned team members]
 
-### Por Prioridad
-- **MANDATORY**: [Tareas que deben completarse sí o sí]
-- **ALTA**: [Tareas críticas para el negocio/proyecto]
-- **MEDIA**: [Tareas importantes pero no críticas]
-- **BAJA**: [Tareas que pueden posponerse si es necesario]
+## Task Categorization (MECE)
 
-### Por Tipo
-- **Funcionalidad Nueva**: [Desarrollo de nuevas características]
-- **Mejora**: [Mejoras en funcionalidades existentes]
-- **Corrección de Errores**: [Resolución de bugs identificados]
-- **Deuda Técnica**: [Mejoras en la calidad del código/arquitectura]
-- **Investigación**: [Análisis o pruebas de concepto]
-- **Documentación**: [Creación o actualización de documentación]
+### By Priority
 
-### Por Capa de Arquitectura
-- **Dominio**: [Tareas relacionadas con la capa de dominio]
-- **Aplicación**: [Tareas relacionadas con la capa de aplicación]
-- **Infraestructura**: [Tareas relacionadas con la capa de infraestructura]
-- **Interfaces**: [Tareas relacionadas con la capa de interfaces]
-- **Transversales**: [Tareas que afectan múltiples capas]
+- **MANDATORY**: [Tasks that must be completed no matter what]
+- **HIGH**: [Tasks critical for the business/project]
+- **MEDIUM**: [Important but non-critical tasks]
+- **LOW**: [Tasks that can be postponed if necessary]
 
-### Por Hexágono
-- **User Management**: [Tareas del hexágono de gestión de usuarios]
-- **Problem Management**: [Tareas del hexágono de gestión de problemas]
-- **Problem Solving**: [Tareas del hexágono de resolución de problemas]
-- **Classification Management**: [Tareas del hexágono de gestión de clasificación]
-- **Project Management**: [Tareas del hexágono de gestión de proyectos]
-- **Critic Management**: [Tareas del hexágono de gestión de críticas]
-- **Evaluation Management**: [Tareas del hexágono de evaluación]
-- **LLM Processing**: [Tareas del hexágono de procesamiento LLM]
-- **Shared**: [Tareas del hexágono compartido]
+### By Type
 
-## Listado de Tareas
+- **New Functionality**: [Development of new features]
+- **Enhancement**: [Improvements to existing functionalities]
+- **Bug Fix**: [Resolution of identified bugs]
+- **Technical Debt**: [Improvements in code quality/architecture]
+- **Research**: [Analysis or proof of concepts]
+- **Documentation**: [Creation or updating of documentation]
 
-### [ID-001] - [Título de la Tarea]
-- **Descripción**: [Descripción detallada de la tarea]
-- **Categorización**:
-  - **Prioridad**: [MANDATORY/ALTA/MEDIA/BAJA]
-  - **Tipo**: [Tipo de tarea]
-  - **Capa**: [Capa de arquitectura]
-  - **Hexágono**: [Hexágono relacionado]
-- **Estimación**: [Story points/horas]
-- **Asignado a**: [Nombre del responsable]
-- **Estado**: [Por hacer/En progreso/En revisión/Completado]
-- **Dependencias**: [IDs de tareas de las que depende]
-- **Criterios de Aceptación**:
-  - [ ] [Criterio 1]
-  - [ ] [Criterio 2]
-  - [ ] [Criterio 3]
-- **Subtareas**:
-  - [ ] [Subtarea 1]
-  - [ ] [Subtarea 2]
-  - [ ] [Subtarea 3]
+### By Architecture Layer
 
-### [ID-002] - [Título de la Tarea]
+- **Domain**: [Tasks related to the domain layer]
+- **Application**: [Tasks related to the application layer]
+- **Infrastructure**: [Tasks related to the infrastructure layer]
+- **Interfaces**: [Tasks related to the interface layer]
+- **Cross-cutting**: [Tasks affecting multiple layers]
+
+### By Hexagon
+
+- **User Management**: [Tasks from the user management hexagon]
+- **Problem Management**: [Tasks from the problem management hexagon]
+- **Problem Solving**: [Tasks from the problem solving hexagon]
+- **Classification Management**: [Tasks from the classification management hexagon]
+- **Project Management**: [Tasks from the project management hexagon]
+- **Critic Management**: [Tasks from the critic management hexagon]
+- **Evaluation Management**: [Tasks from the evaluation hexagon]
+- **LLM Processing**: [Tasks from the LLM processing hexagon]
+- **Shared**: [Tasks from the shared hexagon]
+
+## Task List
+
+### [ID-001] - [Task Title]
+
+- **Description**: [Detailed description of the task]
+- **Categorization**:
+  - **Priority**: [MANDATORY/HIGH/MEDIUM/LOW]
+  - **Type**: [Task type]
+  - **Layer**: [Architecture layer]
+  - **Hexagon**: [Related hexagon]
+- **Estimation**: [Story points/hours]
+- **Assigned to**: [Name of the responsible person]
+- **Status**: [To do/In progress/In review/Completed]
+- **Dependencies**: [IDs of tasks this depends on]
+- **Acceptance Criteria**:
+  - [ ] [Criterion 1]
+  - [ ] [Criterion 2]
+  - [ ] [Criterion 3]
+- **Subtasks**:
+  - [ ] [Subtask 1]
+  - [ ] [Subtask 2]
+  - [ ] [Subtask 3]
+
+### [ID-002] - [Task Title]
+
 ...
 
-## Plan de Testing
+## Testing Plan
 
-### Tests Requeridos por Tarea
+### Required Tests by Task
+
 - **[ID-001]**:
-  - [ ] Tests unitarios para [función/clase específica]
-  - [ ] Tests de integración para [componente específico]
-  - [ ] Tests de aceptación para [funcionalidad específica]
+  - [ ] Unit tests for [specific function/class]
+  - [ ] Integration tests for [specific component]
+  - [ ] Acceptance tests for [specific functionality]
 
-### Cobertura de Tests
-- **Dominio**: [Porcentaje objetivo] - [Porcentaje actual]
-- **Aplicación**: [Porcentaje objetivo] - [Porcentaje actual]
-- **Infraestructura**: [Porcentaje objetivo] - [Porcentaje actual]
-- **Interfaces**: [Porcentaje objetivo] - [Porcentaje actual]
+### Test Coverage
 
-## Métricas del Sprint
-- **Velocidad Planificada**: [Story points/horas planificadas]
-- **Velocidad Real**: [Story points/horas completadas]
-- **Deuda Técnica Agregada**: [Story points/horas de deuda técnica nueva]
-- **Deuda Técnica Pagada**: [Story points/horas de deuda técnica resuelta]
-- **Tasa de Defectos**: [Número de defectos encontrados / story points completados]
+- **Domain**: [Target percentage] - [Current percentage]
+- **Application**: [Target percentage] - [Current percentage]
+- **Infrastructure**: [Target percentage] - [Current percentage]
+- **Interfaces**: [Target percentage] - [Current percentage]
 
-## Impedimentos
-- **Impedimento 1**: [Descripción]
-  - **Impacto**: [Tareas afectadas]
-  - **Plan de Mitigación**: [Acciones para resolverlo]
-  - **Estado**: [Activo/Resuelto]
-- **Impedimento 2**: [Descripción]
+## Sprint Metrics
+
+- **Planned Velocity**: [Planned story points/hours]
+- **Actual Velocity**: [Completed story points/hours]
+- **Added Technical Debt**: [Story points/hours of new technical debt]
+- **Paid Technical Debt**: [Story points/hours of resolved technical debt]
+- **Defect Rate**: [Number of defects found / completed story points]
+
+## Impediments
+
+- **Impediment 1**: [Description]
+  - **Impact**: [Affected tasks]
+  - **Mitigation Plan**: [Actions to resolve it]
+  - **Status**: [Active/Resolved]
+- **Impediment 2**: [Description]
   - ...
 
 ---
 
-Esta plantilla sigue principios MECE al categorizar las tareas de forma mutuamente excluyente (por prioridad, tipo, capa y hexágono) y colectivamente exhaustiva (cubriendo todos los aspectos de la gestión de tareas, desde la planificación hasta el seguimiento y las métricas). 
+This template follows MECE principles by categorizing tasks in a mutually exclusive (by priority, type, layer, and hexagon) and collectively exhaustive manner (covering all aspects of task management, from planning to tracking and metrics).

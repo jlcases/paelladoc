@@ -1,199 +1,235 @@
-# Plantilla de Mapa de Empatía
+# Empathy Map Template
 
-## Información General
-- **Nombre del Proyecto**: [Nombre]
-- **Fecha de Creación**: [Fecha]
-- **Responsable**: [Nombre del responsable]
-- **Persona/Segmento Objetivo**: [Persona o segmento representado]
+## General Information
 
-## Propósito del Mapa de Empatía
-[Breve descripción del propósito de este mapa de empatía y cómo se utilizará en el proyecto]
+- **Project Name**: [Name]
+- **Creation Date**: [Date]
+- **Responsible**: [Name of the responsible person]
+- **Target Persona/Segment**: [Represented persona or segment]
 
-## Mapa de Empatía (MECE)
+## Purpose of the Empathy Map
 
-### ¿Qué PIENSA y SIENTE?
-*Preocupaciones, aspiraciones, pensamientos internos*
+[Brief description of the purpose of this empathy map and how it will be used in the project]
 
-#### Preocupaciones y Miedos
-- [Preocupación principal 1]
-- [Preocupación principal 2]
-- [Preocupación principal 3]
+## Empathy Map (MECE)
 
-#### Aspiraciones y Deseos
-- [Aspiración 1]
-- [Aspiración 2]
-- [Aspiración 3]
+### What does the user THINK and FEEL?
 
-#### Valores y Creencias
-- [Valor/Creencia 1]
-- [Valor/Creencia 2]
-- [Valor/Creencia 3]
+*Concerns, aspirations, internal thoughts*
 
-#### Actitudes
-- [Actitud hacia el problema/solución 1]
-- [Actitud hacia el problema/solución 2]
+#### Concerns and Fears
 
-### ¿Qué VE?
-*Entorno, amigos, ofertas del mercado*
+- [Main concern 1]
+- [Main concern 2]
+- [Main concern 3]
 
-#### Entorno
-- [Descripción del entorno en el que se mueve]
+#### Aspirations and Desires
 
-#### Influencias
-- [Personas que influyen en sus decisiones]
-- [Medios que consume]
-- [Tendencias que sigue]
+- [Aspiration 1]
+- [Aspiration 2]
+- [Aspiration 3]
 
-#### Competencia
-- [Alternativas que ve en el mercado]
-- [Mensajes de la competencia a los que está expuesto]
+#### Values and Beliefs
 
-#### Experiencias Visuales
-- [Qué observa en su día a día relacionado con el problema]
+- [Value/Belief 1]
+- [Value/Belief 2]
+- [Value/Belief 3]
 
-### ¿Qué DICE y HACE?
-*Comportamiento público, apariencia*
+#### Attitudes
 
-#### Comportamiento Público
-- [Comportamiento observable 1]
-- [Comportamiento observable 2]
-- [Comportamiento observable 3]
+- [Attitude toward the problem/solution 1]
+- [Attitude toward the problem/solution 2]
 
-#### Declaraciones Habituales
-- [Frase típica 1]
-- [Frase típica 2]
-- [Frase típica 3]
+### What does the user SEE?
 
-#### Contradicciones
-- [Contradicción entre lo que dice y hace 1]
-- [Contradicción entre lo que dice y hace 2]
+*Environment, friends, market offerings*
 
-#### Hábitos y Rutinas
-- [Hábito/Rutina 1]
-- [Hábito/Rutina 2]
-- [Hábito/Rutina 3]
+#### Environment
 
-### ¿Qué OYE?
-*Influencias, qué dicen las personas cercanas*
+- [Description of the environment they move in]
 
-#### Influencias Cercanas
-- [Qué dicen amigos/familia]
-- [Qué dicen compañeros de trabajo]
+#### Influences
 
-#### Influencias Profesionales
-- [Qué dicen expertos en el tema]
-- [Qué dicen líderes de opinión]
+- [People who influence their decisions]
+- [Media they consume]
+- [Trends they follow]
 
-#### Medios
-- [Qué mensajes recibe de medios de comunicación]
-- [Qué escucha en redes sociales]
+#### Competition
 
-#### Mensajes Recurrentes
-- [Mensaje recurrente 1]
-- [Mensaje recurrente 2]
+- [Alternatives they see in the market]
+- [Competitor messages they are exposed to]
 
-## Motivaciones y Frustraciones (MECE)
+#### Visual Experiences
 
-### Dolores (Pains)
-*Miedos, frustraciones, obstáculos*
+- [What they observe in their daily life related to the problem]
 
-#### Frustraciones Principales
-- [Frustración 1]
-  - **Impacto**: [Alto/Medio/Bajo]
-  - **Frecuencia**: [Con qué frecuencia la experimenta]
-  - **Contexto**: [En qué situaciones ocurre]
+### What does the user SAY and DO?
 
-- [Frustración 2]
+*Public behavior, appearance*
+
+#### Public Behavior
+
+- [Observable behavior 1]
+- [Observable behavior 2]
+- [Observable behavior 3]
+
+#### Common Statements
+
+- [Typical phrase 1]
+- [Typical phrase 2]
+- [Typical phrase 3]
+
+#### Contradictions
+
+- [Contradiction between what they say and do 1]
+- [Contradiction between what they say and do 2]
+
+#### Habits and Routines
+
+- [Habit/Routine 1]
+- [Habit/Routine 2]
+- [Habit/Routine 3]
+
+### What does the user HEAR?
+
+*Influences, what close people say*
+
+#### Close Influences
+
+- [What friends/family say]
+- [What coworkers say]
+
+#### Professional Influences
+
+- [What experts in the field say]
+- [What opinion leaders say]
+
+#### Media
+
+- [What messages they receive from media]
+- [What they hear on social media]
+
+#### Recurring Messages
+
+- [Recurring message 1]
+- [Recurring message 2]
+
+## Motivations and Frustrations (MECE)
+
+### Pains
+
+*Fears, frustrations, obstacles*
+
+#### Main Frustrations
+
+- [Frustration 1]
+  - **Impact**: [High/Medium/Low]
+  - **Frequency**: [How often they experience it]
+  - **Context**: [In what situations it occurs]
+
+- [Frustration 2]
   - ...
 
-#### Obstáculos
-- [Obstáculo 1]
-  - **Naturaleza**: [Tipo de obstáculo: técnico, social, económico, etc.]
-  - **Impacto**: [Cómo afecta su experiencia]
+#### Obstacles
 
-- [Obstáculo 2]
+- [Obstacle 1]
+  - **Nature**: [Type of obstacle: technical, social, economic, etc.]
+  - **Impact**: [How it affects their experience]
+
+- [Obstacle 2]
   - ...
 
-#### Riesgos y Miedos
-- [Riesgo/Miedo 1]
-  - **Origen**: [De dónde proviene]
-  - **Impacto**: [Cómo afecta sus decisiones]
+#### Risks and Fears
 
-- [Riesgo/Miedo 2]
+- [Risk/Fear 1]
+  - **Origin**: [Where it comes from]
+  - **Impact**: [How it affects their decisions]
+
+- [Risk/Fear 2]
   - ...
 
-### Ganancias (Gains)
-*Deseos, necesidades, medidas de éxito*
+### Gains
 
-#### Necesidades
-- [Necesidad 1]
-  - **Tipo**: [Funcional/Social/Emocional]
-  - **Prioridad**: [Alta/Media/Baja]
+*Desires, needs, success measures*
 
-- [Necesidad 2]
+#### Needs
+
+- [Need 1]
+  - **Type**: [Functional/Social/Emotional]
+  - **Priority**: [High/Medium/Low]
+
+- [Need 2]
   - ...
 
-#### Deseos
-- [Deseo 1]
-  - **Motivación**: [Qué lo motiva]
-  - **Valor percibido**: [Qué valor le asigna]
+#### Desires
 
-- [Deseo 2]
+- [Desire 1]
+  - **Motivation**: [What motivates it]
+  - **Perceived value**: [What value they assign to it]
+
+- [Desire 2]
   - ...
 
-#### Medidas de Éxito
-- [Métrica de éxito 1]
-  - **Cómo la mide**: [Cómo determina si ha tenido éxito]
+#### Success Measures
 
-- [Métrica de éxito 2]
+- [Success metric 1]
+  - **How they measure it**: [How they determine if they've been successful]
+
+- [Success metric 2]
   - ...
 
-## Insights Clave
+## Key Insights
 
-### Insights sobre Necesidades
+### Insights about Needs
+
 - [Insight 1]
-  - **Evidencia**: [Datos que respaldan este insight]
-  - **Implicaciones**: [Qué significa para el diseño]
+  - **Evidence**: [Data supporting this insight]
+  - **Implications**: [What it means for the design]
 
 - [Insight 2]
   - ...
 
-### Insights sobre Comportamiento
+### Insights about Behavior
+
 - [Insight 1]
-  - **Evidencia**: [Datos que respaldan este insight]
-  - **Implicaciones**: [Qué significa para el diseño]
+  - **Evidence**: [Data supporting this insight]
+  - **Implications**: [What it means for the design]
 
 - [Insight 2]
   - ...
 
-### Insights sobre Actitudes
+### Insights about Attitudes
+
 - [Insight 1]
-  - **Evidencia**: [Datos que respaldan este insight]
-  - **Implicaciones**: [Qué significa para el diseño]
+  - **Evidence**: [Data supporting this insight]
+  - **Implications**: [What it means for the design]
 
 - [Insight 2]
   - ...
 
-## Oportunidades de Diseño
+## Design Opportunities
 
-### Oportunidades Identificadas
-- [Oportunidad 1]
-  - **Relacionada con**: [Qué aspecto del mapa de empatía la origina]
-  - **Impacto potencial**: [Alto/Medio/Bajo]
+### Identified Opportunities
 
-- [Oportunidad 2]
+- [Opportunity 1]
+  - **Related to**: [Which aspect of the empathy map originates it]
+  - **Potential impact**: [High/Medium/Low]
+
+- [Opportunity 2]
   - ...
 
-### Próximos Pasos
-- [Acción 1]
-- [Acción 2]
-- [Acción 3]
+### Next Steps
 
-## Anexos
-- **Fuentes de Información**: [Entrevistas, encuestas, observaciones utilizadas]
-- **Visualización del Mapa**: [Enlace al mapa visual completo]
-- **Material Relacionado**: [Enlaces a otros documentos relevantes]
+- [Action 1]
+- [Action 2]
+- [Action 3]
+
+## Appendices
+
+- **Information Sources**: [Interviews, surveys, observations used]
+- **Map Visualization**: [Link to the complete visual map]
+- **Related Material**: [Links to other relevant documents]
 
 ---
 
-Esta plantilla sigue principios MECE al dividir el mapa de empatía en categorías mutuamente excluyentes (piensa/siente, ve, dice/hace, oye, dolores, ganancias) y colectivamente exhaustivas (cubriendo todos los aspectos de la experiencia emocional y contextual del usuario). 
+This template follows MECE principles by dividing the empathy map into mutually exclusive categories (thinks/feels, sees, says/does, hears, pains, gains) and collectively exhaustive (covering all aspects of the user's emotional and contextual experience).

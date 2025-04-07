@@ -1,258 +1,287 @@
-# Plantilla de Service Blueprint
+# Service Blueprint Template
 
-## Información General
-- **Nombre del Proyecto**: [Nombre]
-- **Fecha de Creación**: [Fecha]
-- **Responsable**: [Nombre del responsable]
-- **Versión**: [Número de versión]
-- **Servicio Mapeado**: [Nombre del servicio/proceso]
+## General Information
 
-## Propósito del Service Blueprint
-[Breve descripción del propósito de este service blueprint y cómo se utilizará en el proyecto]
+- **Project Name**: [Name]
+- **Creation Date**: [Date]
+- **Responsible**: [Name of the responsible person]
+- **Version**: [Version number]
+- **Mapped Service**: [Name of the service/process]
 
-## Alcance
-- **Punto de Inicio**: [Dónde comienza el servicio]
-- **Punto Final**: [Dónde termina el servicio]
-- **Canales Cubiertos**: [Canales incluidos en este blueprint]
-- **Usuarios Primarios**: [Usuarios principales del servicio]
-- **Valor Esperado**: [Valor que debe aportar el servicio]
+## Purpose of the Service Blueprint
 
-## Estructura del Blueprint (MECE)
+[Brief description of the purpose of this service blueprint and how it will be used in the project]
 
-Las secciones siguientes muestran cada fase del servicio con sus componentes en las diferentes capas:
+## Scope
 
-### Fases del Servicio (Eje Horizontal)
+- **Starting Point**: [Where the service begins]
+- **End Point**: [Where the service ends]
+- **Covered Channels**: [Channels included in this blueprint]
+- **Primary Users**: [Main users of the service]
+- **Expected Value**: [Value that the service should provide]
 
-- **Fase 1**: [Nombre - Ej: Descubrimiento]
-- **Fase 2**: [Nombre - Ej: Onboarding]
-- **Fase 3**: [Nombre - Ej: Uso]
-- **Fase 4**: [Nombre - Ej: Soporte]
-- **Fase 5**: [Nombre - Ej: Fidelización]
+## Blueprint Structure (MECE)
 
-### Capas del Servicio (Eje Vertical)
+The following sections show each phase of the service with its components across different layers:
 
-1. **Evidencias Físicas** (elementos tangibles visibles para el usuario)
-2. **Acciones del Usuario** (acciones que realiza el usuario)
-3. **Frontstage** (acciones de empleados/sistemas visibles para el usuario)
-4. **Backstage** (acciones de empleados/sistemas no visibles para el usuario)
-5. **Procesos de Soporte** (sistemas y procesos internos necesarios)
+### Service Phases (Horizontal Axis)
 
-## Desglose por Fase (MECE)
+- **Phase 1**: [Name - Ex: Discovery]
+- **Phase 2**: [Name - Ex: Onboarding]
+- **Phase 3**: [Name - Ex: Usage]
+- **Phase 4**: [Name - Ex: Support]
+- **Phase 5**: [Name - Ex: Loyalty]
 
-### Fase 1: [Nombre - Ej: Descubrimiento]
+### Service Layers (Vertical Axis)
 
-#### Evidencias Físicas
-- **Evidencia 1**: [Descripción]
-  - **Formato**: [Digital/Físico]
-  - **Canal**: [Dónde aparece]
-  - **Propósito**: [Qué comunica o facilita]
+1. **Physical Evidence** (tangible elements visible to the user)
+2. **User Actions** (actions performed by the user)
+3. **Frontstage** (employee/system actions visible to the user)
+4. **Backstage** (employee/system actions not visible to the user)
+5. **Support Processes** (internal systems and processes needed)
+
+## Breakdown by Phase (MECE)
+
+### Phase 1: [Name - Ex: Discovery]
+
+#### Physical Evidence
+
+- **Evidence 1**: [Description]
+  - **Format**: [Digital/Physical]
+  - **Channel**: [Where it appears]
+  - **Purpose**: [What it communicates or facilitates]
   
-- **Evidencia 2**: [Descripción]
+- **Evidence 2**: [Description]
   - ...
 
-#### Acciones del Usuario
-- **Acción 1**: [Descripción]
-  - **Canal**: [Dónde ocurre]
-  - **Frecuencia**: [Con qué frecuencia ocurre]
-  - **Disparador**: [Qué motiva esta acción]
-  - **Complejidad**: [Alta/Media/Baja]
+#### User Actions
+
+- **Action 1**: [Description]
+  - **Channel**: [Where it occurs]
+  - **Frequency**: [How often it occurs]
+  - **Trigger**: [What motivates this action]
+  - **Complexity**: [High/Medium/Low]
   
-- **Acción 2**: [Descripción]
+- **Action 2**: [Description]
   - ...
 
-#### Frontstage (Línea de Interacción)
-- **Interacción 1**: [Descripción]
-  - **Actor**: [Persona o sistema que interactúa con el usuario]
-  - **Tipo**: [Digital/Personal/Física]
-  - **Propósito**: [Objetivo de esta interacción]
-  - **Duración Típica**: [Cuánto dura]
+#### Frontstage (Interaction Line)
+
+- **Interaction 1**: [Description]
+  - **Actor**: [Person or system that interacts with the user]
+  - **Type**: [Digital/Personal/Physical]
+  - **Purpose**: [Objective of this interaction]
+  - **Typical Duration**: [How long it lasts]
   
-- **Interacción 2**: [Descripción]
+- **Interaction 2**: [Description]
   - ...
 
-#### Backstage (Línea de Visibilidad)
-- **Proceso 1**: [Descripción]
-  - **Actor**: [Quién lo realiza]
-  - **Trigger**: [Qué lo activa]
-  - **Resultado**: [Qué produce]
-  - **Tecnología Utilizada**: [Qué sistemas se utilizan]
+#### Backstage (Visibility Line)
+
+- **Process 1**: [Description]
+  - **Actor**: [Who performs it]
+  - **Trigger**: [What activates it]
+  - **Result**: [What it produces]
+  - **Technology Used**: [What systems are used]
   
-- **Proceso 2**: [Descripción]
+- **Process 2**: [Description]
   - ...
 
-#### Procesos de Soporte (Línea Interna)
-- **Proceso 1**: [Descripción]
-  - **Sistema/Departamento**: [Responsable]
-  - **Inputs Necesarios**: [Qué necesita para funcionar]
-  - **Outputs**: [Qué produce]
-  - **Dependencias**: [De qué depende]
+#### Support Processes (Internal Line)
+
+- **Process 1**: [Description]
+  - **System/Department**: [Responsible]
+  - **Required Inputs**: [What it needs to function]
+  - **Outputs**: [What it produces]
+  - **Dependencies**: [What it depends on]
   
-- **Proceso 2**: [Descripción]
+- **Process 2**: [Description]
   - ...
 
-### Fase 2: [Nombre - Ej: Onboarding]
+### Phase 2: [Name - Ex: Onboarding]
+
 ...
 
-### Fase 3: [Nombre - Ej: Uso]
+### Phase 3: [Name - Ex: Usage]
+
 ...
 
-### Fase 4: [Nombre - Ej: Soporte]
+### Phase 4: [Name - Ex: Support]
+
 ...
 
-### Fase 5: [Nombre - Ej: Fidelización]
+### Phase 5: [Name - Ex: Loyalty]
+
 ...
 
-## Puntos de Falla y Oportunidades (MECE)
+## Failure Points and Opportunities (MECE)
 
-### Puntos de Falla Identificados
-- **Falla 1**: [Descripción]
-  - **Ubicación**: [Fase y capa donde ocurre]
-  - **Frecuencia**: [Con qué frecuencia ocurre]
-  - **Severidad**: [Alta/Media/Baja]
-  - **Impacto en Usuario**: [Cómo afecta al usuario]
-  - **Impacto en Negocio**: [Cómo afecta al negocio]
-  - **Causas Raíz**: [Razones subyacentes]
+### Identified Failure Points
+
+- **Failure 1**: [Description]
+  - **Location**: [Phase and layer where it occurs]
+  - **Frequency**: [How often it occurs]
+  - **Severity**: [High/Medium/Low]
+  - **Impact on User**: [How it affects the user]
+  - **Impact on Business**: [How it affects the business]
+  - **Root Causes**: [Underlying reasons]
   
-- **Falla 2**: [Descripción]
+- **Failure 2**: [Description]
   - ...
 
-### Momentos de Espera
-- **Espera 1**: [Descripción]
-  - **Ubicación**: [Fase y capa donde ocurre]
-  - **Duración Típica**: [Cuánto tiempo dura]
-  - **Tipo**: [Activa (usuario participa) / Pasiva (usuario espera)]
-  - **Percepción**: [Cómo lo percibe el usuario]
-  - **Mitigación Actual**: [Cómo se gestiona actualmente]
+### Waiting Moments
+
+- **Wait 1**: [Description]
+  - **Location**: [Phase and layer where it occurs]
+  - **Typical Duration**: [How long it lasts]
+  - **Type**: [Active (user participates) / Passive (user waits)]
+  - **Perception**: [How the user perceives it]
+  - **Current Mitigation**: [How it is currently managed]
   
-- **Espera 2**: [Descripción]
+- **Wait 2**: [Description]
   - ...
 
-### Redundancias
-- **Redundancia 1**: [Descripción]
-  - **Ubicación**: [Fase y capa donde ocurre]
-  - **Impacto**: [Cómo afecta al servicio]
-  - **Razón**: [Por qué existe]
+### Redundancies
+
+- **Redundancy 1**: [Description]
+  - **Location**: [Phase and layer where it occurs]
+  - **Impact**: [How it affects the service]
+  - **Reason**: [Why it exists]
   
-- **Redundancia 2**: [Descripción]
+- **Redundancy 2**: [Description]
   - ...
 
-### Oportunidades de Mejora
-- **Oportunidad 1**: [Descripción]
-  - **Ubicación**: [Fase y capa donde aplicaría]
-  - **Beneficios Esperados**: [Mejoras que generaría]
-  - **Complejidad de Implementación**: [Alta/Media/Baja]
-  - **Impacto Estimado**: [Alto/Medio/Bajo]
+### Improvement Opportunities
+
+- **Opportunity 1**: [Description]
+  - **Location**: [Phase and layer where it would apply]
+  - **Expected Benefits**: [Improvements it would generate]
+  - **Implementation Complexity**: [High/Medium/Low]
+  - **Estimated Impact**: [High/Medium/Low]
   
-- **Oportunidad 2**: [Descripción]
+- **Opportunity 2**: [Description]
   - ...
 
-## Métricas y KPIs por Fase (MECE)
+## Metrics and KPIs by Phase (MECE)
 
-### Métricas de Fase 1
-- **KPI 1**: [Nombre]
-  - **Definición**: [Cómo se calcula]
-  - **Valor Actual**: [Medición actual]
-  - **Objetivo**: [Valor deseado]
-  - **Propietario**: [Quién es responsable]
-  - **Fuente de Datos**: [De dónde provienen los datos]
+### Phase 1 Metrics
+
+- **KPI 1**: [Name]
+  - **Definition**: [How it is calculated]
+  - **Current Value**: [Current measurement]
+  - **Target**: [Desired value]
+  - **Owner**: [Who is responsible]
+  - **Data Source**: [Where the data comes from]
   
-- **KPI 2**: [Nombre]
+- **KPI 2**: [Name]
   - ...
 
-### Métricas de Fase 2
+### Phase 2 Metrics
+
 ...
 
-## Tecnología y Sistemas (MECE)
+## Technology and Systems (MECE)
 
-### Sistemas Front-End
-- **Sistema 1**: [Nombre]
-  - **Propósito**: [Para qué se utiliza]
-  - **Usuarios**: [Quiénes lo utilizan]
-  - **Integración con Otros Sistemas**: [Conexiones]
-  - **Limitaciones**: [Restricciones conocidas]
+### Front-End Systems
+
+- **System 1**: [Name]
+  - **Purpose**: [What it is used for]
+  - **Users**: [Who uses it]
+  - **Integration with Other Systems**: [Connections]
+  - **Limitations**: [Known restrictions]
   
-- **Sistema 2**: [Nombre]
+- **System 2**: [Name]
   - ...
 
-### Sistemas Back-End
-- **Sistema 1**: [Nombre]
-  - **Propósito**: [Para qué se utiliza]
-  - **Usuarios**: [Quiénes lo utilizan]
-  - **Datos Gestionados**: [Qué información maneja]
-  - **Integración con Otros Sistemas**: [Conexiones]
-  - **Limitaciones**: [Restricciones conocidas]
+### Back-End Systems
+
+- **System 1**: [Name]
+  - **Purpose**: [What it is used for]
+  - **Users**: [Who uses it]
+  - **Managed Data**: [What information it handles]
+  - **Integration with Other Systems**: [Connections]
+  - **Limitations**: [Known restrictions]
   
-- **Sistema 2**: [Nombre]
+- **System 2**: [Name]
   - ...
 
-### Integraciones
-- **Integración 1**: [Entre qué sistemas]
-  - **Tipo**: [API, batch, manual, etc.]
-  - **Frecuencia**: [Tiempo real, diaria, etc.]
-  - **Datos Intercambiados**: [Qué información se comparte]
-  - **Puntos de Falla**: [Dónde puede fallar]
+### Integrations
+
+- **Integration 1**: [Between which systems]
+  - **Type**: [API, batch, manual, etc.]
+  - **Frequency**: [Real-time, daily, etc.]
+  - **Exchanged Data**: [What information is shared]
+  - **Failure Points**: [Where it can fail]
   
-- **Integración 2**: [Entre qué sistemas]
+- **Integration 2**: [Between which systems]
   - ...
 
-## Variaciones del Servicio (MECE)
+## Service Variations (MECE)
 
-### Por Segmento de Usuario
-- **Segmento 1**: [Nombre]
-  - **Diferencias Clave**: [Cómo varía el servicio]
-  - **Razón**: [Por qué es diferente]
+### By User Segment
+
+- **Segment 1**: [Name]
+  - **Key Differences**: [How the service varies]
+  - **Reason**: [Why it is different]
   
-- **Segmento 2**: [Nombre]
+- **Segment 2**: [Name]
   - ...
 
-### Por Canal
-- **Canal 1**: [Nombre]
-  - **Diferencias Clave**: [Cómo varía el servicio]
-  - **Limitaciones**: [Restricciones específicas del canal]
+### By Channel
+
+- **Channel 1**: [Name]
+  - **Key Differences**: [How the service varies]
+  - **Limitations**: [Channel-specific restrictions]
   
-- **Canal 2**: [Nombre]
+- **Channel 2**: [Name]
   - ...
 
-### Por Región/Mercado
-- **Región 1**: [Nombre]
-  - **Diferencias Clave**: [Cómo varía el servicio]
-  - **Razones Regulatorias/Culturales**: [Causas de la variación]
+### By Region/Market
+
+- **Region 1**: [Name]
+  - **Key Differences**: [How the service varies]
+  - **Regulatory/Cultural Reasons**: [Causes of variation]
   
-- **Región 2**: [Nombre]
+- **Region 2**: [Name]
   - ...
 
-## Plan de Acción (MECE)
+## Action Plan (MECE)
 
-### Mejoras Inmediatas
-- **Mejora 1**: [Descripción]
-  - **Ubicación**: [Fase y capa donde se aplica]
-  - **Implementación**: [Cómo se implementará]
-  - **Responsable**: [Quién la implementará]
-  - **Plazo**: [Cuándo debería implementarse]
-  - **Métricas de Éxito**: [Cómo se medirá el éxito]
+### Immediate Improvements
+
+- **Improvement 1**: [Description]
+  - **Location**: [Phase and layer where it applies]
+  - **Implementation**: [How it will be implemented]
+  - **Responsible**: [Who will implement it]
+  - **Timeframe**: [When it should be implemented]
+  - **Success Metrics**: [How success will be measured]
   
-- **Mejora 2**: [Descripción]
+- **Improvement 2**: [Description]
   - ...
 
-### Mejoras a Mediano Plazo
-- **Mejora 1**: [Descripción]
+### Medium-Term Improvements
+
+- **Improvement 1**: [Description]
   - ...
 
-### Mejoras a Largo Plazo
-- **Mejora 1**: [Descripción]
+### Long-Term Improvements
+
+- **Improvement 1**: [Description]
   - ...
 
-### Priorización
-- **Matriz de Priorización**: [Criterios y puntuaciones]
-- **Secuencia Recomendada**: [Orden sugerido de implementación]
-- **Dependencias**: [Qué mejoras dependen de otras]
+### Prioritization
 
-## Anexos
-- **Diagrama Visual del Blueprint**: [Enlace al diagrama]
-- **Investigación de Usuario**: [Enlaces a investigaciones relevantes]
-- **Journey Maps Relacionados**: [Enlaces a journey maps]
-- **Documentación de Sistemas**: [Enlaces a documentación técnica]
+- **Prioritization Matrix**: [Criteria and scores]
+- **Recommended Sequence**: [Suggested implementation order]
+- **Dependencies**: [Which improvements depend on others]
+
+## Appendices
+
+- **Visual Blueprint Diagram**: [Link to the diagram]
+- **User Research**: [Links to relevant research]
+- **Related Journey Maps**: [Links to journey maps]
+- **Systems Documentation**: [Links to technical documentation]
 
 ---
 
-Esta plantilla sigue principios MECE al organizar el service blueprint en capas y fases mutuamente excluyentes y colectivamente exhaustivas, asegurando que todos los aspectos del servicio estén mapeados desde la experiencia del usuario hasta los procesos internos. 
+This template follows MECE principles by organizing the service blueprint into mutually exclusive and collectively exhaustive layers and phases, ensuring that all aspects of the service are mapped from the user experience to the internal processes.
