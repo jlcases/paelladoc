@@ -1,27 +1,7 @@
 ---
-description: "Module defining the PAELLA command for initiating documentation."
-interactive_conversation: true
-enforce_sequential_questions: true
-prevent_multiple_questions: true
-interactive_mode: "strict"
-wait_between_questions: true
-force_one_question_at_a_time: true
-globs: ["**/*"]
-action: "initiate_documentation"
-createFiles: true
-createFolders: true
-canCreateFiles: true
-canCreateFolders: true
-autoCreateFolders: true
-fixed_script: true
-forced_sequence: true
-sequence:
-  - language
-  - project_name
-  - project_purpose
-  - target_audience
-  - project_objectives
-  - template_selection
+description: "Rule for handling the PAELLA command to initiate interactive documentation process"
+globs: []
+alwaysApply: false
 ---
 
 # PAELLA Command - Interactive Project Documentation Initializer
