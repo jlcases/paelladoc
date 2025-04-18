@@ -38,7 +38,10 @@ tmp/
 # Cursor specific
 .cursor/
 # Exception for Cursor rules
-!/.cursor/rules/
+!.cursor/
+!.cursor/rules/
+!.cursor/rules/**
+!.cursor/rules/**/*.mdc
 
 # PAELLADOC specific
 /docs

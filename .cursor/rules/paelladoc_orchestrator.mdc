@@ -1,0 +1,225 @@
+---
+description: "ALWAYS use to orchestrate PAELLADOC documentation system and coordinate command execution"
+globs: ["**/*"]
+alwaysApply: true
+---
+
+# PAELLADOC System Orchestrator
+
+The central orchestrator for the PAELLADOC documentation system. This component:
+- Coordinates all command execution
+- Manages system behavior and workflow
+- Handles module interactions
+- Controls documentation process flow
+
+## Core Responsibilities
+
+1. Command Recognition & Routing
+   - Identifies user commands
+   - Routes to appropriate modules
+   - Maintains command state
+   - Handles command completion
+
+2. Process Flow Control
+   - Enforces sequential questioning
+   - Manages conversation flow
+   - Ensures proper documentation order
+   - Coordinates between modules
+
+3. System State Management
+   - Tracks documentation progress
+   - Maintains project memory
+   - Handles file operations
+   - Manages template usage
+
+4. Module Coordination
+   - Delegates tasks to specific modules
+   - Synchronizes module operations
+   - Manages dependencies
+   - Ensures proper module execution
+
+## Behavior Definition
+
+```yaml
+behavior:
+  # Core Settings
+  documentation_first: true
+  interactive_mode: true
+  sequential_flow: true
+  
+  # Question Control
+  max_questions_per_message: 1
+  wait_for_confirmation: true
+  enforce_sequence: true
+  
+  # File Operations
+  file_creation_mode: "cursor"
+  prevent_scripts: true
+  
+  # Memory Management
+  track_progress: true
+  update_on_changes: true
+  
+  # Template Handling
+  use_templates: true
+  allow_customization: true
+```
+
+## Available Commands
+
+1. **PAELLA** - Documentation Initialization
+   - Starts new documentation projects
+   - Handles template selection
+   - Creates project structure
+
+2. **VERIFY** - Documentation Verification
+   - Checks documentation completeness
+   - Validates against code
+   - Ensures consistency
+
+3. **HELP** - Command Assistance
+   - Shows available commands
+   - Provides usage examples
+   - Explains parameters
+
+4. **GENERATE_CODE** - Code Generation
+   - Creates code from documentation
+   - Handles implementation details
+   - Maintains consistency
+
+5. **CONTINUE** - Project Continuation
+   - Resumes existing projects
+   - Tracks progress
+   - Suggests next steps
+
+## Module Integration
+
+The orchestrator coordinates with:
+- Documentation modules
+- Code analysis tools
+- Memory management
+- Template system
+- Verification tools
+
+## Best Practices
+
+1. Documentation First
+   - Start with clear requirements
+   - Use appropriate templates
+   - Maintain consistency
+
+2. Sequential Process
+   - One question at a time
+   - Clear conversation flow
+   - Proper state tracking
+
+3. Quality Control
+   - Regular verification
+   - Consistency checks
+   - User confirmation
+
+## System Architecture
+
+The PAELLADOC system is architected with the following key components:
+
+1.  **Central Orchestrator (`paelladoc_orchestrator.mdc`)**:
+    - This file. Defines available commands and system behavior.
+    - Coordinates command execution and delegates to specific modules.
+2.  **Core Modules**:
+    - Help system (`commands/core/help.mdc`)
+    - Verification (`commands/core/verification.mdc`)
+    - Memory management (`modules/memory_management/memory_management.mdc`)
+3.  **Feature Modules**:
+    - Documentation Initiation (`commands/core/paella.mdc`)
+    - Project Continuation (`commands/core/continue.mdc`)
+    - Templates Management (`commands/templates/template.mdc`)
+    - Project Memory Tracking (`commands/memory/project_memory.mdc`)
+    - Coding Style Guides (`commands/styles/coding_styles.mdc`)
+    - Git Workflows (`commands/styles/git_workflows.mdc`)
+    - Code Generation (`commands/code/code_generation.mdc`)
+    - Product Management (`commands/product/product_management.mdc`)
+    - Conversation Workflow (`modules/conversation/conversation_workflow.mdc`)
+4.  **Code Analysis & Documentation Generation**:
+    - (`commands/code/generate_doc.mdc`, `modules/code_analysis/code_analysis.mdc`)
+
+## Command Execution Flow
+
+When a command is issued:
+
+1.  The orchestrator recognizes the command pattern based on user input.
+2.  Command arguments are parsed and validated (if applicable).
+3.  The appropriate module (defined in imports) is triggered for execution.
+4.  The module handles the specific logic (e.g., interactive conversation, file operations).
+5.  Results or next steps are returned to the user.
+
+## Project Memory
+
+PAELLADOC maintains a memory of your project in a `.memory.json` file within the `docs/{project_name}` directory, tracking:
+
+- Project metadata (name, purpose, target audience, language)
+- Created documentation files and their status
+- Code-to-documentation mappings (for verification)
+- Last time of update and creation timestamp
+
+## Documentation Process
+
+The PAELLADOC workflow generally follows these steps:
+
+1.  **Project Setup (`PAELLA`)**: Define project name, language, purpose, audience, objectives.
+2.  **Template Selection (`PAELLA`)**: Choose document templates to create.
+3.  **Content Creation (`PAELLA`)**: Complete each document through interactive questions.
+4.  **Verification (`VERIFY`)**: Ensure documentation aligns with code.
+5.  **Maintenance (`CONTINUE`, `TEMPLATE`, etc.)**: Regular updates to keep documentation current.
+
+## Best Practices
+
+- Start documentation before writing significant code (`PAELLA`).
+- Update documentation when code changes (`CONTINUE` or regenerate).
+- Use templates for consistency (`TEMPLATE`).
+- Verify documentation regularly (`VERIFY`).
+- Include both technical and non-technical documentation types.
+
+## Behavior Definition
+
+```yaml
+behavior:
+  # Core Orchestration Behavior
+  documentation_first: true
+  product_documentation_priority: true # Prioritize product-related docs?
+  track_documentation_completion: true # Enable memory tracking
+  conversation_required: true          # Most commands are conversational
+  interactive: true
+  wait_for_user_response: true         # Standard interaction model
+
+  # Interaction Flow Control (May be overridden by specific command modules)
+  sequential_questions: true
+  one_parameter_at_a_time: true
+  single_question_mode: true
+  wait_for_response: true
+  confirm_each_parameter: true # Ask for confirmation? Maybe too verbose? Adjust as needed.
+  strict_question_sequence: true # Enforce sequence defined in modules?
+  enforce_one_question_rule: true
+  prohibit_multiple_questions: true
+  force_single_question_mode: true
+  max_questions_per_message: 1
+  require_step_confirmation: true # Confirm before proceeding? Adjust as needed.
+
+  # File/Memory Operations (Defaults, can be overridden)
+  create_memory_file: true             # Handled by PAELLA command typically
+  allow_native_file_creation: true
+  use_cursor_file_creation: true       # Prefer Cursor's tools
+  use_native_file_creation: true       # Allow fallback?
+  update_memory_after_each_document: true # Handled by PAELLA command
+
+  # Template Handling (Defaults, mostly relevant to PAELLA/TEMPLATE)
+  template_based_documentation: true
+  copy_templates_to_project: true
+
+  # Presentation
+  use_attractive_markdown: true
+  enhance_lists_with_emojis: true
+
+  # Security/Safety
+  prevent_scripts: true                # Avoid executing arbitrary scripts if possible
+  disallow_external_scripts: true      # Avoid external script execution
+``` 

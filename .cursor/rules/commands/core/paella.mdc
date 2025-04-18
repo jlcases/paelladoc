@@ -1,4 +1,8 @@
 ---
+<<<<<<< HEAD
+description: "Rule for handling the PAELLA command to initiate interactive documentation process"
+globs: []
+alwaysApply: false
 description: "Module defining the PAELLA command for initiating documentation."
 interactive_conversation: true
 enforce_sequential_questions: true
