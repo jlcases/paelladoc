@@ -1,5 +1,5 @@
 ---
-title: Especificaciones Técnicas del Proyecto
+title: Project Technical Specifications
 date: {{date}}
 author: {{author}}
 status: Draft
@@ -9,141 +9,171 @@ tags: [technical, specifications, architecture]
 project_type: {{project_type}}
 ---
 
-# Especificaciones Técnicas: {{project_name}}
+# Technical Specifications: {{project_name}}
 
-## Tipo de Proyecto: {{project_type}}
+## Project Type: {{project_type}}
 
-## Entorno de Desarrollo
-**ESTA SECCIÓN DEBE COMPLETARSE OBLIGATORIAMENTE**
+## Development Environment
 
-### Sistema Operativo y Plataformas
-- Sistemas operativos objetivo: {{target_os}}
-- Plataformas de hardware: {{target_hardware}}
-- Requisitos de compatibilidad: {{compatibility_requirements}}
+**THIS SECTION MUST BE COMPLETED MANDATORILY**
 
-### Runtime y Ejecución
-- Entorno de ejecución: {{runtime}}
-- Versión: {{runtime_version}}
-- Gestor de paquetes: {{package_manager}}
-- Versión: {{package_manager_version}}
+### Operating System and Platforms
 
-## Arquitectura y Diseño Técnico
-**ESTA SECCIÓN DEBE COMPLETARSE OBLIGATORIAMENTE**
+- Target operating systems: {{target_os}}
+- Hardware platforms: {{target_hardware}}
+- Compatibility requirements: {{compatibility_requirements}}
+
+### Runtime and Execution
+
+- Runtime environment: {{runtime}}
+- Version: {{runtime_version}}
+- Package manager: {{package_manager}}
+- Version: {{package_manager_version}}
+
+## Architecture and Technical Design
+
+**THIS SECTION MUST BE COMPLETED MANDATORILY**
 
 {% if project_type == "webapp" or project_type == "website" %}
-### Arquitectura Web
-- Framework Frontend: {{frontend_framework}}
-- Framework Backend: {{backend_framework}}
-- Herramienta de build: {{build_tool}}
-- Tipo de renderizado: {{rendering_type}}
-- Estrategia de CSS: {{css_strategy}}
+
+### Web Architecture
+
+- Frontend Framework: {{frontend_framework}}
+- Backend Framework: {{backend_framework}}
+- Build tool: {{build_tool}}
+- Rendering type: {{rendering_type}}
+- CSS strategy: {{css_strategy}}
+
 {% endif %}
 
 {% if project_type == "mobile_app" %}
-### Arquitectura Móvil
+
+### Mobile Architecture
+
 - Framework: {{mobile_framework}}
-- Plataformas: {{mobile_platforms}}
-- Tipo de aplicación: {{app_type}}
-- Estrategia de navegación: {{navigation_strategy}}
-- Gestión de estado: {{state_management}}
+- Platforms: {{mobile_platforms}}
+- Application type: {{app_type}}
+- Navigation strategy: {{navigation_strategy}}
+- State management: {{state_management}}
+
 {% endif %}
 
 {% if project_type == "desktop_app" %}
-### Arquitectura de Escritorio
+
+### Desktop Architecture
+
 - Framework: {{desktop_framework}}
-- Plataformas: {{desktop_platforms}}
-- Tipo de distribución: {{distribution_type}}
-- Gestión de actualizaciones: {{update_strategy}}
+- Platforms: {{desktop_platforms}}
+- Distribution type: {{distribution_type}}
+- Update management: {{update_strategy}}
+
 {% endif %}
 
 {% if project_type == "browser_extension" %}
-### Arquitectura de Extensión
-- Navegadores objetivo: {{target_browsers}}
-- Versión del manifest: {{manifest_version}}
-- Permisos requeridos: {{required_permissions}}
-- Componentes principales: {{extension_components}}
+
+### Extension Architecture
+
+- Target browsers: {{target_browsers}}
+- Manifest version: {{manifest_version}}
+- Required permissions: {{required_permissions}}
+- Main components: {{extension_components}}
+
 {% endif %}
 
 {% if project_type == "api" or project_type == "backend" %}
-### Arquitectura API/Backend
+
+### API/Backend Architecture
+
 - Framework: {{api_framework}}
-- Tipo de API: {{api_type}}
-- Autenticación: {{auth_strategy}}
-- Base de datos: {{database}}
+- API type: {{api_type}}
+- Authentication: {{auth_strategy}}
+- Database: {{database}}
 - ORM/ODM: {{orm_odm}}
-- Estrategia de cache: {{caching_strategy}}
+- Caching strategy: {{caching_strategy}}
+
 {% endif %}
 
 {% if project_type == "library" or project_type == "package" %}
-### Arquitectura de Biblioteca
-- Tipo de distribución: {{distribution_format}}
-- Sistema de módulos: {{module_system}}
-- Entornos objetivo: {{target_environments}}
-- Estrategia de versionado: {{versioning_strategy}}
+
+### Library Architecture
+
+- Distribution type: {{distribution_format}}
+- Module system: {{module_system}}
+- Target environments: {{target_environments}}
+- Versioning strategy: {{versioning_strategy}}
+
 {% endif %}
 
-## Dependencias Principales
-**ESTA SECCIÓN DEBE COMPLETARSE OBLIGATORIAMENTE**
+## Main Dependencies
 
-### Dependencias de Producción
-```
+**THIS SECTION MUST BE COMPLETED MANDATORILY**
+
+### Production Dependencies
+
+```plaintext
 {{production_dependencies}}
 ```
 
-### Dependencias de Desarrollo
-```
+### Development Dependencies
+
+```plaintext
 {{development_dependencies}}
 ```
 
-## Sistema de Testing
-**ESTA SECCIÓN DEBE COMPLETARSE OBLIGATORIAMENTE**
+## Testing System
 
-- Framework de testing: {{test_framework}}
-- Runner de tests: {{test_runner}}
-- Cobertura objetivo: {{coverage_target}}
-- Estrategia de mocking: {{mocking_strategy}}
-- Testing E2E: {{e2e_testing}}
-- CI para tests: {{ci_testing}}
+**THIS SECTION MUST BE COMPLETED MANDATORILY**
 
-## Gestión de Código y Control de Versiones
-**ESTA SECCIÓN DEBE COMPLETARSE OBLIGATORIAMENTE**
+- Testing framework: {{test_framework}}
+- Test runner: {{test_runner}}
+- Target coverage: {{coverage_target}}
+- Mocking strategy: {{mocking_strategy}}
+- E2E testing: {{e2e_testing}}
+- CI for tests: {{ci_testing}}
 
-- Sistema de control de versiones: {{vcs}}
-- Estrategia de branching: {{branching_strategy}}
-- Estrategia de integración: {{integration_strategy}}
-- Linting y formateo: {{lint_format_tools}}
-- Revisión de código: {{code_review_process}}
+## Code Management and Version Control
 
-## Despliegue y Operaciones
-**ESTA SECCIÓN DEBE COMPLETARSE OBLIGATORIAMENTE**
+**THIS SECTION MUST BE COMPLETED MANDATORILY**
 
-- Estrategia de despliegue: {{deployment_strategy}}
-- Plataformas de hosting: {{hosting_platforms}}
+- Version control system: {{vcs}}
+- Branching strategy: {{branching_strategy}}
+- Integration strategy: {{integration_strategy}}
+- Linting and formatting: {{lint_format_tools}}
+- Code review: {{code_review_process}}
+
+## Deployment and Operations
+
+**THIS SECTION MUST BE COMPLETED MANDATORILY**
+
+- Deployment strategy: {{deployment_strategy}}
+- Hosting platforms: {{hosting_platforms}}
 - CI/CD: {{ci_cd_tools}}
-- Monitorización: {{monitoring_tools}}
-- Backup y recuperación: {{backup_strategy}}
+- Monitoring: {{monitoring_tools}}
+- Backup and recovery: {{backup_strategy}}
 
-## Consideraciones de Seguridad
-**ESTA SECCIÓN DEBE COMPLETARSE OBLIGATORIAMENTE**
+## Security Considerations
 
-- Autenticación: {{auth_mechanism}}
-- Autorización: {{authorization_strategy}}
-- Protección de datos: {{data_protection}}
-- Auditoría: {{security_audit_process}}
-- Cumplimiento normativo: {{compliance_requirements}}
+**THIS SECTION MUST BE COMPLETED MANDATORILY**
 
-## Guías de Contribución para Desarrolladores
-**ESTA SECCIÓN DEBE COMPLETARSE OBLIGATORIAMENTE**
+- Authentication: {{auth_mechanism}}
+- Authorization: {{authorization_strategy}}
+- Data protection: {{data_protection}}
+- Auditing: {{security_audit_process}}
+- Regulatory compliance: {{compliance_requirements}}
 
-- Configuración del entorno: {{environment_setup}}
-- Convenciones de código: {{code_conventions}}
-- Proceso de revisión: {{review_process}}
-- Documentación requerida: {{documentation_requirements}}
+## Developer Contribution Guidelines
 
-## Instrucciones para PAELLADOC
+**THIS SECTION MUST BE COMPLETED MANDATORILY**
 
-Este documento DEBE generarse mediante una conversación interactiva que pregunte por todos los elementos relevantes para el tipo de proyecto específico. Si no se conoce algún elemento, debe marcarse explícitamente como "Por definir" o "TBD".
+- Environment setup: {{environment_setup}}
+- Code conventions: {{code_conventions}}
+- Review process: {{review_process}}
+- Required documentation: {{documentation_requirements}}
 
-Las preguntas sobre entorno técnico DEBEN adaptarse al tipo de proyecto, mostrando solo las secciones relevantes para el proyecto actual.
+## Instructions for PAELLADOC
 
-Este documento DEBE revisarse junto con el equipo técnico antes de su aprobación.
+This document MUST be generated through an interactive conversation that asks for all elements relevant to the specific project type. If an element is not known, it should be explicitly marked as "To be defined" or "TBD".
+
+Questions about the technical environment MUST be adapted to the project type, showing only the sections relevant to the current project.
+
+This document MUST be reviewed with the technical team before approval.

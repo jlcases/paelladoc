@@ -1,6 +1,7 @@
 # Security Framework Template
 
 ## Security Overview
+
 - **Security Philosophy**: [Overall approach to security]
 - **Security Standards**: [Industry standards followed]
 - **Compliance Requirements**: [Regulatory requirements]
@@ -8,6 +9,7 @@
 - **Security Team Structure**: [Security roles and responsibilities]
 
 ## Identity and Access Management
+
 - **Authentication Mechanisms**: [How users are authenticated]
 - **Authorization Framework**: [How permissions are managed]
 - **Identity Providers**: [Identity providers integrated with]
@@ -16,6 +18,7 @@
 - **Privileged Access Management**: [Management of privileged accounts]
 
 ## Application Security
+
 - **Secure Coding Practices**: [Guidelines for secure coding]
 - **Security Requirements**: [Security requirements for applications]
 - **Input Validation**: [How input is validated]
@@ -25,6 +28,7 @@
 - **Secrets Management**: [How secrets are managed in applications]
 
 ## API Security
+
 - **API Authentication**: [How APIs are authenticated]
 - **API Authorization**: [How API permissions are enforced]
 - **API Rate Limiting**: [How API usage is controlled]
@@ -33,6 +37,7 @@
 - **API Gateway Security**: [Security at the API gateway]
 
 ## Data Security
+
 - **Data Classification**: [How data is classified]
 - **Data Encryption**: [How data is encrypted]
 - **Data Masking**: [How sensitive data is masked]
@@ -43,6 +48,7 @@
 - **Data Destruction**: [Secure data destruction]
 
 ## Infrastructure Security
+
 - **Network Security**: [Securing the network]
 - **Host Security**: [Securing hosts]
 - **Container Security**: [Securing containers]
@@ -51,6 +57,7 @@
 - **Physical Security**: [Physical security measures]
 
 ## Vulnerability Management
+
 - **Vulnerability Scanning**: [How vulnerabilities are identified]
 - **Patch Management**: [How patches are applied]
 - **Penetration Testing**: [How penetration tests are conducted]
@@ -59,6 +66,7 @@
 - **Vulnerability Tracking**: [How vulnerabilities are tracked]
 
 ## Security Monitoring and Incident Response
+
 - **Security Monitoring**: [How security is monitored]
 - **Security Logging**: [What security events are logged]
 - **SIEM Implementation**: [Security information and event management]
@@ -68,6 +76,7 @@
 - **Communication Plan**: [Plan for communicating incidents]
 
 ## Security Governance
+
 - **Security Policies**: [Security policies in place]
 - **Security Standards**: [Security standards followed]
 - **Security Procedures**: [Security procedures implemented]
@@ -77,6 +86,7 @@
 - **Third-Party Risk Management**: [Managing third-party security risks]
 
 ## Secure Development Lifecycle
+
 - **Security Requirements**: [Security requirements gathering]
 - **Threat Modeling**: [How threats are modeled]
 - **Secure Design**: [Ensuring secure design]
@@ -86,6 +96,7 @@
 - **Security Verification**: [Verifying security measures]
 
 ## Cryptography
+
 - **Cryptographic Standards**: [Standards for cryptography]
 - **Key Management**: [How cryptographic keys are managed]
 - **Certificate Management**: [How certificates are managed]
@@ -94,6 +105,7 @@
 - **Cryptographic Controls**: [Controls on cryptographic usage]
 
 ## Business Continuity and Disaster Recovery
+
 - **Business Impact Analysis**: [Analyzing security impact on business]
 - **Disaster Recovery Plan**: [Plan for recovering from disasters]
 - **Backup Strategy**: [Strategy for data backups]
@@ -103,4 +115,4 @@
 
 ---
 
-This template follows MECE principles by categorizing distinct aspects of security without overlap, while comprehensively covering all elements of a modern security framework. 
+This template follows MECE principles by categorizing distinct aspects of security without overlap, while comprehensively covering all elements of a modern security framework.
