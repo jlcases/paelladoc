@@ -2,14 +2,17 @@
 Core PAELLADOC MCP Logic.
 
 Handles MCP instance creation, plugin loading, and base tool registration.
+Uses FastMCP for compatibility with decorators.
 """
 import logging
-from mcp.server.fastmcp import FastMCP
+from mcp.server.fastmcp import FastMCP # Use FastMCP
 from typing import Dict, Any
 
+# Configure base logger (handlers will be added by server.py)
+logging.basicConfig(level=logging.INFO, format='%(asctime)s - %(levelname)s - %(message)s')
 logger = logging.getLogger(__name__)
 
-# Create the MCP server instance
+# Create the MCP server instance using FastMCP
 mcp = FastMCP("PAELLADOC")
 
 # --- Register Tools/Prompts --- #
@@ -26,7 +29,7 @@ except Exception as e:
     # Log as error for unexpected issues during import
     logger.error(f"An unexpected error occurred during plugin import: {e}", exc_info=True)
 
-@mcp.tool()
+@mcp.tool() # Use decorator again
 def ping(random_string: str = "") -> Dict[str, Any]:
     """
     Basic health check; returns pong.
@@ -43,7 +46,7 @@ def ping(random_string: str = "") -> Dict[str, Any]:
         "message": "pong"
     }
 
-# Tools will be registered here
+# Tools will be registered here by plugins
 
 # Note: No `if __name__ == "__main__":` block here.
 # This file is intended to be imported by the entry point (server.py).
