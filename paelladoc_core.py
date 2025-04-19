@@ -5,6 +5,7 @@ Handles MCP instance creation, plugin loading, and base tool registration.
 """
 import logging
 from mcp.server.fastmcp import FastMCP
+from typing import Dict, Any
 
 logger = logging.getLogger(__name__)
 
@@ -26,10 +27,21 @@ except Exception as e:
     logger.error(f"An unexpected error occurred during plugin import: {e}", exc_info=True)
 
 @mcp.tool()
-def ping() -> dict:
-    """Basic health check; returns pong."""
-    logger.debug("Ping tool called")
-    return {"status": "ok", "message": "pong"}
+def ping(random_string: str = "") -> Dict[str, Any]:
+    """
+    Basic health check; returns pong.
+    
+    Args:
+        random_string (str, optional): Dummy parameter for no-parameter tools
+
+    Returns:
+        Dict[str, Any]: Response with status and message
+    """
+    logger.debug(f"Ping tool called with parameter: {random_string}")
+    return {
+        "status": "ok", 
+        "message": "pong"
+    }
 
 # Tools will be registered here
 
