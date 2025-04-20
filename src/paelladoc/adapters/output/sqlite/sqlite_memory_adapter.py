@@ -1,3 +1,5 @@
+"""SQLite adapter for project memory persistence."""
+
 import logging
 from typing import Optional, Dict, List
 from pathlib import Path
@@ -21,31 +23,52 @@ from paelladoc.domain.models.project import (
 # Database Models for this adapter
 from .db_models import ProjectMemoryDB, ArtifactMetaDB
 
+# Configuration
+from paelladoc.config.database import get_db_path
+
+# Default database path
+DEFAULT_DB_PATH = get_db_path()
+
 logger = logging.getLogger(__name__)
 
 # Calculate project root based on this file's location
 # src/paelladoc/adapters/output/sqlite/sqlite_memory_adapter.py -> project_root
-PROJECT_ROOT = Path(__file__).parent.parent.parent.parent.parent
-logger.info(f"Project root calculated as: {PROJECT_ROOT.resolve()}")
+# PROJECT_ROOT = Path(__file__).parent.parent.parent.parent.parent
+# logger.info(f"Project root calculated as: {PROJECT_ROOT.resolve()}")
 # Use the project root directory for the default database path
-DEFAULT_DB_PATH = PROJECT_ROOT / "paelladoc_memory.db"
-logger.info(f"Default database path set to project root: {DEFAULT_DB_PATH.resolve()}")
+# DEFAULT_DB_PATH = PROJECT_ROOT / "paelladoc_memory.db"
+# logger.info(f"Default database path set to project root: {DEFAULT_DB_PATH.resolve()}")
 
 
 class SQLiteMemoryAdapter(MemoryPort):
     """SQLite implementation of the MemoryPort using new MECE/Artifact models."""
 
-    def __init__(self, db_path: Optional[Path] = None):
-        self.db_path = db_path or DEFAULT_DB_PATH
-        logger.info(f"Using database path: {self.db_path.resolve()}")
-        self.db_path.parent.mkdir(parents=True, exist_ok=True)
-        self.engine_url = f"sqlite+aiosqlite:///{self.db_path.resolve()}"
-        logger.info(f"SQLite engine URL: {self.engine_url}")
-        self.async_engine = create_async_engine(self.engine_url, echo=False)
-        self.AsyncSessionFactory = sessionmaker(
-            bind=self.async_engine, class_=AsyncSession, expire_on_commit=False
+    def __init__(self, db_path: str | Path | None = None):
+        """
+        Initialize the SQLite adapter.
+
+        Args:
+            db_path: Optional custom database path. If not provided, uses the configured default.
+        """
+        self.db_path = Path(db_path) if db_path else get_db_path()
+        logger.info(
+            f"Initializing SQLite adapter with database path: {self.db_path.resolve()}"
         )
-        logger.info(f"SQLiteMemoryAdapter initialized with database at: {self.db_path}")
+
+        # Ensure the parent directory exists
+        self.db_path.parent.mkdir(parents=True, exist_ok=True)
+
+        # Create async engine
+        self.async_engine = create_async_engine(
+            f"sqlite+aiosqlite:///{self.db_path}",
+            echo=False,  # Set to True for SQL query logging
+            connect_args={"check_same_thread": False},
+        )
+
+        # Create async session factory
+        self.async_session = sessionmaker(
+            self.async_engine, class_=AsyncSession, expire_on_commit=False
+        )
 
     async def _create_db_and_tables(self):
         """Creates the database and tables if they don't exist."""
@@ -118,7 +141,7 @@ class SQLiteMemoryAdapter(MemoryPort):
         logger.debug(f"Attempting to save memory for project: {project_name}")
         await self._create_db_and_tables()
 
-        async with self.AsyncSessionFactory() as session:
+        async with self.async_session() as session:
             try:
                 # Check if project exists
                 statement = (
@@ -287,7 +310,7 @@ class SQLiteMemoryAdapter(MemoryPort):
         logger.debug(f"Attempting to load memory for project: {project_name}")
         await self._create_db_and_tables()
 
-        async with self.AsyncSessionFactory() as session:
+        async with self.async_session() as session:
             try:
                 statement = (
                     select(ProjectMemoryDB)
@@ -316,7 +339,7 @@ class SQLiteMemoryAdapter(MemoryPort):
         logger.debug(f"Checking existence for project: {project_name}")
         await self._create_db_and_tables()
 
-        async with self.AsyncSessionFactory() as session:
+        async with self.async_session() as session:
             try:
                 statement = select(ProjectMemoryDB.id).where(
                     ProjectMemoryDB.name == project_name
@@ -341,7 +364,7 @@ class SQLiteMemoryAdapter(MemoryPort):
         logger.debug("Listing all project names from database.")
         await self._create_db_and_tables()
 
-        async with self.AsyncSessionFactory() as session:
+        async with self.async_session() as session:
             try:
                 statement = select(ProjectMemoryDB.name)
                 results = await session.execute(statement)
