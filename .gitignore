@@ -130,3 +130,6 @@ instructions/
 *.db
 *.sqlite3
 paelladoc_memory.db
+
+# PyPI credentials file (Ensure this is added)
+.pypirc
