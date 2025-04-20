@@ -8,13 +8,14 @@ import sys
 import os
 from pathlib import Path
 import uuid
+import shutil # For cleaning up test directories
 
 # Ensure we can import Paelladoc modules
 project_root = Path(__file__).parent.parent.parent.parent.parent.absolute()
 sys.path.insert(0, str(project_root))
 
 # Module to test
-from paelladoc.adapters.output.chroma.chroma_vector_store_adapter import ChromaVectorStoreAdapter
+from paelladoc.adapters.output.chroma.chroma_vector_store_adapter import ChromaVectorStoreAdapter, NotFoundError
 from paelladoc.ports.output.vector_store_port import SearchResult # Import base class
 
 # Import Chroma specific types for assertions if needed
@@ -141,7 +142,7 @@ class TestChromaVectorStoreAdapterIntegration(unittest.IsolatedAsyncioTestCase):
         self.assertNotIn(self.collection_name, [c.name for c in collections_after])
         
         # Attempting to get it should now raise NotFoundError in Chroma
-        with self.assertRaises(chromadb.errors.NotFoundError):
+        with self.assertRaises(NotFoundError):
              self.adapter.client.get_collection(name=self.collection_name)
 
     async def _add_sample_search_data(self):
