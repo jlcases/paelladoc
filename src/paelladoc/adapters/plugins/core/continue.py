@@ -1,4 +1,3 @@
-
 from mcp.server.fastmcp import mcp
 from typing import Optional, List, Dict, Any # Add necessary types
 import logging
@@ -52,11 +51,15 @@ BEHAVIOR_CONFIG =     {   'calculate_documentation_completion': True,
 
 # TODO: Review imports and add any other necessary modules
 
-@mcp.tool(name="core.continue", description="]")
+@mcp.tool(name="core.continue", description="Guides the user through the documentation sequence based on project memory.")
 def core_continue() -> dict:
-    """]"""
+    """Continues work on an existing documentation project.
     
-    Behavior Config: this tool has associated behavior configuration extracted from the MDC file. See the `BEHAVIOR_CONFIG` variable in the source code.
+    Loads project memory, identifies the next step in the defined 
+    documentation sequence, and guides the user.
+    
+    Behavior Config: this tool has associated behavior configuration extracted 
+    from the MDC file. See the `BEHAVIOR_CONFIG` variable in the source code.
     """
 
     # TODO: Implement the actual logic of the command here

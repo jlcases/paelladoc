@@ -504,3 +504,17 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 ---
 
 *PAELLADOC is built for professional product and development teams who need verified, consistent, and comprehensive documentation that evolves with their projects. With the addition of product management and code generation features, it now offers a complete end-to-end solution for the entire software development lifecycle.*
+
+## Usage / API Example
+
+The server exposes MCP tools via HTTP or STDIO. You can interact with basic tools like `ping`:
+
+```bash
+# Example using curl (ensure server is running)
+curl -N http://localhost:8000/v1/tools/ping -H "Content-Type: application/json" -d '{"stream":false}'
+```
+
+This should return a JSON response like:
+```json
+{"status":"ok","message":"pong"}
+```

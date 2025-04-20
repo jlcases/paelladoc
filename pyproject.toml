@@ -1,28 +1,42 @@
 [build-system]
-requires = ["setuptools>=58.0.0", "wheel"]
-build-backend = "setuptools.build_meta"
+requires = ["poetry-core>=1.0.0"]
+build-backend = "poetry.core.masonry.api"
 
 [project]
 name = "paelladoc"
 version = "0.3.0"
 description = "Interactive MCP server and documentation tooling for Paelladoc"
 readme = "README.md"
-requires-python = ">=3.12"
+requires-python = ">=3.12,<3.13"
 license = { file = "LICENSE" }
-authors = [ { name = "jlcases" } ]
-
+authors = [
+    { name = "jlcases" }
+]
 dependencies = [
-  "repopack==0.1.1",
-  "PyYAML==6.0.1",
-  "git+https://github.com/modelcontextprotocol/python-sdk.git"
+    "numpy<2.0",
+    "repopack==0.1.1",
+    "PyYAML==6.0.1",
+    "sqlmodel==0.0.19",
+    "aiosqlite==0.20.0",
+    "fastapi==0.111.1",
+    "uvicorn[standard]==0.30.3",
+    "greenlet==3.0.3",
+    "chromadb==0.4.22",
+    "onnxruntime==1.19.0",
+    "protobuf~=3.20.0",
+    "mcp @ git+https://github.com/modelcontextprotocol/python-sdk.git"
 ]
 
-[tool.setuptools]
-packages = ["paelladoc"]
-include-package-data = true
+[project.optional-dependencies]
+dev = [
+    "pytest==8.3.2",
+    "pytest-asyncio==0.23.8",
+    "requests==2.32.3"
+]
+
+[project.scripts]
+paelladoc = "paelladoc.cli:main"
 
 [tool.pytest.ini_options]
 pythonpath = "."
-
-[project.scripts]
-paelladoc = "paelladoc.cli:main" 
+asyncio_mode = "auto" # For pytest-asyncio

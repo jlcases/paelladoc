@@ -1,4 +1,3 @@
-
 from mcp.server.fastmcp import mcp
 from typing import Optional, List, Dict, Any # Add necessary types
 import logging
@@ -7,9 +6,12 @@ import logging
 
 # TODO: Review imports and add any other necessary modules
 
-@mcp.tool(name="styles.coding_styles", description="}")
+@mcp.tool(name="styles.coding_styles", description="Manages coding style guides for the project.")
 def styles_coding_styles() -> dict:
-    """}"""
+    """Applies, customizes, or lists coding styles.
+    
+    Supports styles like frontend, backend, chrome_extension, etc.
+    Uses operations: apply, customize, list, show.
     """
 
     # TODO: Implement the actual logic of the command here

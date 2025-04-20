@@ -1,4 +1,3 @@
-
 from mcp.server.fastmcp import mcp
 from typing import Optional, List, Dict, Any # Add necessary types
 import logging
@@ -80,13 +79,21 @@ BEHAVIOR_CONFIG =     {   'absolute_sequence_enforcement': True,
 
 # TODO: Review imports and add any other necessary modules
 
-@mcp.tool(name="core.paella", description="- template_selection")
+@mcp.tool(name="core.paella", description="Initiates a new PAELLADOC documentation project.")
 def core_paella() -> dict:
-    """- template_selection"""
+    """Starts the PAELLADOC documentation process.
     
-    Behavior Config: this tool has associated behavior configuration extracted from the MDC file. See the `BEHAVIOR_CONFIG` variable in the source code.
-    """
+    Guides the user through project setup questions (language, name, purpose, 
+    audience, objectives) and template selection.
+    Creates project folder and initial memory file.
+    
+    Args:
+        (No explicit arguments, uses interactive flow based on BEHAVIOR_CONFIG)
 
+    Behavior Config: this tool has associated behavior configuration extracted 
+    from the MDC file. See the `BEHAVIOR_CONFIG` variable in the source code.
+    """
+    
     # TODO: Implement the actual logic of the command here
     # Access parameters using their variable names (e.g., param)
     # Access behavior config using BEHAVIOR_CONFIG dict (if present)
