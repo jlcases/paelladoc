@@ -1,8 +1,11 @@
 from paelladoc.domain.core_logic import mcp
-from typing import List, Dict
+from typing import List, Dict, Optional
 import logging
 from pathlib import Path  # Added Path
 from enum import Enum
+
+# Initialize logger for this module
+logger = logging.getLogger(__name__)
 
 # Domain models
 from paelladoc.domain.models.project import (
@@ -267,6 +270,8 @@ async def core_paella(
     documentation_language: str = "",
     new_project_name: str = "",
     base_path: str = "",
+    # Add optional adapter for testing
+    memory_adapter_instance: Optional[SQLiteMemoryAdapter] = None,
 ) -> dict:
     """Starts the PAELLADOC documentation process.
 
@@ -278,21 +283,31 @@ async def core_paella(
         documentation_language: Language for generated documentation (es-ES, en-US, etc)
         new_project_name: Name for the new project if creating one
         base_path: Base path for storing project files
+        memory_adapter_instance: Optional pre-configured adapter instance (for testing).
     """
 
     logging.info(
         f"Starting PAELLA command with interaction_language={interaction_language}"
     )
 
-    # --- Dependency Injection ---
-    try:
-        memory_adapter = SQLiteMemoryAdapter()
-    except Exception as e:
-        logging.error(f"Failed to instantiate SQLiteMemoryAdapter: {e}", exc_info=True)
-        return {
-            "status": "error",
-            "message": "Internal server error: Could not initialize memory adapter.",
-        }
+    # --- Use provided adapter or create default ---
+    if memory_adapter_instance:
+        memory_adapter = memory_adapter_instance
+        logger.info(
+            f"Using provided memory adapter instance: {type(memory_adapter).__name__}"
+        )
+    else:
+        try:
+            memory_adapter = SQLiteMemoryAdapter()
+            logger.info("Instantiated default SQLiteMemoryAdapter.")
+        except Exception as e:
+            logging.error(
+                f"Failed to instantiate SQLiteMemoryAdapter: {e}", exc_info=True
+            )
+            return {
+                "status": "error",
+                "message": "Internal server error: Could not initialize memory adapter.",
+            }
 
     # --- Interactive Flow ---
     # 1. First ask for interaction language if missing

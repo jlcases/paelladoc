@@ -139,6 +139,7 @@ async def test_create_new_project_asks_for_base_path_and_saves_it(
         documentation_language=doc_lang,
         new_project_name=project_name,
         base_path=base_path_input,
+        memory_adapter_instance=memory_adapter,  # Pass the fixture instance
     )  # Pass the relative path
     assert response6["status"] == "ok", (
         f"Expected status ok, got {response6.get('status')}: {response6.get('message')}"
