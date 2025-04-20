@@ -23,7 +23,8 @@ dependencies = [
     "greenlet==3.0.3",
     "chromadb==0.4.22",
     "onnxruntime==1.19.0",
-    "protobuf~=3.20.0"
+    "protobuf~=3.20.0",
+    "git+https://github.com/modelcontextprotocol/python-sdk.git"
 ]
 
 [project.optional-dependencies]
@@ -38,4 +39,4 @@ paelladoc = "paelladoc.cli:main"
 
 [tool.pytest.ini_options]
 pythonpath = "."
-asyncio_mode = "auto" # For pytest-asyncio 
+asyncio_mode = "auto" # For pytest-asyncio
