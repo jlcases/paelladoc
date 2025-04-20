@@ -141,9 +141,9 @@ class TestChromaVectorStoreAdapterIntegration(unittest.IsolatedAsyncioTestCase):
         collections_after = self.adapter.client.list_collections()
         self.assertNotIn(self.collection_name, [c.name for c in collections_after])
         
-        # Attempting to get it should now raise NotFoundError in Chroma
-        with self.assertRaises(NotFoundError):
-             self.adapter.client.get_collection(name=self.collection_name)
+        # Attempting to get it should now raise NotFoundError or ValueError (depending on Chroma version)
+        with self.assertRaises((NotFoundError, ValueError)):
+            self.adapter.client.get_collection(name=self.collection_name)
 
     async def _add_sample_search_data(self):
         """Helper to add some consistent data for search tests."""
