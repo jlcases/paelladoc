@@ -4,6 +4,20 @@ All notable changes to PAELLADOC will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.3.0] - 2025-04-21
+
+### Changed
+- **BREAKING:** Refocused PAELLADOC as an implementation of Anthropic's Model Context Protocol (MCP), enabling AI-First development workflows primarily through LLM interaction rather than a direct CLI.
+- Updated README documentation to reflect the MCP focus, installation via pip, and usage through LLM interaction.
+
+### Added
+- Initial Alembic database migration setup.
+- ChromaDB integration and vector store adapter (for potential future semantic capabilities).
+
+### Fixed
+- Resolved various test failures related to monkeypatching, Alembic migrations, and Pydantic validation.
+- Corrected CI workflow dependencies (pytest-cov, chromadb).
+
 ## [0.2.2] - 2025-04-06
 
 ### Added
