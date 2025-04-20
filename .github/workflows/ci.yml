@@ -20,28 +20,30 @@ jobs:
         shell: bash
         
       - name: Add uv to PATH
-        # Using the default uv install path now which is often $HOME/.local/bin
-        # Or it might be $UV_HOME/bin. Let's try the more standard approach.
-        # The install script message usually tells the correct path.
-        # Trying $HOME/.local/bin first.
         run: echo "$HOME/.local/bin" >> $GITHUB_PATH
         shell: bash
 
       - name: Create and Activate Virtual Environment
         run: |
-          uv venv .venv # Create venv using uv
-          source .venv/bin/activate # Activate it for subsequent steps
+          uv venv .venv
+          echo ".venv/bin" >> $GITHUB_PATH
         shell: bash
 
       - name: Install Dependencies (excluding mcp-sdk)
-        # Now uv should find and use the activated .venv
-        run: uv pip install -e '.[dev]' 
+        run: |
+          source .venv/bin/activate
+          uv pip install -e '.[dev]'
+          python -m pip list  # Debug: list installed packages
         shell: bash
         
       - name: Install mcp-sdk from Git
-        run: uv pip install git+https://github.com/modelcontextprotocol/python-sdk.git
+        run: |
+          source .venv/bin/activate
+          uv pip install git+https://github.com/modelcontextprotocol/python-sdk.git
         shell: bash
 
       - name: Run tests
-        run: pytest -q
-        shell: bash # Ensure pytest runs in the activated venv
+        run: |
+          source .venv/bin/activate
+          python -m pytest -q
+        shell: bash
