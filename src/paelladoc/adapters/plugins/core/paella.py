@@ -8,6 +8,7 @@ from paelladoc.domain.models.project import (
     Bucket,
     ProjectMemory,
     ProjectMetadata,
+    DocumentStatus,
 )
 
 # Core logic
@@ -357,7 +358,12 @@ async def core_paella(
             ),
             artifacts={
                 Bucket.INITIATE_INITIAL_PRODUCT_DOCS: [
-                    {"name": "Project Charter", "status": "pending"}
+                    {
+                        "name": "Project Charter",
+                        "status": DocumentStatus.PENDING,
+                        "bucket": Bucket.INITIATE_INITIAL_PRODUCT_DOCS,
+                        "path": Path("Project_Charter.md"),
+                    }
                 ]
             },
         )
