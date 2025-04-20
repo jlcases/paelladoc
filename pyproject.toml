@@ -7,7 +7,7 @@ name = "paelladoc"
 version = "0.3.0"
 description = "AI-First Development Framework - An MCP Implementation"
 readme = "README.md"
-requires-python = ">=3.8"
+requires-python = ">=3.12"
 license = {file = "LICENSE"}
 keywords = ["ai", "llm", "mcp", "documentation", "development", "framework"]
 authors = [

@@ -100,6 +100,7 @@ decision:
 ```bash
 pip install paelladoc
 ```
+*(Requires Python 3.12 or later)*
 
 ### 2. Use with Your Favorite LLM
 
