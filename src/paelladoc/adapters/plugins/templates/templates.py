@@ -1,4 +1,3 @@
-
 from mcp.server.fastmcp import mcp
 from typing import Optional, List, Dict, Any # Add necessary types
 import logging
@@ -7,9 +6,12 @@ import logging
 
 # TODO: Review imports and add any other necessary modules
 
-@mcp.tool(name="templates.templates", description="- **No Workflow**: Basic Git usage without formal methodology")
+@mcp.tool(name="templates.templates", description="Manages documentation templates.")
 def templates_templates() -> dict:
-    """- **No Workflow**: Basic Git usage without formal methodology"""
+    """Handles the lifecycle of documentation templates.
+    
+    Likely allows listing, showing, creating, or updating templates.
+    The previous description mentioned workflows, which seems incorrect here.
     """
 
     # TODO: Implement the actual logic of the command here

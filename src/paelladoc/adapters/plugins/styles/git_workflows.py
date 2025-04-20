@@ -1,4 +1,3 @@
-
 from mcp.server.fastmcp import mcp
 from typing import Optional, List, Dict, Any # Add necessary types
 import logging
@@ -7,9 +6,14 @@ import logging
 
 # TODO: Review imports and add any other necessary modules
 
-@mcp.tool(name="styles.git_workflows", description="- Complex projects → GitFlow or Trunk-Based")
+@mcp.tool(name="styles.git_workflows", description="Manages Git workflow methodologies for the project.")
 def styles_git_workflows() -> dict:
-    """- Complex projects → GitFlow or Trunk-Based"""
+    """Applies or customizes Git workflows.
+    
+    Supports workflows like GitHub Flow, GitFlow, Trunk-Based.
+    Provides guidance based on project complexity.
+    Simple projects → GitHub Flow
+    Complex projects → GitFlow or Trunk-Based
     """
 
     # TODO: Implement the actual logic of the command here

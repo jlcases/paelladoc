@@ -21,28 +21,6 @@ from paelladoc.domain.core_logic import mcp, logger # Corrected import path
 
 # --- Add specific tools/resources/prompts for this entry point using decorators --- #
 
-@mcp.tool() # Use decorator
-def generate_documentation(repo_path: str, output_path: Optional[str] = None) -> Dict[str, Any]:
-    """Generate documentation for a repository."""
-    try:
-        # TODO: Implement actual documentation generation logic using Application layer
-        logger.info(f"Placeholder: Generating docs for {repo_path} to {output_path or 'default'}")
-        return {"status": "success", "message": "Documentation generation (placeholder) complete"}
-    except Exception as e:
-        logger.error(f"Error generating documentation: {e}", exc_info=True)
-        return {"status": "error", "message": str(e)}
-
-@mcp.tool() # Use decorator
-def verify_documentation(docs_path: str) -> Dict[str, Any]:
-    """Verify documentation against codebase."""
-    try:
-        # TODO: Implement actual documentation verification logic using Application layer
-        logger.info(f"Placeholder: Verifying docs at {docs_path}")
-        return {"status": "success", "message": "Documentation verification (placeholder) complete"}
-    except Exception as e:
-        logger.error(f"Error verifying documentation: {e}", exc_info=True)
-        return {"status": "error", "message": str(e)}
-
 @mcp.resource("docs://readme") # Use decorator
 def get_readme() -> str:
     """Get the project README content."""

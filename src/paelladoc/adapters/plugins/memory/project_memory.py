@@ -1,4 +1,3 @@
-
 from mcp.server.fastmcp import mcp
 from typing import Optional, List, Dict, Any # Add necessary types
 import logging
@@ -7,9 +6,13 @@ import logging
 
 # TODO: Review imports and add any other necessary modules
 
-@mcp.tool(name="memory.project_memory", description="HELP CONTEXT")
+@mcp.tool(name="memory.project_memory", description="Manages the project's memory file (.memory.json)")
 def memory_project_memory() -> dict:
-    """HELP CONTEXT"""
+    """Handles operations related to the project memory.
+    
+    Likely used internally by other commands (PAELLA, CONTINUE, VERIFY) 
+    to load, save, and update project state, progress, and metadata.
+    Provides the HELP CONTEXT (though this might be deprecated).
     """
 
     # TODO: Implement the actual logic of the command here

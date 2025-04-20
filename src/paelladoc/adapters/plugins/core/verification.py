@@ -1,4 +1,3 @@
-
 from mcp.server.fastmcp import mcp
 from typing import Optional, List, Dict, Any # Add necessary types
 import logging
@@ -7,9 +6,12 @@ import logging
 
 # TODO: Review imports and add any other necessary modules
 
-@mcp.tool(name="core.verification", description="- **Overall Quality Score**: Composite score of all metrics")
+@mcp.tool(name="core.verification", description="Verifies documentation completeness and consistency.")
 def core_verification() -> dict:
-    """- **Overall Quality Score**: Composite score of all metrics"""
+    """Checks documentation against templates and project memory.
+    
+    Calculates an overall quality/completion score.
+    Returns an error if documentation is incomplete based on defined criteria.
     """
 
     # TODO: Implement the actual logic of the command here
