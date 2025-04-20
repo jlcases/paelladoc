@@ -95,29 +95,67 @@ decision:
 
 ## 🚀 Installation & Integration
 
-### 1. Install the MCP Server
+PAELLADOC is a Python application and should be installed in its own **dedicated Python virtual environment**. This keeps its dependencies separate and avoids conflicts. You'll need *one* PAELLADOC environment, regardless of how many different projects (Python, JS, Ruby, etc.) you plan to document.
 
-```bash
-pip install paelladoc
-```
 *(Requires Python 3.12 or later)*
 
-### 2. Use with Your Favorite LLM
+### 1. Create and Activate the Dedicated Environment
 
-#### Cursor IDE
+First, choose a permanent location for this environment. Your home directory is often a good choice.
+
+```bash
+# Navigate to where you want to store the environment (e.g., your home directory)
+# cd ~  # Uncomment and run if you want it in your home directory
+
+# Create the virtual environment (using python3.12 or your installed 3.12+ version)
+# We'll name the folder '.paelladoc_venv' (starting with a dot makes it hidden)
+python3.12 -m venv .paelladoc_venv
+
+# Activate the environment 
+# (The command depends on your shell. Use ONE of the following)
+
+# For Bash/Zsh:
+source .paelladoc_venv/bin/activate
+
+# For Fish:
+# source .paelladoc_venv/bin/activate.fish
+
+# For Powershell (Windows):
+# .\.paelladoc_venv\Scripts\activate.ps1 
+```
+*(You should see `(.paelladoc_venv)` at the beginning of your terminal prompt now)*
+
+### 2. Install PAELLADOC in the Activated Environment
+
+```bash
+# Make sure your (.paelladoc_venv) prompt is visible before running pip
+pip install paelladoc
+```
+
+### 3. Configure Your LLM (MCP Setup)
+
+Now, tell your LLM tool (like Cursor) how to *find and run* the PAELLADOC you just installed inside its dedicated environment. This involves editing the tool's MCP JSON configuration file.
+
+**Key Information Needed:**
+
+*   **The Full Path to the Python Executable:** You need the absolute path to the `python` file *inside* the `.paelladoc_venv/bin` (or `Scripts` on Windows) directory you created.
+    *   If you created it in your home directory (`~`), the path will likely be `/Users/your_username/.paelladoc_venv/bin/python` on macOS/Linux or `C:\\Users\\your_username\\.paelladoc_venv\\Scripts\\python.exe` on Windows. **Replace `your_username` accordingly!**
+    *   *Tip:* While the venv is active, you can often find the path by running `which python` (macOS/Linux) or `where python` (Windows).
+*   **Database Location (Optional):** By default, PAELLADOC stores its memory database in `~/.paelladoc/memory.db`. You can override this using the `PAELLADOC_DB_PATH` environment variable in the MCP configuration if needed.
+
+#### Cursor IDE Example
 ```json
-# In your .cursor/mcp.json file:
+# Edit your .cursor/mcp.json file:
 {
   "mcpServers": {
     "paelladoc": {
-      "command": "/path/to/your/paelladoc_venv/bin/python",
+      "command": "/Users/your_username/.paelladoc_venv/bin/python", 
       "args": [
         "-m",
         "paelladoc.ports.input.mcp_server_adapter",
         "--stdio"
       ],
       "env": {
-        "PAELLADOC_DB_PATH": "/path/where/you/want/paelladoc_memory.db"
       }
     }
     // ... other servers
@@ -125,39 +163,22 @@ pip install paelladoc
 }
 ```
 
-#### Claude
+#### Other LLMs (Claude, Copilot, etc.)
+Configure the tool use settings similarly, always ensuring the `command` points to the **full path** of the Python executable inside your dedicated `.paelladoc_venv`. The exact JSON structure might vary slightly between platforms.
+
 ```json
-# Configure Claude's Tool Use settings similarly, pointing to the dedicated venv python:
+// Example structure (adapt as needed):
 {
-  "tool_name": "paelladoc",
-  "command": "/path/to/your/paelladoc_venv/bin/python",
-  "args": [
-    "-m",
-    "paelladoc.ports.input.mcp_server_adapter",
-    "--stdio"
-  ]
+  // ... platform specific tool definition ...
+  "command": "/Users/your_username/.paelladoc_venv/bin/python",
+  "args": [ "-m", "paelladoc.ports.input.mcp_server_adapter", "--stdio" ],
+  "env": {
+  }
+  // ...
 }
 ```
 
-#### GitHub Copilot
-```json
-# In your .copilot/mcps.json (or similar Copilot config):
-{
-  "paelladoc": {
-      "command": "/path/to/your/paelladoc_venv/bin/python",
-      "args": [
-        "-m",
-        "paelladoc.ports.input.mcp_server_adapter",
-        "--stdio"
-      ],
-      "env": {
-        "PAELLADOC_DB_PATH": "/path/where/you/want/paelladoc_memory.db"
-      }
-   }
-}
-```
-
-### 3. Let the LLM Guide You
+### 4. Let the LLM Guide You
 
 Once connected, your LLM will have access to all PAELLADOC commands:
 
