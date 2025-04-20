@@ -1,4 +1,4 @@
-from mcp.server.fastmcp import mcp
+from paelladoc.domain.core_logic import mcp
 from typing import Optional, List, Dict, Any # Add necessary types
 import logging
 

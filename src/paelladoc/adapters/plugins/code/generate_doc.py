@@ -1,9 +1,8 @@
-
-from mcp.server.fastmcp import mcp
+from paelladoc.domain.core_logic import mcp
 from typing import Optional, List, Dict, Any # Add necessary types
 import logging
 
- # Insert behavior config here
+# Insert behavior config here
 
 # TODO: Review imports and add any other necessary modules
 

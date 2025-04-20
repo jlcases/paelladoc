@@ -1,4 +1,4 @@
-from mcp.server.fastmcp import mcp
+from paelladoc.domain.core_logic import mcp
 from typing import Optional, List, Dict, Any # Add necessary types
 import logging
 
@@ -6,7 +6,7 @@ import logging
 
 # TODO: Review imports and add any other necessary modules
 
-@mcp.tool(name="core.help", description="Displays help information for PAELLADOC commands.")
+@mcp.tool(name="core.help", description="This ensures that users can quickly access help without needing to know the specific HELP command syntax.")
 def core_help() -> dict:
     """Provides help information for PAELLADOC commands.
     

@@ -1,7 +1,19 @@
-from mcp.server.fastmcp import mcp
+from paelladoc.domain.core_logic import mcp
 from typing import Optional, List, Dict, Any # Add necessary types
 import logging
+import asyncio # Added asyncio
+from pathlib import Path # Added Path
 
+# Domain models
+from paelladoc.domain.models.project import (
+    ProjectMemory,
+    ProjectMetadata,
+    ArtifactMeta,
+    DocumentStatus,
+    Bucket,
+)
+# Adapter for persistence
+from paelladoc.adapters.output.sqlite.sqlite_memory_adapter import SQLiteMemoryAdapter
 
 # Extracted behavior configuration from the original MDC file
 BEHAVIOR_CONFIG =     {   'absolute_sequence_enforcement': True,
@@ -80,30 +92,98 @@ BEHAVIOR_CONFIG =     {   'absolute_sequence_enforcement': True,
 # TODO: Review imports and add any other necessary modules
 
 @mcp.tool(name="core.paella", description="Initiates a new PAELLADOC documentation project.")
-def core_paella() -> dict:
+async def core_paella() -> dict:
     """Starts the PAELLADOC documentation process.
     
-    Guides the user through project setup questions (language, name, purpose, 
-    audience, objectives) and template selection.
-    Creates project folder and initial memory file.
+    (Simulated) Guides the user through project setup questions and saves the initial state.
     
     Args:
-        (No explicit arguments, uses interactive flow based on BEHAVIOR_CONFIG)
+        (No explicit arguments, uses interactive flow - currently simulated)
 
     Behavior Config: this tool has associated behavior configuration extracted 
     from the MDC file. See the `BEHAVIOR_CONFIG` variable in the source code.
     """
     
-    # TODO: Implement the actual logic of the command here
-    # Access parameters using their variable names (e.g., param)
-    # Access behavior config using BEHAVIOR_CONFIG dict (if present)
-    logging.info(f"Executing stub for core.paella...")
+    logging.info(f"Executing initial implementation for core.paella...")
 
-    # Example: Print parameters
-    local_vars = locals()
-    param_values = {  }
-    logging.info(f"Parameters received: {param_values}")
+    # --- Dependency Injection (Temporary Direct Instantiation) ---
+    # In a real app, this adapter would be injected.
+    # TODO: Replace with proper dependency injection (e.g., using a service container or framework feature)
+    try:
+        memory_adapter = SQLiteMemoryAdapter()
+    except Exception as e:
+        logging.error(f"Failed to instantiate SQLiteMemoryAdapter: {e}", exc_info=True)
+        return {
+             "status": "error",
+             "message": f"Internal server error: Could not initialize memory adapter.",
+        }
 
-    # Replace with actual return value based on command logic
-    return {"status": "ok", "message": f"Successfully executed stub for core.paella"}
+    # --- Simulate Interactive Flow --- 
+    # TODO: Replace this with actual conversational logic based on BEHAVIOR_CONFIG
+    project_name = "simulated-paella-project"
+    logging.info(f"Simulating project initiation for: {project_name}")
+
+    # Check if project already exists
+    try:
+        exists = await memory_adapter.project_exists(project_name)
+        if exists:
+            logging.warning(f"Project '{project_name}' already exists. Aborting PAELLA init.")
+            return {
+                "status": "error",
+                "message": f"Project '{project_name}' already exists. Use CONTINUE command.",
+            }
+    except Exception as e:
+        logging.error(f"Error checking project existence for '{project_name}': {e}", exc_info=True)
+        return {
+            "status": "error",
+            "message": f"Failed to check project existence: {e}",
+        }
+
+    # Simulate gathering metadata
+    simulated_metadata = ProjectMetadata(
+        name=project_name,
+        language="python",
+        purpose="To demonstrate PAELLA command initial save",
+        target_audience="Developers",
+        objectives=["Save initial state", "Assign initial artifact bucket"],
+    )
+
+    # Simulate creating an initial artifact (e.g., the main project doc)
+    initial_artifact = ArtifactMeta(
+        name="Project Charter", # Example artifact name
+        bucket=Bucket.INITIATE_INITIAL_PRODUCT_DOCS,
+        path=Path(f"docs/{project_name}/00_project_charter.md"), # Example path
+        status=DocumentStatus.PENDING,
+    )
+
+    # Create the ProjectMemory object
+    initial_memory = ProjectMemory(
+        metadata=simulated_metadata,
+        artifacts={initial_artifact.bucket: [initial_artifact]},
+        taxonomy_version="0.5", # Or get from config
+    )
+
+    # --- Save to Persistence --- 
+    try:
+        await memory_adapter.save_memory(initial_memory)
+        logging.info(f"Successfully saved initial memory for project: {project_name}")
+        return {
+            "status": "ok",
+            "message": f"PAELLADOC project '{project_name}' initiated and saved.",
+            # Optionally return the created memory state (or just relevant parts)
+            # "project_name": project_name,
+            # "initial_artifact_id": str(initial_artifact.id)
+        }
+    except ValueError as ve: # Catch specific error from adapter on potential duplicates
+        logging.error(f"Integrity error saving initial memory for '{project_name}': {ve}", exc_info=True)
+        return {
+            "status": "error",
+            "message": str(ve), # Pass the specific error message
+        }
+    except Exception as e:
+        logging.error(f"Error saving initial memory for '{project_name}': {e}", exc_info=True)
+        return {
+            "status": "error",
+            "message": f"Failed to save initial project memory: {e}",
+        }
 

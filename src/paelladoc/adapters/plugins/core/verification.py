@@ -1,4 +1,4 @@
-from mcp.server.fastmcp import mcp
+from paelladoc.domain.core_logic import mcp
 from typing import Optional, List, Dict, Any # Add necessary types
 import logging
 
@@ -6,7 +6,7 @@ import logging
 
 # TODO: Review imports and add any other necessary modules
 
-@mcp.tool(name="core.verification", description="Verifies documentation completeness and consistency.")
+@mcp.tool(name="core.verification", description="- **Overall Quality Score**: Composite score of all metrics")
 def core_verification() -> dict:
     """Checks documentation against templates and project memory.
     
