@@ -28,13 +28,13 @@ exclude = [
 include = ["src/**/*.py", "src/**/*.pyi"]
 
 # Same as Black.
-line-length = 88
+# line-length = 88 # Disabled by user request
 target-version = "py312" # Specify your Python version
 
 [lint]
 # Enable Pyflakes (`F`) and a subset of the pycodestyle (`E`) rules by default.
 select = ["E", "F"]
-ignore = []
+ignore = ["E501"] # Ignore line length errors
 
 # Allow autofix for all enabled rules (when `--fix` is used).
 fixable = ["ALL"]
