@@ -61,14 +61,14 @@ class ChromaVectorStoreAdapter(VectorStorePort):
             collection = self.client.get_collection(name=collection_name)
             logger.debug(f"Retrieved existing Chroma collection: {collection_name}")
             return collection
-        except NotFoundError:
-             logger.debug(f"Collection '{collection_name}' not found, creating...")
-             collection = self.client.create_collection(name=collection_name)
-             logger.info(f"Created new Chroma collection: {collection_name}")
-             return collection
+        except (NotFoundError, ValueError):
+            logger.debug(f"Collection '{collection_name}' not found, creating...")
+            collection = self.client.create_collection(name=collection_name)
+            logger.info(f"Created new Chroma collection: {collection_name}")
+            return collection
         except Exception as e:
-             logger.error(f"Error getting or creating collection '{collection_name}': {e}", exc_info=True)
-             raise
+            logger.error(f"Error getting or creating collection '{collection_name}': {e}", exc_info=True)
+            raise
 
     async def add_documents(
         self, 
@@ -163,7 +163,7 @@ class ChromaVectorStoreAdapter(VectorStorePort):
         try:
             self.client.delete_collection(name=collection_name)
             logger.info(f"Deleted Chroma collection: {collection_name}")
-        except NotFoundError:
+        except (NotFoundError, ValueError):
             logger.warning(f"Attempted to delete non-existent collection: {collection_name}")
         except Exception as e:
             logger.error(f"Error deleting collection '{collection_name}': {e}", exc_info=True)
