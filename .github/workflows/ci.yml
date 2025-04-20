@@ -35,7 +35,7 @@ jobs:
           # First install the project itself
           uv pip install -e .
           # Then install test dependencies explicitly
-          uv pip install pytest==8.3.2 pytest-asyncio==0.23.8 requests==2.32.3 sqlmodel alembic
+          uv pip install pytest==8.3.2 pytest-asyncio==0.23.8 requests==2.32.3 sqlmodel alembic pytest-cov
           # Verify pytest is installed
           python -c "import pytest; print(f'pytest version: {pytest.__version__}')"
         shell: bash
