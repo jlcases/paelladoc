@@ -292,6 +292,7 @@ async def core_paella(
 
     # Always instantiate the adapter here
     try:
+        # Use the default path defined in the adapter (project root)
         memory_adapter = SQLiteMemoryAdapter()
         logger.info("Instantiated default SQLiteMemoryAdapter.")
     except Exception as e:

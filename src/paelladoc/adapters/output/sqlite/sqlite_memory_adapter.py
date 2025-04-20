@@ -27,8 +27,9 @@ logger = logging.getLogger(__name__)
 # src/paelladoc/adapters/output/sqlite/sqlite_memory_adapter.py -> project_root
 PROJECT_ROOT = Path(__file__).parent.parent.parent.parent.parent
 logger.info(f"Project root calculated as: {PROJECT_ROOT.resolve()}")
+# Use the project root directory for the default database path
 DEFAULT_DB_PATH = PROJECT_ROOT / "paelladoc_memory.db"
-logger.info(f"Default database path set to: {DEFAULT_DB_PATH.resolve()}")
+logger.info(f"Default database path set to project root: {DEFAULT_DB_PATH.resolve()}")
 
 
 class SQLiteMemoryAdapter(MemoryPort):
