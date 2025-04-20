@@ -13,8 +13,8 @@ except ImportError:
     try:
         from chromadb.api.errors import NotFoundError
     except ImportError:
-        class NotFoundError(Exception):
-            """Fallback NotFoundError if chromadb does not define it."""
+        class NotFoundError(ValueError):
+            """Fallback NotFoundError inheriting from ValueError for broader compatibility."""
             pass
 
 # Ports and Domain Models/Helpers
@@ -61,14 +61,19 @@ class ChromaVectorStoreAdapter(VectorStorePort):
             collection = self.client.get_collection(name=collection_name)
             logger.debug(f"Retrieved existing Chroma collection: {collection_name}")
             return collection
-        except (NotFoundError, ValueError):
-            logger.debug(f"Collection '{collection_name}' not found, creating...")
-            collection = self.client.create_collection(name=collection_name)
-            logger.info(f"Created new Chroma collection: {collection_name}")
-            return collection
+        except (NotFoundError, ValueError) as e:
+            # Handle case where collection does not exist (NotFoundError or ValueError)
+            if "does not exist" in str(e): # Check if the error indicates non-existence
+                 logger.debug(f"Collection '{collection_name}' not found, creating...")
+                 collection = self.client.create_collection(name=collection_name)
+                 logger.info(f"Created new Chroma collection: {collection_name}")
+                 return collection
+            else:
+                logger.error(f"Unexpected error getting collection '{collection_name}': {e}", exc_info=True)
+                raise
         except Exception as e:
-            logger.error(f"Error getting or creating collection '{collection_name}': {e}", exc_info=True)
-            raise
+             logger.error(f"Error getting or creating collection '{collection_name}': {e}", exc_info=True)
+             raise
 
     async def add_documents(
         self, 
@@ -112,9 +117,14 @@ class ChromaVectorStoreAdapter(VectorStorePort):
         """Searches for similar documents in the Chroma collection."""
         try:
             collection = self.client.get_collection(name=collection_name)
-        except NotFoundError:
-             logger.warning(f"Collection '{collection_name}' not found for search.")
-             return [[] for _ in query_texts]
+        except (NotFoundError, ValueError) as e:
+             # Handle case where collection does not exist
+             if "does not exist" in str(e):
+                 logger.warning(f"Collection '{collection_name}' not found for search.")
+                 return [[] for _ in query_texts]
+             else:
+                logger.error(f"Unexpected error retrieving collection '{collection_name}' for search: {e}", exc_info=True)
+                raise
         except Exception as e:
              logger.error(f"Error retrieving collection '{collection_name}' for search: {e}", exc_info=True)
              raise
@@ -163,8 +173,13 @@ class ChromaVectorStoreAdapter(VectorStorePort):
         try:
             self.client.delete_collection(name=collection_name)
             logger.info(f"Deleted Chroma collection: {collection_name}")
-        except (NotFoundError, ValueError):
-            logger.warning(f"Attempted to delete non-existent collection: {collection_name}")
+        except (NotFoundError, ValueError) as e:
+             # Handle case where collection does not exist
+             if "does not exist" in str(e):
+                 logger.warning(f"Attempted to delete non-existent collection: {collection_name}")
+             else:
+                logger.error(f"Unexpected error deleting collection '{collection_name}': {e}", exc_info=True)
+                raise
         except Exception as e:
             logger.error(f"Error deleting collection '{collection_name}': {e}", exc_info=True)
             raise 
