@@ -29,10 +29,13 @@ jobs:
           echo ".venv/bin" >> $GITHUB_PATH
         shell: bash
 
-      - name: Install Dependencies (excluding mcp-sdk)
+      - name: Install Dependencies and Dev Dependencies
         run: |
           source .venv/bin/activate
-          uv pip install -e '.[dev]'
+          # Install project dependencies
+          uv pip install -e .
+          # Install test dependencies directly
+          uv pip install pytest==8.3.2 pytest-asyncio==0.23.8 requests==2.32.3
           python -m pip list  # Debug: list installed packages
         shell: bash
         
