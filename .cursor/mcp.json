@@ -1,0 +1,20 @@
+{
+  "mcpServers": {
+    "Paelladoc Server (Local Dev)": {
+      "command": "/Users/jlcases/codigo/paelladoc/.venv/bin/python",
+      "args": [
+        "-m",
+        "server",
+        "--stdio"
+      ],
+      "cwd": "/Users/jlcases/codigo/paelladoc",
+      "env": {
+        "PYTHONPATH": "/Users/jlcases/codigo/paelladoc:/Users/jlcases/codigo/paelladoc/mcp_server:/Users/jlcases/codigo/paelladoc/commands",
+        "DEBUG": "true"
+      },
+      "disabled": false
+    }
+  },
+  "i18n-ally.disabled": true,
+  "mcp.timeout": 120000
+} 
