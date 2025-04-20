@@ -74,13 +74,17 @@ class SQLiteMemoryAdapter(MemoryPort):
             bucket: [] for bucket in Bucket
         }
         for db_artifact in db_memory.artifacts:
+            # Ensure timestamps are UTC before creating domain object
+            created_at_utc = self.ensure_utc(db_artifact.created_at)  # Ensure UTC
+            updated_at_utc = self.ensure_utc(db_artifact.updated_at)  # Ensure UTC
+
             domain_artifact = ArtifactMeta(
                 id=db_artifact.id,
                 name=db_artifact.name,
                 bucket=db_artifact.bucket,
                 path=db_artifact.path_obj,
-                created_at=db_artifact.created_at,
-                updated_at=db_artifact.updated_at,
+                created_at=created_at_utc,
+                updated_at=updated_at_utc,
                 status=db_artifact.status,
             )
             if db_artifact.bucket in domain_artifacts:
@@ -92,12 +96,16 @@ class SQLiteMemoryAdapter(MemoryPort):
                 )
                 domain_artifacts[Bucket.UNKNOWN].append(domain_artifact)
 
+        # Ensure ProjectMemory timestamps are UTC
+        created_at_utc = self.ensure_utc(db_memory.created_at)
+        last_updated_at_utc = self.ensure_utc(db_memory.last_updated_at)
+
         domain_memory = ProjectMemory(
             metadata=domain_metadata,
             artifacts=domain_artifacts,
             taxonomy_version=db_memory.taxonomy_version,
-            created_at=db_memory.created_at,
-            last_updated_at=db_memory.last_updated_at,
+            created_at=created_at_utc,
+            last_updated_at=last_updated_at_utc,
         )
         return domain_memory
 
@@ -120,13 +128,19 @@ class SQLiteMemoryAdapter(MemoryPort):
                 results = await session.execute(statement)
                 db_memory = results.scalars().first()
 
-                now = datetime.datetime.now()
-                memory.update_timestamp()
+                # Get current UTC time using TimeService
+                # Import at the top level or pass as dependency if preferred
+                from paelladoc.domain.models.project import time_service
+
+                now = time_service.get_current_time()  # Use TimeService
+
+                memory.update_timestamp()  # This already uses TimeService
 
                 if db_memory:
                     # --- Update Existing Project ---
                     logger.debug(f"Project '{project_name}' found. Updating...")
-                    db_memory.last_updated_at = now
+                    # Use UTC time obtained from TimeService
+                    db_memory.last_updated_at = now  # Use UTC time
                     db_memory.language = memory.metadata.language
                     db_memory.purpose = memory.metadata.purpose
                     db_memory.target_audience = memory.metadata.target_audience
@@ -164,17 +178,25 @@ class SQLiteMemoryAdapter(MemoryPort):
                                 db_artifact.bucket = domain_artifact.bucket
                                 db_artifact.path = str(domain_artifact.path)
                                 db_artifact.status = domain_artifact.status
+                                # Domain model update_timestamp already uses TimeService
                                 db_artifact.updated_at = domain_artifact.updated_at
                             else:
                                 # Add new artifact to DB
+                                # Ensure timestamps are UTC before saving
+                                created_at_utc = self.ensure_utc(
+                                    domain_artifact.created_at
+                                )
+                                updated_at_utc = self.ensure_utc(
+                                    domain_artifact.updated_at
+                                )
                                 new_db_artifact = ArtifactMetaDB(
                                     id=domain_artifact.id,
                                     project_memory_id=db_memory.id,
                                     name=domain_artifact.name,
                                     bucket=domain_artifact.bucket,
                                     path=str(domain_artifact.path),
-                                    created_at=domain_artifact.created_at,
-                                    updated_at=domain_artifact.updated_at,
+                                    created_at=created_at_utc,
+                                    updated_at=updated_at_utc,
                                     status=domain_artifact.status,
                                 )
                                 session.add(new_db_artifact)
@@ -192,6 +214,10 @@ class SQLiteMemoryAdapter(MemoryPort):
                 else:
                     # --- Create New Project ---
                     logger.debug(f"Project '{project_name}' not found. Creating...")
+                    # Ensure domain timestamps are set via TimeService before saving
+                    created_at_utc = self.ensure_utc(memory.created_at)
+                    last_updated_at_utc = self.ensure_utc(memory.last_updated_at)
+
                     db_memory = ProjectMemoryDB(
                         name=memory.metadata.name,
                         language=memory.metadata.language,
@@ -199,8 +225,8 @@ class SQLiteMemoryAdapter(MemoryPort):
                         target_audience=memory.metadata.target_audience,
                         objectives=memory.metadata.objectives,
                         taxonomy_version=memory.taxonomy_version,
-                        created_at=now,
-                        last_updated_at=now,
+                        created_at=created_at_utc,  # Use UTC time
+                        last_updated_at=last_updated_at_utc,  # Use UTC time
                         artifacts=[],
                         # Add new fields
                         interaction_language=memory.metadata.interaction_language,
@@ -216,14 +242,21 @@ class SQLiteMemoryAdapter(MemoryPort):
                     # Add all artifacts from the domain model
                     for bucket, domain_artifact_list in memory.artifacts.items():
                         for domain_artifact in domain_artifact_list:
+                            # Ensure artifact timestamps are UTC before saving
+                            artifact_created_at_utc = self.ensure_utc(
+                                domain_artifact.created_at
+                            )
+                            artifact_updated_at_utc = self.ensure_utc(
+                                domain_artifact.updated_at
+                            )
                             new_db_artifact = ArtifactMetaDB(
                                 id=domain_artifact.id,
                                 project_memory_id=db_memory.id,
                                 name=domain_artifact.name,
                                 bucket=domain_artifact.bucket,
                                 path=str(domain_artifact.path),
-                                created_at=domain_artifact.created_at,
-                                updated_at=domain_artifact.updated_at,
+                                created_at=artifact_created_at_utc,
+                                updated_at=artifact_updated_at_utc,
                                 status=domain_artifact.status,
                             )
                             session.add(new_db_artifact)
@@ -320,3 +353,13 @@ class SQLiteMemoryAdapter(MemoryPort):
                 )  # Log original error
                 # Return empty list on error to be consistent with interface
                 return []
+
+    # Add ensure_utc helper method to the adapter
+    def ensure_utc(self, dt: datetime.datetime) -> datetime.datetime:
+        """Ensure a datetime is in UTC.
+
+        If the datetime has no timezone info, assumes it's in UTC.
+        """
+        if dt.tzinfo is None:
+            return dt.replace(tzinfo=datetime.timezone.utc)
+        return dt.astimezone(datetime.timezone.utc)
