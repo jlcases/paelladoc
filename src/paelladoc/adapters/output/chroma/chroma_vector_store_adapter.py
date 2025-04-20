@@ -6,7 +6,16 @@ import asyncio # For potential async operations if needed
 
 import chromadb
 from chromadb.api.models.Collection import Collection
-from chromadb.errors import NotFoundError
+# Import NotFoundError from the appropriate module depending on chromadb version
+try:
+    from chromadb.errors import NotFoundError
+except ImportError:
+    try:
+        from chromadb.api.errors import NotFoundError
+    except ImportError:
+        class NotFoundError(Exception):
+            """Fallback NotFoundError if chromadb does not define it."""
+            pass
 
 # Ports and Domain Models/Helpers
 from paelladoc.ports.output.vector_store_port import VectorStorePort, SearchResult
