@@ -1,5 +1,5 @@
 from paelladoc.domain.core_logic import mcp
-from typing import List, Dict, Optional
+from typing import List, Dict
 import logging
 from pathlib import Path  # Added Path
 from enum import Enum
@@ -247,6 +247,9 @@ LLM_BEHAVIOR = {
 }
 
 
+# --- MCP Tool Definition --- #
+
+
 @mcp.tool(
     name="core.paella",
     description="""Initiates a new PAELLADOC documentation project.
@@ -259,7 +262,7 @@ LLM_BEHAVIOR = {
     2. List existing projects
     3. Let user choose to continue existing or create new
     4. If continuing existing -> Suggest CONTINUE command
-    5. If creating new -> Ask for documentation language and project name
+    5. If creating new -> Ask for documentation language, project name, and base path
     """,
 )
 async def core_paella(
@@ -270,8 +273,6 @@ async def core_paella(
     documentation_language: str = "",
     new_project_name: str = "",
     base_path: str = "",
-    # Add optional adapter for testing
-    memory_adapter_instance: Optional[SQLiteMemoryAdapter] = None,
 ) -> dict:
     """Starts the PAELLADOC documentation process.
 
@@ -283,33 +284,25 @@ async def core_paella(
         documentation_language: Language for generated documentation (es-ES, en-US, etc)
         new_project_name: Name for the new project if creating one
         base_path: Base path for storing project files
-        memory_adapter_instance: Optional pre-configured adapter instance (for testing).
     """
 
-    logging.info(
-        f"Starting PAELLA command with interaction_language={interaction_language}"
+    logger.info(
+        f"core_paella tool called with args: interaction_language='{interaction_language}', action='{action}', ..."
     )
 
-    # --- Use provided adapter or create default ---
-    if memory_adapter_instance:
-        memory_adapter = memory_adapter_instance
-        logger.info(
-            f"Using provided memory adapter instance: {type(memory_adapter).__name__}"
-        )
-    else:
-        try:
-            memory_adapter = SQLiteMemoryAdapter()
-            logger.info("Instantiated default SQLiteMemoryAdapter.")
-        except Exception as e:
-            logging.error(
-                f"Failed to instantiate SQLiteMemoryAdapter: {e}", exc_info=True
-            )
-            return {
-                "status": "error",
-                "message": "Internal server error: Could not initialize memory adapter.",
-            }
+    # Always instantiate the adapter here
+    try:
+        memory_adapter = SQLiteMemoryAdapter()
+        logger.info("Instantiated default SQLiteMemoryAdapter.")
+    except Exception as e:
+        logger.error(f"Failed to instantiate SQLiteMemoryAdapter: {e}", exc_info=True)
+        return {
+            "status": "error",
+            "message": "Internal server error: Could not initialize memory adapter.",
+        }
 
     # --- Interactive Flow ---
+    # (Move the logic from _core_paella_logic back here)
     # 1. First ask for interaction language if missing
     if not interaction_language:
         return {
@@ -331,15 +324,12 @@ async def core_paella(
     if not action:
         try:
             existing_projects = await memory_adapter.list_projects()
-
             message = (
                 "¿Qué quieres hacer?"
                 if interaction_language == SupportedLanguage.ES_ES
                 else "What would you like to do?"
             )
-
             options = []
-
             if existing_projects:
                 projects_str = "\n".join([f"- {p}" for p in existing_projects])
                 message = (
@@ -347,8 +337,6 @@ async def core_paella(
                     if interaction_language == SupportedLanguage.ES_ES
                     else f"Existing projects:\n{projects_str}\n\n{message}"
                 )
-
-                # Add option to continue existing project
                 options.append(
                     {
                         "value": "continue_existing",
@@ -357,8 +345,6 @@ async def core_paella(
                         else "Continue an existing project",
                     }
                 )
-
-            # Always add option to create new project
             options.append(
                 {
                     "value": "create_new",
@@ -367,7 +353,6 @@ async def core_paella(
                     else "Create a new project",
                 }
             )
-
             return {
                 "status": "input_needed",
                 "message": message,
@@ -413,10 +398,8 @@ async def core_paella(
 
     # 3b. Ask whether to auto‑invoke CONTINUE
     if (
-        action == "continue_existing"
-        and existing_project_name
-        and continue_mode is None
-    ):
+        action == "continue_existing" and existing_project_name and continue_mode == ""
+    ):  # Check for empty string default
         message = (
             "¿Quieres que ejecute automáticamente el comando CONTINUE para ese proyecto?"
             if interaction_language == SupportedLanguage.ES_ES
@@ -526,6 +509,7 @@ async def core_paella(
                     if interaction_language == SupportedLanguage.ES_ES
                     else f"Project '{new_project_name}' already exists. Please choose a different name."
                 )
+                # Ask for name again, but keep existing params
                 return {
                     "status": "input_needed",
                     "message": message,
@@ -545,9 +529,9 @@ async def core_paella(
     # 6.5 Ask for base path if missing
     if action == "create_new" and new_project_name and not base_path:
         message = (
-            "¿Cuál es la ruta base para guardar los archivos del proyecto?"
+            "¿Cuál es la ruta base para guardar los archivos del proyecto? (e.g., ./docs)"
             if interaction_language == SupportedLanguage.ES_ES
-            else "What is the base path for storing project files?"
+            else "What is the base path for storing project files? (e.g., ./docs)"
         )
         return {
             "status": "input_needed",
@@ -564,44 +548,48 @@ async def core_paella(
         and documentation_language
         and base_path
     ):
-        # Convert relative paths to absolute and handle tilde expansion
-        abs_base_path = Path(base_path).expanduser().resolve()
-
-        # Create initial metadata
-        metadata = ProjectMetadata(
-            name=new_project_name,
-            interaction_language=interaction_language,
-            documentation_language=documentation_language,
-            base_path=abs_base_path,  # Store the absolute path
-            purpose=None,
-            target_audience=None,
-            objectives=[],
-        )
-
-        # Create initial artifact (Project Charter)
-        charter_name = (
-            "Acta de Constitución"
-            if documentation_language == SupportedLanguage.ES_ES
-            else "Project Charter"
-        )
-        initial_artifact = ArtifactMeta(
-            name=charter_name,
-            bucket=Bucket.INITIATE_INITIAL_PRODUCT_DOCS,
-            path=Path(
-                f"docs/{new_project_name}/00_{charter_name.lower().replace(' ', '_')}.md"
-            ),
-            status=DocumentStatus.PENDING,
-        )
-
-        # Create ProjectMemory object
-        initial_memory = ProjectMemory(
-            metadata=metadata,
-            artifacts={initial_artifact.bucket: [initial_artifact]},
-            taxonomy_version="0.5",
-        )
-
-        # Save to Persistence
         try:
+            # Convert relative paths to absolute and handle tilde expansion
+            abs_base_path = Path(base_path).expanduser().resolve()
+            # Ensure the base directory exists
+            abs_base_path.mkdir(parents=True, exist_ok=True)
+
+            # Create initial metadata
+            metadata = ProjectMetadata(
+                name=new_project_name,
+                interaction_language=interaction_language,
+                documentation_language=documentation_language,
+                base_path=abs_base_path,  # Store the absolute path
+                purpose=None,  # Will be asked later if needed
+                target_audience=None,
+                objectives=[],
+            )
+
+            # Create initial artifact (Project Charter)
+            charter_name = (
+                "Acta de Constitución"
+                if documentation_language == SupportedLanguage.ES_ES
+                else "Project Charter"
+            )
+            # Path relative to the *project* base path
+            charter_relative_path = Path(
+                f"00_{charter_name.lower().replace(' ', '_')}.md"
+            )
+            initial_artifact = ArtifactMeta(
+                name=charter_name,
+                bucket=Bucket.INITIATE_INITIAL_PRODUCT_DOCS,
+                path=charter_relative_path,
+                status=DocumentStatus.PENDING,
+            )
+
+            # Create ProjectMemory object
+            initial_memory = ProjectMemory(
+                metadata=metadata,
+                artifacts={initial_artifact.bucket: [initial_artifact]},
+                taxonomy_version="0.5",
+            )
+
+            # Save to Persistence using the adapter instantiated earlier
             await memory_adapter.save_memory(initial_memory)
             logging.info(
                 f"Successfully saved initial memory for project: {new_project_name}"
@@ -610,11 +598,13 @@ async def core_paella(
             message = (
                 f"Proyecto PAELLADOC '{new_project_name}' iniciado correctamente.\n"
                 f"Idioma de interacción: {interaction_language}\n"
-                f"Idioma de documentación: {documentation_language}"
+                f"Idioma de documentación: {documentation_language}\n"
+                f"Archivos guardados en: {abs_base_path}"
                 if interaction_language == SupportedLanguage.ES_ES
                 else f"PAELLADOC project '{new_project_name}' successfully initiated.\n"
                 f"Interaction language: {interaction_language}\n"
-                f"Documentation language: {documentation_language}"
+                f"Documentation language: {documentation_language}\n"
+                f"Files saved in: {abs_base_path}"
             )
 
             return {
@@ -623,8 +613,32 @@ async def core_paella(
                 "project_name": new_project_name,
                 "interaction_language": interaction_language,
                 "documentation_language": documentation_language,
-                "next_steps": ["purpose", "target_audience", "objectives"],
+                "base_path": str(abs_base_path),  # Return the absolute path used
+                "next_steps": [
+                    "Define project purpose",
+                    "Identify target audience",
+                    "Set objectives",
+                ],  # Example next steps
             }
+        except FileExistsError as fe_err:
+            logging.error(f"Error creating project directory: {fe_err}", exc_info=True)
+            message = (
+                f"Error: No se pudo crear el directorio {abs_base_path}. ¿Ya existe?"
+                if interaction_language == SupportedLanguage.ES_ES
+                else f"Error: Could not create directory {abs_base_path}. Does it already exist?"
+            )
+            return {"status": "error", "message": message}
+        except PermissionError as pe_err:
+            logging.error(
+                f"Permission error accessing path {abs_base_path}: {pe_err}",
+                exc_info=True,
+            )
+            message = (
+                f"Error: Permiso denegado para acceder a la ruta {abs_base_path}."
+                if interaction_language == SupportedLanguage.ES_ES
+                else f"Error: Permission denied accessing path {abs_base_path}."
+            )
+            return {"status": "error", "message": message}
         except Exception as e:
             logging.error(f"Error saving project memory: {e}", exc_info=True)
             message = (
@@ -634,5 +648,8 @@ async def core_paella(
             )
             return {"status": "error", "message": message}
 
-    # Should never reach here
-    return {"status": "error", "message": "Internal error: Invalid state reached"}
+    # Should never reach here in normal flow
+    return {
+        "status": "error",
+        "message": "Internal error: Invalid state reached in PAELLA flow",
+    }

@@ -66,6 +66,7 @@ async def memory_adapter():
 @pytest.mark.asyncio
 async def test_create_new_project_asks_for_base_path_and_saves_it(
     memory_adapter: SQLiteMemoryAdapter,
+    monkeypatch,
 ):
     """
     Verify the interactive flow for creating a new project:
@@ -83,6 +84,13 @@ async def test_create_new_project_asks_for_base_path_and_saves_it(
     project_name = f"test-project-{uuid.uuid4()}"
     base_path_input = "./test_paella_docs"  # Relative path input
     expected_abs_base_path = Path(base_path_input).resolve()
+
+    # --- Monkeypatch the default DB path ---
+    # Make core_paella use the temporary DB path when it creates its own adapter
+    monkeypatch.setattr(
+        "paelladoc.adapters.output.sqlite.sqlite_memory_adapter.DEFAULT_DB_PATH",
+        memory_adapter.db_path,
+    )
 
     # Simulate the conversation step-by-step
 
@@ -139,8 +147,7 @@ async def test_create_new_project_asks_for_base_path_and_saves_it(
         documentation_language=doc_lang,
         new_project_name=project_name,
         base_path=base_path_input,
-        memory_adapter_instance=memory_adapter,  # Pass the fixture instance
-    )  # Pass the relative path
+    )
     assert response6["status"] == "ok", (
         f"Expected status ok, got {response6.get('status')}: {response6.get('message')}"
     )
