@@ -5,8 +5,34 @@ jobs:
   test:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
-      - uses: actions/setup-python@v5
-        with: {python-version: '3.12'}
-      - run: pip install mcp mcp-cli pytest ruff
-      - run: pytest -q
+      - name: Checkout code
+        uses: actions/checkout@v4
+      
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      
+      - name: Install uv
+        run: curl -LsSf https://astral.sh/uv/install.sh | sh
+        # Add uv to the path for subsequent steps
+        env:
+          UV_HOME: /home/runner/.uv
+        shell: bash
+        
+      - name: Add uv to PATH
+        run: echo "$HOME/.cargo/bin" >> $GITHUB_PATH
+        # Correct path for uv installed via script is typically $HOME/.cargo/bin
+        # Or potentially /home/runner/.uv/bin depending on install script output
+        # Let's assume .cargo/bin for now, adjust if needed based on actual run
+
+      - name: Install Dependencies (excluding mcp-sdk)
+        run: uv pip install -e '.[dev]'
+        shell: bash # Ensure bash interprets the quotes correctly
+        
+      - name: Install mcp-sdk from Git
+        run: uv pip install git+https://github.com/modelcontextprotocol/python-sdk.git
+        shell: bash
+
+      - name: Run tests
+        run: pytest -q
