@@ -46,6 +46,13 @@ jobs:
           uv pip install git+https://github.com/modelcontextprotocol/python-sdk.git
         shell: bash
 
+      - name: Verify pytest-cov installation
+        run: |
+          source .venv/bin/activate
+          uv pip show pytest-cov || echo "pytest-cov not found by uv pip show"
+          python -c "import sys; print(sys.path); import pytest_cov; print('pytest-cov imported successfully')" || echo "pytest-cov import failed"
+        shell: bash
+
       - name: Run tests
         run: |
           source .venv/bin/activate
