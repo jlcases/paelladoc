@@ -20,7 +20,7 @@ dependencies = [
     "fastapi==0.111.1",
     "uvicorn[standard]==0.30.3",
     "greenlet==3.0.3",
-    "chromadb==0.5.4",
+    "chromadb==0.4.22",
     "onnxruntime==1.19.0",
     "protobuf~=3.20.0"
 ]
