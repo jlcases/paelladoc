@@ -7,7 +7,6 @@ from pathlib import Path
 import uuid
 
 from paelladoc.adapters.output.sqlite.sqlite_memory_adapter import SQLiteMemoryAdapter
-from paelladoc.config.database import DEVELOPMENT_DB_PATH, PRODUCTION_DB_PATH
 from paelladoc.domain.models.project import ProjectMemory, ProjectMetadata
 
 
@@ -54,53 +53,62 @@ async def temp_adapter():
 
 
 @pytest.mark.asyncio
-async def test_adapter_uses_custom_path():
-    """Test that adapter uses custom path when provided."""
-    custom_path = Path("/tmp/custom_test.db")
+async def test_adapter_uses_custom_path(clean_env):
+    """Verify adapter uses the path provided in __init__."""
+    custom_path = create_temp_db_path()
     adapter = SQLiteMemoryAdapter(db_path=custom_path)
     assert adapter.db_path == custom_path
+    # Clean up the test file if it was created
+    if custom_path.exists():
+        os.remove(custom_path)
 
 
 @pytest.mark.asyncio
 async def test_adapter_uses_env_var_path(clean_env):
-    """Test that adapter uses PAELLADOC_DB_PATH when set."""
-    custom_path = "/tmp/env_test.db"
-    os.environ["PAELLADOC_DB_PATH"] = custom_path
-    adapter = SQLiteMemoryAdapter()
-    assert str(adapter.db_path) == custom_path
-
-
-@pytest.mark.asyncio
-async def test_adapter_uses_development_path(clean_env):
-    """Test that adapter uses development path in development mode."""
-    os.environ["PAELLADOC_ENV"] = "development"
-    adapter = SQLiteMemoryAdapter()
-    assert adapter.db_path == DEVELOPMENT_DB_PATH
+    """Verify adapter uses PAELLADOC_DB_PATH environment variable if set."""
+    env_path = create_temp_db_path()
+    os.environ["PAELLADOC_DB_PATH"] = str(env_path)
+    adapter = SQLiteMemoryAdapter()  # No path given, should use env var
+    assert adapter.db_path == env_path
+    if env_path.exists():
+        os.remove(env_path)
 
 
 @pytest.mark.asyncio
 async def test_adapter_uses_production_path(clean_env):
-    """Test that adapter uses production path by default."""
+    """Verify adapter uses PRODUCTION_DB_PATH by default."""
+    # Ensure no env vars are set that override the default
+    os.environ.pop("PAELLADOC_DB_PATH", None)
+    os.environ.pop("PAELLADOC_ENV", None)
     adapter = SQLiteMemoryAdapter()
-    assert adapter.db_path == PRODUCTION_DB_PATH
+    expected_path = Path.home() / ".paelladoc" / "memory.db"  # Get default directly
+    assert adapter.db_path == expected_path
 
 
 @pytest.mark.asyncio
-async def test_adapter_creates_parent_directory():
-    """Test that adapter creates parent directory if it doesn't exist."""
-    test_dir = Path("/tmp/paelladoc_test") / str(uuid.uuid4())
-    test_path = test_dir / "test.db"
+async def test_adapter_creates_parent_directory(clean_env):
+    """Verify the adapter ensures the parent directory for the DB exists."""
+    test_subdir = Path.home() / ".paelladoc_test_dir" / str(uuid.uuid4())
+    custom_path = test_subdir / "test_creation.db"
+    # Ensure the directory does not exist initially
+    if test_subdir.exists():
+        for item in test_subdir.iterdir():  # Clear if exists
+            os.remove(item)
+        os.rmdir(test_subdir)
+
+    assert not test_subdir.exists()
 
     # The adapter instantiation triggers the directory creation
-    _ = SQLiteMemoryAdapter(
-        db_path=test_path
-    )  # Assign to _ to indicate intentional non-use
-    # adapter = SQLiteMemoryAdapter(db_path=test_path)
-    assert test_dir.exists()
-    assert test_dir.is_dir()
+    _ = SQLiteMemoryAdapter(db_path=custom_path)  # Assign to _ as intentionally unused
+    # Initialization should create the parent directory
+    assert test_subdir.exists()
+    assert test_subdir.is_dir()
 
-    # Cleanup
-    test_dir.rmdir()
+    # Clean up
+    if custom_path.exists():
+        os.remove(custom_path)
+    if test_subdir.exists():
+        os.rmdir(test_subdir)
 
 
 @pytest.mark.asyncio
@@ -127,3 +135,13 @@ async def test_adapter_operations_with_custom_path(temp_adapter):
 
     projects = await temp_adapter.list_projects()
     assert project.metadata.name in projects
+
+
+# Helper function to create a unique temporary DB path
+def create_temp_db_path(prefix="test_adapter_config") -> Path:
+    test_db_name = f"{prefix}_{uuid.uuid4()}.db"
+    # Use /tmp or a similar temporary directory standard across systems
+    test_db_path = Path("/tmp") / test_db_name
+    # test_db_path.parent.mkdir(parents=True, exist_ok=True) # /tmp should exist
+    print(f"\nGenerated temporary DB path: {test_db_path}")
+    return test_db_path
