@@ -10,11 +10,13 @@
 
 > "In the AI era, context isn't supplementary to code—it's the primary creation."
 
-PAELLADOC is a Multi-Capability Port (MCP) that implements the [5 Philosophical Principles of AI-First Development](https://paelladoc.com/blog/ai-first-development-principles/), transforming how we create software in the age of AI.
+PAELLADOC is an **AI-First Development framework** that implements the [5 Philosophical Principles of AI-First Development](https://paelladoc.com/blog/ai-first-development-principles/), transforming how we create software in the age of AI.
 
-## 🎯 What is an MCP?
+## 🎯 PAELLADOC and the Model Context Protocol (MCP)
 
-A Multi-Capability Port (MCP) is a protocol that allows Large Language Models (LLMs) to interact with your development environment. PAELLADOC is an MCP that provides AI-First development capabilities to any LLM that supports the protocol.
+PAELLADOC implements Anthropic's **Model Context Protocol (MCP)** ([see Anthropic's news](https://www.anthropic.com/news/model-context-protocol)). This protocol provides a structured way for Large Language Models (LLMs) to interact with external tools and context, enabling more sophisticated capabilities.
+
+By implementing MCP, PAELLADOC allows LLMs to leverage its specific AI-First development tools and workflows directly through this standard. This approach facilitates functionalities similar to **Tool Use** or **Function Calling** seen in other platforms, but specifically utilizes the Anthropic MCP standard for interaction.
 
 ## 🎯 The AI-First Philosophy
 
@@ -100,31 +102,53 @@ pip install paelladoc
 ### 2. Use with Your Favorite LLM
 
 #### Cursor IDE
-```python
-# In your Cursor settings, add PAELLADOC as an MCP:
+```json
+# In your .cursor/mcp.json file:
 {
-    "mcps": {
-        "paelladoc": {
-            "host": "localhost",
-            "port": 8000
-        }
+  "mcpServers": {
+    "paelladoc": {
+      "command": "python", // Use the python from your environment where paelladoc is installed
+      "args": [
+        "-m",
+        "paelladoc.ports.input.mcp_server_adapter", // Module installed via pip
+        "--stdio"                                  // Use stdio communication
+      ]
+      // 'cwd' and 'env' typically not needed for installed packages
     }
+    // ... other servers
+  }
 }
 ```
 
 #### Claude
-```python
-# In your Claude conversation:
-Using the PAELLADOC MCP at localhost:8000, let's start a new project...
+```json
+# Configure Claude's Tool Use settings to run PAELLADOC as a local command:
+{
+  "tool_name": "paelladoc",
+  "command": "python", // Use the python from your environment where paelladoc is installed
+  "args": [
+    "-m",
+    "paelladoc.ports.input.mcp_server_adapter", // Module installed via pip
+    "--stdio"                                  // Use stdio communication
+  ]
+  // Specific configuration might vary based on Claude's exact Tool Use implementation
+  // for local commands. 'cwd' and 'env' typically not needed for installed packages.
+}
 ```
 
 #### GitHub Copilot
-```python
-# In your .copilot/mcps.json:
+```json
+# In your .copilot/mcps.json (or similar Copilot config):
 {
-    "paelladoc": {
-        "endpoint": "http://localhost:8000"
-    }
+  "paelladoc": {
+      "command": "python", // Use the python from your environment
+      "args": [
+        "-m",
+        "paelladoc.ports.input.mcp_server_adapter",
+        "--stdio"
+      ]
+      // 'cwd' typically not needed here
+   }
 }
 ```
 
@@ -139,15 +163,29 @@ Once connected, your LLM will have access to all PAELLADOC commands:
 
 The LLM will handle all the complexity - you just need to express your intent in natural language!
 
+## 🚦 Version Stability
+
+*   **PyPI Version (Stable):** The versions published on PyPI (`pip install paelladoc`) are stable releases recommended for general use.
+*   **GitHub Repository (Development):** The `main` branch (and other branches) on the [GitHub repository](https://github.com/jlcases/paelladoc) contains the latest development code. This version may include new features or changes that are not yet fully tested and should be considered unstable. Use this version if you want to try out cutting-edge features or contribute to development.
+
 ## 🚀 Quick Start
 
-```bash
-# Initialize with AI-First principles
-paella new my-project --ai-first
+1.  **Ensure PAELLADOC is installed** (`pip install paelladoc`) and **configured** in your LLM's tool/MCP settings (see examples above).
+2.  **Start interacting with PAELLADOC** through your LLM by issuing a command. The primary command to initiate a new project or list existing ones is `PAELLA`.
 
-# Let the context guide you
-paella continue my-project
-```
+    *   **In Cursor or a similar chat interface, simply type:**
+        ```
+        PAELLA
+        ```
+    *   **Alternatively, you can instruct the LLM more explicitly:**
+        ```
+        Use PAELLADOC to start documenting a new project.
+        ```
+        ```
+        Tell PAELLADOC I want to create documentation.
+        ```
+
+3.  **Follow the LLM's lead:** PAELLADOC (via the LLM) will then guide you through the process interactively, asking for project details, template choices, etc.
 
 ## 📊 MECE Documentation Structure
 
@@ -272,24 +310,16 @@ import paelladoc.windsurf as pdw
 pdw.enable_paelladoc()
 ```
 
-### 3. Basic Usage
+### 3. Basic Usage Through Your LLM
 
-1. Start a new documentation project:
-```bash
-paella new my-project
-```
+Once PAELLADOC is installed and configured in your LLM:
 
-2. Follow the interactive prompts to:
-   - Select documentation templates
-   - Define project scope
-   - Set up initial documentation structure
-
-3. Use the MECE commands:
-```bash
-paella continue  # Continue documentation work
-paella verify   # Verify documentation coverage
-paella generate # Generate documentation from code
-```
+1.  **Initiate Documentation:** Ask your LLM to start a new documentation project using PAELLADOC (e.g., `"Use PAELLADOC to start a new project"` or simply `"PAELLA"`).
+2.  **Follow the Prompts:** The LLM, guided by PAELLADOC, will ask you for project details, template selections, etc.
+3.  **Leverage Capabilities:** Instruct your LLM to use PAELLADOC's capabilities as needed:
+    *   `"Use PAELLADOC to continue working on my-project"` (Invokes `CONTINUE` capability)
+    *   `"Ask PAELLADOC to verify the documentation for my-project"` (Invokes `VERIFY` capability)
+    *   `"Tell PAELLADOC to generate documentation from the code in my-project"` (Invokes `GENERATE_DOC` capability - *Note: Command name might differ*) 
 
 ## 📊 MECE Documentation Structure
 
@@ -336,53 +366,32 @@ For more detailed information about the system architecture, see `.cursor/rules/
 
 ### 5. Documentation to Development Bridge
 
-```bash
-# Generate code from documentation
-GENERATE_CODE projectname
+PAELLADOC bridges the gap between documentation and code:
 
-# Create a new repository for generated code
-CREATE_REPO repo_name="my-project" repo_type="github"
-```
-
-- **Documentation Completeness Tracking**: Automatically tracks completion percentage
-- **Code Generation**: Creates full applications from completed documentation
-- **Development Rules Extraction**: Identifies patterns, rules, and guidelines from docs
-- **Seamless Transition**: Bridges the gap between documentation and development
-- **Context Preservation**: Maintains all project context for AI-assisted development
+- **Code Generation:** LLMs can leverage the `GENERATE_CODE` capability to create full applications based on completed and verified documentation stored within PAELLADOC.
+- **Repository Creation:** The `CREATE_REPO` capability allows LLMs to automatically set up a new repository (e.g., on GitHub) for the generated code.
+- **Context Preservation:** All project context, rules, and guidelines identified during documentation are maintained and accessible, ensuring generated code aligns with the established standards.
+- **Seamless Transition:** Facilitates a smooth flow from documentation to development.
 
 ### 6. Complete Product Management Suite
 
-```bash
-# Create a new user story
-STORY operation="create" title="User registration" description="As a user, I want to register..."
+PAELLADOC integrates product management directly into the development context. LLMs can use specific capabilities to manage:
 
-# Plan a sprint
-SPRINT operation="plan" name="Sprint 1" start_date="2024-07-15" end_date="2024-07-29"
+- **User Stories:** Create, update, and track user stories (`STORY` capability).
+- **Tasks:** Manage development tasks, assignees, due dates, and dependencies (`TASK` capability).
+- **Sprints:** Plan and track sprints, including capacity and velocity (`SPRINT` capability).
+- **Meetings:** Record meeting notes and action items (`MEETING` capability).
+- **Reporting:** Generate comprehensive status reports, burndown charts, etc. (`REPORT` capability).
 
-# Record meeting notes
-MEETING operation="create" title="Sprint planning" date="2024-07-14"
+## 🛠️ Core Capabilities via MCP
 
-# Generate a sprint report
-REPORT report_type="sprint" sprint_id="SP-1"
-```
+PAELLADOC exposes its core functionalities to connected LLMs via the Model Context Protocol (MCP). Your LLM can leverage these capabilities by invoking the corresponding tools:
 
-- **User Story Management**: Create, update, and track user stories
-- **Sprint Planning**: Plan sprints with capacity and velocity tracking
-- **Meeting Management**: Record and distribute meeting notes with action items
-- **Task Tracking**: Manage tasks with assignees, due dates, and dependencies
-- **Progress Reporting**: Generate comprehensive status reports
-- **Visualization**: Create burndown charts and other visual aids
+*   **`PAELLA`**: Initiates new documentation projects or manages existing ones.
+*   **`CONTINUE`**: Resumes work on an existing documentation project.
+*   **`VERIFY`**: Checks documentation coverage and consistency.
+*   **`GENERATE_CODE`**: Generates code based on completed documentation.
+*   **`CREATE_REPO`**: Creates a new repository (e.g., on GitHub) for generated code.
+*   **`STORY`, `TASK`, `SPRINT`, `MEETING`, `REPORT`**: Manage various aspects of product development (user stories, tasks, sprints, meetings, reports) directly within the PAELLADOC context.
 
-## 🛠️ Professional Commands
-
-| Command | Description | Example |
-|---------|-------------|---------|
-| `PAELLA` | Start new documentation project | `PAELLA new-product` |
-| `CONTINUE` | Continue existing documentation | `CONTINUE new-product` |
-| `GENERATE_CODE` | Generate code from documentation | `GENERATE_CODE new-product` |
-| `CREATE_REPO` | Create repository for code | `CREATE_REPO repo_name="new-product"` |
-| `STORY` | Manage user stories | `STORY operation="create" title="User login"` |
-| `TASK` | Manage tasks | `TASK operation="create" title="Implement login form"` |
-| `SPRINT` | Manage sprints | `SPRINT operation="create" name="Sprint 1"` |
-| `MEETING` | Manage meeting notes | `MEETING operation="create" title="Planning"` |
-| `REPORT` | Generate reports | `REPORT report_type="sprint" sprint_id="SP-1"`
+*(Note: The exact invocation method and parameters might depend on the specific LLM and its Tool Use/Function Calling implementation.)*
