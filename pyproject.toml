@@ -1,5 +1,5 @@
 [build-system]
-requires = ["poetry-core"]
+requires = ["poetry-core>=1.0.0"]
 build-backend = "poetry.core.masonry.api"
 
 [project]
@@ -7,44 +7,34 @@ name = "paelladoc"
 version = "0.3.0"
 description = "Interactive MCP server and documentation tooling for Paelladoc"
 readme = "README.md"
-requires-python = ">=3.12"
+requires-python = ">=3.12,<3.13"
 license = { file = "LICENSE" }
-authors = [ { name = "jlcases" } ]
+authors = [
+    { name = "jlcases" }
+]
 dependencies = [
-  "repopack==0.1.1",
-  "PyYAML==6.0.1",
-  "sqlmodel==0.0.19",
-  "aiosqlite==0.20.0"
+    "repopack==0.1.1",
+    "PyYAML==6.0.1",
+    "sqlmodel==0.0.19",
+    "aiosqlite==0.20.0",
+    "fastapi==0.111.1",
+    "uvicorn[standard]==0.30.3",
+    "greenlet==3.0.3",
+    "chromadb==0.5.4",
+    "onnxruntime==1.19.0",
+    "protobuf~=3.20.0"
 ]
 
-[tool.poetry]
-name = "paelladoc"
-version = "0.1.0"
-description = "AI-First Development Framework"
-authors = ["Your Name <you@example.com>"]
-readme = "README.md"
-# Add license, repository, etc. if applicable
+[project.optional-dependencies]
+dev = [
+    "pytest==8.3.2",
+    "pytest-asyncio==0.23.8",
+    "requests==2.32.3"
+]
 
-[tool.poetry.dependencies]
-python = ">=3.12,<3.13" # Align with [project] requires-python
-fastapi = "^0.111.1"
-uvicorn = {extras = ["standard"], version = "^0.30.3"}
-sqlmodel = "^0.0.19"
-aiosqlite = "^0.20.0"
-greenlet = "^3.0.3"
-chromadb = "^0.5.4"
-onnxruntime = "^1.19.0"
-protobuf = "~=3.20.0"
-# We will install mcp-sdk separately via command line
-
-[tool.poetry.group.dev.dependencies]
-pytest = "^8.3.2"
-pytest-asyncio = "^0.23.8"
-requests = "^2.32.3"
+[project.scripts]
+paelladoc = "paelladoc.cli:main"
 
 [tool.pytest.ini_options]
 pythonpath = "."
-asyncio_mode = "auto" # For pytest-asyncio
-
-[project.scripts]
-paelladoc = "paelladoc.cli:main" 
+asyncio_mode = "auto" # For pytest-asyncio 
