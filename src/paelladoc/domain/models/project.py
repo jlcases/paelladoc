@@ -3,6 +3,7 @@ from typing import List, Dict, Optional, Set
 from pydantic import BaseModel, Field
 import datetime
 from pathlib import Path
+import uuid
 
 class DocumentStatus(str, Enum):
     PENDING = "pending"
@@ -67,6 +68,7 @@ class ProjectDocument(BaseModel):
 
 class ArtifactMeta(BaseModel):
     """Metadata for an artifact categorized according to the MECE taxonomy"""
+    id: uuid.UUID = Field(default_factory=uuid.uuid4)
     name: str
     bucket: Bucket
     path: Path  # Relative path from project root
