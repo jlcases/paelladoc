@@ -48,6 +48,28 @@ PAELLADOC is licensed under the MIT License with Commons Clause. Before contribu
 
 ## Development Guidelines
 
+### Test-Driven Development (TDD)
+
+We follow strict TDD practices in this project. Each feature or bug fix MUST follow the RED-GREEN-REFACTOR cycle:
+
+1. **RED Phase** 🔴
+   - Write a failing test first
+   - Commit with prefix `test(red):` 
+   - Example: `test(red): add test for MCP server plugin registration`
+
+2. **GREEN Phase** 💚
+   - Implement minimal code to make the test pass
+   - Commit with prefix `feat(green):` 
+   - Example: `feat(green): implement plugin registration`
+
+3. **REFACTOR Phase** 🔄
+   - Clean up and optimize the code
+   - Ensure tests remain green
+   - Commit with prefix `refactor:` 
+   - Example: `refactor: improve plugin registration efficiency`
+
+Each PR should show this TDD cycle in the commit history. PRs without proper TDD commits will need revision.
+
 ### Code Style
 - Use clear, descriptive variable and function names
 - Follow existing code formatting

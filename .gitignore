@@ -119,3 +119,6 @@ cover/
 logs/
 tmp/
 temp/
+
+# Exclude Cursor MCP server configuration file
+.cursor/mcp.json

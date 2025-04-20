@@ -14,8 +14,8 @@ project_root = Path(__file__).parent.parent.parent.absolute()
 if str(project_root) not in sys.path:
     sys.path.insert(0, str(project_root))
 
-# Import the MCP instance directly for testing
-from paelladoc_core import mcp, ping
+# Import directly from the domain layer
+from paelladoc.domain.core_logic import mcp, ping
 
 class TestCursorE2E(unittest.TestCase):
     """End-to-End tests simulating Cursor interacting with Paelladoc."""

@@ -1,8 +1,8 @@
 #!/usr/bin/env python3
 """
-PAELLADOC MCP Server entry point.
+PAELLADOC MCP Server entry point (Input Adapter).
 
-Relies on paelladoc_core.py for MCP functionality and FastMCP instance.
+Relies on paelladoc_core.py (now core_logic.py in domain) for MCP functionality and FastMCP instance.
 Simply runs the imported MCP instance.
 Adds server-specific resources and prompts using decorators.
 """
@@ -11,12 +11,13 @@ import sys
 import logging
 from pathlib import Path
 from typing import Optional, Dict, Any
+import time # Add time import
 
 # Import TextContent for prompt definition
-from mcp.types import TextContent
+from mcp.types import TextContent # Assuming mcp is installed in .venv
 
-# Import the core FastMCP instance and logger from paelladoc_core
-from paelladoc_core import mcp, logger # mcp is FastMCP here
+# Import the core FastMCP instance and logger from the domain layer
+from paelladoc.domain.core_logic import mcp, logger # Corrected import path
 
 # --- Add specific tools/resources/prompts for this entry point using decorators --- #
 
@@ -24,7 +25,7 @@ from paelladoc_core import mcp, logger # mcp is FastMCP here
 def generate_documentation(repo_path: str, output_path: Optional[str] = None) -> Dict[str, Any]:
     """Generate documentation for a repository."""
     try:
-        # TODO: Implement actual documentation generation logic
+        # TODO: Implement actual documentation generation logic using Application layer
         logger.info(f"Placeholder: Generating docs for {repo_path} to {output_path or 'default'}")
         return {"status": "success", "message": "Documentation generation (placeholder) complete"}
     except Exception as e:
@@ -35,7 +36,7 @@ def generate_documentation(repo_path: str, output_path: Optional[str] = None) ->
 def verify_documentation(docs_path: str) -> Dict[str, Any]:
     """Verify documentation against codebase."""
     try:
-        # TODO: Implement actual documentation verification logic
+        # TODO: Implement actual documentation verification logic using Application layer
         logger.info(f"Placeholder: Verifying docs at {docs_path}")
         return {"status": "success", "message": "Documentation verification (placeholder) complete"}
     except Exception as e:
@@ -46,6 +47,7 @@ def verify_documentation(docs_path: str) -> Dict[str, Any]:
 def get_readme() -> str:
     """Get the project README content."""
     try:
+        # Assuming README.md is in the project root (cwd)
         readme_path = Path("README.md")
         if readme_path.exists():
             return readme_path.read_text()
@@ -59,7 +61,9 @@ def get_readme() -> str:
 @mcp.resource("docs://templates/{template_name}") # Use decorator
 def get_template(template_name: str) -> str:
     """Get a documentation template."""
-    template_path = Path("mcp_server/plugins/templates") / f"{template_name}.md"
+    # Corrected path relative to src directory
+    base_path = Path(__file__).parent.parent.parent.parent # Should point to src/
+    template_path = base_path / "paelladoc" / "adapters" / "plugins" / "templates" / f"{template_name}.md"
     try:
         if template_path.exists():
             return template_path.read_text()
@@ -88,10 +92,11 @@ if __name__ == "__main__":
         file_handler = logging.FileHandler(log_file)
         file_handler.setFormatter(logging.Formatter('%(asctime)s - %(name)s - %(levelname)s - %(message)s'))
         logging.getLogger().addHandler(file_handler)
-        logging.getLogger().setLevel(logging.INFO) 
+        logging.getLogger().setLevel(logging.DEBUG)
         logger.info(f"Logging configured. Outputting to {log_file}")
     except Exception as log_e:
-        logging.basicConfig(level=logging.INFO, format='%(asctime)s - %(levelname)s - %(message)s')
+        logging.basicConfig(level=logging.DEBUG, format='%(asctime)s - %(levelname)s - %(message)s')
+        # Re-get logger after basicConfig potentially reconfigured root
         logger = logging.getLogger(__name__) 
         logger.error(f"Could not configure file logging: {log_e}. Logging to stderr.")
 
@@ -101,6 +106,9 @@ if __name__ == "__main__":
     try:
         if run_mode == "stdio":
             logger.info("Starting PAELLADOC MCP server in STDIO mode via FastMCP mcp.run(transport='stdio')...")
+            logger.debug("Waiting 10 seconds before mcp.run()...")
+            time.sleep(10) # Add sleep before run
+            logger.debug("Attempting mcp.run(transport=\"stdio\")")
             mcp.run(transport="stdio") # Explicitly request stdio transport
         else:
             # Attempt to run the default web server (SSE)

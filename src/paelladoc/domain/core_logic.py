@@ -19,12 +19,12 @@ mcp = FastMCP("PAELLADOC")
 
 # Import plugins dynamically to register tools/prompts
 try:
-    # Assuming mcp_server is adjacent or in PYTHONPATH correctly handled by entry point
-    import mcp_server.plugins
-    logger.info("Successfully loaded plugins from mcp_server.plugins")
+    # Import from the new adapters location
+    import paelladoc.adapters.plugins
+    logger.info("Successfully loaded plugins from paelladoc.adapters.plugins")
 except ImportError as e:
     # Log as warning, server might still be usable with base tools
-    logger.warning(f"Could not import plugins from mcp_server.plugins: {e}")
+    logger.warning(f"Could not import plugins from paelladoc.adapters.plugins: {e}")
 except Exception as e:
     # Log as error for unexpected issues during import
     logger.error(f"An unexpected error occurred during plugin import: {e}", exc_info=True)
