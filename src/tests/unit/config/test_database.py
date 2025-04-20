@@ -7,7 +7,6 @@ import pytest
 from paelladoc.config.database import (
     get_project_root,
     get_db_path,
-    DEVELOPMENT_DB_PATH,
     PRODUCTION_DB_PATH,
 )
 
@@ -42,6 +41,7 @@ def test_get_project_root():
     assert root.is_dir()
     assert (root / "src").exists()
     assert (root / "src" / "paelladoc").exists()
+    assert (root / "pyproject.toml").exists()
 
 
 def test_get_db_path_with_env_var(clean_env):
@@ -54,17 +54,6 @@ def test_get_db_path_with_env_var(clean_env):
     assert str(db_path) == custom_path
 
 
-def test_get_db_path_development_mode(clean_env):
-    """Test that development mode uses project root path."""
-    os.environ["PAELLADOC_ENV"] = "development"
-
-    db_path = get_db_path()
-    assert isinstance(db_path, Path)
-    assert db_path == DEVELOPMENT_DB_PATH
-    assert db_path.name == "paelladoc_memory.db"
-    assert db_path.parent == get_project_root()
-
-
 def test_get_db_path_production_default(clean_env):
     """Test that production mode uses home directory."""
     db_path = get_db_path()
@@ -75,26 +64,9 @@ def test_get_db_path_production_default(clean_env):
     assert db_path.parent.parent == Path.home()
 
 
-def test_development_db_path_constant():
-    """Test that DEVELOPMENT_DB_PATH is correctly set."""
-    assert isinstance(DEVELOPMENT_DB_PATH, Path)
-    assert DEVELOPMENT_DB_PATH.name == "paelladoc_memory.db"
-    assert DEVELOPMENT_DB_PATH.parent == get_project_root()
-
-
 def test_production_db_path_constant():
     """Test that PRODUCTION_DB_PATH is correctly set."""
     assert isinstance(PRODUCTION_DB_PATH, Path)
     assert PRODUCTION_DB_PATH.name == "memory.db"
     assert PRODUCTION_DB_PATH.parent.name == ".paelladoc"
     assert PRODUCTION_DB_PATH.parent.parent == Path.home()
-
-
-def test_env_var_takes_precedence_over_development(clean_env):
-    """Test that PAELLADOC_DB_PATH takes precedence over PAELLADOC_ENV."""
-    custom_path = "/custom/path/db.sqlite"
-    os.environ["PAELLADOC_DB_PATH"] = custom_path
-    os.environ["PAELLADOC_ENV"] = "development"
-
-    db_path = get_db_path()
-    assert str(db_path) == custom_path

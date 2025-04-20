@@ -9,12 +9,14 @@ from alembic.config import Config
 from alembic.script import ScriptDirectory
 from alembic.runtime.migration import MigrationContext
 from sqlalchemy.ext.asyncio import create_async_engine
+import sys
 
 # Import get_db_path to test its behavior directly
-from paelladoc.config.database import get_db_path, DEVELOPMENT_DB_PATH
+from paelladoc.config.database import get_db_path
 
 # Get project root to build absolute paths if needed
-PROJECT_ROOT = Path(__file__).parent.parent.parent.parent
+PROJECT_ROOT = Path(__file__).parent.parent.parent.parent.absolute()
+sys.path.insert(0, str(PROJECT_ROOT))
 
 
 @pytest.fixture
@@ -186,5 +188,3 @@ def test_alembic_respects_environment_precedence(clean_env, temp_db_path):
     # Verify that get_db_path() returns the path from PAELLADOC_DB_PATH
     resolved_path = get_db_path()
     assert resolved_path == temp_db_path
-    # Ensure it's not the development path
-    assert resolved_path != DEVELOPMENT_DB_PATH

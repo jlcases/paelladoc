@@ -110,13 +110,15 @@ pip install paelladoc
 {
   "mcpServers": {
     "paelladoc": {
-      "command": "python", // Use the python from your environment where paelladoc is installed
+      "command": "/path/to/your/paelladoc_venv/bin/python",
       "args": [
         "-m",
-        "paelladoc.ports.input.mcp_server_adapter", // Module installed via pip
-        "--stdio"                                  // Use stdio communication
-      ]
-      // 'cwd' and 'env' typically not needed for installed packages
+        "paelladoc.ports.input.mcp_server_adapter",
+        "--stdio"
+      ],
+      "env": {
+        "PAELLADOC_DB_PATH": "/path/where/you/want/paelladoc_memory.db"
+      }
     }
     // ... other servers
   }
@@ -125,17 +127,15 @@ pip install paelladoc
 
 #### Claude
 ```json
-# Configure Claude's Tool Use settings to run PAELLADOC as a local command:
+# Configure Claude's Tool Use settings similarly, pointing to the dedicated venv python:
 {
   "tool_name": "paelladoc",
-  "command": "python", // Use the python from your environment where paelladoc is installed
+  "command": "/path/to/your/paelladoc_venv/bin/python",
   "args": [
     "-m",
-    "paelladoc.ports.input.mcp_server_adapter", // Module installed via pip
-    "--stdio"                                  // Use stdio communication
+    "paelladoc.ports.input.mcp_server_adapter",
+    "--stdio"
   ]
-  // Specific configuration might vary based on Claude's exact Tool Use implementation
-  // for local commands. 'cwd' and 'env' typically not needed for installed packages.
 }
 ```
 
@@ -144,13 +144,15 @@ pip install paelladoc
 # In your .copilot/mcps.json (or similar Copilot config):
 {
   "paelladoc": {
-      "command": "python", // Use the python from your environment
+      "command": "/path/to/your/paelladoc_venv/bin/python",
       "args": [
         "-m",
         "paelladoc.ports.input.mcp_server_adapter",
         "--stdio"
-      ]
-      // 'cwd' typically not needed here
+      ],
+      "env": {
+        "PAELLADOC_DB_PATH": "/path/where/you/want/paelladoc_memory.db"
+      }
    }
 }
 ```
