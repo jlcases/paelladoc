@@ -61,7 +61,13 @@ class SQLiteMemoryAdapter(MemoryPort):
             purpose=db_memory.purpose,
             target_audience=db_memory.target_audience,
             objectives=db_memory.objectives,
+            interaction_language=db_memory.interaction_language,
+            documentation_language=db_memory.documentation_language,
         )
+
+        # Handle base_path if present, converting from string to Path
+        if db_memory.base_path:
+            domain_metadata.base_path = Path(db_memory.base_path)
 
         # Reconstruct the artifacts dictionary from the flat list
         domain_artifacts: Dict[Bucket, List[ArtifactMeta]] = {
@@ -127,6 +133,20 @@ class SQLiteMemoryAdapter(MemoryPort):
                     db_memory.objectives = memory.metadata.objectives
                     db_memory.taxonomy_version = memory.taxonomy_version
 
+                    # Handle new fields
+                    db_memory.interaction_language = (
+                        memory.metadata.interaction_language
+                    )
+                    db_memory.documentation_language = (
+                        memory.metadata.documentation_language
+                    )
+
+                    # Convert Path to string if present
+                    if memory.metadata.base_path:
+                        db_memory.base_path = str(memory.metadata.base_path)
+                    else:
+                        db_memory.base_path = None
+
                     # Sync Artifacts (more complex: compare domain dict with db list)
                     db_artifacts_map: Dict[uuid.UUID, ArtifactMetaDB] = {
                         a.id: a for a in db_memory.artifacts
@@ -182,6 +202,13 @@ class SQLiteMemoryAdapter(MemoryPort):
                         created_at=now,
                         last_updated_at=now,
                         artifacts=[],
+                        # Add new fields
+                        interaction_language=memory.metadata.interaction_language,
+                        documentation_language=memory.metadata.documentation_language,
+                        # Convert Path to string if present
+                        base_path=str(memory.metadata.base_path)
+                        if memory.metadata.base_path
+                        else None,
                     )
                     session.add(db_memory)
                     await session.flush()

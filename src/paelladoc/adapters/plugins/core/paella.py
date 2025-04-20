@@ -266,6 +266,7 @@ async def core_paella(
     continue_mode: str = "",
     documentation_language: str = "",
     new_project_name: str = "",
+    base_path: str = "",
 ) -> dict:
     """Starts the PAELLADOC documentation process.
 
@@ -276,6 +277,7 @@ async def core_paella(
         continue_mode: Mode for continuing the project
         documentation_language: Language for generated documentation (es-ES, en-US, etc)
         new_project_name: Name for the new project if creating one
+        base_path: Base path for storing project files
     """
 
     logging.info(
@@ -525,13 +527,37 @@ async def core_paella(
             )
             return {"status": "error", "message": message}
 
+    # 6.5 Ask for base path if missing
+    if action == "create_new" and new_project_name and not base_path:
+        message = (
+            "¿Cuál es la ruta base para guardar los archivos del proyecto?"
+            if interaction_language == SupportedLanguage.ES_ES
+            else "What is the base path for storing project files?"
+        )
+        return {
+            "status": "input_needed",
+            "message": message,
+            "input_type": "text",
+            "next_param": "base_path",
+            "halt": True,
+        }
+
     # 7. Create new project
-    if action == "create_new" and new_project_name and documentation_language:
+    if (
+        action == "create_new"
+        and new_project_name
+        and documentation_language
+        and base_path
+    ):
+        # Convert relative paths to absolute and handle tilde expansion
+        abs_base_path = Path(base_path).expanduser().resolve()
+
         # Create initial metadata
         metadata = ProjectMetadata(
             name=new_project_name,
             interaction_language=interaction_language,
             documentation_language=documentation_language,
+            base_path=abs_base_path,  # Store the absolute path
             purpose=None,
             target_audience=None,
             objectives=[],

@@ -59,6 +59,9 @@ class ProjectMetadata(BaseModel):
     purpose: Optional[str] = None
     target_audience: Optional[str] = None
     objectives: Optional[List[str]] = None
+    base_path: Optional[Path] = None
+    interaction_language: Optional[str] = None
+    documentation_language: Optional[str] = None
     # Add other relevant metadata fields as needed
 
 
