@@ -149,16 +149,13 @@ Now, tell your LLM tool (like Cursor) how to *find and run* the PAELLADOC you ju
 {
   "mcpServers": {
     "paelladoc": {
-      // *** Replace with the ACTUAL full path to python in your venv ***
       "command": "/Users/your_username/.paelladoc_venv/bin/python", 
       "args": [
         "-m",
-        "paelladoc.ports.input.mcp_server_adapter", // Module installed in the venv
-        "--stdio"                                  // Use stdio communication
+        "paelladoc.ports.input.mcp_server_adapter",
+        "--stdio"
       ],
       "env": {
-          // Optional: Define a custom path for the database if needed
-          // "PAELLADOC_DB_PATH": "/path/where/you/want/paelladoc_memory.db"
       }
     }
     // ... other servers
@@ -173,10 +170,9 @@ Configure the tool use settings similarly, always ensuring the `command` points 
 // Example structure (adapt as needed):
 {
   // ... platform specific tool definition ...
-  "command": "/Users/your_username/.paelladoc_venv/bin/python", // *** Replace with ACTUAL full path ***
+  "command": "/Users/your_username/.paelladoc_venv/bin/python",
   "args": [ "-m", "paelladoc.ports.input.mcp_server_adapter", "--stdio" ],
-  "env": { // Optional
-      // "PAELLADOC_DB_PATH": "/custom/path/paelladoc_memory.db"
+  "env": {
   }
   // ...
 }
