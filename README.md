@@ -256,7 +256,7 @@ PAELLADOC is a revolutionary documentation system that follows a MECE (Mutually 
 
 ## 🎯 What is PAELLADOC?
 
-PAELLADOC is a Multi-Capability Port (MCP) that can be integrated into various AI platforms to provide intelligent documentation assistance. It uses a comprehensive MECE taxonomy to ensure that no aspect of your project's documentation is overlooked.
+PAELLADOC implements Anthropic's **Model Context Protocol (MCP)** ([see Anthropic's news](https://www.anthropic.com/news/model-context-protocol)). It can be integrated into various AI platforms to provide intelligent documentation assistance. It uses a comprehensive MECE taxonomy to ensure that no aspect of your project's documentation is overlooked.
 
 ### Key Features
 
