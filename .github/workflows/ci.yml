@@ -29,14 +29,10 @@ jobs:
           echo ".venv/bin" >> $GITHUB_PATH
         shell: bash
 
-      - name: Install Dependencies and Dev Dependencies
+      - name: Install Dependencies
         run: |
           source .venv/bin/activate
-          # Install project dependencies
-          uv pip install -e .
-          # Install test dependencies directly
-          uv pip install pytest==8.3.2 pytest-asyncio==0.23.8 requests==2.32.3
-          python -m pip list  # Debug: list installed packages
+          uv pip install -e '.[dev]'  # Now we can use the [dev] extra
         shell: bash
         
       - name: Install mcp-sdk from Git
@@ -48,5 +44,6 @@ jobs:
       - name: Run tests
         run: |
           source .venv/bin/activate
-          python -m pytest -q
+          cd /home/runner/work/paelladoc/paelladoc  # Ensure we're in the right directory
+          PYTHONPATH=/home/runner/work/paelladoc/paelladoc python -m pytest -v  # Run with verbose output for debugging
         shell: bash
