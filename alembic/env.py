@@ -2,7 +2,14 @@
 
 import asyncio
 import os
+import sys  # Added from main
+from pathlib import Path # Added from main
 from logging.config import fileConfig
+
+# Add project root to sys.path to allow importing models (from main)
+project_root = Path(__file__).parent.parent.parent.absolute()
+if str(project_root) not in sys.path:
+    sys.path.insert(0, str(project_root))
 
 from alembic import context
 # Import SQLModel
@@ -10,8 +17,6 @@ from sqlmodel import SQLModel
 from sqlalchemy import engine_from_config, pool
 from sqlalchemy.ext.asyncio import AsyncEngine
 
-# Remove direct import of Base if not needed elsewhere
-# from paelladoc.adapters.output.sqlite.models import Base
 # Import models just to ensure they are registered with SQLModel.metadata
 import paelladoc.adapters.output.sqlite.models
 from paelladoc.config.database import get_db_path
@@ -29,13 +34,6 @@ if config.config_file_name is not None:
 # for 'autogenerate' support
 # Use SQLModel.metadata directly
 target_metadata = SQLModel.metadata
-
-# Remove this loop, it might cause issues
-# # Set extend_existing=True for all tables
-# for table in target_metadata.tables.values():
-#     table.extend_existing = True
-
-# After obtaining config object, compute DB path and set URL
 
 # Determine DB path precedence: environment variable overrides helper
 _db_path = os.getenv("PAELLADOC_DB_PATH", str(get_db_path()))
@@ -89,7 +87,6 @@ async def run_migrations_online() -> None:
     async with connectable.connect() as connection:
         # Use lambda to ensure do_run_migrations is called correctly by run_sync
         await connection.run_sync(lambda sync_conn: do_run_migrations(sync_conn))
-        # await connection.run_sync(do_run_migrations, connection) # Revert previous change
 
     await connectable.dispose()
 
@@ -105,14 +102,7 @@ else:
 
     if loop and loop.is_running():
         # If loop exists and is running, schedule the coroutine
-        # Use ensure_future or create_task depending on preference/version
-        # loop.ensure_future(run_migrations_online())
-        # For broader compatibility, create_task is generally preferred
         task = loop.create_task(run_migrations_online())
-        # If running within a test that awaits other things,
-        # we might need to wait for this task explicitly.
-        # However, Alembic's structure might handle this implicitly.
-        # If issues persist, investigate awaiting this task.
     else:
         # If no loop running, use asyncio.run as before
         asyncio.run(run_migrations_online())
