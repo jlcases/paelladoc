@@ -32,6 +32,9 @@ uvicorn = {extras = ["standard"], version = "^0.30.3"}
 sqlmodel = "^0.0.19"
 aiosqlite = "^0.20.0"
 greenlet = "^3.0.3"
+chromadb = "^0.5.4"
+onnxruntime = "^1.19.0"
+protobuf = "~=3.20.0"
 # We will install mcp-sdk separately via command line
 
 [tool.poetry.group.dev.dependencies]
