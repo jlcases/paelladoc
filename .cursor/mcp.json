@@ -4,12 +4,12 @@
       "command": "/Users/jlcases/codigo/paelladoc/.venv/bin/python",
       "args": [
         "-m",
-        "server",
+        "paelladoc.ports.input.mcp_server_adapter",
         "--stdio"
       ],
       "cwd": "/Users/jlcases/codigo/paelladoc",
       "env": {
-        "PYTHONPATH": "/Users/jlcases/codigo/paelladoc:/Users/jlcases/codigo/paelladoc/mcp_server:/Users/jlcases/codigo/paelladoc/commands",
+        "PYTHONPATH": "/Users/jlcases/codigo/paelladoc/src:/Users/jlcases/codigo/paelladoc",
         "DEBUG": "true"
       },
       "disabled": false
