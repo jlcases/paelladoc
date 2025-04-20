@@ -15,20 +15,28 @@ jobs:
       
       - name: Install uv
         run: curl -LsSf https://astral.sh/uv/install.sh | sh
-        # Add uv to the path for subsequent steps
         env:
           UV_HOME: /home/runner/.uv
         shell: bash
         
       - name: Add uv to PATH
-        run: echo "$HOME/.cargo/bin" >> $GITHUB_PATH
-        # Correct path for uv installed via script is typically $HOME/.cargo/bin
-        # Or potentially /home/runner/.uv/bin depending on install script output
-        # Let's assume .cargo/bin for now, adjust if needed based on actual run
+        # Using the default uv install path now which is often $HOME/.local/bin
+        # Or it might be $UV_HOME/bin. Let's try the more standard approach.
+        # The install script message usually tells the correct path.
+        # Trying $HOME/.local/bin first.
+        run: echo "$HOME/.local/bin" >> $GITHUB_PATH
+        shell: bash
+
+      - name: Create and Activate Virtual Environment
+        run: |
+          uv venv .venv # Create venv using uv
+          source .venv/bin/activate # Activate it for subsequent steps
+        shell: bash
 
       - name: Install Dependencies (excluding mcp-sdk)
-        run: uv pip install -e '.[dev]'
-        shell: bash # Ensure bash interprets the quotes correctly
+        # Now uv should find and use the activated .venv
+        run: uv pip install -e '.[dev]' 
+        shell: bash
         
       - name: Install mcp-sdk from Git
         run: uv pip install git+https://github.com/modelcontextprotocol/python-sdk.git
@@ -36,3 +44,4 @@ jobs:
 
       - name: Run tests
         run: pytest -q
+        shell: bash # Ensure pytest runs in the activated venv
