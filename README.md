@@ -193,27 +193,63 @@ PAELLADOC is a documentation system that uses AI to analyze code repositories an
 
 ## Installation
 
-1. Clone this repository:
+1. **Clone the repository:**
    ```bash
-   git clone https://github.com/yourusername/paelladoc.git
+   git clone <repository_url>
    cd paelladoc
    ```
-
-2. Create a virtual environment:
+2. **Install uv (if you don't have it):**
    ```bash
-   # On macOS/Linux
-   python3 -m venv .venv
+   pip install uv
+   # or: pipx install uv
+   ```
+3. **Create a virtual environment and install dependencies using uv:**
+   ```bash
+   uv venv .venv --python 3.12  # Or your desired Python 3.11+ version
    source .venv/bin/activate
-   
-   # On Windows
-   python -m venv .venv
-   .venv\Scripts\activate
+   uv pip install -r requirements.txt # Assuming you'll generate one, or list deps here
+   # Or install directly if no requirements file yet:
+   # uv pip install mcp pytest ruff sqlmodel chromadb "uvicorn[standard]" aiosqlite mcp-cli
    ```
 
-3. Install dependencies:
-   ```bash
-   pip install -r requirements.txt
-   ```
+## Running the MCP Server
+
+```bash
+# Activate the virtual environment
+source .venv/bin/activate
+
+# Run the server (defaults to http://0.0.0.0:8000)
+python server.py
+```
+
+## Interacting with the Server
+
+You can interact with the running server using `curl` or the `mcp-cli` tool.
+
+**Using `mcp-cli` (Recommended):**
+
+```bash
+# Install the CLI (if not already installed)
+uv pip install mcp-cli
+
+# Call the ping tool
+mcp-cli call http://localhost:8000 ping
+
+# Expected output:
+# {"status": "ok", "message": "pong"}
+```
+
+**Using `curl`:**
+
+```bash
+# Call the ping tool (disabling streaming for a simple response)
+curl -N http://localhost:8000/v1/tools/ping \\
+     -H "Content-Type: application/json" \\
+     -d '{"stream": false}'
+
+# Expected output:
+# {"status":"ok","message":"pong"}
+```
 
 ## Using GENERATE_CONTEXT and GENERATE_DOC
 

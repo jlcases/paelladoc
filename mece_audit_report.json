@@ -1,0 +1,11 @@
+{
+  "audit_timestamp": "2025-04-20T10:47:31.840940+00:00",
+  "scan_base_directory": ".cursor/rules",
+  "uncategorized_files": [],
+  "duplicate_files": {
+    "templates/conversation_flows/paella_initiation_flow.json": [
+      "Govern",
+      "Initiate"
+    ]
+  }
+}
