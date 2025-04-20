@@ -1,5 +1,5 @@
 from abc import ABC, abstractmethod
-from typing import Optional
+from typing import Optional, List
 
 # Import the domain model it needs to interact with
 from paelladoc.domain.models.project import ProjectMemory
@@ -37,6 +37,15 @@ class MemoryPort(ABC):
             
         Returns:
             True if the project memory exists, False otherwise.
+        """
+        pass
+
+    @abstractmethod
+    async def list_projects(self) -> List[str]:
+        """Lists the names of all existing projects.
+        
+        Returns:
+            A list of project names as strings. Returns an empty list if no projects exist.
         """
         pass
 

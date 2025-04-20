@@ -237,3 +237,24 @@ class SQLiteMemoryAdapter(MemoryPort):
             except Exception as e:
                 logger.error(f"Error checking project existence for '{project_name}': {e}", exc_info=True)
                 return False
+
+    async def list_projects(self) -> List[str]:
+        """Lists the names of all projects stored in the database.
+        
+        Returns:
+            A list of project names as strings. Empty list if no projects or error.
+        """
+        logger.debug("Listing all project names from database.")
+        await self._create_db_and_tables()
+
+        async with self.AsyncSessionFactory() as session:
+            try:
+                statement = select(ProjectMemoryDB.name)
+                results = await session.execute(statement)
+                project_names = results.scalars().all()
+                logger.debug(f"Found {len(project_names)} projects.")
+                return list(project_names)  # Ensure we return a Python list
+            except Exception as e:
+                logger.error(f"Error listing projects: {e}", exc_info=True)
+                # Return empty list on error to be consistent with interface
+                return []
