@@ -11,7 +11,6 @@ import sys
 import subprocess
 import argparse
 import glob
-import re
 from pathlib import Path
 import shutil
 

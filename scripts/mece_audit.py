@@ -159,7 +159,7 @@ def main():
             for f, cats in sorted_duplicates:
                 print(f"  - {f} -> {cats}")
         else:
-            print(f"\n[✓] No files found in multiple categories.")
+            print("\n[✓] No files found in multiple categories.")
 
         # Save updated taxonomy with timestamp
         save_taxonomy(TAXONOMY_FILE, taxonomy)

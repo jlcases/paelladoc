@@ -10,18 +10,18 @@ Adds server-specific resources and prompts using decorators.
 import sys
 import logging
 from pathlib import Path
-from typing import Optional, Dict, Any
-import time # Add time import
+import time  # Add time import
 
 # Import TextContent for prompt definition
-from mcp.types import TextContent # Assuming mcp is installed in .venv
+from mcp.types import TextContent  # Assuming mcp is installed in .venv
 
 # Import the core FastMCP instance and logger from the domain layer
-from paelladoc.domain.core_logic import mcp, logger # Corrected import path
+from paelladoc.domain.core_logic import mcp, logger  # Corrected import path
 
 # --- Add specific tools/resources/prompts for this entry point using decorators --- #
 
-@mcp.resource("docs://readme") # Use decorator
+
+@mcp.resource("docs://readme")  # Use decorator
 def get_readme() -> str:
     """Get the project README content."""
     try:
@@ -31,17 +31,25 @@ def get_readme() -> str:
             return readme_path.read_text()
         else:
             logger.warning("README.md not found in project root.")
-            return "README.md not found" # Keep simple return for resource
+            return "README.md not found"  # Keep simple return for resource
     except Exception as e:
         logger.error(f"Error reading README.md: {e}", exc_info=True)
         return f"Error reading README.md: {str(e)}"
 
-@mcp.resource("docs://templates/{template_name}") # Use decorator
+
+@mcp.resource("docs://templates/{template_name}")  # Use decorator
 def get_template(template_name: str) -> str:
     """Get a documentation template."""
     # Corrected path relative to src directory
-    base_path = Path(__file__).parent.parent.parent.parent # Should point to src/
-    template_path = base_path / "paelladoc" / "adapters" / "plugins" / "templates" / f"{template_name}.md"
+    base_path = Path(__file__).parent.parent.parent.parent  # Should point to src/
+    template_path = (
+        base_path
+        / "paelladoc"
+        / "adapters"
+        / "plugins"
+        / "templates"
+        / f"{template_name}.md"
+    )
     try:
         if template_path.exists():
             return template_path.read_text()
@@ -52,50 +60,62 @@ def get_template(template_name: str) -> str:
         logger.error(f"Error reading template {template_name}: {e}", exc_info=True)
         return f"Error reading template {template_name}: {str(e)}"
 
-@mcp.prompt() # Use decorator
+
+@mcp.prompt()  # Use decorator
 def paella_command(project_name: str) -> TextContent:
     """Create a PAELLA command prompt."""
     return TextContent(
         type="text",
-        text=f"Initiating PAELLADOC for project: {project_name}.\n" 
-             f"Please specify: 1. Project type, 2. Methodologies, 3. Git workflow."
+        text=f"Initiating PAELLADOC for project: {project_name}.\n"
+        f"Please specify: 1. Project type, 2. Methodologies, 3. Git workflow.",
     )
+
 
 # --- Main Execution Logic --- #
 
 if __name__ == "__main__":
     # Configure file logging
     try:
-        log_file = 'paelladoc_server.log' 
+        log_file = "paelladoc_server.log"
         file_handler = logging.FileHandler(log_file)
-        file_handler.setFormatter(logging.Formatter('%(asctime)s - %(name)s - %(levelname)s - %(message)s'))
+        file_handler.setFormatter(
+            logging.Formatter("%(asctime)s - %(name)s - %(levelname)s - %(message)s")
+        )
         logging.getLogger().addHandler(file_handler)
         logging.getLogger().setLevel(logging.DEBUG)
         logger.info(f"Logging configured. Outputting to {log_file}")
     except Exception as log_e:
-        logging.basicConfig(level=logging.DEBUG, format='%(asctime)s - %(levelname)s - %(message)s')
+        logging.basicConfig(
+            level=logging.DEBUG, format="%(asctime)s - %(levelname)s - %(message)s"
+        )
         # Re-get logger after basicConfig potentially reconfigured root
-        logger = logging.getLogger(__name__) 
+        logger = logging.getLogger(__name__)
         logger.error(f"Could not configure file logging: {log_e}. Logging to stderr.")
 
     # Check command line arguments to determine run mode
-    run_mode = "stdio" if "--stdio" in sys.argv else "web" # Default to stdio if --stdio present
+    run_mode = (
+        "stdio" if "--stdio" in sys.argv else "web"
+    )  # Default to stdio if --stdio present
 
     try:
         if run_mode == "stdio":
-            logger.info("Starting PAELLADOC MCP server in STDIO mode via FastMCP mcp.run(transport='stdio')...")
+            logger.info(
+                "Starting PAELLADOC MCP server in STDIO mode via FastMCP mcp.run(transport='stdio')..."
+            )
             logger.debug("Waiting 10 seconds before mcp.run()...")
-            time.sleep(10) # Add sleep before run
-            logger.debug("Attempting mcp.run(transport=\"stdio\")")
-            mcp.run(transport="stdio") # Explicitly request stdio transport
+            time.sleep(10)  # Add sleep before run
+            logger.debug('Attempting mcp.run(transport="stdio")')
+            mcp.run(transport="stdio")  # Explicitly request stdio transport
         else:
             # Attempt to run the default web server (SSE)
             # Note: FastMCP's default run() might try stdio first anyway if no host/port specified
-            logger.warning("Starting PAELLADOC MCP server in default mode (likely web/SSE) via FastMCP mcp.run()...")
+            logger.warning(
+                "Starting PAELLADOC MCP server in default mode (likely web/SSE) via FastMCP mcp.run()..."
+            )
             logger.warning("Use --stdio argument for direct client integration.")
-            mcp.run() # Run with default settings (tries SSE/web)
+            mcp.run()  # Run with default settings (tries SSE/web)
 
-        logger.info(f"PAELLADOC MCP server finished (mode: {run_mode}).") 
+        logger.info(f"PAELLADOC MCP server finished (mode: {run_mode}).")
     except Exception as e:
         logger.critical(f"Failed to start or run MCP server: {e}", exc_info=True)
-        sys.exit(1) 
+        sys.exit(1)

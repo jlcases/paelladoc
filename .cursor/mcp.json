@@ -1,5 +1,79 @@
 {
   "mcpServers": {
+    "sequential thinking": {
+      "command": "npx",
+      "args": [
+        "-y",
+        "@smithery/cli@latest",
+        "run",
+        "@smithery-ai/server-sequential-thinking",
+        "--config",
+        "\"{}\""
+      ]
+    },
+    "browser tools": {
+      "command": "npx",
+      "args": [
+        "@agentdeskai/browser-tools-mcp@1.2.0"
+      ]
+    },
+    "filesystem": {
+      "command": "npx",
+      "args": [
+        "-y",
+        "@modelcontextprotocol/server-filesystem",
+        "/Users/jlcases/"
+      ]
+    },
+    "reddit-content-api": {
+      "command": "/Users/jlcases/codigo/mcp-reddit/.venv/bin/python",
+      "args": [
+        "-m", 
+        "mcp_reddit.main",
+        "--stdio"
+      ],
+      "cwd": "/Users/jlcases/codigo/mcp-reddit",
+      "env": {
+        "PYTHONPATH": "/Users/jlcases/codigo/mcp-reddit/src:/Users/jlcases/codigo/mcp-reddit",
+        "DEBUG": "true"
+      }
+    },
+    "hacker-news": {
+      "command": "/Users/jlcases/.pyenv/versions/3.11.11/bin/python",
+      "args": [
+        "-m",
+        "mcp_hn.main",
+        "--stdio"
+      ],
+      "cwd": "/Users/jlcases/codigo/MCP-HN",
+      "env": {
+        "PYTHONPATH": "/Users/jlcases/codigo/MCP-HN/src:/Users/jlcases/codigo/MCP-HN",
+        "PYTHONUNBUFFERED": "1",
+        "PYTHONIOENCODING": "utf-8",
+        "DEBUG": "true"
+      }
+    },
+    "mcp-gsuite": {
+      "command": "uvx",
+      "args": [
+        "mcp-gsuite",
+        "--accounts-file",
+        "/Users/jlcases/.accounts.json",
+        "--credentials-dir",
+        "/Users/jlcases/.gauth.json"
+      ]
+    },
+    "google-suite": {
+      "command": "/Users/jlcases/codigo/gsuite-mcp/.venv/bin/python",
+      "args": [
+            "/Users/jlcases/codigo/gsuite-mcp/server.py",
+            "--token-path",
+            "/Users/jlcases/codigo/gsuite-mcp/token.json",
+            "--credentials-path",
+            "/Users/jlcases/codigo/gsuite-mcp/credentials.json"
+            ],
+      "disabled": false
+    },
     "Paelladoc Server (Local Dev)": {
       "command": "/Users/jlcases/codigo/paelladoc/.venv/bin/python",
       "args": [

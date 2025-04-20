@@ -54,10 +54,10 @@ def run_generate_doc_script(repo_path, language, output_dir="docs/generated",
     
     try:
         process = subprocess.run(cmd, check=True, text=True, capture_output=True)
-        print(f"Output from run_generate_doc.py:")
+        print("Output from run_generate_doc.py:")
         print(process.stdout)
         if process.stderr:
-            print(f"Errors/Warnings:")
+            print("Errors/Warnings:")
             print(process.stderr)
         return True
     except subprocess.CalledProcessError as e:
@@ -73,13 +73,13 @@ def run_enforce_menu_script():
         print(f"Error: Menu enforcer script not found at {script_path}")
         return False
     
-    print(f"\nRunning menu enforcer script...")
+    print("\nRunning menu enforcer script...")
     try:
         process = subprocess.run(
             [sys.executable, script_path],
             check=True, text=True, capture_output=True
         )
-        print(f"Output from enforce_fixed_menu.py:")
+        print("Output from enforce_fixed_menu.py:")
         print(process.stdout)
         return True
     except subprocess.CalledProcessError as e:
@@ -105,7 +105,7 @@ def verify_context_file(context_file):
     try:
         with open(context_file, 'r', encoding='utf-8') as f:
             first_lines = ''.join([f.readline() for _ in range(5)])
-        print(f"First few lines of context file:")
+        print("First few lines of context file:")
         print(first_lines)
         return True
     except Exception as e:

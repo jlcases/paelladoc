@@ -15,7 +15,6 @@ import os
 import sys
 import subprocess
 import argparse
-import re
 from pathlib import Path
 import shutil
 
@@ -86,7 +85,7 @@ def run_context_extraction(local_repo_path, context_output_file):
         # Add other options like --line-numbers if needed, passed from main args
     ]
     
-    print(f"\nRunning context extraction...")
+    print("\nRunning context extraction...")
     print(f"Command: {' '.join(cmd)}")
     try:
         # Ensure the output directory exists
@@ -167,7 +166,7 @@ def main():
     # --- End Context Extraction ---
         
     # --- Returning to AI Chat for Interactive Documentation ---
-    print(f"\nPAELLADOC run_generate_doc finished.")
+    print("\nPAELLADOC run_generate_doc finished.")
     print(f"Context file prepared at: {context_file}")
     print(f"Local repository path: {actual_repo_path}")
     print(f"Documentation language: {args.language}")

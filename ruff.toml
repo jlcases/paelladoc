@@ -1,0 +1,54 @@
+# ruff.toml
+
+# Exclude files/directories Ruff should ignore
+exclude = [
+    ".bzr",
+    ".direnv",
+    ".eggs",
+    ".git",
+    ".hg",
+    ".mypy_cache",
+    ".nox",
+    ".pants.d",
+    ".ruff_cache",
+    ".svn",
+    ".tox",
+    ".venv",
+    "__pypackages__",
+    "_build",
+    "buck-out",
+    "build",
+    "dist",
+    "node_modules",
+    "venv",
+    # Add other exclusions if needed
+]
+
+# Specify only the src directory should be checked
+include = ["src/**/*.py", "src/**/*.pyi"]
+
+# Same as Black.
+# line-length = 88 # Disabled by user request
+target-version = "py312" # Specify your Python version
+
+[lint]
+# Enable Pyflakes (`F`) and a subset of the pycodestyle (`E`) rules by default.
+select = ["E", "F"]
+ignore = ["E501", "E402"] # Ignore line length and module level import errors
+
+# Allow autofix for all enabled rules (when `--fix` is used).
+fixable = ["ALL"]
+unfixable = []
+
+# Allow unused variables when underscore-prefixed.
+# dummy-variable-rgx = "^_(_?[A-Za-z0-9_]*)?$"
+
+[format]
+# Like Black, use double quotes for strings.
+quote-style = "double"
+# Like Black, indent with spaces, rather than tabs.
+indent-style = "space"
+# Like Black, respect magic trailing commas.
+skip-magic-trailing-comma = false
+# Like Black, automatically detect the appropriate line ending.
+line-ending = "auto" 
