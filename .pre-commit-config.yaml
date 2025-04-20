@@ -1,0 +1,17 @@
+repos:
+-   repo: https://github.com/astral-sh/ruff-pre-commit
+    # Ruff version.
+    # If you didn't specify ruff dependency in pyproject.toml,
+    # use the Ruff version from the upstream pre-commit repo here.
+    # e.g. rev: v0.5.1
+    rev: 'v0.11.6'  # Let ruff find the installed version
+    hooks:
+      # Run the linter.
+      - id: ruff
+        args: [--fix, --force-exclude] # Automatically fix issues, respect excludes
+        files: ^src/  # Only run on files in src/
+        types: [python]
+      # Run the formatter.
+      - id: ruff-format
+        files: ^src/  # Only run on files in src/
+        types: [python] 
