@@ -1,0 +1,446 @@
+{
+  "audit_timestamp": "2025-04-20",
+  "mece_taxonomy": {
+    "Initiate::CoreSetup": {
+      "description": "Core commands, flows, and instructions for initiating PAELLADOC.",
+      "patterns": [
+        "000-paelladoc.mdc",
+        "commands/core/paella.mdc",
+        "templates/conversation_flows/paella_initiation_flow.json",
+        "instructions/01_*"
+      ]
+    },
+    "Initiate::InitialProductDocs": {
+      "description": "Initial templates for defining the product's core direction, constraints, and business context (e.g., Vision, Mission, OKRs, Hypothesis, Purpose, Elevator Pitch, Scope, Canvas, Risks, Stakeholders, Value Proposition).",
+      "patterns": [
+        "templates/initiation/product_vision.md",
+        "templates/initiation/mission_statement.md",
+        "templates/initiation/project_purpose.md",
+        "templates/initiation/project_okrs.md",
+        "templates/initiation/project_hypothesis.md",
+        "templates/initiation/elevator_pitch.md",
+        "templates/initiation/initial_audience.md",
+        "templates/initiation/success_metrics_overview.md",
+        "templates/initiation/guiding_principles.md",
+        "templates/initiation/initial_scope.md",
+        "templates/initiation/lean_canvas.md",
+        "templates/initiation/business_model_canvas.md",
+        "templates/initiation/initial_risk_assessment.md",
+        "templates/initiation/stakeholder_map.md",
+        "templates/initiation/value_proposition_canvas.md",
+        "templates/initiation/initial_problem_statement.md",
+        "templates/initiation/initial_tech_constraints.md",
+        "templates/initiation/*.md"
+      ]
+    },
+    "Elaborate::DiscoveryAndResearch": {
+      "description": "Understanding the problem, user, context, and market through various research methods.",
+      "patterns": [
+        "templates/research/user_research_plan.md",
+        "templates/research/personas.md",
+        "templates/research/jobs_to_be_done.md",
+        "templates/research/impact_mapping.md",
+        "templates/research/detailed_problem_statement.md",
+        "templates/research/empathy_map.md",
+        "templates/research/customer_journey_map.md",
+        "templates/research/usage_data_analysis.md",
+        "templates/research/market_analysis.md",
+        "templates/research/competitor_analysis.md",
+        "templates/research/usability_test_plan.md",
+        "templates/research/stakeholder_interviews.md",
+        "templates/research/quantitative_survey_results.md",
+        "templates/research/literature_review.md",
+        "templates/research/heuristic_evaluation.md",
+        "templates/research/contextual_inquiry.md",
+        "templates/research/diary_study_results.md",
+        "templates/research/focus_group_summary.md",
+        "templates/research/competitive_benchmarking.md",
+        "templates/research/user_needs_statement.md"
+      ]
+    },
+    "Elaborate::IdeationAndDesign": {
+      "description": "Exploring potential solutions and defining the conceptual, visual, and interaction design.",
+      "patterns": [
+        "templates/design/storyboard.md",
+        "templates/design/design_studio_summary.md",
+        "templates/design/ideation/six_thinking_hats.md",
+        "templates/design/ideation/anti_problem.md",
+        "templates/design/poc_definition.md",
+        "templates/design/mockups/**",
+        "templates/design/wireframes/**",
+        "templates/design/user_flow_diagram.md",
+        "templates/design/moodboard.md",
+        "templates/design/visual_design_spec.md",
+        "templates/design/style_guide.md",
+        "templates/design/component_library_spec.md",
+        "templates/design/interaction_design_patterns.md",
+        "templates/design/navigation_map.md",
+        "templates/design/information_architecture.md",
+        "templates/design/ideation/brainstorming_summary.md",
+        "templates/design/ideation/crazy_eights.md",
+        "templates/design/ideation/scamper.md",
+        "templates/design/prototyping/low_fidelity_prototype.md",
+        "templates/design/prototyping/high_fidelity_prototype.md",
+        "templates/design/prototyping/interactive_prototype_spec.md",
+        "templates/design/ia/card_sorting_results.md",
+        "templates/design/ia/site_map.md",
+        "templates/design/ia/taxonomy.md",
+        "templates/design/service_blueprint.md",
+        "templates/design/design_system_overview.md"
+      ]
+    },
+    "Elaborate::SpecificationAndPlanning": {
+      "description": "Detailing functional/technical requirements, architecture, quality assurance, and planning.",
+      "patterns": [
+        "templates/Product/04_product_definition.md",
+        "templates/requirements/non_functional_requirements.md",
+        "templates/requirements/use_cases/*.md",
+        "templates/requirements/spec_by_example/*.feature",
+        "templates/requirements/acceptance_criteria.md",
+        "templates/architecture/database_design.md",
+        "templates/architecture/api_specification.md",
+        "templates/architecture/frontend_architecture.md",
+        "templates/architecture/backend_architecture.md",
+        "templates/architecture/adr/*.md",
+        "templates/architecture/system_context_diagram.md",
+        "templates/architecture/sequence_diagrams/*.md",
+        "templates/architecture/data_dictionary.md",
+        "templates/architecture/security_design.md",
+        "templates/architecture/capacity_planning.md",
+        "templates/architecture/data_migration_strategy.md",
+        "features/interfaces.mdc",
+        "templates/planning/product_roadmap.md",
+        "templates/planning/user_story_map.md",
+        "templates/planning/user_scenarios.md",
+        "templates/planning/mvp_definition.md",
+        "templates/planning/release_plan.md",
+        "templates/quality/quality_assurance_plan.md",
+        "templates/product_management/*.md"
+      ]
+    },
+    "Elaborate::CoreAndSupport": {
+      "description": "Core help, product management commands, simplified templates, guides, checklists, configurations, and support tooling for the elaboration phase.",
+      "patterns": [
+        "core/help.mdc",
+        "commands/core/help.mdc",
+        "commands/product/product_management.mdc",
+        "features/product_management.mdc",
+        "templates/simplified_templates/feature_documentation.md",
+        "templates/simplified_templates/bug_documentation.md",
+        "templates/simplified_templates/quick_task_documentation.md",
+        "templates/simplified_templates/index.md",
+        "instructions/elaboration_guides/*.md",
+        "templates/support/elaboration_checklists/*.md",
+        "templates/support/collaboration/design_review_notes.md",
+        "templates/support/collaboration/requirements_workshop.md",
+        "config/elaboration_settings.json",
+        "reports/elaboration_phase_status.md",
+        "scripts/support/validate_prd.py"
+      ]
+    },
+    "Govern::CoreSystem": {
+      "description": "Central orchestrator, core system commands/modules, configuration, imports, and foundational structure documents.",
+      "patterns": [
+        "paelladoc_orchestrator.mdc",
+        "documentation_workflow.mdc",
+        "core/commands.mdc",
+        "imports.mdc",
+        "feature_map.md",
+        "DIRECTORY_STRUCTURE.md",
+        "paelladoc_conversation_config.json",
+        "features/conversation_workflow.mdc",
+        "config/logging.json",
+        "config/security.json",
+        "system_architecture.md",
+        "core/system_data_models.py",
+        "scripts/core_system_setup.sh"
+      ]
+    },
+    "Govern::StandardsMethodologies": {
+      "description": "Defining and managing coding styles, Git workflows, development methodologies, contribution guidelines, and project rules.",
+      "patterns": [
+        "features/coding_styles.mdc",
+        "features/git_workflows.mdc",
+        "templates/coding_styles/**",
+        "templates/methodologies/scrum.md",
+        "templates/methodologies/tdd.md",
+        "templates/methodologies/bdd.md",
+        "templates/methodologies/pair_programming.md",
+        "templates/methodologies/kanban.md",
+        "templates/methodologies/lean.md",
+        "templates/process/definition_of_done.md",
+        "templates/process/definition_of_ready.md",
+        "CONTRIBUTING.md",
+        "templates/process/versioning_policy.md",
+        "templates/process/documentation_guidelines.md",
+        "project_rules.md",
+        "core/git_hook_installer.sh",
+        "templates/scripts/setup-tdd.sh"
+      ]
+    },
+    "Govern::VerificationValidation": {
+      "description": "Commands, modules, scripts, configurations, reports, and process docs for documentation verification and interface validation.",
+      "patterns": [
+        "commands/core/verification.mdc",
+        "core/verification.mdc",
+        "templates/reports/simple_verification_output.md",
+        "scripts/interface_validator.js",
+        "config/verification_rules.json",
+        "scripts/verification/*.{js,py,sh}",
+        "templates/reports/verification_summary.md",
+        "docs/process/verification_process.md",
+        "scripts/generate_rules.sh"
+      ]
+    },
+    "Govern::MemoryTemplates": {
+      "description": "Managing project memory and documentation templates, including commands, features, logic, supporting tools, configuration, validation rules, and process documentation.",
+      "patterns": [
+        "commands/memory/project_memory.mdc",
+        "commands/templates/templates.mdc",
+        "features/project_memory.mdc",
+        "features/templates.mdc",
+        "modules/memory_management/memory_management.mdc",
+        "core/memory_template.json",
+        "templates/simplified_templates/mdc_template.md",
+        "scripts/memory/*.{py,sh}",
+        "scripts/templates/*.{py,sh}",
+        "config/memory_settings.json",
+        "config/template_registry.json",
+        "config/template_validation_rules.json",
+        "docs/process/template_management.md",
+        "docs/process/memory_lifecycle.md",
+        "core/init_memory.sh"
+      ]
+    },
+    "Govern::ToolingScripts": {
+      "description": "General supporting scripts for enforcement, general setup, utilities, linting, health checks, and repository maintenance.",
+      "patterns": [
+        "scripts/enforce_*.js",
+        "scripts/enforce_*.py",
+        "scripts/get_timestamp.sh",
+        "scripts/install_dependencies.sh",
+        "scripts/show_menu.py",
+        "scripts/linting/*.{sh,js,py}",
+        "scripts/healthcheck/*.{sh,py}",
+        "scripts/repo_maintenance/*.sh"
+      ]
+    },
+    "Generate::CoreFunctionality": {
+      "description": "Core commands, features, modules, and guides for code analysis and generation.",
+      "patterns": [
+        "commands/code/generate_code.mdc",
+        "commands/code/analyze_code.mdc",
+        "commands/code/generate_context.mdc",
+        "features/code_generation.mdc",
+        "code_analysis.mdc",
+        "modules/code_analysis/context_extractor.mdc",
+        "modules/code_analysis/static_analyzer.mdc",
+        "modules/code_generation/python_generator.mdc",
+        "instructions/code_generation_guides/*.md"
+      ]
+    },
+    "Generate::SupportingElements": {
+      "description": "Templates, context definitions, configuration, and scripts supporting the code/documentation generation and validation process.",
+      "patterns": [
+        "templates/code_generation/**",
+        "core/context_template.json",
+        "scripts/extract_repo_content.py",
+        "scripts/analyze_repo_context.py",
+        "scripts/simple_extract.py",
+        "scripts/read_context.py",
+        "scripts/complete_doc_generator.py",
+        "scripts/generate_docs_pdf.sh",
+        "scripts/simple_pdf_generator.py",
+        "scripts/test_generate_doc.py",
+        "scripts/generate_mdc.js",
+        "scripts/mdc_cleanup.js",
+        "scripts/mdc_generation.js",
+        "config/code_generation_settings.json",
+        "scripts/generate_docs_html.sh",
+        "scripts/validate_generated_code.py",
+        "scripts/run_generate_doc.py"
+      ]
+    },
+    "Maintain::CoreFunctionality": {
+      "description": "Core command, feature, configuration, and guides for continuing work on existing projects.",
+      "patterns": [
+        "commands/core/continue.mdc",
+        "features/continue_workflow.mdc",
+        "instructions/maintenance_guides/*.md",
+        "config/continue_settings.json"
+      ]
+    },
+    "Maintain::SupportingElements": {
+      "description": "Scripts, templates, reports, and configuration supporting ongoing project maintenance and tracking.",
+      "patterns": [
+        "core/memory_updater.sh",
+        "scripts/run_continue.py",
+        "templates/maintenance/task_tracking.md",
+        "templates/maintenance/meeting_notes.md",
+        "templates/maintenance/progress_report.md",
+        "scripts/maintenance/*.{sh,py}",
+        "templates/maintenance/maintenance_log.md",
+        "reports/maintainability_report.md",
+        "config/maintenance_schedule.json"
+      ]
+    },
+    "Deploy::PipelinesAndAutomation": {
+      "description": "CI/CD pipeline definitions (GitHub Actions, GitLab CI, Jenkins), deployment automation scripts, configuration, and process documentation.",
+      "patterns": [
+         "templates/deploy/pipeline_definition.md",
+         ".github/workflows/*.yml",
+         ".gitlab-ci.yml",
+         "Jenkinsfile",
+         "scripts/deployment/build.{sh,py}",
+         "scripts/deployment/run_ci_tests.{sh,py}",
+         "scripts/deployment/deploy.{sh,py}",
+         "scripts/deployment/rollback.{sh,py}",
+         "scripts/deployment/smoke_test.{sh,py}",
+         "scripts/deployment/*.sh",
+         "scripts/deployment/*.py",
+         "config/ci_cd_settings.json",
+         "docs/process/pipeline_overview.md"
+      ]
+    },
+    "Deploy::InfrastructureAndConfig": {
+      "description": "Infrastructure as Code (IaC) and configuration for deployment environments: Docker, Kubernetes, Terraform, Pulumi, CloudFormation, Ansible, and Bicep.",
+      "patterns": [
+        "templates/infrastructure/terraform/**/*.tf",
+        "templates/infrastructure/pulumi/**/*.{py,ts}",
+        "templates/infrastructure/cloudformation/*.{yaml,json}",
+        "templates/infrastructure/ansible/**/*.yml",
+        "templates/infrastructure/bicep/*.bicep",
+        "Dockerfile",
+        "docker-compose*.yml",
+        "scripts/infra/*.{sh,py}",
+        "config/infra_vars.*",
+        "config/inventory.*",
+        "docs/infrastructure/architecture.md"
+      ]
+    },
+    "Deploy::GuidesAndChecklists": {
+      "description": "Documentation supporting the deployment process, including guides, strategies, checklists, and troubleshooting.",
+      "patterns": [
+        "templates/deploy/deployment_guide.md",
+        "templates/deploy/release_checklist.md",
+        "templates/deploy/deployment_strategies.md",
+        "templates/deploy/rollback_guide.md",
+        "templates/deploy/post_deployment_verification.md",
+        "templates/deploy/environment_documentation.md",
+        "templates/deploy/troubleshooting_guide.md",
+        "templates/deploy/release_notes_template.md",
+        "templates/deploy/*.md"
+      ]
+    },
+    "Deploy::Security": {
+      "description": "Security plans, threat models, security checklists, access policies, and templates related to deployment and infrastructure security.",
+      "patterns": [
+        "templates/security/security_plan.md",
+        "templates/security/threat_model.md",
+        "templates/security/risk_matrix.md",
+        "templates/security/pre_deployment_security_checklist.md",
+        "templates/security/access_policies.md",
+        "templates/security/incident_response_plan.md",
+        "templates/security/encryption_guide.md",
+        "templates/security/dependency_scanning.md",
+        "templates/security/*.md"
+      ]
+    },
+    "Operate::RunbooksAndSOPs": {
+      "description": "Operational procedures, runbooks, troubleshooting guides, disaster recovery plans, maintenance procedures, and communication protocols.",
+      "patterns": [
+        "templates/operations/runbooks/*.md",
+        "templates/operations/sop/*.md", 
+        "templates/operations/troubleshooting_guide.md",
+        "templates/operations/disaster_recovery.md",
+        "templates/operations/incident_response.md",
+        "templates/operations/escalation_policy.md",
+        "templates/operations/planned_maintenance.md",
+        "templates/operations/backup_restore.md",
+        "templates/operations/log_rotation.md",
+        "templates/operations/scaling_procedures.md",
+        "templates/operations/emergency_procedures.md",
+        "templates/operations/incident_communication.md",
+        "templates/operations/*.md"
+      ]
+    },
+    "Operate::MonitoringAndAlerting": {
+      "description": "Configuration and documentation for monitoring systems, dashboards, alerting rules, logging, SLIs/SLOs, health checks, and synthetic monitoring.",
+      "patterns": [
+        "templates/monitoring/overview.md",
+        "templates/monitoring/alerts/*.yml",
+        "templates/monitoring/config/*.yml",
+        "scripts/monitoring/*.py",
+        "templates/monitoring/dashboards/*.{json,yml}",
+        "templates/monitoring/logging/*.yml",
+        "templates/monitoring/sli_slo.md",
+        "templates/monitoring/health_checks.yml",
+        "templates/monitoring/synthetic_monitoring.yml",
+        "templates/monitoring/metrics_collection_strategy.md",
+        "templates/monitoring/alert_channels.yml",
+        "templates/monitoring/infrastructure_setup.md",
+        "templates/monitoring/*.{yml,md}"
+      ]
+    },
+    "Operate::Maintenance": {
+      "description": "Plans, procedures, and scripts for ongoing system maintenance in production, including database, cache, storage, updates, performance, and routine health checks.",
+      "patterns": [
+        "templates/operations/maintenance/maintenance_plan.md",
+        "templates/operations/maintenance/database_maintenance.md",
+        "templates/operations/maintenance/cache_maintenance.md",
+        "templates/operations/maintenance/storage_cleanup.md",
+        "templates/operations/maintenance/update_patching.md",
+        "templates/operations/maintenance/performance_optimization.md",
+        "templates/operations/maintenance/routine_health_checks.md",
+        "templates/operations/maintenance/preventive_maintenance_calendar.md",
+        "templates/operations/maintenance/configuration_updates.md",
+        "scripts/operations/maintenance/*.sh",
+        "scripts/operations/*.sh",
+        "templates/operations/maintenance/*.md"
+      ]
+    },
+    "Iterate::LearningAndAnalysis": {
+      "description": "Analyzing product usage, user feedback, test results, feature impact, retention, user satisfaction, and user behavior patterns.",
+      "patterns": [
+        "templates/iteration/analysis/feedback_analysis.md",
+        "templates/iteration/analysis/ab_test_results.md",
+        "templates/iteration/analysis/usage_metrics.md",
+        "templates/iteration/analysis/feature_impact.md",
+        "templates/iteration/analysis/usability_findings.md",
+        "templates/iteration/analysis/user_feedback.md",
+        "templates/iteration/analysis/cohort_analysis.md",
+        "templates/iteration/analysis/funnel_analysis.md",
+        "templates/iteration/analysis/retention_analysis.md",
+        "templates/iteration/analysis/segmentation_analysis.md",
+        "templates/iteration/analysis/nps_metrics.md",
+        "templates/iteration/analysis/sentiment_analysis.md",
+        "templates/iteration/analysis/customer_satisfaction.md",
+        "templates/iteration/analysis/customer_effort.md",
+        "templates/iteration/analysis/feature_adoption.md",
+        "templates/iteration/analysis/competitive_analysis.md",
+        "templates/iteration/analysis/research_session_reports.md",
+        "scripts/analytics/*.py",
+        "scripts/feedback/*.py",
+        "templates/iteration/analysis/*.md"
+      ]
+    },
+    "Iterate::PlanningAndRetrospection": {
+      "description": "Planning the next iteration based on learnings, including retrospectives, roadmap updates, sprint planning, feature prioritization, experiments, and technical improvements.",
+      "patterns": [
+        "templates/iteration/retrospective/sprint_retrospective.md",
+        "templates/iteration/planning/roadmap_update.md",
+        "templates/iteration/planning/sprint_planning.md",
+        "templates/iteration/planning/ab_test_plan.md",
+        "templates/iteration/planning/feedback_improvement_plan.md",
+        "templates/iteration/planning/feature_prioritization.md",
+        "templates/iteration/planning/user_research_plan.md",
+        "templates/iteration/planning/experiment_design.md",
+        "templates/iteration/planning/iteration_objectives.md",
+        "templates/iteration/planning/performance_improvement_plan.md",
+        "templates/iteration/planning/business_model_adjustments.md",
+        "templates/iteration/retrospective/lessons_learned.md",
+        "templates/iteration/planning/technical_refactoring.md"
+      ]
+    }
+  }
+}
