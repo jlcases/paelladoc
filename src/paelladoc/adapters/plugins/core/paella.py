@@ -181,29 +181,48 @@ BEHAVIOR_CONFIG =     {   'absolute_sequence_enforcement': True,
         'wait_for_user_response': True}
  # Insert behavior config here
 
-# TODO: Review imports and add any other necessary modules
+# Constants for LLM behavior control
+LLM_BEHAVIOR = {
+    "AUTO_COMMAND_EXECUTION": False,  # LLM should NOT automatically execute other commands
+    "INTERACTIVE_FLOW": True,         # Should follow interactive flow
+    "COMMAND_DELEGATION": False       # Should NOT delegate to other commands
+}
 
 @mcp.tool(
     name="core.paella",
-    description="Initiates a new PAELLADOC documentation project."
+    description="""Initiates a new PAELLADOC documentation project.
+    
+    IMPORTANT: This command handles its own flow. DO NOT automatically call other commands 
+    like CONTINUE, VERIFY, etc. Let the user explicitly call those commands when needed.
+    
+    The command will:
+    1. Ask for interaction language
+    2. List existing projects
+    3. Let user choose to continue existing or create new
+    4. If continuing existing -> Suggest CONTINUE command
+    5. If creating new -> Ask for documentation language and project name
+    """
 )
 async def core_paella(
     interaction_language: Optional[SupportedLanguage] = None,
+    action: Optional[Literal["continue_existing", "create_new"]] = None,
+    existing_project_name: Optional[str] = None,
+    continue_mode: Optional[Literal["auto", "manual"]] = None,
     documentation_language: Optional[SupportedLanguage] = None,
-    project_name: Optional[str] = None
+    new_project_name: Optional[str] = None
 ) -> dict:
     """Starts the PAELLADOC documentation process.
     
     Args:
-        interaction_language: Language for user interaction (es-ES, en-US)
-        documentation_language: Language for generated documentation (es-ES, en-US)
-        project_name: Name of the project to create
-
-    The tool follows a sequential conversation flow based on BEHAVIOR_CONFIG.
-    It will ask for any missing parameters in the defined order.
+        interaction_language: Language for user interaction (es-ES, en-US, etc)
+        action: Whether to continue existing project or create new one
+        existing_project_name: Name of existing project to continue
+        continue_mode: Mode for continuing the project
+        documentation_language: Language for generated documentation (es-ES, en-US, etc)
+        new_project_name: Name for the new project if creating one
     """
     
-    logging.info(f"Starting PAELLA command with interaction_language={interaction_language}, documentation_language={documentation_language}, project_name={project_name}")
+    logging.info(f"Starting PAELLA command with interaction_language={interaction_language}")
 
     # --- Dependency Injection ---
     try:
@@ -212,23 +231,143 @@ async def core_paella(
         logging.error(f"Failed to instantiate SQLiteMemoryAdapter: {e}", exc_info=True)
         return {
             "status": "error",
-            "message": f"Internal server error: Could not initialize memory adapter.",
+            "message": "Internal server error: Could not initialize memory adapter.",
         }
 
     # --- Interactive Flow ---
-    # If interaction_language is not provided, we need to ask for it first
+    # 1. First ask for interaction language if missing
     if not interaction_language:
         return {
             "status": "input_needed",
             "message": "Please select the language for our interaction:",
             "input_type": "language_selection",
-            "options": [lang.value for lang in SupportedLanguage],
-            "next_param": "interaction_language"
+            "options": [{"code": lang.value, "name": SupportedLanguage.get_language_name(lang.value, "en-US")} for lang in SupportedLanguage],
+            "next_param": "interaction_language",
+            "halt": True
         }
 
-    # Once we have interaction_language, if documentation_language is not provided, ask for it
-    if not documentation_language:
-        # The message should be in the selected interaction language
+    # 2. List existing projects and ask what to do
+    if not action:
+        try:
+            existing_projects = await memory_adapter.list_projects()
+            
+            message = (
+                "¿Qué quieres hacer?" if interaction_language == SupportedLanguage.ES_ES
+                else "What would you like to do?"
+            )
+            
+            options = []
+            
+            if existing_projects:
+                projects_str = "\n".join([f"- {p}" for p in existing_projects])
+                message = (
+                    f"Proyectos existentes:\n{projects_str}\n\n{message}"
+                    if interaction_language == SupportedLanguage.ES_ES
+                    else f"Existing projects:\n{projects_str}\n\n{message}"
+                )
+                
+                # Add option to continue existing project
+                options.append({
+                    "value": "continue_existing",
+                    "label": "Continuar un proyecto existente" if interaction_language == SupportedLanguage.ES_ES else "Continue an existing project"
+                })
+            
+            # Always add option to create new project
+            options.append({
+                "value": "create_new",
+                "label": "Crear un proyecto nuevo" if interaction_language == SupportedLanguage.ES_ES else "Create a new project"
+            })
+            
+            return {
+                "status": "input_needed",
+                "message": message,
+                "input_type": "choice",
+                "options": options,
+                "next_param": "action",
+                "halt": True
+            }
+        except Exception as e:
+            logging.error(f"Error listing projects: {e}", exc_info=True)
+            message = (
+                f"Error al listar proyectos: {e}" if interaction_language == SupportedLanguage.ES_ES
+                else f"Error listing projects: {e}"
+            )
+            return {"status": "error", "message": message}
+
+    # 3a. If continuing existing, ask which project
+    if action == "continue_existing" and not existing_project_name:
+        try:
+            existing_projects = await memory_adapter.list_projects()
+            message = (
+                "¿Qué proyecto quieres continuar?" if interaction_language == SupportedLanguage.ES_ES
+                else "Which project would you like to continue?"
+            )
+            return {
+                "status": "input_needed",
+                "message": message,
+                "input_type": "choice",
+                "options": [{"value": p, "label": p} for p in existing_projects],
+                "next_param": "existing_project_name",
+                "halt": True
+            }
+        except Exception as e:
+            logging.error(f"Error listing projects: {e}", exc_info=True)
+            message = (
+                f"Error al listar proyectos: {e}" if interaction_language == SupportedLanguage.ES_ES
+                else f"Error listing projects: {e}"
+            )
+            return {"status": "error", "message": message}
+    
+    # 3b. Ask whether to auto‑invoke CONTINUE
+    if action == "continue_existing" and existing_project_name and continue_mode is None:
+        message = (
+            "¿Quieres que ejecute automáticamente el comando CONTINUE para ese proyecto?"
+            if interaction_language == SupportedLanguage.ES_ES
+            else "Would you like me to automatically execute the CONTINUE command for that project?"
+        )
+        options = [
+            {"value": "auto", "label": "Sí, ejecuta CONTINUE automáticamente" if interaction_language == SupportedLanguage.ES_ES else "Yes, run CONTINUE automatically"},
+            {"value": "manual", "label": "No, lo haré yo manualmente" if interaction_language == SupportedLanguage.ES_ES else "No, I'll run it manually"}
+        ]
+        return {
+            "status": "input_needed",
+            "message": message,
+            "input_type": "choice",
+            "options": options,
+            "next_param": "continue_mode",
+            "halt": True
+        }
+
+    # 3c. Handle continue_mode choice
+    if action == "continue_existing" and existing_project_name and continue_mode == "auto":
+        message = (
+            f"Ejecutando CONTINUE automáticamente para el proyecto '{existing_project_name}'."
+            if interaction_language == SupportedLanguage.ES_ES
+            else f"Executing CONTINUE automatically for project '{existing_project_name}'."
+        )
+        return {
+            "status": "ok",
+            "message": message,
+            "invoke_next": {
+                "tool": "core.continue",
+                "args": {"project_name": existing_project_name}
+            }
+        }
+
+    if action == "continue_existing" and existing_project_name and continue_mode == "manual":
+        message = (
+            f"Para continuar, escribe: CONTINUE --project_name {existing_project_name}"
+            if interaction_language == SupportedLanguage.ES_ES
+            else f"To continue, type: CONTINUE --project_name {existing_project_name}"
+        )
+        return {
+            "status": "ok",
+            "message": message,
+            "halt": True
+        }
+
+    # 4. If creating new, ask for documentation language if missing
+    if action == "create_new" and not documentation_language:
         message = (
             "¿En qué idioma quieres generar la documentación?" 
             if interaction_language == SupportedLanguage.ES_ES
@@ -238,121 +377,116 @@ async def core_paella(
             "status": "input_needed",
             "message": message,
             "input_type": "language_selection",
-            "options": [lang.value for lang in SupportedLanguage],
-            "next_param": "documentation_language"
+            "options": [{"code": lang.value, "name": SupportedLanguage.get_language_name(lang.value, interaction_language)} for lang in SupportedLanguage],
+            "next_param": "documentation_language",
+            "halt": True
         }
 
-    # If project_name is not provided, ask for it in the selected interaction language
-    if not project_name:
+    # 5. Ask for new project name if missing
+    if action == "create_new" and not new_project_name:
         message = (
-            "¿Cuál es el nombre del proyecto?" 
+            "¿Cuál es el nombre del nuevo proyecto?" 
             if interaction_language == SupportedLanguage.ES_ES
-            else "What is the project name?"
+            else "What is the name for the new project?"
         )
         return {
             "status": "input_needed",
             "message": message,
             "input_type": "text",
-            "next_param": "project_name"
+            "next_param": "new_project_name",
+            "halt": True
         }
 
-    # Check if project already exists
-    try:
-        exists = await memory_adapter.project_exists(project_name)
-        if exists:
+    # 6. Verify new project name doesn't exist
+    if action == "create_new" and new_project_name:
+        try:
+            exists = await memory_adapter.project_exists(new_project_name)
+            if exists:
+                message = (
+                    f"El proyecto '{new_project_name}' ya existe. Por favor elige otro nombre."
+                    if interaction_language == SupportedLanguage.ES_ES
+                    else f"Project '{new_project_name}' already exists. Please choose a different name."
+                )
+                return {
+                    "status": "input_needed",
+                    "message": message,
+                    "input_type": "text",
+                    "next_param": "new_project_name",
+                    "halt": True
+                }
+        except Exception as e:
+            logging.error(f"Error checking if project exists: {e}", exc_info=True)
             message = (
-                f"El proyecto '{project_name}' ya existe. Usa el comando CONTINUE." 
+                f"Error al verificar si el proyecto existe: {e}"
                 if interaction_language == SupportedLanguage.ES_ES
-                else f"Project '{project_name}' already exists. Use the CONTINUE command."
+                else f"Error checking if project exists: {e}"
             )
-            logging.warning(f"Project '{project_name}' already exists. Aborting PAELLA init.")
+            return {"status": "error", "message": message}
+
+    # 7. Create new project
+    if action == "create_new" and new_project_name and documentation_language:
+        # Create initial metadata
+        metadata = ProjectMetadata(
+            name=new_project_name,
+            interaction_language=interaction_language,
+            documentation_language=documentation_language,
+            purpose=None,
+            target_audience=None,
+            objectives=[],
+        )
+
+        # Create initial artifact (Project Charter)
+        charter_name = "Acta de Constitución" if documentation_language == SupportedLanguage.ES_ES else "Project Charter"
+        initial_artifact = ArtifactMeta(
+            name=charter_name,
+            bucket=Bucket.INITIATE_INITIAL_PRODUCT_DOCS,
+            path=Path(f"docs/{new_project_name}/00_{charter_name.lower().replace(' ', '_')}.md"),
+            status=DocumentStatus.PENDING,
+        )
+
+        # Create ProjectMemory object
+        initial_memory = ProjectMemory(
+            metadata=metadata,
+            artifacts={initial_artifact.bucket: [initial_artifact]},
+            taxonomy_version="0.5",
+        )
+
+        # Save to Persistence
+        try:
+            await memory_adapter.save_memory(initial_memory)
+            logging.info(f"Successfully saved initial memory for project: {new_project_name}")
+            
+            message = (
+                f"Proyecto PAELLADOC '{new_project_name}' iniciado correctamente.\n"
+                f"Idioma de interacción: {interaction_language}\n"
+                f"Idioma de documentación: {documentation_language}"
+                if interaction_language == SupportedLanguage.ES_ES
+                else
+                f"PAELLADOC project '{new_project_name}' successfully initiated.\n"
+                f"Interaction language: {interaction_language}\n"
+                f"Documentation language: {documentation_language}"
+            )
+            
             return {
-                "status": "error",
-                "message": message
+                "status": "ok",
+                "message": message,
+                "project_name": new_project_name,
+                "interaction_language": interaction_language,
+                "documentation_language": documentation_language,
+                "next_steps": ["purpose", "target_audience", "objectives"]
             }
-    except Exception as e:
-        logging.error(f"Error checking project existence for '{project_name}': {e}", exc_info=True)
-        message = (
-            f"Error al verificar si el proyecto existe: {e}" 
-            if interaction_language == SupportedLanguage.ES_ES
-            else f"Error checking if project exists: {e}"
-        )
-        return {
-            "status": "error",
-            "message": message
-        }
+        except Exception as e:
+            logging.error(f"Error saving project memory: {e}", exc_info=True)
+            message = (
+                f"Error al guardar la memoria del proyecto: {e}"
+                if interaction_language == SupportedLanguage.ES_ES
+                else f"Error saving project memory: {e}"
+            )
+            return {"status": "error", "message": message}
 
-    # Create initial metadata with language preferences
-    metadata = ProjectMetadata(
-        name=project_name,
-        interaction_language=interaction_language,
-        documentation_language=documentation_language,
-        purpose=None,  # Will be asked in next interaction
-        target_audience=None,  # Will be asked in next interaction
-        objectives=[],  # Will be asked in next interaction
-    )
-
-    # Create initial artifact (Project Charter) in the selected documentation language
-    charter_name = "Acta de Constitución" if documentation_language == SupportedLanguage.ES_ES else "Project Charter"
-    initial_artifact = ArtifactMeta(
-        name=charter_name,
-        bucket=Bucket.INITIATE_INITIAL_PRODUCT_DOCS,
-        path=Path(f"docs/{project_name}/00_{charter_name.lower().replace(' ', '_')}.md"),
-        status=DocumentStatus.PENDING,
-    )
-
-    # Create the ProjectMemory object
-    initial_memory = ProjectMemory(
-        metadata=metadata,
-        artifacts={initial_artifact.bucket: [initial_artifact]},
-        taxonomy_version="0.5",
-    )
-
-    # Save to Persistence
-    try:
-        await memory_adapter.save_memory(initial_memory)
-        logging.info(f"Successfully saved initial memory for project: {project_name}")
-        
-        # Return success message in the selected interaction language
-        message = (
-            f"Proyecto PAELLADOC '{project_name}' iniciado correctamente. "
-            f"Idioma de interacción: {interaction_language}, "
-            f"Idioma de documentación: {documentation_language}"
-            if interaction_language == SupportedLanguage.ES_ES
-            else
-            f"PAELLADOC project '{project_name}' successfully initiated. "
-            f"Interaction language: {interaction_language}, "
-            f"Documentation language: {documentation_language}"
-        )
-        
-        return {
-            "status": "ok",
-            "message": message,
-            "project_name": project_name,
-            "interaction_language": interaction_language,
-            "documentation_language": documentation_language,
-            "next_steps": ["purpose", "target_audience", "objectives"]  # Indicate what we'll ask next
-        }
-    except ValueError as ve:
-        logging.error(f"Integrity error saving initial memory for '{project_name}': {ve}", exc_info=True)
-        message = (
-            f"Error de integridad al guardar la memoria inicial: {ve}"
-            if interaction_language == SupportedLanguage.ES_ES
-            else f"Integrity error saving initial memory: {ve}"
-        )
-        return {
-            "status": "error",
-            "message": message
-        }
-    except Exception as e:
-        logging.error(f"Error saving initial memory for '{project_name}': {e}", exc_info=True)
-        message = (
-            f"Error al guardar la memoria inicial del proyecto: {e}"
-            if interaction_language == SupportedLanguage.ES_ES
-            else f"Error saving initial project memory: {e}"
-        )
-        return {
-            "status": "error",
-            "message": message
-        }
+    # Should never reach here
+    return {
+        "status": "error",
+        "message": "Internal error: Invalid state reached"
+    }
 

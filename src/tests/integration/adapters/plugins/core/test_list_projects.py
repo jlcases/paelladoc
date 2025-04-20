@@ -16,7 +16,9 @@ sys.path.insert(0, str(project_root))
 # Adapter is needed to pre-populate the DB for the test
 from paelladoc.adapters.output.sqlite.sqlite_memory_adapter import SQLiteMemoryAdapter
 # Import domain models to create test data
-from paelladoc.domain.models.project import ProjectMemory, ProjectMetadata, Bucket, ArtifactMeta, SupportedLanguage
+from paelladoc.domain.models.project import ProjectMemory, ProjectMetadata, Bucket, ArtifactMeta
+# SupportedLanguage se encuentra en paella.py, no en project.py
+from paelladoc.adapters.plugins.core.paella import SupportedLanguage
 
 # --- Helper Function to create test data --- #
 
@@ -94,19 +96,14 @@ async def test_list_projects_returns_saved_projects(memory_adapter: SQLiteMemory
     expected_project_names = sorted([project1_memory.metadata.name, project2_memory.metadata.name])
     print(f"Saved projects: {expected_project_names}")
 
-    # Act: Call the (yet to be implemented/imported) tool function
-    # This import will fail initially, or the function call will fail
-    try:
-        from paelladoc.adapters.plugins.core.list_projects import list_projects
-        result = await list_projects()
-    except (ImportError, AttributeError, Exception) as e:
-        # We expect an error here initially in TDD
-        print(f"Expected failure: Could not import or call list_projects - {e}")
-        # Force failure to indicate the code needs writing
-        pytest.fail(f"list_projects tool or its dependencies not ready: {e}") 
-        return # Exit test early, it failed as expected for TDD step 1
+    # Act: Call the tool function with our test db_path
+    from paelladoc.adapters.plugins.core.list_projects import list_projects
+    # Pass the path to our temporary test database
+    db_path_str = str(memory_adapter.db_path)
+    print(f"Using test DB path: {db_path_str}")
+    result = await list_projects(db_path=db_path_str)
 
-    # Assert: Check the response (This part will run only after implementation)
+    # Assert: Check the response
     assert result["status"] == "ok", f"Expected status ok, got {result.get('status')}"
     assert "projects" in result, "Response missing 'projects' key"
     assert isinstance(result["projects"], list), "'projects' should be a list"

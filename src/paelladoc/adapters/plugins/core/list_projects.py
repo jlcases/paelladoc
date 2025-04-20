@@ -16,7 +16,7 @@ logger = logging.getLogger(__name__)
     name="core.list_projects",
     description="Lists the names of existing PAELLADOC projects found in the memory."
 )
-async def list_projects(db_path: Optional[str] = None) -> dict:
+async def list_projects(db_path: str = None) -> dict:
     """Retrieves the list of project names from the persistence layer.
     
     Args:
@@ -60,7 +60,7 @@ async def list_projects(db_path: Optional[str] = None) -> dict:
     try:
         project_names = await memory_adapter.list_projects()
         count = len(project_names)
-        message = f"Found {count} projects." if count > 0 else "No projects found."
+        message = f"Found {count} project{'s' if count > 1 else ''}." if count > 0 else "No projects found."
         logger.info(message)
         return {
             "status": "ok",
