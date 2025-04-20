@@ -1,6 +1,9 @@
 from paelladoc.domain.core_logic import mcp
 import logging
 
+# Initialize logger for this module
+logger = logging.getLogger(__name__)
+
 # Domain models
 from paelladoc.domain.models.project import (
     DocumentStatus,
@@ -85,7 +88,12 @@ async def core_continue(
     # --- Dependency Injection (Temporary Direct Instantiation) ---
     # TODO: Replace with proper dependency injection
     try:
+        # Use the default path defined in the adapter (project root)
         memory_adapter = SQLiteMemoryAdapter()
+        logger.info(f"core.continue using DB path: {memory_adapter.db_path.resolve()}")
+
+        # Fetch the list of existing projects (Removed assignment as it's not used here)
+        # existing_projects = await memory_adapter.list_projects()
     except Exception as e:
         logging.error(f"Failed to instantiate SQLiteMemoryAdapter: {e}", exc_info=True)
         return {

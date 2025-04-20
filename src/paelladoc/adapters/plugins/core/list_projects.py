@@ -33,11 +33,15 @@ async def list_projects(
     logger.info(f"Executing core.list_projects command. DB path: {db_path}")
 
     try:
-        # Use the provided db_path (for tests) or default
-        if db_path:
-            memory_adapter = SQLiteMemoryAdapter(db_path=Path(db_path))
-        else:
-            memory_adapter = SQLiteMemoryAdapter()
+        # Use the provided db_path (for tests) or the default path from the adapter
+        memory_adapter = (
+            SQLiteMemoryAdapter(db_path=Path(db_path))
+            if db_path
+            else SQLiteMemoryAdapter()
+        )
+        logger.info(
+            f"core.list_projects using DB path: {memory_adapter.db_path.resolve()}"
+        )  # Log the actual path used
     except Exception as e:
         logger.error(f"Failed to instantiate SQLiteMemoryAdapter: {e}", exc_info=True)
         return {

@@ -35,7 +35,7 @@ jobs:
           # First install the project itself
           uv pip install -e .
           # Then install test dependencies explicitly
-          uv pip install pytest==8.3.2 pytest-asyncio==0.23.8 requests==2.32.3 sqlmodel alembic
+          uv pip install pytest==8.3.2 pytest-asyncio==0.23.8 requests==2.32.3 sqlmodel alembic pytest-cov chromadb
           # Verify pytest is installed
           python -c "import pytest; print(f'pytest version: {pytest.__version__}')"
         shell: bash
@@ -44,6 +44,13 @@ jobs:
         run: |
           source .venv/bin/activate
           uv pip install git+https://github.com/modelcontextprotocol/python-sdk.git
+        shell: bash
+
+      - name: Verify pytest-cov installation
+        run: |
+          source .venv/bin/activate
+          uv pip show pytest-cov || echo "pytest-cov not found by uv pip show"
+          python -c "import sys; print(sys.path); import pytest_cov; print('pytest-cov imported successfully')" || echo "pytest-cov import failed"
         shell: bash
 
       - name: Run tests

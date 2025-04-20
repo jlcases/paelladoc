@@ -8,29 +8,27 @@ import sys
 import os
 from pathlib import Path
 import uuid
-from typing import Optional
 
 # Ensure we can import Paelladoc modules
 project_root = Path(__file__).parent.parent.parent.parent.parent.parent.absolute()
 sys.path.insert(0, str(project_root))
 
 # Module to test
-from paelladoc.adapters.plugins.core.paella import core_paella, SupportedLanguage
+from paelladoc.adapters.plugins.core.paella import (
+    core_paella,
+    SupportedLanguage,
+)
 
 # Adapter for verification
 from paelladoc.adapters.output.sqlite.sqlite_memory_adapter import SQLiteMemoryAdapter
-from paelladoc.domain.models.project import (
-    ProjectMemory,
-)  # Import ProjectMemory for verification
 
 # --- Pytest Fixture for Temporary DB --- #
 
 
-@pytest.fixture(scope="function")  # Recreate DB for each test function
+@pytest.fixture(scope="function")
 async def memory_adapter():
     """Provides an initialized SQLiteMemoryAdapter with a temporary DB."""
     test_db_name = f"test_paella_{uuid.uuid4()}.db"
-    # Store temp dbs inside the test directory for easier cleanup?
     test_dir = Path(__file__).parent / "temp_dbs"
     test_db_path = test_dir / test_db_name
     test_db_path.parent.mkdir(parents=True, exist_ok=True)
@@ -39,18 +37,14 @@ async def memory_adapter():
     adapter = SQLiteMemoryAdapter(db_path=test_db_path)
     await adapter._create_db_and_tables()
 
-    yield adapter  # Provide the adapter to the test function
+    yield adapter
 
-    # Teardown: clean up the database
     print(f"Tearing down test, removing DB: {test_db_path}")
-    # Dispose engine if needed (optional, depends on connection handling)
-    # await adapter.async_engine.dispose()
     await asyncio.sleep(0.01)  # Brief pause for file lock release
     try:
         if test_db_path.exists():
             os.remove(test_db_path)
             print(f"Removed DB: {test_db_path}")
-        # Attempt to remove the directory if it's empty
         try:
             test_db_path.parent.rmdir()
             print(f"Removed test directory: {test_db_path.parent}")
@@ -71,11 +65,11 @@ async def test_create_new_project_asks_for_base_path_and_saves_it(
     """
     Verify the interactive flow for creating a new project:
     1. Asks for interaction language.
-    2. Asks action (create new).
+    2. Lists projects (if any) and asks action (create new).
     3. Asks for documentation language.
-    4. Asks for new project name.
-    5. **Asks for base path.** <-- Test focus
-    6. Creates the project and saves the absolute base path in metadata.
+    4. Asks for new project name (checks for existence).
+    5. Asks for base path.
+    6. Creates the project, saves absolute base path, saves initial memory.
     """
     print("\nRunning: test_create_new_project_asks_for_base_path_and_saves_it")
 
@@ -85,11 +79,12 @@ async def test_create_new_project_asks_for_base_path_and_saves_it(
     base_path_input = "./test_paella_docs"  # Relative path input
     expected_abs_base_path = Path(base_path_input).resolve()
 
-    # --- Monkeypatch the default DB path ---
-    # Make core_paella use the temporary DB path when it creates its own adapter
+    # --- Monkeypatch the database path resolution ---
+    # Patch get_db_path where SQLiteMemoryAdapter imports it,
+    # so core_paella uses the temporary DB path when it creates its own adapter.
     monkeypatch.setattr(
-        "paelladoc.adapters.output.sqlite.sqlite_memory_adapter.DEFAULT_DB_PATH",
-        memory_adapter.db_path,
+        "paelladoc.adapters.output.sqlite.sqlite_memory_adapter.get_db_path",
+        lambda: memory_adapter.db_path,  # Return the path from the fixture
     )
 
     # Simulate the conversation step-by-step
@@ -153,13 +148,10 @@ async def test_create_new_project_asks_for_base_path_and_saves_it(
     )
     assert response6.get("project_name") == project_name
 
-    # Verification: Check if project saved with correct absolute base_path
-    saved_memory: Optional[ProjectMemory] = await memory_adapter.load_memory(
-        project_name
-    )
-    assert saved_memory is not None, (
-        f"Project '{project_name}' not found in DB after creation."
-    )
+    # Load the saved memory to verify
+    saved_memory = await memory_adapter.load_memory(project_name)
+    assert saved_memory is not None, f"Memory for project '{project_name}' not found."
+
     assert saved_memory.metadata.base_path is not None, (
         "Saved metadata base_path is None."
     )

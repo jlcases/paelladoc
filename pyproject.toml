@@ -1,42 +1,90 @@
 [build-system]
-requires = ["poetry-core>=1.0.0"]
-build-backend = "poetry.core.masonry.api"
+requires = ["hatchling"]
+build-backend = "hatchling.build"
 
 [project]
 name = "paelladoc"
-version = "0.3.0"
-description = "Interactive MCP server and documentation tooling for Paelladoc"
+version = "0.2.2"
+description = "AI-First Development Framework - A Multi-Capability Port (MCP) for LLMs"
 readme = "README.md"
-requires-python = ">=3.12,<3.13"
-license = { file = "LICENSE" }
+requires-python = ">=3.8"
+license = {file = "LICENSE"}
+keywords = ["ai", "llm", "mcp", "documentation", "development", "framework"]
 authors = [
-    { name = "jlcases" }
+    {name = "jlcases", email = "jl@paelladoc.com"}
 ]
+classifiers = [
+    "Development Status :: 4 - Beta",
+    "Intended Audience :: Developers",
+    "Topic :: Software Development :: Documentation",
+    "Topic :: Software Development :: Libraries :: Python Modules",
+    "Topic :: Scientific/Engineering :: Artificial Intelligence",
+    "License :: OSI Approved :: MIT License",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.8",
+    "Programming Language :: Python :: 3.9",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
+]
+
 dependencies = [
-    "numpy<2.0",
-    "repopack==0.1.1",
-    "PyYAML==6.0.1",
-    "sqlmodel==0.0.19",
-    "aiosqlite==0.20.0",
-    "fastapi==0.111.1",
-    "uvicorn[standard]==0.30.3",
-    "greenlet==3.0.3",
-    "chromadb==0.4.22",
-    "onnxruntime==1.19.0",
-    "protobuf~=3.20.0",
-    "mcp @ git+https://github.com/modelcontextprotocol/python-sdk.git"
+    "mcp>=0.5.0",
+    "sqlmodel>=0.0.8",
+    "aiosqlite>=0.19.0",
+    "uvicorn[standard]>=0.24.0",
+    "python-dotenv>=1.0.0",
+    "pydantic>=2.0.0",
+    "alembic>=1.13.0",
 ]
 
 [project.optional-dependencies]
 dev = [
-    "pytest==8.3.2",
-    "pytest-asyncio==0.23.8",
-    "requests==2.32.3"
+    "pytest>=7.0.0",
+    "pytest-asyncio>=0.21.0",
+    "pytest-cov>=4.1.0",
+    "black>=23.0.0",
+    "ruff>=0.1.0",
+    "mypy>=1.0.0",
 ]
 
-[project.scripts]
-paelladoc = "paelladoc.cli:main"
+docs = [
+    "mkdocs>=1.5.0",
+    "mkdocs-material>=9.0.0",
+]
+
+[project.urls]
+Homepage = "https://paelladoc.com"
+Documentation = "https://docs.paelladoc.com"
+Repository = "https://github.com/jlcases/paelladoc"
+"Bug Tracker" = "https://github.com/jlcases/paelladoc/issues"
+
+[tool.hatch.build.targets.wheel]
+packages = ["src/paelladoc"]
 
 [tool.pytest.ini_options]
-pythonpath = "."
-asyncio_mode = "auto" # For pytest-asyncio
+asyncio_mode = "auto"
+testpaths = ["src/tests"]
+python_files = ["test_*.py"]
+addopts = "-v --cov=paelladoc --cov-report=term-missing"
+
+[tool.ruff]
+select = ["E", "F", "B", "I"]
+ignore = ["E501"]
+line-length = 88
+target-version = "py38"
+src = ["src"]
+
+[tool.mypy]
+python_version = "3.8"
+warn_return_any = true
+warn_unused_configs = true
+disallow_untyped_defs = true
+disallow_incomplete_defs = true
+check_untyped_defs = true
+disallow_untyped_decorators = true
+no_implicit_optional = true
+warn_redundant_casts = true
+warn_unused_ignores = true
+warn_no_return = true
+warn_unreachable = true
