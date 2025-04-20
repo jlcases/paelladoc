@@ -1,21 +1,20 @@
-import sys
-from pathlib import Path
+"""Alembic environment configuration."""
 
-# Add project root to sys.path to allow importing models
-project_root = Path(__file__).parent.parent.parent.absolute()
-if str(project_root) not in sys.path:
-    sys.path.insert(0, str(project_root))
-
-# Import SQLModel base metadata
-from sqlmodel import SQLModel
-# Import your DB models to ensure they are registered with SQLModel's metadata
-
+import asyncio
+import os
 from logging.config import fileConfig
 
-from sqlalchemy import engine_from_config
-from sqlalchemy import pool
-
 from alembic import context
+# Import SQLModel
+from sqlmodel import SQLModel
+from sqlalchemy import engine_from_config, pool
+from sqlalchemy.ext.asyncio import AsyncEngine
+
+# Remove direct import of Base if not needed elsewhere
+# from paelladoc.adapters.output.sqlite.models import Base
+# Import models just to ensure they are registered with SQLModel.metadata
+import paelladoc.adapters.output.sqlite.models
+from paelladoc.config.database import get_db_path
 
 # this is the Alembic Config object, which provides
 # access to the values within the .ini file in use.
@@ -28,64 +27,92 @@ if config.config_file_name is not None:
 
 # add your model's MetaData object here
 # for 'autogenerate' support
-# from myapp import mymodel
-# target_metadata = mymodel.Base.metadata
-# Use SQLModel's metadata
+# Use SQLModel.metadata directly
 target_metadata = SQLModel.metadata
 
-# other values from the config, defined by the needs of env.py,
-# can be acquired:
-# my_important_option = config.get_main_option("my_important_option")
-# ... etc.
+# Remove this loop, it might cause issues
+# # Set extend_existing=True for all tables
+# for table in target_metadata.tables.values():
+#     table.extend_existing = True
 
+# After obtaining config object, compute DB path and set URL
+
+# Determine DB path precedence: environment variable overrides helper
+_db_path = os.getenv("PAELLADOC_DB_PATH", str(get_db_path()))
+_sqlalchemy_url = f"sqlite+aiosqlite:///{_db_path}"
+# Ensure the URL is set correctly in the config object Alembic uses
+config.set_main_option("sqlalchemy.url", _sqlalchemy_url)
 
 def run_migrations_offline() -> None:
-    """Run migrations in 'offline' mode.
-
-    This configures the context with just a URL
-    and not an Engine, though an Engine is acceptable
-    here as well.  By skipping the Engine creation
-    we don't even need a DBAPI to be available.
-
-    Calls to context.execute() here emit the given string to the
-    script output.
-
-    """
+    """Run migrations in 'offline' mode."""
+    # Use the URL set in the config object
     url = config.get_main_option("sqlalchemy.url")
     context.configure(
         url=url,
         target_metadata=target_metadata,
         literal_binds=True,
         dialect_opts={"paramstyle": "named"},
+        compare_type=True, # Enable type comparison
     )
 
     with context.begin_transaction():
         context.run_migrations()
 
 
-def run_migrations_online() -> None:
-    """Run migrations in 'online' mode.
+def do_run_migrations(connection):
+    # Configure context inside the sync function
+    context.configure(
+        connection=connection,
+        target_metadata=target_metadata,
+        compare_type=True, # Enable type comparison
+        # Inform Alembic context that we're handling the transaction
+        transactional_ddl=False
+    )
+    # Handle transaction explicitly
+    with connection.begin():
+        context.run_migrations()
 
-    In this scenario we need to create an Engine
-    and associate a connection with the context.
 
-    """
-    connectable = engine_from_config(
-        config.get_section(config.config_ini_section, {}),
-        prefix="sqlalchemy.",
-        poolclass=pool.NullPool,
+async def run_migrations_online() -> None:
+    """Run migrations in 'online' mode."""
+    # Get the config section using config_ini_section
+    connectable = AsyncEngine(
+        engine_from_config(
+            config.get_section(config.config_ini_section, {}), # Get section correctly
+            prefix="sqlalchemy.",
+            poolclass=pool.NullPool,
+            future=True, # Keep future=True for AsyncEngine
+            url=config.get_main_option("sqlalchemy.url") # Pass URL explicitly
+        )
     )
 
-    with connectable.connect() as connection:
-        context.configure(
-            connection=connection, target_metadata=target_metadata
-        )
+    async with connectable.connect() as connection:
+        # Use lambda to ensure do_run_migrations is called correctly by run_sync
+        await connection.run_sync(lambda sync_conn: do_run_migrations(sync_conn))
+        # await connection.run_sync(do_run_migrations, connection) # Revert previous change
 
-        with context.begin_transaction():
-            context.run_migrations()
+    await connectable.dispose()
 
 
 if context.is_offline_mode():
     run_migrations_offline()
 else:
-    run_migrations_online()
+    # Check if an event loop is already running (e.g., under pytest-asyncio)
+    try:
+        loop = asyncio.get_running_loop()
+    except RuntimeError:
+        loop = None
+
+    if loop and loop.is_running():
+        # If loop exists and is running, schedule the coroutine
+        # Use ensure_future or create_task depending on preference/version
+        # loop.ensure_future(run_migrations_online())
+        # For broader compatibility, create_task is generally preferred
+        task = loop.create_task(run_migrations_online())
+        # If running within a test that awaits other things,
+        # we might need to wait for this task explicitly.
+        # However, Alembic's structure might handle this implicitly.
+        # If issues persist, investigate awaiting this task.
+    else:
+        # If no loop running, use asyncio.run as before
+        asyncio.run(run_migrations_online())
