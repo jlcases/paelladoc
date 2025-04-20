@@ -95,14 +95,31 @@ decision:
 
 ## 🚀 Installation & Integration
 
-### 1. Install the MCP Server
+PAELLADOC is a Python application and should be installed in its own dedicated Python virtual environment to avoid dependency conflicts. This is required regardless of the programming language used in the project you intend to document.
+
+*(Requires Python 3.12 or later)*
+
+### 1. Create a Dedicated Virtual Environment (Recommended)
+
+```bash
+# Choose a location for PAELLADOC's environment (e.g., in your home directory)
+python3.12 -m venv ~/paelladoc_venv 
+
+# Activate the environment (syntax may vary based on your shell)
+source ~/paelladoc_venv/bin/activate 
+```
+
+### 2. Install PAELLADOC
+
+Once the dedicated environment is activated:
 
 ```bash
 pip install paelladoc
 ```
-*(Requires Python 3.12 or later)*
 
-### 2. Use with Your Favorite LLM
+### 3. Configure Your LLM
+
+Configure your LLM's tool/MCP settings to run PAELLADOC using the Python executable from the dedicated virtual environment you just created.
 
 #### Cursor IDE
 ```json
@@ -110,13 +127,13 @@ pip install paelladoc
 {
   "mcpServers": {
     "paelladoc": {
-      "command": "python", // Use the python from your environment where paelladoc is installed
+      // IMPORTANT: Use the full path to the python executable inside your dedicated venv
+      "command": "/path/to/your/paelladoc_venv/bin/python", 
       "args": [
         "-m",
-        "paelladoc.ports.input.mcp_server_adapter", // Module installed via pip
+        "paelladoc.ports.input.mcp_server_adapter", // Module installed in the venv
         "--stdio"                                  // Use stdio communication
       ]
-      // 'cwd' and 'env' typically not needed for installed packages
     }
     // ... other servers
   }
@@ -125,17 +142,17 @@ pip install paelladoc
 
 #### Claude
 ```json
-# Configure Claude's Tool Use settings to run PAELLADOC as a local command:
+# Configure Claude's Tool Use settings similarly, pointing to the dedicated venv python:
 {
   "tool_name": "paelladoc",
-  "command": "python", // Use the python from your environment where paelladoc is installed
+  // IMPORTANT: Use the full path to the python executable inside your dedicated venv
+  "command": "/path/to/your/paelladoc_venv/bin/python", 
   "args": [
     "-m",
-    "paelladoc.ports.input.mcp_server_adapter", // Module installed via pip
+    "paelladoc.ports.input.mcp_server_adapter", // Module installed in the venv
     "--stdio"                                  // Use stdio communication
   ]
-  // Specific configuration might vary based on Claude's exact Tool Use implementation
-  // for local commands. 'cwd' and 'env' typically not needed for installed packages.
+  // Specific configuration might vary based on Claude's Tool Use implementation.
 }
 ```
 
@@ -144,18 +161,18 @@ pip install paelladoc
 # In your .copilot/mcps.json (or similar Copilot config):
 {
   "paelladoc": {
-      "command": "python", // Use the python from your environment
+      // IMPORTANT: Use the full path to the python executable inside your dedicated venv
+      "command": "/path/to/your/paelladoc_venv/bin/python", 
       "args": [
         "-m",
         "paelladoc.ports.input.mcp_server_adapter",
         "--stdio"
       ]
-      // 'cwd' typically not needed here
    }
 }
 ```
 
-### 3. Let the LLM Guide You
+### 4. Let the LLM Guide You
 
 Once connected, your LLM will have access to all PAELLADOC commands:
 
