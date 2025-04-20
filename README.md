@@ -1,6 +1,6 @@
 # 🧠 PAELLADOC: The AI-First Development Framework
 
-![Version](https://img.shields.io/badge/version-0.2.2-blue.svg)
+![Version](https://img.shields.io/badge/version-0.3.0-blue.svg)
 ![Status](https://img.shields.io/badge/status-active-success.svg)
 ![Philosophy](https://img.shields.io/badge/philosophy-AI--First-purple.svg)
 ![MCP](https://img.shields.io/badge/type-MCP-orange.svg)
