@@ -16,7 +16,6 @@ import os
 import sys
 import subprocess
 import argparse
-from pathlib import Path
 
 def main():
     parser = argparse.ArgumentParser(description="Test the GENERATE_DOC command's hybrid approach")
@@ -49,7 +48,7 @@ def main():
         cmd.append("--force-context-regeneration")
     
     # Print what we're about to run
-    print(f"Running test with command:")
+    print("Running test with command:")
     print(" ".join(cmd))
     print("\n" + "=" * 50)
     

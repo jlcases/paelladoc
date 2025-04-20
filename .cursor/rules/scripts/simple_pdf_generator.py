@@ -151,7 +151,7 @@ def main():
     client = sys.argv[4]
     confidentiality = sys.argv[5] if len(sys.argv) > 5 else "Confidential"
     
-    print(f"Parameters received:")
+    print("Parameters received:")
     print(f"  - Docs directory: {docs_dir}")
     print(f"  - Output file: {output_file}")
     print(f"  - Company: {company}")

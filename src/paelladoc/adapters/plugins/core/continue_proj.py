@@ -1,72 +1,74 @@
 from paelladoc.domain.core_logic import mcp
-from typing import Optional, List, Dict, Any
 import logging
-import asyncio # Added asyncio
 
 # Domain models
 from paelladoc.domain.models.project import (
-    ProjectMemory,
-    ProjectMetadata,
-    ArtifactMeta,
     DocumentStatus,
     Bucket,
 )
+
 # Adapter for persistence
 from paelladoc.adapters.output.sqlite.sqlite_memory_adapter import SQLiteMemoryAdapter
 
 # Extracted behavior configuration from the original MDC file
-BEHAVIOR_CONFIG =     {   'calculate_documentation_completion': True,
-        'code_after_documentation': True,
-        'confirm_each_parameter': True,
-        'conversation_required': True,
-        'documentation_first': True,
-        'documentation_section_sequence': [   'project_definition',
-                                              'market_research',
-                                              'user_research',
-                                              'problem_definition',
-                                              'product_definition',
-                                              'architecture_decisions',
-                                              'product_roadmap',
-                                              'user_stories',
-                                              'technical_architecture',
-                                              'technical_specifications',
-                                              'component_specification',
-                                              'api_specification',
-                                              'database_design',
-                                              'frontend_architecture',
-                                              'testing_strategy',
-                                              'devops_pipeline',
-                                              'security_framework',
-                                              'documentation_framework'],
-        'enforce_one_question_rule': True,
-        'force_single_question_mode': True,
-        'guide_documentation_sequence': True,
-        'interactive': True,
-        'load_memory_file': True,
-        'max_questions_per_message': 1,
-        'memory_path': '/docs/{project_name}/.memory.json',
-        'one_parameter_at_a_time': True,
-        'prevent_web_search': True,
-        'prohibit_multiple_questions': True,
-        'provide_section_guidance': True,
-        'require_step_confirmation': True,
-        'sequential_questions': True,
-        'single_question_mode': True,
-        'strict_parameter_sequence': True,
-        'strict_question_sequence': True,
-        'track_documentation_completion': True,
-        'update_last_modified': True,
-        'wait_for_response': True,
-        'wait_for_user_response': True}
- # Insert behavior config here
+BEHAVIOR_CONFIG = {
+    "calculate_documentation_completion": True,
+    "code_after_documentation": True,
+    "confirm_each_parameter": True,
+    "conversation_required": True,
+    "documentation_first": True,
+    "documentation_section_sequence": [
+        "project_definition",
+        "market_research",
+        "user_research",
+        "problem_definition",
+        "product_definition",
+        "architecture_decisions",
+        "product_roadmap",
+        "user_stories",
+        "technical_architecture",
+        "technical_specifications",
+        "component_specification",
+        "api_specification",
+        "database_design",
+        "frontend_architecture",
+        "testing_strategy",
+        "devops_pipeline",
+        "security_framework",
+        "documentation_framework",
+    ],
+    "enforce_one_question_rule": True,
+    "force_single_question_mode": True,
+    "guide_documentation_sequence": True,
+    "interactive": True,
+    "load_memory_file": True,
+    "max_questions_per_message": 1,
+    "memory_path": "/docs/{project_name}/.memory.json",
+    "one_parameter_at_a_time": True,
+    "prevent_web_search": True,
+    "prohibit_multiple_questions": True,
+    "provide_section_guidance": True,
+    "require_step_confirmation": True,
+    "sequential_questions": True,
+    "single_question_mode": True,
+    "strict_parameter_sequence": True,
+    "strict_question_sequence": True,
+    "track_documentation_completion": True,
+    "update_last_modified": True,
+    "wait_for_response": True,
+    "wait_for_user_response": True,
+}
+# Insert behavior config here
 
 # TODO: Review imports and add any other necessary modules
 
+
 @mcp.tool(
-    name="core.continue",
-    description="Continues work on an existing PAELLADOC project."
+    name="core.continue", description="Continues work on an existing PAELLADOC project."
 )
-async def core_continue(project_name: str) -> dict: # Added project_name argument, made async
+async def core_continue(
+    project_name: str,
+) -> dict:  # Added project_name argument, made async
     """Loads an existing project's memory and suggests the next steps.
 
     Args:
@@ -76,7 +78,9 @@ async def core_continue(project_name: str) -> dict: # Added project_name argumen
     from the MDC file. See the `BEHAVIOR_CONFIG` variable in the source code.
     """
 
-    logging.info(f"Executing initial implementation for core.continue for project: {project_name}...")
+    logging.info(
+        f"Executing initial implementation for core.continue for project: {project_name}..."
+    )
 
     # --- Dependency Injection (Temporary Direct Instantiation) ---
     # TODO: Replace with proper dependency injection
@@ -85,8 +89,8 @@ async def core_continue(project_name: str) -> dict: # Added project_name argumen
     except Exception as e:
         logging.error(f"Failed to instantiate SQLiteMemoryAdapter: {e}", exc_info=True)
         return {
-             "status": "error",
-             "message": f"Internal server error: Could not initialize memory adapter.",
+            "status": "error",
+            "message": "Internal server error: Could not initialize memory adapter.",
         }
 
     # --- Load Project Memory ---
@@ -111,7 +115,9 @@ async def core_continue(project_name: str) -> dict: # Added project_name argumen
     # TODO: Implement sophisticated logic based on BEHAVIOR_CONFIG['documentation_section_sequence']
     # For now, find the first pending artifact or report overall status.
 
-    next_step_suggestion = "No pending artifacts found. Project might be complete or need verification."
+    next_step_suggestion = (
+        "No pending artifacts found. Project might be complete or need verification."
+    )
     found_pending = False
     # Define a somewhat logical bucket order for checking progress
     # This could be moved to config or derived from the taxonomy later
@@ -151,20 +157,24 @@ async def core_continue(project_name: str) -> dict: # Added project_name argumen
             if artifact.status == DocumentStatus.PENDING:
                 next_step_suggestion = f"Next suggested step: Work on artifact '{artifact.name}' ({artifact.path}) in bucket '{bucket.value}'."
                 found_pending = True
-                break # Found the first pending, stop searching this bucket
+                break  # Found the first pending, stop searching this bucket
         if found_pending:
-            break # Stop searching other buckets
+            break  # Stop searching other buckets
 
     # Get overall phase completion for context
     phase_completion_summary = "Phase completion: "
     # Define phases based on Bucket enum prefixes
-    phases = sorted(list(set(b.value.split("::")[0] for b in Bucket if "::" in b.value)))
+    phases = sorted(
+        list(set(b.value.split("::")[0] for b in Bucket if "::" in b.value))
+    )
     phase_summaries = []
     try:
         for phase in phases:
             stats = memory.get_phase_completion(phase)
-            if stats["total"] > 0: # Only show phases with artifacts
-                 phase_summaries.append(f"{phase}({stats['completion_percentage']:.0f}%)")
+            if stats["total"] > 0:  # Only show phases with artifacts
+                phase_summaries.append(
+                    f"{phase}({stats['completion_percentage']:.0f}%)"
+                )
         if not phase_summaries:
             phase_completion_summary += "(No artifacts tracked yet)"
         else:
@@ -174,7 +184,6 @@ async def core_continue(project_name: str) -> dict: # Added project_name argumen
         logging.warning(f"Could not calculate phase completion: {e}")
         phase_completion_summary += "(Calculation error)"
 
-
     # --- Return Status and Suggestion ---
     return {
         "status": "ok",
@@ -183,4 +192,3 @@ async def core_continue(project_name: str) -> dict: # Added project_name argumen
         # Optionally return parts of the memory if needed by the client
         # "current_taxonomy_version": memory.taxonomy_version
     }
-

@@ -1,4 +1,4 @@
-from typing import List, Optional, Dict, Any
+from typing import List, Optional
 from sqlmodel import Field, Relationship, SQLModel, Column, JSON
 import datetime
 
@@ -6,9 +6,10 @@ import datetime
 # we store their string representation (e.g., 'pending').
 # The adapter layer will handle the conversion.
 
-# --- Database Models --- 
+# --- Database Models ---
 
 # Forward references are needed for relationships defined before the target model
+
 
 class ProjectMetadataDB(SQLModel, table=True):
     # Represents the metadata associated with a project memory entry
@@ -21,33 +22,45 @@ class ProjectMetadataDB(SQLModel, table=True):
 
     # Define the one-to-one relationship back to ProjectMemoryDB
     # Use Optional because a metadata row might briefly exist before being linked
-    project_memory: Optional["ProjectMemoryDB"] = Relationship(back_populates="project_meta")
+    project_memory: Optional["ProjectMemoryDB"] = Relationship(
+        back_populates="project_meta"
+    )
+
 
 class ProjectDocumentDB(SQLModel, table=True):
     # Represents a single document tracked within a project memory
     id: Optional[int] = Field(default=None, primary_key=True)
-    name: str = Field(index=True) # Name of the document file (e.g., "README.md")
+    name: str = Field(index=True)  # Name of the document file (e.g., "README.md")
     template_origin: Optional[str] = None
-    status: str = Field(default="pending", index=True) # Store enum string value
+    status: str = Field(default="pending", index=True)  # Store enum string value
 
     # Foreign key to link back to the main project memory entry
-    project_memory_id: Optional[int] = Field(default=None, foreign_key="projectmemorydb.id")
+    project_memory_id: Optional[int] = Field(
+        default=None, foreign_key="projectmemorydb.id"
+    )
     # Define the many-to-one relationship back to ProjectMemoryDB
-    project_memory: Optional["ProjectMemoryDB"] = Relationship(back_populates="documents")
+    project_memory: Optional["ProjectMemoryDB"] = Relationship(
+        back_populates="documents"
+    )
+
 
 class ProjectMemoryDB(SQLModel, table=True):
     # Represents the main project memory entry in the database
     id: Optional[int] = Field(default=None, primary_key=True)
     # Use project_name from metadata as the main unique identifier for lookups
     project_name: str = Field(index=True, unique=True)
-    
+
     created_at: datetime.datetime = Field(default_factory=datetime.datetime.now)
     last_updated_at: datetime.datetime = Field(default_factory=datetime.datetime.now)
 
     # Foreign key to link to the associated metadata entry
-    project_meta_id: Optional[int] = Field(default=None, foreign_key="projectmetadatadb.id", unique=True)
+    project_meta_id: Optional[int] = Field(
+        default=None, foreign_key="projectmetadatadb.id", unique=True
+    )
     # Define the one-to-one relationship to ProjectMetadataDB
-    project_meta: Optional[ProjectMetadataDB] = Relationship(back_populates="project_memory")
+    project_meta: Optional[ProjectMetadataDB] = Relationship(
+        back_populates="project_memory"
+    )
 
     # Define the one-to-many relationship to ProjectDocumentDB
-    documents: List[ProjectDocumentDB] = Relationship(back_populates="project_memory") 
+    documents: List[ProjectDocumentDB] = Relationship(back_populates="project_memory")

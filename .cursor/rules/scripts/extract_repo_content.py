@@ -20,9 +20,7 @@ import os
 import sys
 import subprocess
 import argparse
-import shutil
 import venv
-from pathlib import Path
 
 
 def setup_virtual_env(venv_path):

@@ -19,8 +19,7 @@ import os
 import re
 import json
 import sys
-from pathlib import Path
-from collections import Counter, defaultdict
+from collections import Counter
 
 # Project types and their detection patterns
 PROJECT_TYPES = {

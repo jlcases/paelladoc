@@ -9,7 +9,6 @@ if str(project_root) not in sys.path:
 # Import SQLModel base metadata
 from sqlmodel import SQLModel
 # Import your DB models to ensure they are registered with SQLModel's metadata
-from paelladoc.adapters.output.sqlite import db_models 
 
 from logging.config import fileConfig
 

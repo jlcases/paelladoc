@@ -10,7 +10,6 @@ fixed 19-option menu in Spanish.
 import os
 import sys
 import argparse
-from pathlib import Path
 
 def read_context_file(context_file, max_chars=5000):
     """Read and return the content of the context file (limited sample)."""

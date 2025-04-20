@@ -134,7 +134,11 @@ class ProjectMemory(BaseModel):
         return None
 
     def add_artifact(self, artifact: ArtifactMeta) -> bool:
-        """Add artifact to the appropriate bucket. Returns True if added, False if duplicate."""
+        """Add artifact to the appropriate bucket.
+
+        Returns:
+            bool: True if added, False if duplicate path exists.
+        """
         bucket = artifact.bucket
         if bucket not in self.artifacts:
             self.artifacts[bucket] = []
