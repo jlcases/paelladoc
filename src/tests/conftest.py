@@ -1,5 +1,5 @@
 import pytest
-from datetime import datetime, timezone
+from datetime import datetime, timezone, timedelta
 from pathlib import Path
 import sys
 
@@ -18,10 +18,16 @@ class MockTimeService(TimeService):
     def __init__(self, fixed_time=None):
         """Initialize with optional fixed time."""
         self.fixed_time = fixed_time or datetime.now(timezone.utc)
+        self.call_count = 0
 
     def get_current_time(self) -> datetime:
-        """Get the mocked current time."""
-        return self.fixed_time
+        """Get the mocked current time, incrementing by microseconds on each call."""
+        # Increment call count
+        self.call_count += 1
+
+        # Return fixed time plus microseconds based on call count to ensure
+        # timestamps are different when multiple calls happen in sequence
+        return self.fixed_time + timedelta(microseconds=self.call_count)
 
     def ensure_utc(self, dt: datetime) -> datetime:
         """Ensure a datetime is in UTC."""
