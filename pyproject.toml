@@ -13,6 +13,7 @@ authors = [
     { name = "jlcases" }
 ]
 dependencies = [
+    "numpy<2.0",
     "repopack==0.1.1",
     "PyYAML==6.0.1",
     "sqlmodel==0.0.19",
