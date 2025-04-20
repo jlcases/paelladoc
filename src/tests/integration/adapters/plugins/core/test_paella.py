@@ -79,11 +79,12 @@ async def test_create_new_project_asks_for_base_path_and_saves_it(
     base_path_input = "./test_paella_docs"  # Relative path input
     expected_abs_base_path = Path(base_path_input).resolve()
 
-    # --- Monkeypatch the default DB path ---
-    # Make core_paella use the temporary DB path when it creates its own adapter
+    # --- Monkeypatch the database path resolution ---
+    # Patch get_db_path where SQLiteMemoryAdapter imports it,
+    # so core_paella uses the temporary DB path when it creates its own adapter.
     monkeypatch.setattr(
-        "paelladoc.adapters.output.sqlite.sqlite_memory_adapter.DEFAULT_DB_PATH",
-        memory_adapter.db_path,
+        "paelladoc.adapters.output.sqlite.sqlite_memory_adapter.get_db_path",
+        lambda: memory_adapter.db_path,  # Return the path from the fixture
     )
 
     # Simulate the conversation step-by-step
