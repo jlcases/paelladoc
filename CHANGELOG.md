@@ -4,6 +4,29 @@ All notable changes to PAELLADOC will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.3.2] - 2025-04-22
+
+### Added
+- Enhanced time service initialization with improved startup sequence
+- Added detailed database configuration options with better error handling
+- Improved database path configuration during installation process
+
+### Changed
+- Updated version to 0.3.2 for PyPI release
+- Synchronized version numbers across VERSION file and pyproject.toml
+- Simplified database path logic for better maintainability
+- Enhanced documentation for database management, particularly around `--db-path` usage
+
+### Fixed
+- Resolved time service initialization issues in high-load scenarios
+- Improved error handling for database configuration edge cases
+- Fixed inconsistencies in database path resolution
+
+### Documentation
+- Added comprehensive database management documentation
+- Updated installation instructions with recommended database configuration methods
+- Improved clarity around Python integration examples
+
 ## [0.3.1] - 2025-04-21
 
 ### Added
