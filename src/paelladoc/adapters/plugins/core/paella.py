@@ -1,16 +1,20 @@
+"""PAELLADOC project initialization module."""
+
 from pathlib import Path
 from typing import Dict
 
 # Import the shared FastMCP instance from core_logic
 from paelladoc.domain.core_logic import mcp, logger
 
-# Domain models
+# Domain models and services
 from paelladoc.domain.models.project import (
-    Bucket,
     ProjectMemory,
     ProjectMetadata,
+    Bucket,
     DocumentStatus,
+    set_time_service,
 )
+from paelladoc.adapters.services.system_time_service import SystemTimeService
 
 # Adapter for persistence
 from paelladoc.adapters.output.sqlite.sqlite_memory_adapter import SQLiteMemoryAdapter
@@ -41,11 +45,17 @@ async def paella_init(
     logger.info(f"Initializing new project: {new_project_name}")
 
     try:
+        # Initialize TimeService with SystemTimeService implementation
+        set_time_service(SystemTimeService())
+
         # Initialize memory adapter
         memory_adapter = SQLiteMemoryAdapter()
 
         # Create absolute path
         abs_base_path = Path(base_path).expanduser().resolve()
+
+        # Ensure the base directory exists
+        abs_base_path.mkdir(parents=True, exist_ok=True)
 
         # Create project memory
         project_memory = ProjectMemory(

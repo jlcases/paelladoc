@@ -4,7 +4,7 @@ build-backend = "hatchling.build"
 
 [project]
 name = "paelladoc"
-version = "0.3.1"
+version = "0.3.2"
 description = "AI-First Development Framework - An MCP Implementation"
 readme = "README.md"
 requires-python = ">=3.12"
