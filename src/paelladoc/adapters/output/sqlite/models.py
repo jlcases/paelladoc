@@ -48,7 +48,15 @@ class ProjectMemoryDB(SQLModel, table=True):
     # Represents the main project memory entry in the database
     id: Optional[int] = Field(default=None, primary_key=True)
     # Use project_name from metadata as the main unique identifier for lookups
-    project_name: str = Field(index=True, unique=True)
+    name: str = Field(
+        index=True, unique=True
+    )  # Changed from project_name to match domain model
+
+    # New fields to match domain model
+    base_path: str = Field(default="")  # Store as string, convert to Path in adapter
+    interaction_language: str = Field(default="en-US")
+    documentation_language: str = Field(default="en-US")
+    taxonomy_version: str = Field(default="0.5")
 
     created_at: datetime.datetime = Field(default_factory=datetime.datetime.now)
     last_updated_at: datetime.datetime = Field(default_factory=datetime.datetime.now)
