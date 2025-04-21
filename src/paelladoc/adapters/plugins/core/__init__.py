@@ -36,19 +36,17 @@ Imports:
     - list_projects: Lists existing projects.
 """
 
-# Import the functions decorated with @mcp.tool from each module
-# This makes them discoverable by the MCP system.
-
-from .help import core_help
-from .paella import core_paella
-from .continue_proj import core_continue
-from .verification import core_verification
-from .list_projects import list_projects
-
-__all__ = [
-    "core_help",
-    "core_paella",
-    "core_continue",
-    "core_verification",
-    "list_projects",
-]
+# Removed explicit imports and __all__, relying on dynamic loading above
+# from .help import core_help
+# from .paella import core_paella # This was causing issues
+# from .continue_proj import core_continue
+# from .verification import core_verification
+# from .list_projects import list_projects
+#
+# __all__ = [
+#     "core_help",
+#     "core_paella",
+#     "core_continue",
+#     "core_verification",
+#     "list_projects",
+# ]

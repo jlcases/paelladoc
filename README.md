@@ -1,6 +1,6 @@
 # 🧠 PAELLADOC: The AI-First Development Framework
 
-![Version](https://img.shields.io/badge/version-0.3.0-blue.svg)
+![Version](https://img.shields.io/badge/version-0.3.1-blue.svg)
 ![Status](https://img.shields.io/badge/status-active-success.svg)
 ![Philosophy](https://img.shields.io/badge/philosophy-AI--First-purple.svg)
 ![MCP](https://img.shields.io/badge/type-MCP-orange.svg)
@@ -213,60 +213,98 @@ The LLM will handle all the complexity - you just need to express your intent in
 
 3.  **Follow the LLM's lead:** PAELLADOC (via the LLM) will then guide you through the process interactively, asking for project details, template choices, etc.
 
+## ⚙️ Available Commands
+
+Once PAELLADOC is configured in your LLM (like Cursor) via MCP, you can interact with it using the following commands. The LLM will typically guide you through the necessary arguments interactively.
+
+### `PAELLA`
+Initiates the documentation process for a new project or lists/selects existing ones.
+
+*   **Arguments (guided by LLM):**
+    *   `project_name` (string, optional): Name of the project to document.
+    *   `project_type` (string): Type of project (frontend, backend, chrome_extension, fullstack, mobile_app).
+    *   `methodologies` (comma-separated): Development methodologies (tdd, github_workflow).
+    *   `git_workflow` (string): Git workflow style (github_flow, gitflow, trunk_based, no_workflow).
+    *   `generate_rules` (boolean): Whether to generate Cursor rules from documentation.
+    *   `ai_mode` (string): AI operation mode (autonomous, collaborative, advisory).
+    *   `-help` (flag): Display help information.
+
+### `HELP`
+Displays help information about available PAELLADOC commands.
+
+*   **Arguments (guided by LLM):**
+    *   `command` (string, optional): Specific command to get help for.
+    *   `format` (string): Output format (detailed, summary, examples).
+
+### `CONTINUE`
+Continues working on an existing project's documentation.
+
+*   **Arguments (guided by LLM):**
+    *   `project_name` (string, required): Name of the project to continue with.
+    *   `update_rules` (boolean): Whether to update Cursor rules from documentation.
+    *   `sync_templates` (boolean): Whether to synchronize templates with current state.
+
+### `ACHIEVEMENT`
+Records a significant achievement in the project memory.
+
+*   **Arguments (guided by LLM):**
+    *   `description` (string, required): Description of the achievement.
+    *   `category` (string, required): Category (architecture, development, documentation, testing, security, performance, product, design, research).
+    *   `impact_level` (string): Level of impact (high, medium, low).
+
+### `ISSUE`
+Records an issue or problem encountered in the project memory.
+
+*   **Arguments (guided by LLM):**
+    *   `description` (string, required): Description of the issue.
+    *   `severity` (string, required): Severity level (critical, high, medium, low).
+    *   `area` (string, required): Area affected (product, technical, process, security, performance).
+
+### `DECISION`
+Records a technical or architectural decision in the project memory.
+
+*   **Arguments (guided by LLM):**
+    *   `description` (string, required): Description of the decision.
+    *   `impact` (comma-separated): Areas impacted (architecture, development, documentation, testing, security, performance, product, design, process).
+    *   `rationale` (string, required): Reasoning behind the decision.
+
+### `MEMORY`
+Shows the development record (achievements, issues, decisions).
+
+*   **Arguments (guided by LLM):**
+    *   `filter` (string): Filter memory by category (all, achievements, issues, decisions, product, technical).
+    *   `format` (string): Output format (detailed, summary, timeline).
+
+### `CODING_STYLE`
+Manages programming style guides for the project.
+
+*   **Arguments (guided by LLM):**
+    *   `operation` (string, required): Style operation (apply, customize, list, show).
+    *   `style_name` (string, required): Name of the style (frontend, backend, chrome_extension, tdd, github_workflow).
+    *   `project_name` (string, required): Name of the project to apply style to.
+    *   `customizations` (string): Path to customization file or inline JSON customizations.
+
+### `GENERATE_CONTEXT`
+Converts a code repository into a text format suitable for LLM processing.
+
+*   **Arguments (guided by LLM):**
+    *   `repo_path` (string, required): Path to the repository to process.
+    *   `output` (string): Output file name for the extracted content.
+    *   `line_numbers` (boolean): Whether to show line numbers in the output file.
+    *   `style` (string): Output style (plain, xml).
+    *   `ignore` (string): Additional patterns to ignore (comma-separated).
+
+### `GENERATE-DOC`
+Analyzes code (or existing context) and generates documentation interactively.
+
+*   **Arguments (guided by LLM):**
+    *   `repo_path` (string): Path to the repository to analyze (optional if context already exists).
+    *   `context_path` (string): Path to the context directory (default: code_context/extracted).
+    *   `output` (string): Path where to save the generated documentation.
+    *   `template` (string): Documentation template to use.
+
 ## 📊 MECE Documentation Structure
 
 Our AI-First taxonomy ensures complete context preservation:
 
 ```
-project/
-├── intent/           # Business and technical intent
-├── context/          # Living knowledge base
-├── decisions/        # Contextual decision records
-├── architecture/     # Intent-driven design
-└── manifestation/    # Generated code and docs
-```
-
-## 🛠️ Key Features
-
-- **Intent Preservation**: Every artifact maintains its philosophical context
-- **Living Knowledge**: Documentation that evolves with your system
-- **Context-First Generation**: Generate code from preserved context
-- **Decision Architecture**: Capture the "why" behind every choice
-- **Human-AI Bridge**: Seamless collaboration between human and AI
-
-## 🎓 Learning the AI-First Way
-
-1. Start with intent, not implementation
-2. Let context drive architecture
-3. Preserve knowledge as it evolves
-4. Collaborate with AI naturally
-5. Document decisions with their context
-
-## 🌟 Success Stories
-
-Teams using PAELLADOC report:
-- 40% reduction in context loss
-- 60% faster onboarding
-- 80% better decision understanding
-- 90% more maintainable AI-generated code
-
-## 🤝 Join the AI-First Revolution
-
-We're building the future of software development. Join us:
-
-- [X Community](https://x.com/i/communities/1907494161458090406)
-- [Read the Manifesto](https://paelladoc.com/blog/ai-first-development-principles/)
-- [Contribute](CONTRIBUTING.md)
-
-## 📚 Learn More
-
-- [AI-First Development Guide](docs/ai-first-guide.md)
-- [Context-First Architecture](docs/context-architecture.md)
-- [Decision Preservation](docs/decision-preservation.md)
-- [Human-AI Collaboration](docs/human-ai-collaboration.md)
-
-## 📄 License
-
-This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
-
-*PAELLADOC: Because in the AI era, context is everything.*

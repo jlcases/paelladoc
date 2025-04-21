@@ -13,10 +13,11 @@ import uuid
 project_root = Path(__file__).parent.parent.parent.parent.parent.parent.absolute()
 sys.path.insert(0, str(project_root))
 
-# Module to test
+from paelladoc.domain.models.language import SupportedLanguage
 from paelladoc.adapters.plugins.core.paella import (
-    core_paella,
-    SupportedLanguage,
+    paella_init,
+    paella_list,
+    paella_select,
 )
 
 # Adapter for verification
@@ -59,7 +60,7 @@ async def memory_adapter():
 
 @pytest.mark.asyncio
 async def test_create_new_project_asks_for_base_path_and_saves_it(
-    memory_adapter: SQLiteMemoryAdapter,
+    memory_adapter,
     monkeypatch,
 ):
     """
@@ -73,8 +74,8 @@ async def test_create_new_project_asks_for_base_path_and_saves_it(
     """
     print("\nRunning: test_create_new_project_asks_for_base_path_and_saves_it")
 
-    interaction_lang = SupportedLanguage.EN_US
-    doc_lang = SupportedLanguage.EN_US
+    interaction_lang = SupportedLanguage.EN_US.value
+    doc_lang = SupportedLanguage.EN_US.value
     project_name = f"test-project-{uuid.uuid4()}"
     base_path_input = "./test_paella_docs"  # Relative path input
     expected_abs_base_path = Path(base_path_input).resolve()
@@ -87,87 +88,58 @@ async def test_create_new_project_asks_for_base_path_and_saves_it(
         lambda: memory_adapter.db_path,  # Return the path from the fixture
     )
 
-    # Simulate the conversation step-by-step
-
-    # Initial call -> asks for interaction language
-    response1 = await core_paella()
-    assert response1["status"] == "input_needed"
-    assert response1["next_param"] == "interaction_language"
-    assert response1["halt"] is True
-
-    # Provide interaction language -> asks for action
-    response2 = await core_paella(interaction_language=interaction_lang)
-    assert response2["status"] == "input_needed"
-    assert response2["next_param"] == "action"
-    assert response2["halt"] is True
-
-    # Provide action 'create_new' -> asks for documentation language
-    response3 = await core_paella(
-        interaction_language=interaction_lang, action="create_new"
-    )
-    assert response3["status"] == "input_needed"
-    assert response3["next_param"] == "documentation_language"
-    assert response3["halt"] is True
-
-    # Provide documentation language -> asks for new project name
-    response4 = await core_paella(
-        interaction_language=interaction_lang,
-        action="create_new",
-        documentation_language=doc_lang,
-    )
-    assert response4["status"] == "input_needed"
-    assert response4["next_param"] == "new_project_name"
-    assert response4["halt"] is True
-
-    # Provide new project name -> SHOULD ask for base_path (THIS WILL FAIL INITIALLY)
-    response5 = await core_paella(
-        interaction_language=interaction_lang,
-        action="create_new",
-        documentation_language=doc_lang,
-        new_project_name=project_name,
-    )
-    assert response5["status"] == "input_needed", (
-        f"Expected input_needed, got {response5.get('status')}"
-    )
-    assert response5["next_param"] == "base_path", (
-        f"Expected next_param base_path, got {response5.get('next_param')}"
-    )
-    assert response5["halt"] is True, "Expected halt=True when asking for base_path"
-    assert "path" in response5.get("message", "").lower(), "Message should ask for path"
-
-    # Provide base_path -> SHOULD succeed
-    response6 = await core_paella(
-        interaction_language=interaction_lang,
-        action="create_new",
-        documentation_language=doc_lang,
-        new_project_name=project_name,
+    # Initialize project
+    init_result = await paella_init(
         base_path=base_path_input,
+        documentation_language=doc_lang,
+        interaction_language=interaction_lang,
+        new_project_name=project_name,
     )
-    assert response6["status"] == "ok", (
-        f"Expected status ok, got {response6.get('status')}: {response6.get('message')}"
-    )
-    assert response6.get("project_name") == project_name
+    assert init_result["status"] == "ok"
+    assert init_result["project_name"] == project_name
+    assert init_result["base_path"] == str(expected_abs_base_path)
 
-    # Load the saved memory to verify
-    saved_memory = await memory_adapter.load_memory(project_name)
-    assert saved_memory is not None, f"Memory for project '{project_name}' not found."
+    # Clean up
+    if expected_abs_base_path.exists():
+        import shutil
 
-    assert saved_memory.metadata.base_path is not None, (
-        "Saved metadata base_path is None."
-    )
-    assert saved_memory.metadata.base_path == expected_abs_base_path, (
-        f"Expected base_path {expected_abs_base_path}, but got {saved_memory.metadata.base_path}"
-    )
+        shutil.rmtree(expected_abs_base_path)
 
-    # Cleanup the created directory (optional but good practice)
-    if expected_abs_base_path.exists() and expected_abs_base_path.is_dir():
-        try:
-            # Remove files first if any were created (future tests might do this)
-            for item in expected_abs_base_path.iterdir():
-                item.unlink()
-            expected_abs_base_path.rmdir()
-            print(f"Cleaned up test directory: {expected_abs_base_path}")
-        except Exception as e:
-            print(
-                f"Warning: Could not clean up test directory {expected_abs_base_path}: {e}"
-            )
+
+@pytest.mark.asyncio
+async def test_paella_workflow():
+    """Test the complete PAELLA workflow."""
+    # Test data
+    project_name = f"test_project_{uuid.uuid4().hex[:8]}"
+    base_path = f"docs/{project_name}"
+    doc_language = SupportedLanguage.EN_US.value
+    int_language = SupportedLanguage.EN_US.value
+
+    # Initialize project
+    init_result = await paella_init(
+        base_path=base_path,
+        documentation_language=doc_language,
+        interaction_language=int_language,
+        new_project_name=project_name,
+    )
+    assert init_result["status"] == "ok"
+    assert init_result["project_name"] == project_name
+    assert init_result["base_path"] == str(Path(base_path).expanduser().resolve())
+
+    # List projects
+    list_result = await paella_list()
+    assert list_result["status"] == "ok"
+    assert isinstance(list_result["projects"], list)
+    assert project_name in list_result["projects"]  # Now projects is a list of strings
+
+    # Select project
+    select_result = await paella_select(project_name=project_name)
+    assert select_result["status"] == "ok"
+    assert select_result["project_name"] == project_name
+
+    # Clean up
+    project_dir = Path(base_path)
+    if project_dir.exists():
+        import shutil
+
+        shutil.rmtree(project_dir)

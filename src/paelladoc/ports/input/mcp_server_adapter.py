@@ -18,7 +18,19 @@ from mcp.types import TextContent  # Assuming mcp is installed in .venv
 # Import the core FastMCP instance and logger from the domain layer
 from paelladoc.domain.core_logic import mcp, logger  # Corrected import path
 
+# --- Import plugin packages to trigger their __init__.py dynamic loading --- #
+# This ensures decorators within the package modules are executed when the server starts
+
+# Import core plugins package
+# This will execute plugins/core/__init__.py which dynamically loads modules like paella.py
+
+# We might need other plugin packages later, e.g.:
+# from paelladoc.adapters.plugins import code_analysis
+# from paelladoc.adapters.plugins import product_management
+
+
 # --- Add specific tools/resources/prompts for this entry point using decorators --- #
+# These are defined directly in this adapter file and might be deprecated later
 
 
 @mcp.resource("docs://readme")  # Use decorator
