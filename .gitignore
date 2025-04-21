@@ -133,3 +133,6 @@ paelladoc_memory.db
 
 # PyPI credentials file (Ensure this is added)
 .pypirc
+
+# Temporary files
+local_requirements.txt

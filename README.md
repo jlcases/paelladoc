@@ -1,6 +1,6 @@
 # 🧠 PAELLADOC: The AI-First Development Framework
 
-![Version](https://img.shields.io/badge/version-0.3.1-blue.svg)
+![Version](https://img.shields.io/badge/version-0.3.3-blue.svg)
 ![Status](https://img.shields.io/badge/status-active-success.svg)
 ![Philosophy](https://img.shields.io/badge/philosophy-AI--First-purple.svg)
 ![MCP](https://img.shields.io/badge/type-MCP-orange.svg)
@@ -8,7 +8,7 @@
 [![GitHub Stars](https://img.shields.io/github/stars/jlcases/paelladoc?style=social)](https://github.com/jlcases/paelladoc)
 [![X Community](https://img.shields.io/badge/X%20Community-PAellaDOC-blue)](https://x.com/i/communities/1907494161458090406)
 
-> **Version 0.3.0**: This release marks a significant step, focusing PAELLADOC as an implementation of Anthropic's **Model Context Protocol (MCP)**, enabling powerful AI-First development workflows through LLM interaction.
+> **Version 0.3.3**: This release focuses on fixing dependency issues for PyPI packaging and improving configuration documentation for the Model Context Protocol (MCP).
 
 > "In the AI era, context isn't supplementary to code—it's the primary creation."
 
@@ -95,6 +95,7 @@ decision:
 
 ## 🚀 Installation & Integration
 
+![Installation Demo](assets/paelladoc-demo.gif)
 
 PAELLADOC is a Python application and should be installed in its own **dedicated Python virtual environment**. This keeps its dependencies separate and avoids conflicts. You'll need *one* PAELLADOC environment, regardless of how many different projects (Python, JS, Ruby, etc.) you plan to document.
 
@@ -141,40 +142,65 @@ source .paelladoc_venv/bin/activate
 pip install paelladoc
 ```
 
-### 3. Configure Your LLM (MCP Setup)
+### 3. Configure Database Path
 
-Now, tell your LLM tool (like Cursor) how to *find and run* the PAELLADOC you just installed inside its dedicated environment. This involves editing the tool's MCP JSON configuration file.
+PAELLADOC needs to know where to store its memory database (`memory.db`). There are two main ways to configure this:
+
+**Option 1: Environment Variable (Less Reliable for LLM Integration)**
+
+You can set the `PAELLADOC_DB_PATH` environment variable. This works well if you run PAELLADOC directly from your terminal.
+
+```bash
+# Example: Set the variable in your current terminal session
+export PAELLADOC_DB_PATH="$HOME/.paelladoc/memory.db"
+
+# Optional: Add the export line to your shell's startup file 
+# (.bashrc, .zshrc, etc.) for it to persist across sessions.
+```
+
+*Important:* When PAELLADOC is run by an LLM tool (like Cursor via MCP), it might not inherit environment variables set this way. Therefore, this method is **less reliable** for LLM integration.
+
+**Option 2: MCP Configuration (Recommended for LLM Integration)**
+
+The most reliable way to ensure your LLM tool uses the correct database path is to configure it directly within the tool's MCP JSON file (`.cursor/mcp.json` for Cursor). This injects the variable directly into the server process launched by the LLM.
+
+See the examples in the next section.
+
+### 4. Configure Your LLM (MCP Setup)
+
+Now, tell your LLM tool (like Cursor) how to find and run PAELLADOC.
 
 **Key Information Needed:**
 
-*   **The Full Path to the Python Executable:** You need the absolute path to the `python` file *inside* the `.paelladoc_venv/bin` (or `Scripts` on Windows) directory you created.
-    *   If you created it in your home directory (`~`), the path will likely be `/Users/your_username/.paelladoc_venv/bin/python` on macOS/Linux or `C:\\Users\\your_username\\.paelladoc_venv\\Scripts\\python.exe` on Windows. **Replace `your_username` accordingly!**
-    *   *Tip:* While the venv is active, you can often find the path by running `which python` (macOS/Linux) or `where python` (Windows).
-*   **Database Location (Optional):** By default, PAELLADOC stores its memory database in `~/.paelladoc/memory.db`. You can override this using the `PAELLADOC_DB_PATH` environment variable in the MCP configuration if needed.
+*   **Full Path to Python Executable:** Absolute path to `python` inside your `.paelladoc_venv`.
 
 #### Cursor IDE Example
+
+Edit your `.cursor/mcp.json` file. This is the **minimum required configuration**:
+
 ```json
-# Edit your .cursor/mcp.json file:
 {
   "mcpServers": {
-    "paelladoc": {
-      "command": "/Users/your_username/.paelladoc_venv/bin/python", 
+    "Paelladoc": {
+      "command": "/absolute/path/to/.paelladoc_venv/bin/python", 
       "args": [
         "-m",
         "paelladoc.ports.input.mcp_server_adapter",
         "--stdio"
       ],
-      "env": {
-      }
+      "disabled": false
     }
-    // ... other servers
-  }
+  },
+  "mcp.timeout": 120000
 }
 ```
 
-#### Other LLMs (Claude, Copilot, etc.)
-Configure the tool use settings similarly, always ensuring the `command` points to the **full path** of the Python executable inside your dedicated `.paelladoc_venv`. The exact JSON structure might vary slightly between platforms.
+**Important Notes:**
 
+- The `command` path **must** be the absolute path to the Python executable created in Step 1 (e.g., `/Users/your_username/.paelladoc_venv/bin/python`). This is the only strictly required configuration.
+- By default, PAELLADOC will use `~/.paelladoc/memory.db` for its database. If you need a custom location, you must add an `"env"` section inside the `"Paelladoc": { ... }` block, like this:
+  ```
+=======
 ```json
 // Example structure (adapt as needed):
 {
@@ -222,7 +248,7 @@ The LLM will handle all the complexity - you just need to express your intent in
 
 3.  **Follow the LLM's lead:** PAELLADOC (via the LLM) will then guide you through the process interactively, asking for project details, template choices, etc.
 
-## ⚙️ Available Commands (v0.3.1)
+## ⚙️ Available Commands (v0.3.3)
 
 This version provides the following core commands, exposed via MCP for interaction with your LLM:
 
@@ -281,3 +307,4 @@ Based on the [Unified Roadmap](instructions/roadmap_unified.md), future versions
 
 Our AI-First taxonomy ensures complete context preservation:
 ```
+>>>>>>> main
