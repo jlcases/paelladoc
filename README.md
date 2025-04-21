@@ -213,98 +213,62 @@ The LLM will handle all the complexity - you just need to express your intent in
 
 3.  **Follow the LLM's lead:** PAELLADOC (via the LLM) will then guide you through the process interactively, asking for project details, template choices, etc.
 
-## ⚙️ Available Commands
+## ⚙️ Available Commands (v0.3.1)
 
-Once PAELLADOC is configured in your LLM (like Cursor) via MCP, you can interact with it using the following commands. The LLM will typically guide you through the necessary arguments interactively.
+This version provides the following core commands, exposed via MCP for interaction with your LLM:
 
-### `PAELLA`
-Initiates the documentation process for a new project or lists/selects existing ones.
+*   **`ping`**: 
+    *   **Description:** Basic health check to confirm the server is running and responsive.
+    *   **Arguments:** None (or optional `random_string`).
+    *   **Returns:** `{ "status": "ok", "message": "pong" }`.
 
-*   **Arguments (guided by LLM):**
-    *   `project_name` (string, optional): Name of the project to document.
-    *   `project_type` (string): Type of project (frontend, backend, chrome_extension, fullstack, mobile_app).
-    *   `methodologies` (comma-separated): Development methodologies (tdd, github_workflow).
-    *   `git_workflow` (string): Git workflow style (github_flow, gitflow, trunk_based, no_workflow).
-    *   `generate_rules` (boolean): Whether to generate Cursor rules from documentation.
-    *   `ai_mode` (string): AI operation mode (autonomous, collaborative, advisory).
-    *   `-help` (flag): Display help information.
+*   **`paella_init`**:
+    *   **Description:** Initializes a new PAELLADOC project, creating the necessary structure and initial memory file.
+    *   **Arguments:** `base_path` (str), `documentation_language` (str, e.g., "es-ES"), `interaction_language` (str, e.g., "en-US"), `new_project_name` (str).
+    *   **Returns:** Dictionary confirming project creation status, name, and path.
 
-### `HELP`
-Displays help information about available PAELLADOC commands.
+*   **`paella_list`**:
+    *   **Description:** Lists the names of all existing PAELLADOC projects found in the memory database.
+    *   **Arguments:** None.
+    *   **Returns:** Dictionary containing a list of project names (`projects`).
 
-*   **Arguments (guided by LLM):**
-    *   `command` (string, optional): Specific command to get help for.
-    *   `format` (string): Output format (detailed, summary, examples).
+*   **`paella_select`**:
+    *   **Description:** Selects an existing PAELLADOC project to work on (loads its memory).
+    *   **Arguments:** `project_name` (str).
+    *   **Returns:** Dictionary confirming project selection and its base path.
 
-### `CONTINUE`
-Continues working on an existing project's documentation.
+*   **`core_continue`**:
+    *   **Description:** Continues work on a previously selected project, loading its memory and suggesting next steps (basic implementation).
+    *   **Arguments:** `project_name` (str).
+    *   **Returns:** Dictionary with project status and suggested next step.
 
-*   **Arguments (guided by LLM):**
-    *   `project_name` (string, required): Name of the project to continue with.
-    *   `update_rules` (boolean): Whether to update Cursor rules from documentation.
-    *   `sync_templates` (boolean): Whether to synchronize templates with current state.
+*   **`core_help`**:
+    *   **Description:** Provides help information about available commands (basic stub implementation).
+    *   **Arguments:** None (future: specific command).
+    *   **Returns:** Placeholder success message.
 
-### `ACHIEVEMENT`
-Records a significant achievement in the project memory.
+*   **`core_list_projects`**:
+    *   **Description:** (Likely redundant with `paella_list`) Lists the names of existing PAELLADOC projects.
+    *   **Arguments:** `db_path` (str, optional, for testing).
+    *   **Returns:** Dictionary containing a list of project names (`projects`).
 
-*   **Arguments (guided by LLM):**
-    *   `description` (string, required): Description of the achievement.
-    *   `category` (string, required): Category (architecture, development, documentation, testing, security, performance, product, design, research).
-    *   `impact_level` (string): Level of impact (high, medium, low).
+*   **`core_verification`**:
+    *   **Description:** Checks documentation quality and completeness (basic stub implementation).
+    *   **Arguments:** None.
+    *   **Returns:** Placeholder success message.
 
-### `ISSUE`
-Records an issue or problem encountered in the project memory.
+## 🗺️ Future Roadmap Highlights
 
-*   **Arguments (guided by LLM):**
-    *   `description` (string, required): Description of the issue.
-    *   `severity` (string, required): Severity level (critical, high, medium, low).
-    *   `area` (string, required): Area affected (product, technical, process, security, performance).
+Based on the [Unified Roadmap](instructions/roadmap_unified.md), future versions aim to include:
 
-### `DECISION`
-Records a technical or architectural decision in the project memory.
-
-*   **Arguments (guided by LLM):**
-    *   `description` (string, required): Description of the decision.
-    *   `impact` (comma-separated): Areas impacted (architecture, development, documentation, testing, security, performance, product, design, process).
-    *   `rationale` (string, required): Reasoning behind the decision.
-
-### `MEMORY`
-Shows the development record (achievements, issues, decisions).
-
-*   **Arguments (guided by LLM):**
-    *   `filter` (string): Filter memory by category (all, achievements, issues, decisions, product, technical).
-    *   `format` (string): Output format (detailed, summary, timeline).
-
-### `CODING_STYLE`
-Manages programming style guides for the project.
-
-*   **Arguments (guided by LLM):**
-    *   `operation` (string, required): Style operation (apply, customize, list, show).
-    *   `style_name` (string, required): Name of the style (frontend, backend, chrome_extension, tdd, github_workflow).
-    *   `project_name` (string, required): Name of the project to apply style to.
-    *   `customizations` (string): Path to customization file or inline JSON customizations.
-
-### `GENERATE_CONTEXT`
-Converts a code repository into a text format suitable for LLM processing.
-
-*   **Arguments (guided by LLM):**
-    *   `repo_path` (string, required): Path to the repository to process.
-    *   `output` (string): Output file name for the extracted content.
-    *   `line_numbers` (boolean): Whether to show line numbers in the output file.
-    *   `style` (string): Output style (plain, xml).
-    *   `ignore` (string): Additional patterns to ignore (comma-separated).
-
-### `GENERATE-DOC`
-Analyzes code (or existing context) and generates documentation interactively.
-
-*   **Arguments (guided by LLM):**
-    *   `repo_path` (string): Path to the repository to analyze (optional if context already exists).
-    *   `context_path` (string): Path to the context directory (default: code_context/extracted).
-    *   `output` (string): Path where to save the generated documentation.
-    *   `template` (string): Documentation template to use.
+*   Full interactive documentation generation flows (`GENERATE-DOC`).
+*   Code analysis and context generation (`GENERATE_CONTEXT`).
+*   Automatic code generation from documentation (`code_generation`).
+*   Management of coding styles and Git workflows (`styles.coding_styles`, `styles.git_workflows`).
+*   Project memory commands for decisions, issues, achievements (`DECISION`, `ISSUE`, `ACHIEVEMENT`).
+*   And much more, aligning with the MECE taxonomy and A2A capabilities.
 
 ## 📊 MECE Documentation Structure
 
 Our AI-First taxonomy ensures complete context preservation:
-
 ```
