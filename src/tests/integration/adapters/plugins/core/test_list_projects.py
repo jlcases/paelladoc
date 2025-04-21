@@ -15,12 +15,18 @@ sys.path.insert(0, str(project_root))
 
 # Adapter is needed to pre-populate the DB for the test
 from paelladoc.adapters.output.sqlite.sqlite_memory_adapter import SQLiteMemoryAdapter
+
 # Import domain models to create test data
-from paelladoc.domain.models.project import ProjectMemory, ProjectMetadata, Bucket, ArtifactMeta
-# SupportedLanguage se encuentra en paella.py, no en project.py
-from paelladoc.adapters.plugins.core.paella import SupportedLanguage
+from paelladoc.domain.models.project import (
+    ProjectMemory,
+    ProjectMetadata,
+    Bucket,
+    ArtifactMeta,
+)
+from paelladoc.domain.models.language import SupportedLanguage
 
 # --- Helper Function to create test data --- #
+
 
 def _create_sample_memory(name_suffix: str) -> ProjectMemory:
     """Helper to create a sample ProjectMemory object."""
@@ -36,9 +42,7 @@ def _create_sample_memory(name_suffix: str) -> ProjectMemory:
     )
     # Add a dummy artifact to make it valid
     artifact = ArtifactMeta(
-        name="dummy.md",
-        bucket=Bucket.UNKNOWN,
-        path=Path("dummy.md")
+        name="dummy.md", bucket=Bucket.UNKNOWN, path=Path("dummy.md")
     )
     memory = ProjectMemory(
         metadata=metadata,
@@ -47,7 +51,9 @@ def _create_sample_memory(name_suffix: str) -> ProjectMemory:
     )
     return memory
 
+
 # --- Pytest Fixture for Temporary DB (copied from test_paella) --- #
+
 
 @pytest.fixture(scope="function")
 async def memory_adapter():
@@ -61,7 +67,7 @@ async def memory_adapter():
     adapter = SQLiteMemoryAdapter(db_path=test_db_path)
     await adapter._create_db_and_tables()
 
-    yield adapter # Provide the adapter to the test function
+    yield adapter  # Provide the adapter to the test function
 
     # Teardown
     print(f"Tearing down test, removing DB: {test_db_path}")
@@ -78,10 +84,14 @@ async def memory_adapter():
     except Exception as e:
         print(f"Error during teardown removing {test_db_path}: {e}")
 
+
 # --- Test Case --- #
 
+
 @pytest.mark.asyncio
-async def test_list_projects_returns_saved_projects(memory_adapter: SQLiteMemoryAdapter):
+async def test_list_projects_returns_saved_projects(
+    memory_adapter: SQLiteMemoryAdapter,
+):
     """
     Verify that core.list_projects correctly lists projects previously saved.
     THIS TEST WILL FAIL until the tool and adapter method are implemented.
@@ -93,11 +103,14 @@ async def test_list_projects_returns_saved_projects(memory_adapter: SQLiteMemory
     project2_memory = _create_sample_memory("list2")
     await memory_adapter.save_memory(project1_memory)
     await memory_adapter.save_memory(project2_memory)
-    expected_project_names = sorted([project1_memory.metadata.name, project2_memory.metadata.name])
+    expected_project_names = sorted(
+        [project1_memory.metadata.name, project2_memory.metadata.name]
+    )
     print(f"Saved projects: {expected_project_names}")
 
     # Act: Call the tool function with our test db_path
     from paelladoc.adapters.plugins.core.list_projects import list_projects
+
     # Pass the path to our temporary test database
     db_path_str = str(memory_adapter.db_path)
     print(f"Using test DB path: {db_path_str}")
@@ -108,5 +121,6 @@ async def test_list_projects_returns_saved_projects(memory_adapter: SQLiteMemory
     assert "projects" in result, "Response missing 'projects' key"
     assert isinstance(result["projects"], list), "'projects' should be a list"
     # Sort both lists for comparison
-    assert sorted(result["projects"]) == expected_project_names, \
-        f"Expected projects {expected_project_names}, but got {result['projects']}" 
+    assert sorted(result["projects"]) == expected_project_names, (
+        f"Expected projects {expected_project_names}, but got {result['projects']}"
+    )
