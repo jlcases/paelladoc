@@ -4,6 +4,22 @@ All notable changes to PAELLADOC will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.3.3] - 2025-04-23
+
+### Added
+- Added `greenlet` as explicit dependency for SQLModel and aiosqlite
+- Added `markdown` as required dependency for documentation generation
+- Added `weasyprint` as optional dependency for PDF generation
+
+### Changed
+- Updated MCP configuration documentation with clearer examples and best practices
+- Improved installation instructions with detailed environment setup steps
+- Enhanced database path configuration documentation
+
+### Fixed
+- Fixed missing dependencies in PyPI package that caused installation issues
+- Improved dependency management to ensure all required packages are properly installed
+
 ## [0.3.2] - 2025-04-22
 
 ### Added
