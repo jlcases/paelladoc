@@ -95,9 +95,18 @@ decision:
 
 ## 🚀 Installation & Integration
 
+
 PAELLADOC is a Python application and should be installed in its own **dedicated Python virtual environment**. This keeps its dependencies separate and avoids conflicts. You'll need *one* PAELLADOC environment, regardless of how many different projects (Python, JS, Ruby, etc.) you plan to document.
 
 *(Requires Python 3.12 or later)*
+
+### Installing via Smithery
+
+To install PAELLADOC for Claude Desktop automatically via [Smithery](https://smithery.ai/server/@jlcases/paelladoc):
+
+```bash
+npx -y @smithery/cli install @jlcases/paelladoc --client claude
+```
 
 ### 1. Create and Activate the Dedicated Environment
 
