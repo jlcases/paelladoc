@@ -19,6 +19,9 @@ from paelladoc.adapters.plugins.core.paella import (
     paella_list,
     paella_select,
 )
+from paelladoc.domain.models.project import (
+    ProjectInfo,  # Import Metadata and rename
+)
 
 # Adapter for verification
 from paelladoc.adapters.output.sqlite.sqlite_memory_adapter import SQLiteMemoryAdapter
@@ -130,7 +133,11 @@ async def test_paella_workflow():
     list_result = await paella_list()
     assert list_result["status"] == "ok"
     assert isinstance(list_result["projects"], list)
-    assert project_name in list_result["projects"]  # Now projects is a list of strings
+    # Extract names from ProjectInfo objects before checking membership
+    project_names_list = [
+        info.name for info in list_result["projects"] if isinstance(info, ProjectInfo)
+    ]
+    assert project_name in project_names_list
 
     # Select project
     select_result = await paella_select(project_name=project_name)

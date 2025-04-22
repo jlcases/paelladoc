@@ -1,7 +1,7 @@
 """PAELLADOC project initialization module."""
 
 from pathlib import Path
-from typing import Dict
+from typing import Dict, Optional
 
 # Import the shared FastMCP instance from core_logic
 from paelladoc.domain.core_logic import mcp, logger
@@ -9,7 +9,7 @@ from paelladoc.domain.core_logic import mcp, logger
 # Domain models and services
 from paelladoc.domain.models.project import (
     ProjectMemory,
-    ProjectMetadata,
+    ProjectInfo,
     Bucket,
     DocumentStatus,
     set_time_service,
@@ -32,6 +32,12 @@ async def paella_init(
     documentation_language: str,
     interaction_language: str,
     new_project_name: str,
+    # Add optional taxonomy arguments
+    platform_taxonomy: Optional[str] = None,
+    domain_taxonomy: Optional[str] = None,
+    size_taxonomy: Optional[str] = None,
+    compliance_taxonomy: Optional[str] = None,
+    custom_taxonomy: Optional[Dict] = None,  # Allow passing custom taxonomy data
 ) -> Dict:
     """
     Initialize a new PAELLADOC project.
@@ -41,8 +47,15 @@ async def paella_init(
         documentation_language: Language for documentation (e.g. 'es', 'en')
         interaction_language: Language for interaction (e.g. 'es', 'en')
         new_project_name: Name of the new project
+        platform_taxonomy: Selected platform taxonomy identifier.
+        domain_taxonomy: Selected domain taxonomy identifier.
+        size_taxonomy: Selected size taxonomy identifier.
+        compliance_taxonomy: Selected compliance taxonomy identifier.
+        custom_taxonomy: Dictionary containing custom taxonomy data.
     """
-    logger.info(f"Initializing new project: {new_project_name}")
+    logger.info(
+        f"Initializing new project: {new_project_name} with taxonomies: Platform={platform_taxonomy}, Domain={domain_taxonomy}, Size={size_taxonomy}, Compliance={compliance_taxonomy}"
+    )
 
     try:
         # Initialize TimeService with SystemTimeService implementation
@@ -59,12 +72,19 @@ async def paella_init(
 
         # Create project memory
         project_memory = ProjectMemory(
-            metadata=ProjectMetadata(
+            project_info=ProjectInfo(
                 name=new_project_name,
                 interaction_language=interaction_language,
                 documentation_language=documentation_language,
                 base_path=abs_base_path,
+                # Pass taxonomy info to ProjectInfo
+                platform_taxonomy=platform_taxonomy,
+                domain_taxonomy=domain_taxonomy,
+                size_taxonomy=size_taxonomy,
+                compliance_taxonomy=compliance_taxonomy,
+                custom_taxonomy=custom_taxonomy if custom_taxonomy else {},
             ),
+            # Keep the initial artifact example or adjust as needed
             artifacts={
                 Bucket.INITIATE_INITIAL_PRODUCT_DOCS: [
                     {
@@ -75,6 +95,13 @@ async def paella_init(
                     }
                 ]
             },
+            # Set taxonomy fields also directly on ProjectMemory if needed by its logic
+            # (Based on current model, ProjectInfo holds them primarily)
+            platform_taxonomy=platform_taxonomy,
+            domain_taxonomy=domain_taxonomy,
+            size_taxonomy=size_taxonomy,
+            compliance_taxonomy=compliance_taxonomy,
+            custom_taxonomy=custom_taxonomy if custom_taxonomy else {},
         )
 
         # Save to memory
@@ -126,7 +153,7 @@ async def paella_select(project_name: str) -> Dict:
                 "status": "ok",
                 "message": f"Project '{project_name}' selected",
                 "project_name": project_name,
-                "base_path": str(project_memory.metadata.base_path),
+                "base_path": str(project_memory.project_info.base_path),
             }
         else:
             return {"status": "error", "message": f"Project '{project_name}' not found"}

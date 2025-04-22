@@ -26,7 +26,7 @@ class ProjectDocument(BaseModel):
     status: DocumentStatus = DocumentStatus.PENDING
 
 
-class ProjectInfo(BaseModel):
+class Metadata(BaseModel):
     name: str = Field(..., min_length=1)
     language: Optional[str] = None
     purpose: Optional[str] = None
@@ -35,7 +35,7 @@ class ProjectInfo(BaseModel):
     base_path: Optional[Path] = None
     interaction_language: Optional[str] = None
     documentation_language: Optional[str] = None
-    taxonomy_version: str = "1.0"  # Default or loaded?
+    taxonomy_version: str = "1.0" # Default or loaded?
     # Add the new taxonomy fields here as well for the domain model
     platform_taxonomy: Optional[str] = None
     domain_taxonomy: Optional[str] = None
@@ -44,7 +44,10 @@ class ProjectInfo(BaseModel):
     custom_taxonomy: Optional[Dict[str, Any]] = Field(default_factory=dict)
     taxonomy_validation: Optional[Dict[str, Any]] = Field(default_factory=dict)
 
-    model_config = {"arbitrary_types_allowed": True, "validate_assignment": True}
+    model_config = {
+        'arbitrary_types_allowed': True,
+        'validate_assignment': True
+    }
 
 
 class ArtifactMeta(BaseModel):
@@ -87,7 +90,7 @@ class ArtifactMeta(BaseModel):
 
 
 class ProjectMemory(BaseModel):
-    project_info: ProjectInfo
+    project_metadata: Metadata
     documents: Dict[str, ProjectDocument] = {}  # Dict key is document name/path
     # New taxonomy-based structure
     taxonomy_version: str = "0.5"
@@ -99,7 +102,7 @@ class ProjectMemory(BaseModel):
     last_updated_at: datetime.datetime = None
     created_by: Optional[str] = None
     modified_by: Optional[str] = None
-
+    
     # Add the new taxonomy fields here directly if they belong to the ProjectMemory state
     # Or ensure they are loaded/accessed via metadata if that's the design
     # Let's add them directly for consistency with the DB model and tests
@@ -112,9 +115,9 @@ class ProjectMemory(BaseModel):
 
     def __init__(self, **data):
         # Rename metadata to project_metadata if needed for backward compatibility
-        if "metadata" in data and "project_metadata" not in data:
-            data["project_metadata"] = data.pop("metadata")
-
+        if 'metadata' in data and 'project_metadata' not in data:
+            data['project_metadata'] = data.pop('metadata')
+            
         super().__init__(**data)
         if not time_service:
             raise RuntimeError("TimeService not initialized")
@@ -179,24 +182,16 @@ class ProjectMemory(BaseModel):
         for bucket_artifacts in self.artifacts.values():
             for existing_artifact in bucket_artifacts:
                 if existing_artifact.path == artifact.path:
-                    logger.warning(
-                        f"Artifact with path {artifact.path} already exists."
-                    )
-                    return False  # Indicate artifact was not added
-
+                    logger.warning(f"Artifact with path {artifact.path} already exists.")
+                    return False # Indicate artifact was not added
+                    
         if artifact.bucket not in self.artifacts:
             self.artifacts[artifact.bucket] = []
         self.artifacts[artifact.bucket].append(artifact)
         self._update_timestamp()
-        return True  # Indicate artifact was added
-
-    def update_artifact_status(
-        self,
-        bucket: Bucket,
-        artifact_name: str,
-        new_status: DocumentStatus,
-        modifier: Optional[str] = None,
-    ) -> bool:
+        return True # Indicate artifact was added
+        
+    def update_artifact_status(self, bucket: Bucket, artifact_name: str, new_status: DocumentStatus, modifier: Optional[str] = None) -> bool:
         """Updates the status of a specific artifact."""
         artifact = self.get_artifact(bucket, artifact_name)
         if artifact:
@@ -207,7 +202,7 @@ class ProjectMemory(BaseModel):
             self._update_timestamp()
             return True
         return False
-
+        
     def _update_timestamp(self):
         """Updates the last_updated_at timestamp."""
         self.last_updated_at = datetime.datetime.now(datetime.timezone.utc)

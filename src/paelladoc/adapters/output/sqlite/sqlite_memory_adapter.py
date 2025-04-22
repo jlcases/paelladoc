@@ -1,10 +1,8 @@
 """SQLite adapter for project memory persistence."""
 
 import logging
-from typing import Optional, Dict, List
+from typing import Optional, List
 from pathlib import Path
-import datetime
-import uuid
 
 from sqlmodel import SQLModel, select
 from sqlalchemy.ext.asyncio import create_async_engine, AsyncSession
@@ -15,13 +13,14 @@ from sqlalchemy.exc import IntegrityError
 from paelladoc.ports.output.memory_port import MemoryPort
 from paelladoc.domain.models.project import (
     ProjectMemory,
-    ProjectMetadata,
-    ArtifactMeta,
-    Bucket,
+    ProjectInfo,
 )
 
 # Database Models for this adapter
-from .db_models import ProjectMemoryDB, ArtifactMetaDB
+from .db_models import ProjectMemoryDB
+
+# Import the new mapper functions
+from .mapper import map_db_to_domain, map_domain_to_db, sync_artifacts_db
 
 # Configuration
 from paelladoc.config.database import get_db_path
@@ -76,208 +75,53 @@ class SQLiteMemoryAdapter(MemoryPort):
             await conn.run_sync(SQLModel.metadata.create_all)
         logger.info("Database tables checked/created.")
 
-    # --- Helper for mapping DB to Domain --- #
-    # This mapping logic should ideally move to a separate mapper module/class (SOLID)
-    # For now, keep it here, but ensure ensure_utc is removed later.
-    def _map_db_to_domain(self, db_memory: ProjectMemoryDB) -> ProjectMemory:
-        """Maps the DB model hierarchy to the domain ProjectMemory model."""
-
-        # TODO: Replace ensure_utc calls here if it's moved
-        # For now, define it locally if needed, or assume timestamps are ok
-        def _ensure_utc_local(dt: datetime.datetime) -> datetime.datetime:
-            if dt.tzinfo is None:
-                return dt.replace(tzinfo=datetime.timezone.utc)
-            return dt.astimezone(datetime.timezone.utc)
-
-        domain_metadata = ProjectMetadata(
-            name=db_memory.name,
-            language=db_memory.language,
-            purpose=db_memory.purpose,
-            target_audience=db_memory.target_audience,
-            objectives=db_memory.objectives,
-            interaction_language=db_memory.interaction_language,
-            documentation_language=db_memory.documentation_language,
-        )
-
-        if db_memory.base_path:
-            domain_metadata.base_path = Path(db_memory.base_path)
-
-        domain_artifacts: Dict[Bucket, List[ArtifactMeta]] = {
-            bucket: [] for bucket in Bucket
-        }
-        for db_artifact in db_memory.artifacts:
-            created_at_utc = _ensure_utc_local(db_artifact.created_at)
-            updated_at_utc = _ensure_utc_local(db_artifact.updated_at)
-
-            domain_artifact = ArtifactMeta(
-                id=db_artifact.id,
-                name=db_artifact.name,
-                bucket=db_artifact.bucket,
-                path=db_artifact.path_obj,
-                created_at=created_at_utc,
-                updated_at=updated_at_utc,
-                status=db_artifact.status,
-            )
-            if db_artifact.bucket in domain_artifacts:
-                domain_artifacts[db_artifact.bucket].append(domain_artifact)
-            else:
-                logger.warning(
-                    f"Artifact {db_artifact.id} has unknown bucket {db_artifact.bucket}, placing in UNKNOWN."
-                )
-                domain_artifacts[Bucket.UNKNOWN].append(domain_artifact)
-
-        created_at_utc = _ensure_utc_local(db_memory.created_at)
-        last_updated_at_utc = _ensure_utc_local(db_memory.last_updated_at)
-
-        domain_memory = ProjectMemory(
-            metadata=domain_metadata,
-            artifacts=domain_artifacts,
-            taxonomy_version=db_memory.taxonomy_version,
-            created_at=created_at_utc,
-            last_updated_at=last_updated_at_utc,
-        )
-        return domain_memory
-
     # --- MemoryPort Implementation --- #
 
     async def save_memory(self, memory: ProjectMemory) -> None:
-        """Saves the project memory state (including artifacts) to SQLite."""
-
-        # TODO: Use mapper if refactored
-        def _ensure_utc_local(dt: datetime.datetime) -> datetime.datetime:
-            if dt.tzinfo is None:
-                return dt.replace(tzinfo=datetime.timezone.utc)
-            return dt.astimezone(datetime.timezone.utc)
-
-        project_name = memory.metadata.name
+        """Saves the project memory state (including artifacts) to SQLite using the mapper."""
+        project_name = memory.project_info.name
         logger.debug(f"Attempting to save memory for project: {project_name}")
         await self._create_db_and_tables()
 
         async with self.async_session() as session:
             try:
+                # Try to load existing DB object
                 statement = (
                     select(ProjectMemoryDB)
                     .where(ProjectMemoryDB.name == project_name)
-                    .options(selectinload(ProjectMemoryDB.artifacts))
+                    .options(
+                        selectinload(ProjectMemoryDB.artifacts)
+                    )  # Eager load artifacts
                 )
                 results = await session.execute(statement)
-                db_memory = results.scalars().first()
+                existing_db_memory = results.scalars().first()
 
-                # now = time_service.get_current_time() # Removed as unused
-                memory.update_timestamp()
+                # Use mapper to map domain object to DB object (create or update)
+                db_memory = map_domain_to_db(memory, existing_db_memory)
 
-                if db_memory:
-                    logger.debug(f"Project '{project_name}' found. Updating...")
-                    db_memory.last_updated_at = _ensure_utc_local(
-                        memory.last_updated_at
-                    )
-                    db_memory.language = memory.metadata.language
-                    db_memory.purpose = memory.metadata.purpose
-                    db_memory.target_audience = memory.metadata.target_audience
-                    db_memory.objectives = memory.metadata.objectives
-                    db_memory.taxonomy_version = memory.taxonomy_version
-                    db_memory.interaction_language = (
-                        memory.metadata.interaction_language
-                    )
-                    db_memory.documentation_language = (
-                        memory.metadata.documentation_language
-                    )
-                    db_memory.base_path = (
-                        str(memory.metadata.base_path)
-                        if memory.metadata.base_path
-                        else None
+                # Add the main object to the session (SQLModel handles INSERT or UPDATE)
+                session.add(db_memory)
+
+                # If creating, flush to get the ID before syncing artifacts
+                if not existing_db_memory:
+                    await session.flush()  # Get the db_memory.id
+                    logger.debug(
+                        f"Flushed new project {db_memory.name} with ID {db_memory.id}"
                     )
 
-                    db_artifacts_map: Dict[uuid.UUID, ArtifactMetaDB] = {
-                        a.id: a for a in db_memory.artifacts
-                    }
-                    domain_artifact_ids = set()
+                # Sync artifacts (add/update/prepare for delete)
+                # The mapper function now returns the list of artifacts to delete
+                artifacts_to_delete = sync_artifacts_db(session, memory, db_memory)
 
-                    for bucket, domain_artifact_list in memory.artifacts.items():
-                        for domain_artifact in domain_artifact_list:
-                            domain_artifact_ids.add(domain_artifact.id)
-                            db_artifact = db_artifacts_map.get(domain_artifact.id)
-
-                            if db_artifact:
-                                db_artifact.name = domain_artifact.name
-                                db_artifact.bucket = domain_artifact.bucket
-                                db_artifact.path = str(domain_artifact.path)
-                                db_artifact.status = domain_artifact.status
-                                db_artifact.updated_at = _ensure_utc_local(
-                                    domain_artifact.updated_at
-                                )
-                            else:
-                                created_at_utc = _ensure_utc_local(
-                                    domain_artifact.created_at
-                                )
-                                updated_at_utc = _ensure_utc_local(
-                                    domain_artifact.updated_at
-                                )
-                                new_db_artifact = ArtifactMetaDB(
-                                    id=domain_artifact.id,
-                                    project_memory_id=db_memory.id,
-                                    name=domain_artifact.name,
-                                    bucket=domain_artifact.bucket,
-                                    path=str(domain_artifact.path),
-                                    created_at=created_at_utc,
-                                    updated_at=updated_at_utc,
-                                    status=domain_artifact.status,
-                                )
-                                session.add(new_db_artifact)
-
-                    for db_artifact_id, db_artifact in db_artifacts_map.items():
-                        if db_artifact_id not in domain_artifact_ids:
-                            logger.debug(
-                                f"Deleting artifact {db_artifact_id} ({db_artifact.name}) from project {project_name}"
-                            )
-                            await session.delete(db_artifact)
-
-                    session.add(db_memory)
-
-                else:
-                    logger.debug(f"Project '{project_name}' not found. Creating...")
-                    created_at_utc = _ensure_utc_local(memory.created_at)
-                    last_updated_at_utc = _ensure_utc_local(memory.last_updated_at)
-
-                    db_memory = ProjectMemoryDB(
-                        name=memory.metadata.name,
-                        language=memory.metadata.language,
-                        purpose=memory.metadata.purpose,
-                        target_audience=memory.metadata.target_audience,
-                        objectives=memory.metadata.objectives,
-                        taxonomy_version=memory.taxonomy_version,
-                        created_at=created_at_utc,
-                        last_updated_at=last_updated_at_utc,
-                        artifacts=[],
-                        interaction_language=memory.metadata.interaction_language,
-                        documentation_language=memory.metadata.documentation_language,
-                        base_path=str(memory.metadata.base_path)
-                        if memory.metadata.base_path
-                        else None,
+                # Perform deletions if any artifacts were marked
+                if artifacts_to_delete:
+                    logger.debug(
+                        f"Deleting {len(artifacts_to_delete)} artifacts from session for project {project_name}"
                     )
-                    session.add(db_memory)
-                    await session.flush()
+                    for artifact_to_del in artifacts_to_delete:
+                        await session.delete(artifact_to_del)
 
-                    for bucket, domain_artifact_list in memory.artifacts.items():
-                        for domain_artifact in domain_artifact_list:
-                            artifact_created_at_utc = _ensure_utc_local(
-                                domain_artifact.created_at
-                            )
-                            artifact_updated_at_utc = _ensure_utc_local(
-                                domain_artifact.updated_at
-                            )
-                            new_db_artifact = ArtifactMetaDB(
-                                id=domain_artifact.id,
-                                project_memory_id=db_memory.id,
-                                name=domain_artifact.name,
-                                bucket=domain_artifact.bucket,
-                                path=str(domain_artifact.path),
-                                created_at=artifact_created_at_utc,
-                                updated_at=artifact_updated_at_utc,
-                                status=domain_artifact.status,
-                            )
-                            session.add(new_db_artifact)
-
+                # Commit all changes (project add/update, artifact add/update/delete)
                 await session.commit()
                 logger.info(f"Successfully saved memory for project: {project_name}")
 
@@ -299,7 +143,7 @@ class SQLiteMemoryAdapter(MemoryPort):
                 raise
 
     async def load_memory(self, project_name: str) -> Optional[ProjectMemory]:
-        """Loads project memory (including artifacts) from SQLite."""
+        """Loads project memory (including artifacts) from SQLite using the mapper."""
         logger.debug(f"Attempting to load memory for project: {project_name}")
         await self._create_db_and_tables()
 
@@ -308,7 +152,9 @@ class SQLiteMemoryAdapter(MemoryPort):
                 statement = (
                     select(ProjectMemoryDB)
                     .where(ProjectMemoryDB.name == project_name)
-                    .options(selectinload(ProjectMemoryDB.artifacts))
+                    .options(
+                        selectinload(ProjectMemoryDB.artifacts)
+                    )  # Eager load artifacts
                 )
                 results = await session.execute(statement)
                 db_memory = results.scalars().first()
@@ -317,7 +163,8 @@ class SQLiteMemoryAdapter(MemoryPort):
                     logger.debug(
                         f"Found project '{project_name}' in DB, mapping to domain model."
                     )
-                    return self._map_db_to_domain(db_memory)
+                    # Use the mapper function
+                    return map_db_to_domain(db_memory)
                 else:
                     logger.debug(f"Project '{project_name}' not found in DB.")
                     return None
@@ -325,7 +172,8 @@ class SQLiteMemoryAdapter(MemoryPort):
                 logger.error(
                     f"Error loading project '{project_name}': {e}", exc_info=True
                 )
-                return None
+                # Optional: Re-raise a custom domain exception?
+                return None  # Return None on error for now
 
     async def project_exists(self, project_name: str) -> bool:
         """Checks if a project memory exists in the SQLite database."""
@@ -348,26 +196,66 @@ class SQLiteMemoryAdapter(MemoryPort):
                 )
                 return False
 
-    async def list_projects(self) -> List[str]:
-        """Lists the names of all projects stored in the database.
-
-        Returns:
-            A list of project names as strings. Empty list if no projects or error.
-        """
-        logger.debug("Listing all project names from database.")
+    async def list_projects(self) -> List[ProjectInfo]:  # Return ProjectInfo objects
+        """Lists basic info for all projects stored in the database."""
+        logger.debug("Listing all projects info from database.")
         await self._create_db_and_tables()
 
-        # Keep HEAD's sessionmaker name
+        projects_info: List[ProjectInfo] = []
         async with self.async_session() as session:
             try:
-                statement = select(ProjectMemoryDB.name)
+                # Select necessary columns for ProjectInfo
+                statement = select(
+                    ProjectMemoryDB.name,
+                    ProjectMemoryDB.language,
+                    ProjectMemoryDB.purpose,
+                    ProjectMemoryDB.target_audience,
+                    ProjectMemoryDB.objectives,
+                    ProjectMemoryDB.base_path,
+                    ProjectMemoryDB.interaction_language,
+                    ProjectMemoryDB.documentation_language,
+                    ProjectMemoryDB.taxonomy_version,  # Added taxonomy version
+                    ProjectMemoryDB.platform_taxonomy,
+                    ProjectMemoryDB.domain_taxonomy,
+                    ProjectMemoryDB.size_taxonomy,
+                    ProjectMemoryDB.compliance_taxonomy,
+                    ProjectMemoryDB.custom_taxonomy,
+                    ProjectMemoryDB.taxonomy_validation,
+                )
                 results = await session.execute(statement)
-                project_names = results.scalars().all()
-                logger.debug(f"Found {len(project_names)} projects.")
-                return list(project_names)
+
+                for row in results.all():
+                    # Manually map row to ProjectInfo domain model
+                    # Consider a dedicated mapper function if this gets complex
+                    info = ProjectInfo(
+                        name=row.name,
+                        language=row.language,
+                        purpose=row.purpose,
+                        target_audience=row.target_audience,
+                        objectives=row.objectives if row.objectives else [],
+                        base_path=Path(row.base_path) if row.base_path else None,
+                        interaction_language=row.interaction_language,
+                        documentation_language=row.documentation_language,
+                        taxonomy_version=row.taxonomy_version,
+                        platform_taxonomy=row.platform_taxonomy,
+                        domain_taxonomy=row.domain_taxonomy,
+                        size_taxonomy=row.size_taxonomy,
+                        compliance_taxonomy=row.compliance_taxonomy,
+                        custom_taxonomy=row.custom_taxonomy
+                        if row.custom_taxonomy
+                        else {},
+                        taxonomy_validation=row.taxonomy_validation
+                        if row.taxonomy_validation
+                        else {},
+                    )
+                    projects_info.append(info)
+                logger.debug(f"Found {len(projects_info)} projects.")
+                return projects_info
             except Exception as e:
                 logger.error(f"Error listing projects: {e}", exc_info=True)
-                return []
+                return []  # Return empty list on error
+
+    # list_projects_names removed as list_projects now returns ProjectInfo
 
     # Remove ensure_utc helper method from the adapter (should be in mapper)
     # def ensure_utc(self, dt: datetime.datetime) -> datetime.datetime:

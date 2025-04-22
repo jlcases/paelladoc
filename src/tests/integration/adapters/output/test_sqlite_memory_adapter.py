@@ -21,10 +21,10 @@ from paelladoc.adapters.output.sqlite.sqlite_memory_adapter import SQLiteMemoryA
 # Import updated domain models
 from paelladoc.domain.models.project import (
     ProjectMemory,
-    ProjectMetadata,
-    ArtifactMeta,  # Updated
+    ProjectInfo,
+    ArtifactMeta,
     DocumentStatus,
-    Bucket,  # Added
+    Bucket,
 )
 
 # --- Pytest Fixture for Temporary DB --- #
@@ -67,13 +67,6 @@ async def memory_adapter():
 def _create_sample_memory(name_suffix: str) -> ProjectMemory:
     """Helper to create a sample ProjectMemory object with Artifacts."""
     project_name = f"test-project-{name_suffix}"
-    metadata = ProjectMetadata(
-        name=project_name,
-        language="python",
-        purpose="testing adapter v2",
-        target_audience="devs",
-        objectives=["test save artifacts", "test load artifacts"],
-    )
 
     # Create sample artifacts
     artifact1 = ArtifactMeta(
@@ -95,9 +88,15 @@ def _create_sample_memory(name_suffix: str) -> ProjectMemory:
     }
 
     memory = ProjectMemory(
-        metadata=metadata,
+        project_info=ProjectInfo(
+            name=project_name,
+            language="python",
+            purpose="testing adapter v2",
+            target_audience="devs",
+            objectives=["test save artifacts", "test load artifacts"],
+        ),
         artifacts=artifacts,
-        taxonomy_version="0.5",  # Add taxonomy version
+        taxonomy_version="0.5",
     )
     return memory
 
@@ -126,7 +125,7 @@ async def test_save_and_load_new_project(memory_adapter: SQLiteMemoryAdapter):
     """Test saving a new project with artifacts and loading it back."""
     print("Running: test_save_and_load_new_project")
     original_memory = _create_sample_memory("save-load-artifacts")
-    project_name = original_memory.metadata.name
+    project_name = original_memory.project_info.name
     original_artifacts = original_memory.artifacts
     artifact1_id = original_artifacts[Bucket.INITIATE_INITIAL_PRODUCT_DOCS][0].id
     artifact2_id = original_artifacts[Bucket.GENERATE_SUPPORTING_ELEMENTS][0].id
@@ -141,9 +140,11 @@ async def test_save_and_load_new_project(memory_adapter: SQLiteMemoryAdapter):
 
     # Assertions
     assert loaded_memory is not None
-    assert loaded_memory.metadata.name == original_memory.metadata.name
-    assert loaded_memory.metadata.language == original_memory.metadata.language
-    assert loaded_memory.metadata.objectives == original_memory.metadata.objectives
+    assert loaded_memory.project_info.name == original_memory.project_info.name
+    assert loaded_memory.project_info.language == original_memory.project_info.language
+    assert (
+        loaded_memory.project_info.objectives == original_memory.project_info.objectives
+    )
     assert loaded_memory.taxonomy_version == original_memory.taxonomy_version
 
     # Check artifacts dictionary structure
@@ -188,7 +189,7 @@ async def test_project_exists_after_save(memory_adapter: SQLiteMemoryAdapter):
     """Test project_exists returns True after a project is saved."""
     print("Running: test_project_exists_after_save")
     memory_to_save = _create_sample_memory("exists-artifacts")
-    project_name = memory_to_save.metadata.name
+    project_name = memory_to_save.project_info.name
 
     await memory_adapter.save_memory(memory_to_save)
     print(f"Saved project: {project_name}")
@@ -203,7 +204,7 @@ async def test_save_updates_project(memory_adapter: SQLiteMemoryAdapter):
     print("Running: test_save_updates_project")
     # 1. Create and save initial state
     memory = _create_sample_memory("update-artifacts")
-    project_name = memory.metadata.name
+    project_name = memory.project_info.name
     artifact1 = memory.artifacts[Bucket.INITIATE_INITIAL_PRODUCT_DOCS][0]
     # artifact2 = memory.artifacts[Bucket.GENERATE_SUPPORTING_ELEMENTS][0] # No need to store if removing
     await memory_adapter.save_memory(memory)
