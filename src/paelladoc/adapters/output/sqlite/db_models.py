@@ -23,8 +23,8 @@ class ArtifactMetaDB(SQLModel, table=True):
     name: str = Field(index=True)
     bucket: Bucket = Field(index=True)  # Store enum value directly
     path: str = Field(index=True)  # Store Path as string
-    created_at: datetime
-    updated_at: datetime
+    created_at: datetime = Field(default_factory=datetime.utcnow)
+    updated_at: datetime = Field(default_factory=datetime.utcnow)
     created_by: Optional[str] = Field(default=None, index=True)
     modified_by: Optional[str] = Field(default=None, index=True)
     status: DocumentStatus = Field(index=True)  # Store enum value directly
@@ -63,8 +63,10 @@ class ProjectMemoryDB(SQLModel, table=True):
     interaction_language: Optional[str] = Field(default=None)
     documentation_language: Optional[str] = Field(default=None)
     taxonomy_version: str
-    created_at: datetime
-    last_updated_at: datetime
+    created_at: datetime = Field(default_factory=datetime.utcnow)
+    last_updated_at: datetime = Field(default_factory=datetime.utcnow)
+    created_by: Optional[str] = Field(default=None, index=True)
+    modified_by: Optional[str] = Field(default=None, index=True)
 
     # Define the one-to-many relationship to ArtifactMetaDB
     # artifacts will be loaded automatically by SQLModel/SQLAlchemy when accessed
