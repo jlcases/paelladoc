@@ -25,6 +25,8 @@ class ArtifactMetaDB(SQLModel, table=True):
     path: str = Field(index=True)  # Store Path as string
     created_at: datetime
     updated_at: datetime
+    created_by: Optional[str] = Field(default=None, index=True)
+    modified_by: Optional[str] = Field(default=None, index=True)
     status: DocumentStatus = Field(index=True)  # Store enum value directly
 
     # Define the relationship back to ProjectMemoryDB

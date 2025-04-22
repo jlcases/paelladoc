@@ -1,4 +1,4 @@
-from typing import List, Dict, Optional
+from typing import List, Dict, Optional, Any
 from pydantic import BaseModel, Field
 import datetime
 from pathlib import Path
@@ -32,25 +32,34 @@ class ArtifactMeta(BaseModel):
     path: Path  # Relative path from project root
     created_at: datetime.datetime = None
     updated_at: datetime.datetime = None
+    created_by: Optional[str] = None
+    modified_by: Optional[str] = None
     status: DocumentStatus = DocumentStatus.PENDING
 
-    def __init__(self, **data):
+    def __init__(self, **data: Any):
         super().__init__(**data)
         if not time_service:
             raise RuntimeError("TimeService not initialized")
-        if self.created_at is None:
-            self.created_at = time_service.get_current_time()
-        if self.updated_at is None:
-            self.updated_at = time_service.get_current_time()
 
-    def update_timestamp(self):
+        now = time_service.get_current_time()
+        if self.created_at is None:
+            self.created_at = now
+        if self.updated_at is None:
+            self.updated_at = now
+
+        if self.created_by is not None and self.modified_by is None:
+            self.modified_by = self.created_by
+
+    def update_timestamp(self, modifier: Optional[str] = None):
         if not time_service:
             raise RuntimeError("TimeService not initialized")
         self.updated_at = time_service.get_current_time()
+        if modifier:
+            self.modified_by = modifier
 
-    def update_status(self, status: DocumentStatus):
+    def update_status(self, status: DocumentStatus, modifier: Optional[str] = None):
         self.status = status
-        self.update_timestamp()
+        self.update_timestamp(modifier=modifier)
 
 
 class ProjectMetadata(BaseModel):
@@ -158,12 +167,16 @@ class ProjectMemory(BaseModel):
         return True
 
     def update_artifact_status(
-        self, bucket: Bucket, name: str, status: DocumentStatus
+        self,
+        bucket: Bucket,
+        name: str,
+        status: DocumentStatus,
+        modifier: Optional[str] = None,
     ) -> bool:
         """Update an artifact's status. Returns True if updated, False if not found."""
         artifact = self.get_artifact(bucket, name)
         if artifact:
-            artifact.update_status(status)
+            artifact.update_status(status, modifier=modifier)
             self.update_timestamp()
             return True
         return False
