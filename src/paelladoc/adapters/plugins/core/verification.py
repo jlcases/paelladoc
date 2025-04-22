@@ -103,7 +103,7 @@ def validate_mece_structure(memory: ProjectMemory) -> dict:
 
 
 @mcp.tool(
-    name="core.verification",
+    name="core_verification",
     description="Verifies documentation coverage against the MECE taxonomy",
 )
 async def core_verification(project_name: str) -> dict:

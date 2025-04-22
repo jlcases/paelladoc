@@ -67,7 +67,7 @@ BEHAVIOR_CONFIG = {
 
 
 @mcp.tool(
-    name="core.continue", description="Continues work on an existing PAELLADOC project."
+    name="core_continue", description="Continues work on an existing PAELLADOC project."
 )
 async def core_continue(
     project_name: str,

@@ -16,7 +16,7 @@ logger = logging.getLogger(__name__)
 
 
 @mcp.tool(
-    name="core.list_projects",
+    name="core_list_projects",
     description="Lists the names of existing PAELLADOC projects found in the memory.",
 )
 async def list_projects(

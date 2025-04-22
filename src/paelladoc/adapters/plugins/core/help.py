@@ -16,7 +16,7 @@ TAXONOMY_PROVIDER = FileSystemTaxonomyProvider()
 
 
 @mcp.tool(
-    name="core.help",
+    name="core_help",
     description="Shows help information about available commands",
 )
 def core_help(command: str = None, format: str = "detailed") -> dict:
