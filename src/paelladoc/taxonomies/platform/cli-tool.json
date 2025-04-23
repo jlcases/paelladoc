@@ -1,0 +1,29 @@
+{
+  "name": "cli-tool",
+  "description": "Command-line interface applications that run in terminal environments",
+  "characteristics": [
+    "Text-based interface",
+    "Runs in terminal/console environments",
+    "Typically process-oriented or automation-focused",
+    "May be installed globally or project-specific",
+    "Often follows Unix philosophy (do one thing well)"
+  ],
+  "typical_frameworks": [
+    "Python Click/Typer",
+    "Node.js Commander/Yargs",
+    "Go Cobra",
+    "Rust Clap",
+    "Ruby Thor",
+    "Bash/Shell scripting",
+    "PowerShell modules"
+  ],
+  "documentation_emphasis": [
+    "Command syntax and options",
+    "Input/output formats",
+    "Installation instructions",
+    "Configuration files",
+    "Exit codes and error handling",
+    "Shell completion",
+    "Example usage patterns"
+  ]
+} 

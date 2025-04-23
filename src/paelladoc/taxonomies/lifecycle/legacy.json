@@ -1,0 +1,28 @@
+{
+  "name": "legacy",
+  "description": "Legacy phase where the product is maintained but no longer actively developed with new features",
+  "characteristics": [
+    "Maintenance-only development",
+    "Established user base relying on stability",
+    "Older technology stack",
+    "Limited active development",
+    "Focus on security patches and critical fixes",
+    "Potential replacement planning"
+  ],
+  "documentation_emphasis": [
+    "System preservation knowledge",
+    "Maintenance procedures",
+    "Security update processes",
+    "Troubleshooting guides",
+    "Migration paths",
+    "Knowledge retention"
+  ],
+  "typical_artifacts": [
+    "Maintenance handbooks",
+    "System architecture documentation",
+    "Known issues catalog",
+    "Component dependencies",
+    "Migration planning documents",
+    "Historical change logs"
+  ]
+} 

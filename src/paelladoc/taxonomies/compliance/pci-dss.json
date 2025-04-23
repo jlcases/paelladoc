@@ -1,0 +1,31 @@
+{
+  "name": "pci-dss",
+  "description": "Projects requiring compliance with Payment Card Industry Data Security Standard for handling payment card data",
+  "key_requirements": [
+    "Secure network and systems",
+    "Cardholder data protection",
+    "Vulnerability management",
+    "Strong access control",
+    "Network monitoring and testing",
+    "Information security policy",
+    "Regular security assessments"
+  ],
+  "documentation_requirements": [
+    "Security policy documentation",
+    "Cardholder data flow diagrams",
+    "Network architecture diagrams",
+    "Risk assessment procedures",
+    "Incident response plan",
+    "Data retention policy",
+    "Encryption implementation details"
+  ],
+  "implementation_patterns": [
+    "Tokenization",
+    "End-to-end encryption",
+    "Network segmentation",
+    "Strong authentication",
+    "Regular security scanning",
+    "Audit logging",
+    "Secure coding practices"
+  ]
+} 

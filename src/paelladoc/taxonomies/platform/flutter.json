@@ -1,0 +1,29 @@
+{
+  "name": "flutter",
+  "description": "Cross-platform applications built using Google's Flutter framework",
+  "characteristics": [
+    "Single codebase for multiple platforms (iOS, Android, web, desktop)",
+    "Written in Dart programming language",
+    "Widget-based UI development",
+    "Hot reload development workflow",
+    "Native-like performance with custom rendering engine"
+  ],
+  "typical_frameworks": [
+    "Flutter SDK",
+    "Provider/Riverpod",
+    "Bloc/Cubit",
+    "GetX",
+    "Flutter Hooks",
+    "Go Router",
+    "Firebase Flutter SDK"
+  ],
+  "documentation_emphasis": [
+    "Widget hierarchy and composition",
+    "State management approaches",
+    "Platform-specific adaptations",
+    "Performance optimization",
+    "Plugin integration",
+    "Navigation patterns",
+    "Deployment for multiple platforms"
+  ]
+} 

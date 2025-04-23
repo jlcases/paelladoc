@@ -1,0 +1,31 @@
+{
+  "name": "fedramp",
+  "description": "Projects requiring compliance with Federal Risk and Authorization Management Program for US government cloud services",
+  "key_requirements": [
+    "NIST 800-53 security controls",
+    "Authorization boundary definition",
+    "Continuous monitoring",
+    "Independent assessment",
+    "Plan of Action and Milestones",
+    "Incident response capabilities",
+    "Categorized security impact levels"
+  ],
+  "documentation_requirements": [
+    "System Security Plan (SSP)",
+    "Security Assessment Report (SAR)",
+    "Plan of Action and Milestones (POA&M)",
+    "Control implementation evidence",
+    "Continuous monitoring plan",
+    "Incident response plan",
+    "Configuration management plan"
+  ],
+  "implementation_patterns": [
+    "Control inheritance documentation",
+    "Boundary diagrams",
+    "Security control implementation",
+    "Vulnerability scanning",
+    "Penetration testing",
+    "Configuration management",
+    "Separation of duties"
+  ]
+} 

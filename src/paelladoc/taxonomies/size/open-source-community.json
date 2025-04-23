@@ -1,0 +1,25 @@
+{
+  "name": "open-source-community",
+  "description": "Open source projects maintained by a distributed community of contributors",
+  "characteristics": [
+    "Distributed development team",
+    "Public source code",
+    "Community governance",
+    "Volunteer contributors",
+    "Public issue tracking",
+    "Transparent development process",
+    "Variable team size and activity levels"
+  ],
+  "documentation_scope": [
+    "Project vision and goals",
+    "Contributor guidelines",
+    "Code of conduct",
+    "Architecture overview",
+    "Development setup",
+    "API documentation",
+    "User tutorials",
+    "Release notes and roadmap"
+  ],
+  "typical_documentation_volume": "Medium to high (varies greatly)",
+  "maintenance_level": "Community-driven, often cyclical based on contributor availability"
+} 

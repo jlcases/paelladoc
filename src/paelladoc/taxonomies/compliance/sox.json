@@ -1,0 +1,31 @@
+{
+  "name": "sox",
+  "description": "Projects requiring compliance with Sarbanes-Oxley Act for financial reporting and corporate governance",
+  "key_requirements": [
+    "Internal controls over financial reporting",
+    "Audit trail maintenance",
+    "Change management controls",
+    "Data integrity verification",
+    "Segregation of duties",
+    "Access control documentation",
+    "Management certification of controls"
+  ],
+  "documentation_requirements": [
+    "Control documentation",
+    "Process flow diagrams",
+    "Risk assessment documentation",
+    "Testing procedures",
+    "Remediation plans",
+    "Audit committee reports",
+    "Executive certification evidence"
+  ],
+  "implementation_patterns": [
+    "Automated control monitoring",
+    "Comprehensive access logging",
+    "System change controls",
+    "Approval workflows",
+    "Financial data validation",
+    "Reconciliation processes",
+    "Segregated system access"
+  ]
+} 

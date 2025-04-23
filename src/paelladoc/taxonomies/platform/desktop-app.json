@@ -1,0 +1,29 @@
+{
+  "name": "desktop-app",
+  "description": "Cross-platform desktop applications for Windows, macOS, and Linux",
+  "characteristics": [
+    "Runs on multiple desktop operating systems",
+    "Native-like UI and performance",
+    "Access to file system and system APIs",
+    "May use web technologies (Electron) or native frameworks",
+    "Distributed via installers, app stores, or direct download"
+  ],
+  "typical_frameworks": [
+    "Electron",
+    "Qt",
+    "Tauri",
+    ".NET MAUI",
+    "JavaFX",
+    "wxWidgets",
+    "Avalonia UI"
+  ],
+  "documentation_emphasis": [
+    "Installation and setup procedures",
+    "Platform-specific considerations",
+    "Resource management",
+    "File system operations",
+    "UI/UX consistency across platforms",
+    "Packaging and distribution",
+    "Auto-update mechanisms"
+  ]
+} 

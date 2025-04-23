@@ -1,0 +1,29 @@
+{
+  "name": "android-native",
+  "description": "Native mobile applications developed specifically for Android devices",
+  "characteristics": [
+    "Runs on Android phones, tablets, and other devices",
+    "Written in Kotlin or Java",
+    "Uses Android SDK and Jetpack",
+    "Direct access to device hardware and sensors",
+    "Distributed through Google Play Store"
+  ],
+  "typical_frameworks": [
+    "AndroidX",
+    "Jetpack Compose",
+    "Room",
+    "WorkManager",
+    "Navigation",
+    "CameraX",
+    "Material Design Components"
+  ],
+  "documentation_emphasis": [
+    "Activity and fragment lifecycle",
+    "Material Design implementation",
+    "Permissions model",
+    "Background processing",
+    "Device fragmentation handling",
+    "Data storage options",
+    "Google Play policies"
+  ]
+} 

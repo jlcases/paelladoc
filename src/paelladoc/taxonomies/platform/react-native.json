@@ -1,0 +1,29 @@
+{
+  "name": "react-native",
+  "description": "Cross-platform mobile applications built using Meta's React Native framework",
+  "characteristics": [
+    "Single JavaScript/TypeScript codebase for iOS and Android",
+    "React-based component model",
+    "Bridge to native components",
+    "Uses native rendering",
+    "Hot reloading for development"
+  ],
+  "typical_frameworks": [
+    "React Native CLI/Expo",
+    "Redux/MobX",
+    "React Navigation",
+    "React Native Paper",
+    "React Native Reanimated",
+    "React Native Gesture Handler",
+    "React Native Firebase"
+  ],
+  "documentation_emphasis": [
+    "Component architecture",
+    "Native module integration",
+    "Navigation implementation",
+    "Performance optimization",
+    "Platform-specific code",
+    "App store deployment",
+    "Upgrade and maintenance strategies"
+  ]
+} 

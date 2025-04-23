@@ -1,0 +1,31 @@
+{
+  "name": "enterprise-management",
+  "description": "Applications for business operations, enterprise resource planning, and organizational management",
+  "key_features": [
+    "Business process automation",
+    "Resource allocation",
+    "Organization management",
+    "Financial planning",
+    "Supply chain tracking",
+    "Workforce management",
+    "Enterprise reporting"
+  ],
+  "typical_components": [
+    "Administrative dashboards",
+    "Process workflow engines",
+    "Resource management interfaces",
+    "Business intelligence tools",
+    "Reporting systems",
+    "Integration hubs",
+    "Compliance monitoring"
+  ],
+  "documentation_emphasis": [
+    "Business process modeling",
+    "System integration architecture",
+    "Data governance",
+    "Role-based permissions",
+    "Audit and compliance reporting",
+    "Configuration management",
+    "Enterprise deployment considerations"
+  ]
+} 

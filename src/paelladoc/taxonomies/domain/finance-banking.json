@@ -1,0 +1,31 @@
+{
+  "name": "finance-banking",
+  "description": "Applications focused on financial services, banking operations, and money management",
+  "key_features": [
+    "Account management",
+    "Transaction processing",
+    "Financial reporting",
+    "Investment tracking",
+    "Risk assessment",
+    "Fraud detection",
+    "Regulatory compliance"
+  ],
+  "typical_components": [
+    "Account dashboards",
+    "Payment gateways",
+    "Transaction ledgers",
+    "Financial calculators",
+    "Statement generators",
+    "Notification systems",
+    "Audit trails"
+  ],
+  "documentation_emphasis": [
+    "Security architecture",
+    "Transactional integrity",
+    "Compliance requirements",
+    "Data accuracy guarantees",
+    "Integration with financial systems",
+    "Reconciliation processes",
+    "Audit procedures"
+  ]
+} 

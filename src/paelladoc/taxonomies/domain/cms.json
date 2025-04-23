@@ -1,0 +1,28 @@
+{
+  "name": "cms",
+  "description": "Content Management Systems for creating, managing, and publishing digital content",
+  "key_features": [
+    "Content modeling",
+    "Editorial workflows",
+    "Content versioning",
+    "User role management",
+    "Publishing controls",
+    "Media management"
+  ],
+  "typical_components": [
+    "Content editor interface",
+    "Asset library",
+    "Template system",
+    "Content repository",
+    "Search functionality",
+    "Content delivery API"
+  ],
+  "documentation_emphasis": [
+    "Content architecture",
+    "Editorial guidelines",
+    "Workflow diagrams",
+    "Integration patterns",
+    "Templating system",
+    "Performance optimization"
+  ]
+} 

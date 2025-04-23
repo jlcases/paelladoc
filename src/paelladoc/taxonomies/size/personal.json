@@ -1,0 +1,20 @@
+{
+  "name": "personal",
+  "description": "Small-scale projects intended for individual use or small teams",
+  "characteristics": [
+    "Limited number of users (1-5)",
+    "Simple architecture",
+    "Low to medium complexity",
+    "Limited feature set",
+    "Minimal infrastructure requirements"
+  ],
+  "documentation_scope": [
+    "Basic setup instructions",
+    "Core functionality overview",
+    "Simple troubleshooting guide",
+    "Development setup",
+    "Configuration options"
+  ],
+  "typical_documentation_volume": "Low (under 50 pages)",
+  "maintenance_level": "Low to moderate"
+} 

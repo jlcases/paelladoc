@@ -1,1 +1,25 @@
- 
+{
+  "name": "web-frontend",
+  "description": "Web-based frontend applications including single-page applications, progressive web apps, and static websites",
+  "characteristics": [
+    "Runs in web browsers",
+    "Uses HTML, CSS, and JavaScript/TypeScript",
+    "May use frameworks like React, Angular, Vue, etc.",
+    "Delivered via HTTP/HTTPS"
+  ],
+  "typical_frameworks": [
+    "React",
+    "Angular",
+    "Vue",
+    "Svelte",
+    "Next.js"
+  ],
+  "documentation_emphasis": [
+    "Component architecture",
+    "State management",
+    "API integration",
+    "Responsive design",
+    "Browser compatibility",
+    "Performance optimization"
+  ]
+} 

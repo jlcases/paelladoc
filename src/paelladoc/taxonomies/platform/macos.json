@@ -1,0 +1,29 @@
+{
+  "name": "macos",
+  "description": "Desktop applications developed specifically for Apple macOS operating system",
+  "characteristics": [
+    "Runs on Mac computers (MacBook, iMac, Mac mini, Mac Pro)",
+    "Written in Swift or Objective-C",
+    "Uses macOS frameworks and AppKit/SwiftUI",
+    "Desktop-oriented user experience",
+    "Distributed through Mac App Store or direct download"
+  ],
+  "typical_frameworks": [
+    "AppKit",
+    "SwiftUI for macOS",
+    "Combine",
+    "Core Data",
+    "Core Animation",
+    "Metal",
+    "AVFoundation"
+  ],
+  "documentation_emphasis": [
+    "Human Interface Guidelines compliance",
+    "Window and view management",
+    "File system integration",
+    "Menu bar and dock integration",
+    "macOS sandboxing requirements",
+    "Mac App Store submission",
+    "Apple Silicon optimization"
+  ]
+} 

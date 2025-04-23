@@ -1,0 +1,31 @@
+{
+  "name": "education",
+  "description": "Applications for learning, teaching, educational administration, and academic management",
+  "key_features": [
+    "Course management",
+    "Student assessment",
+    "Learning material delivery",
+    "Progress tracking",
+    "Interactive learning",
+    "Collaborative tools",
+    "Educational analytics"
+  ],
+  "typical_components": [
+    "Learning management systems",
+    "Assessment engines",
+    "Digital content libraries",
+    "Student portals",
+    "Instructor dashboards",
+    "Discussion forums",
+    "Certification management"
+  ],
+  "documentation_emphasis": [
+    "Accessibility compliance",
+    "Student data privacy",
+    "Content structure",
+    "Assessment methodologies",
+    "Integration with educational tools",
+    "Curriculum mapping",
+    "Progress reporting"
+  ]
+} 

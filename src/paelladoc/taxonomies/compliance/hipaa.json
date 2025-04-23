@@ -1,0 +1,31 @@
+{
+  "name": "hipaa",
+  "description": "Projects requiring compliance with the Health Insurance Portability and Accountability Act for healthcare data in the US",
+  "key_requirements": [
+    "Privacy Rule compliance",
+    "Security Rule implementation",
+    "Breach Notification procedures",
+    "Business Associate Agreements",
+    "Administrative safeguards",
+    "Technical safeguards",
+    "Physical safeguards"
+  ],
+  "documentation_requirements": [
+    "Notice of Privacy Practices",
+    "Security Risk Assessment",
+    "Policies and procedures documentation",
+    "Breach notification protocol",
+    "Workforce training materials",
+    "Authorization forms",
+    "Audit controls documentation"
+  ],
+  "implementation_patterns": [
+    "Access controls",
+    "Audit logs",
+    "Encryption of PHI",
+    "Secure transmission protocols",
+    "Authentication mechanisms",
+    "Disaster recovery procedures",
+    "De-identification techniques"
+  ]
+} 

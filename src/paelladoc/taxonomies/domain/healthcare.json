@@ -1,0 +1,31 @@
+{
+  "name": "healthcare",
+  "description": "Applications for healthcare services, medical record management, and patient care",
+  "key_features": [
+    "Electronic health records",
+    "Patient management",
+    "Clinical workflows",
+    "Medical imaging integration",
+    "Prescription management",
+    "Appointment scheduling",
+    "Health monitoring"
+  ],
+  "typical_components": [
+    "Patient portals",
+    "Clinical dashboards",
+    "Medical data visualization",
+    "Health analytics",
+    "Telemedicine interfaces",
+    "Care plan management",
+    "Health information exchange"
+  ],
+  "documentation_emphasis": [
+    "Data privacy and security",
+    "Regulatory compliance (HIPAA, etc.)",
+    "Integration with medical systems",
+    "Clinical workflows",
+    "Data accuracy and validation",
+    "Patient confidentiality",
+    "Emergency access protocols"
+  ]
+} 

@@ -1,0 +1,28 @@
+{
+  "name": "growth",
+  "description": "Growth phase focused on expanding features, users, and market reach based on validated product-market fit",
+  "characteristics": [
+    "Expanding feature set",
+    "Growing user base",
+    "Scaling infrastructure",
+    "Feature optimization based on data",
+    "Increasing team size",
+    "Process formalization"
+  ],
+  "documentation_emphasis": [
+    "Comprehensive user documentation",
+    "Feature-specific guides",
+    "Integration documentation",
+    "Performance best practices",
+    "Administration guides",
+    "Developer onboarding"
+  ],
+  "typical_artifacts": [
+    "Complete product documentation",
+    "Advanced use case guides",
+    "Integration examples",
+    "API reference documentation",
+    "Technical architecture documentation",
+    "Operational runbooks"
+  ]
+} 
