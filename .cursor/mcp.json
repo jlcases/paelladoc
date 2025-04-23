@@ -90,5 +90,11 @@
     }
   },
   "i18n-ally.disabled": true,
-  "mcp.timeout": 120000
+  "mcp.timeout": 120000,
+  "cursor.rules": {
+    "english_comments": {
+      "pattern": "**/*",
+      "rule": ".cursor/rules/english_comments.mdc"
+    }
+  }
 } 

@@ -121,11 +121,21 @@ async def test_adapter_operations_with_custom_path(temp_adapter):
     project = ProjectMemory(
         project_info=ProjectInfo(
             name=f"test-project-{uuid.uuid4()}",
-            language="python",
+            language="python",  # This might need updating if language model changed
             purpose="Test project",
             target_audience="Developers",
             objectives=["Test database configuration"],
-        )
+            # Add required taxonomy fields
+            platform_taxonomy="test_platform",
+            domain_taxonomy="test_domain",
+            size_taxonomy="test_size",
+            compliance_taxonomy="test_compliance",
+        ),
+        # Add required taxonomy fields also directly to ProjectMemory
+        platform_taxonomy="test_platform",
+        domain_taxonomy="test_domain",
+        size_taxonomy="test_size",
+        compliance_taxonomy="test_compliance",
     )
 
     # Test operations

@@ -46,23 +46,35 @@ async def test_update_project_memory_emits_taxonomy_updated_event(
     project_name = "tax-event-project"
     old_memory = ProjectMemory(
         project_info=ProjectInfo(
-            name=project_name, base_path="/fake", taxonomy_version="1.0"
-        )
+            name=project_name,
+            base_path="/fake",
+            taxonomy_version="1.0",
+            platform_taxonomy="web-frontend",
+            domain_taxonomy="ecommerce",
+            size_taxonomy="smb",
+            compliance_taxonomy="none",
+        ),
+        platform_taxonomy="web-frontend",
+        domain_taxonomy="ecommerce",
+        size_taxonomy="smb",
+        compliance_taxonomy="none",
     )
-    old_memory.platform_taxonomy = "web-frontend"
-    old_memory.domain_taxonomy = "ecommerce"
-    old_memory.size_taxonomy = "smb"
-    old_memory.compliance_taxonomy = None
 
     new_memory = ProjectMemory(
         project_info=ProjectInfo(
-            name=project_name, base_path="/fake", taxonomy_version="1.0"
-        )
+            name=project_name,
+            base_path="/fake",
+            taxonomy_version="1.0",
+            platform_taxonomy="ios-native",
+            domain_taxonomy="ecommerce",
+            size_taxonomy="enterprise",
+            compliance_taxonomy="gdpr",
+        ),
+        platform_taxonomy="ios-native",
+        domain_taxonomy="ecommerce",
+        size_taxonomy="enterprise",
+        compliance_taxonomy="gdpr",
     )
-    new_memory.platform_taxonomy = "ios-native"  # Changed
-    new_memory.domain_taxonomy = "ecommerce"
-    new_memory.size_taxonomy = "enterprise"  # Changed
-    new_memory.compliance_taxonomy = "gdpr"  # Changed
 
     # Mock the port methods
     mock_memory_port.project_exists.return_value = True
@@ -103,7 +115,7 @@ async def test_update_project_memory_emits_taxonomy_updated_event(
         "platform": "web-frontend",
         "domain": "ecommerce",
         "size": "smb",
-        "compliance": None,
+        "compliance": "none",
     }
 
 
@@ -116,26 +128,37 @@ async def test_update_project_memory_no_taxonomy_change_no_event(
     project_name = "no-tax-event-project"
     old_memory = ProjectMemory(
         project_info=ProjectInfo(
-            name=project_name, base_path="/fake", taxonomy_version="1.0"
-        )
+            name=project_name,
+            base_path="/fake",
+            taxonomy_version="1.0",
+            platform_taxonomy="web-frontend",
+            domain_taxonomy="ecommerce",
+            size_taxonomy="smb",
+            compliance_taxonomy="none",
+        ),
+        platform_taxonomy="web-frontend",
+        domain_taxonomy="ecommerce",
+        size_taxonomy="smb",
+        compliance_taxonomy="none",
     )
-    old_memory.platform_taxonomy = "web-frontend"
-    old_memory.domain_taxonomy = "ecommerce"
-    old_memory.size_taxonomy = "smb"
-    old_memory.compliance_taxonomy = None
 
     new_memory = ProjectMemory(
         project_info=ProjectInfo(
-            name=project_name, base_path="/fake", taxonomy_version="1.0"
-        )
+            name=project_name,
+            base_path="/fake",
+            taxonomy_version="1.0",
+            platform_taxonomy="web-frontend",
+            domain_taxonomy="ecommerce",
+            size_taxonomy="smb",
+            compliance_taxonomy="none",
+        ),
+        platform_taxonomy="web-frontend",
+        domain_taxonomy="ecommerce",
+        size_taxonomy="smb",
+        compliance_taxonomy="none",
     )
-    # Keep taxonomy fields the same
-    new_memory.platform_taxonomy = "web-frontend"
-    new_memory.domain_taxonomy = "ecommerce"
-    new_memory.size_taxonomy = "smb"
-    new_memory.compliance_taxonomy = None
     # Make some other change to trigger update
-    new_memory.project_info.purpose = "Updated purpose"
+    new_memory.project_info.taxonomy_version = "1.1"
 
     # Mock the port methods
     mock_memory_port.project_exists.return_value = True

@@ -44,9 +44,17 @@ def _create_sample_memory(name_suffix: str) -> ProjectMemory:
             purpose="testing list projects",
             target_audience="devs",
             objectives=["test list"],
+            platform_taxonomy="test_platform",
+            domain_taxonomy="test_domain",
+            size_taxonomy="test_size",
+            compliance_taxonomy="test_compliance",
         ),
         artifacts={Bucket.UNKNOWN: [artifact]},
         taxonomy_version="0.5",
+        platform_taxonomy="test_platform",
+        domain_taxonomy="test_domain",
+        size_taxonomy="test_size",
+        compliance_taxonomy="test_compliance",
     )
     return memory
 

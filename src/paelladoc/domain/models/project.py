@@ -37,10 +37,10 @@ class ProjectInfo(BaseModel):
     documentation_language: Optional[str] = None
     taxonomy_version: str = "1.0"  # Default or loaded?
     # Add the new taxonomy fields here as well for the domain model
-    platform_taxonomy: Optional[str] = None
-    domain_taxonomy: Optional[str] = None
-    size_taxonomy: Optional[str] = None
-    compliance_taxonomy: Optional[str] = None
+    platform_taxonomy: str
+    domain_taxonomy: str
+    size_taxonomy: str
+    compliance_taxonomy: str  # Consider if this one could truly be optional sometimes?
     custom_taxonomy: Optional[Dict[str, Any]] = Field(default_factory=dict)
     taxonomy_validation: Optional[Dict[str, Any]] = Field(default_factory=dict)
 
@@ -103,10 +103,10 @@ class ProjectMemory(BaseModel):
     # Add the new taxonomy fields here directly if they belong to the ProjectMemory state
     # Or ensure they are loaded/accessed via metadata if that's the design
     # Let's add them directly for consistency with the DB model and tests
-    platform_taxonomy: Optional[str] = None
-    domain_taxonomy: Optional[str] = None
-    size_taxonomy: Optional[str] = None
-    compliance_taxonomy: Optional[str] = None
+    platform_taxonomy: str
+    domain_taxonomy: str
+    size_taxonomy: str
+    compliance_taxonomy: str  # Consider if this one could truly be optional sometimes?
     custom_taxonomy: Optional[Dict[str, Any]] = Field(default_factory=dict)
     taxonomy_validation: Optional[Dict[str, Any]] = Field(default_factory=dict)
 

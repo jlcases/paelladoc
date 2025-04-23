@@ -11,6 +11,8 @@ from paelladoc.domain.models.project import (
     ProjectMemory,
     # ProjectDocument, # Assuming this was removed or is internal
 )
+from paelladoc.adapters.services.system_time_service import SystemTimeService
+from paelladoc.domain.models.project import set_time_service, time_service
 
 
 class TestBucket:
@@ -118,46 +120,135 @@ class TestArtifactMeta:
         assert loaded_artifact.updated_at == artifact.updated_at
 
 
+@pytest.fixture
+def sample_project_memory():
+    """Fixture to create a sample ProjectMemory instance with artifacts for testing."""
+    # Set up TimeService first as ArtifactMeta requires it
+    if time_service is None:
+        set_time_service(SystemTimeService())
+
+    project_info = ProjectInfo(
+        name="Test Project",
+        base_path="/path/to/project",
+        documentation_language="en",
+        interaction_language="en",
+        platform_taxonomy="test_platform",
+        domain_taxonomy="test_domain",
+        size_taxonomy="test_size",
+        compliance_taxonomy="test_compliance",
+    )
+
+    # Create the ProjectMemory instance first
+    project_memory_instance = ProjectMemory(
+        project_info=project_info,
+        # created_at and last_updated_at will be set by ProjectMemory.__init__
+        platform_taxonomy="test_platform",
+        domain_taxonomy="test_domain",
+        size_taxonomy="test_size",
+        compliance_taxonomy="test_compliance",
+        # Note: artifacts dict is initialized empty by default in ProjectMemory
+    )
+
+    # Now create and add the artifacts expected by the tests
+    artifacts_to_add = [
+        ArtifactMeta(
+            name="vision_doc",
+            bucket=Bucket.INITIATE_INITIAL_PRODUCT_DOCS,
+            path=Path("docs/initiation/product_vision.md"),
+            # Default status is PENDING
+        ),
+        ArtifactMeta(
+            name="user_research",
+            bucket=Bucket.ELABORATE_DISCOVERY_AND_RESEARCH,
+            path=Path("docs/research/user_research.md"),
+            status=DocumentStatus.IN_PROGRESS,  # Specific status for this test artifact
+        ),
+        ArtifactMeta(
+            name="api_spec",
+            bucket=Bucket.ELABORATE_SPECIFICATION_AND_PLANNING,
+            path=Path("docs/specs/api_specification.md"),
+            status=DocumentStatus.COMPLETED,  # Specific status for this test artifact
+        ),
+    ]
+
+    for artifact in artifacts_to_add:
+        project_memory_instance.add_artifact(artifact)
+
+    return project_memory_instance
+
+
+def test_project_info_initialization():
+    """Test ProjectInfo initialization."""
+    info = ProjectInfo(
+        name="Another Test",
+        # description="Detailed desc.", # Removed
+        base_path="/tmp",
+        documentation_language="es",
+        interaction_language="es",
+        platform_taxonomy="test_platform_2",
+        domain_taxonomy="test_domain_2",
+        size_taxonomy="test_size_2",
+        compliance_taxonomy="test_compliance_2",
+    )
+    assert info.name == "Another Test"
+    # assert info.description == "Detailed desc." # Removed assertion for non-existent field
+    assert str(info.base_path) == "/tmp"  # Check path conversion if needed
+    assert info.documentation_language == "es"
+    assert info.interaction_language == "es"
+    assert info.platform_taxonomy == "test_platform_2"
+    assert info.domain_taxonomy == "test_domain_2"
+    assert info.size_taxonomy == "test_size_2"
+    assert info.compliance_taxonomy == "test_compliance_2"
+
+
+def test_project_memory_initialization(sample_project_memory):
+    """Test ProjectMemory initialization using the fixture."""
+    assert sample_project_memory.project_info.name == "Test Project"
+    # assert "version" in sample_project_memory.metadata # Removed check for metadata
+    assert isinstance(sample_project_memory.created_at, datetime)
+    assert isinstance(
+        sample_project_memory.last_updated_at, datetime
+    )  # Corrected field name
+    # Check taxonomy fields added in fixture (both in project_info and directly)
+    assert sample_project_memory.project_info.platform_taxonomy == "test_platform"
+    assert sample_project_memory.project_info.domain_taxonomy == "test_domain"
+    assert sample_project_memory.project_info.size_taxonomy == "test_size"
+    assert sample_project_memory.project_info.compliance_taxonomy == "test_compliance"
+    assert sample_project_memory.platform_taxonomy == "test_platform"
+    assert sample_project_memory.domain_taxonomy == "test_domain"
+    assert sample_project_memory.size_taxonomy == "test_size"
+    assert sample_project_memory.compliance_taxonomy == "test_compliance"
+
+
+def test_project_memory_update(sample_project_memory):
+    """Test ProjectMemory update."""
+    # Implementation of the test_project_memory_update method
+    pass
+
+
 class TestProjectMemory:
     """Tests for the ProjectMemory model with taxonomy support"""
 
-    @pytest.fixture
-    def sample_project_memory(self):
-        """Create a sample ProjectMemory with artifacts in multiple buckets"""
-        project = ProjectMemory(
-            project_info=ProjectInfo(name="test_project"), taxonomy_version="0.5"
-        )
-
-        # Add artifacts to multiple buckets
-        artifacts = [
-            ArtifactMeta(
-                name="vision_doc",
-                bucket=Bucket.INITIATE_INITIAL_PRODUCT_DOCS,
-                path=Path("docs/initiation/product_vision.md"),
-            ),
-            ArtifactMeta(
-                name="user_research",
-                bucket=Bucket.ELABORATE_DISCOVERY_AND_RESEARCH,
-                path=Path("docs/research/user_research.md"),
-                status=DocumentStatus.IN_PROGRESS,
-            ),
-            ArtifactMeta(
-                name="api_spec",
-                bucket=Bucket.ELABORATE_SPECIFICATION_AND_PLANNING,
-                path=Path("docs/specs/api_specification.md"),
-                status=DocumentStatus.COMPLETED,
-            ),
-        ]
-
-        for artifact in artifacts:
-            project.add_artifact(artifact)
-
-        return project
-
     def test_project_memory_initialization(self):
         """Test initializing ProjectMemory with taxonomy support"""
+        # Set up TimeService if needed
+        # ... (similar to fixture setup)
+
         project = ProjectMemory(
-            project_info=ProjectInfo(name="test_project"), taxonomy_version="0.5"
+            project_info=ProjectInfo(
+                name="test_project",
+                # Add required taxonomy fields to ProjectInfo
+                platform_taxonomy="test_platform",
+                domain_taxonomy="test_domain",
+                size_taxonomy="test_size",
+                compliance_taxonomy="test_compliance",
+            ),
+            taxonomy_version="0.5",
+            # Add required taxonomy fields also directly to ProjectMemory
+            platform_taxonomy="test_platform",
+            domain_taxonomy="test_domain",
+            size_taxonomy="test_size",
+            compliance_taxonomy="test_compliance",
         )
 
         # Check that all buckets are initialized

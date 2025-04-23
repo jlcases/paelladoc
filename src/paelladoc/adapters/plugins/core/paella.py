@@ -32,26 +32,38 @@ async def paella_init(
     documentation_language: str,
     interaction_language: str,
     new_project_name: str,
-    # Add optional taxonomy arguments
-    platform_taxonomy: Optional[str] = None,
-    domain_taxonomy: Optional[str] = None,
-    size_taxonomy: Optional[str] = None,
-    compliance_taxonomy: Optional[str] = None,
-    custom_taxonomy: Optional[Dict] = None,  # Allow passing custom taxonomy data
+    platform_taxonomy: str,  # e.g., "pwa", "web-frontend", "vscode-extension"
+    domain_taxonomy: str,
+    size_taxonomy: str,
+    compliance_taxonomy: str,
+    custom_taxonomy: Optional[Dict] = None,  # Still optional
 ) -> Dict:
     """
-    Initialize a new PAELLADOC project.
+    Initiates the conversational workflow to define and document a new PAELLADOC project.
+
+    This tool gathers essential project details, including the core taxonomies (platform,
+    domain, size, compliance) which are mandatory for project setup and analysis.
+
+    It creates the project structure and persists the initial memory state with all
+    provided information.
+
+    Once executed successfully, the project is initialized with its defined taxonomies and ready
+    for the next conversational steps.
 
     Args:
-        base_path: Base path for project documentation
-        documentation_language: Language for documentation (e.g. 'es', 'en')
-        interaction_language: Language for interaction (e.g. 'es', 'en')
-        new_project_name: Name of the new project
-        platform_taxonomy: Selected platform taxonomy identifier.
-        domain_taxonomy: Selected domain taxonomy identifier.
-        size_taxonomy: Selected size taxonomy identifier.
-        compliance_taxonomy: Selected compliance taxonomy identifier.
-        custom_taxonomy: Dictionary containing custom taxonomy data.
+        base_path: Base path where the project documentation will be stored.
+        documentation_language: Primary language for the generated documentation (e.g., 'en', 'es').
+        interaction_language: Language used during conversational interactions (e.g., 'en', 'es').
+        new_project_name: Unique name for the new PAELLADOC project.
+        platform_taxonomy: Identifier for the target platform (e.g., "pwa", "web-frontend").
+        domain_taxonomy: Identifier for the project's domain (e.g., "ecommerce", "healthcare").
+        size_taxonomy: Identifier for the estimated project size (e.g., "mvp", "enterprise").
+        compliance_taxonomy: Identifier for any compliance requirements (e.g., "gdpr", "none").
+        custom_taxonomy: (Optional) A dictionary for any user-defined taxonomy.
+
+    Returns:
+        A dictionary confirming the project's creation ('status': 'ok') or detailing an error ('status': 'error').
+        On success, includes the 'project_name' and resolved 'base_path'.
     """
     logger.info(
         f"Initializing new project: {new_project_name} with taxonomies: Platform={platform_taxonomy}, Domain={domain_taxonomy}, Size={size_taxonomy}, Compliance={compliance_taxonomy}"
@@ -70,21 +82,19 @@ async def paella_init(
         # Ensure the base directory exists
         abs_base_path.mkdir(parents=True, exist_ok=True)
 
-        # Create project memory
+        # Create project memory - passing required taxonomies directly
         project_memory = ProjectMemory(
             project_info=ProjectInfo(
                 name=new_project_name,
                 interaction_language=interaction_language,
                 documentation_language=documentation_language,
                 base_path=abs_base_path,
-                # Pass taxonomy info to ProjectInfo
                 platform_taxonomy=platform_taxonomy,
                 domain_taxonomy=domain_taxonomy,
                 size_taxonomy=size_taxonomy,
                 compliance_taxonomy=compliance_taxonomy,
                 custom_taxonomy=custom_taxonomy if custom_taxonomy else {},
             ),
-            # Keep the initial artifact example or adjust as needed
             artifacts={
                 Bucket.INITIATE_INITIAL_PRODUCT_DOCS: [
                     {
@@ -95,8 +105,6 @@ async def paella_init(
                     }
                 ]
             },
-            # Set taxonomy fields also directly on ProjectMemory if needed by its logic
-            # (Based on current model, ProjectInfo holds them primarily)
             platform_taxonomy=platform_taxonomy,
             domain_taxonomy=domain_taxonomy,
             size_taxonomy=size_taxonomy,
@@ -121,7 +129,15 @@ async def paella_init(
 
 @mcp.tool()
 async def paella_list() -> Dict:
-    """List all available PAELLADOC projects."""
+    """Retrieves and lists the names of all PAELLADOC projects stored in the system memory.
+
+    This is useful for identifying available projects that can be selected using the
+    'paella_select' or 'core_continue' tools to resume work.
+
+    Returns:
+        A dictionary containing the operation status ('ok' or 'error'), a list of
+        project names under the 'projects' key, and a confirmation message.
+    """
     try:
         memory_adapter = SQLiteMemoryAdapter()
         projects = await memory_adapter.list_projects()
@@ -139,10 +155,19 @@ async def paella_list() -> Dict:
 @mcp.tool()
 async def paella_select(project_name: str) -> Dict:
     """
-    Select an existing PAELLADOC project.
+    Loads the memory of an existing PAELLADOC project and sets it as the active context.
+
+    This tool makes the specified project the current focus for subsequent conversational
+    commands and actions within the Paelladoc session. It retrieves the project's state
+    from the persistent memory.
 
     Args:
-        project_name: Name of the project to select
+        project_name: The name of the existing PAELLADOC project to activate.
+
+    Returns:
+        A dictionary containing the operation status ('ok' or 'error'), a confirmation message,
+        and key details of the selected project (name, base path). Returns an error status
+        if the project is not found.
     """
     try:
         memory_adapter = SQLiteMemoryAdapter()

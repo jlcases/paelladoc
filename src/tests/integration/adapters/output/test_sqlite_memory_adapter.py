@@ -82,22 +82,40 @@ def _create_sample_memory(name_suffix: str) -> ProjectMemory:
         status=DocumentStatus.IN_PROGRESS,
     )
 
-    artifacts: Dict[Bucket, List[ArtifactMeta]] = {
+    artifacts_dict: Dict[Bucket, List[ArtifactMeta]] = {
         Bucket.INITIATE_INITIAL_PRODUCT_DOCS: [artifact1],
         Bucket.GENERATE_SUPPORTING_ELEMENTS: [artifact2],
     }
 
+    # Set up TimeService first if needed by ArtifactMeta or ProjectMemory\/Info
+    # from paelladoc.adapters.services.system_time_service import SystemTimeService
+    # from paelladoc.domain.models.project import set_time_service, time_service
+    # if time_service is None:
+    #     set_time_service(SystemTimeService())
+
     memory = ProjectMemory(
         project_info=ProjectInfo(
             name=project_name,
-            language="python",
-            purpose="testing adapter v2",
-            target_audience="devs",
-            objectives=["test save artifacts", "test load artifacts"],
+            # language="python", # Removed
+            # purpose="testing adapter v2", # Removed
+            # target_audience="devs", # Removed
+            # objectives=["test save artifacts", "test load artifacts"], # Removed
+            # Add required taxonomy fields
+            platform_taxonomy="test_platform_adapter",
+            domain_taxonomy="test_domain_adapter",
+            size_taxonomy="test_size_adapter",
+            compliance_taxonomy="test_compliance_adapter",
+            # Assuming base_path, langs are optional or set elsewhere
         ),
-        artifacts=artifacts,
+        artifacts=artifacts_dict,
         taxonomy_version="0.5",
+        # Add required taxonomy fields also directly to ProjectMemory
+        platform_taxonomy="test_platform_adapter",
+        domain_taxonomy="test_domain_adapter",
+        size_taxonomy="test_size_adapter",
+        compliance_taxonomy="test_compliance_adapter",
     )
+
     return memory
 
 
