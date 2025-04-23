@@ -1,0 +1,33 @@
+PaellaDoc Commercial License v1.0
+© 2025 Jose Luis Cases Lozano — All rights reserved.
+
+1. Grant of License
+   Subject to payment of the applicable fees, Jose Luis Cases Lozano (“Licensor”)
+   grants Licensee a non-exclusive, non-transferable, worldwide right to
+   use, modify and distribute PaellaDoc and derivative works in object
+   form, solely for internal use or as part of Licensee's own products or
+   services, without any obligation to distribute source code.
+
+2. Restrictions
+   (a) No sublicensing, resale or white-labelling except as expressly
+       permitted herein.
+   (b) No removal of copyright or trademark notices.
+
+3. Updates & Support
+   Access to cloud updates, hot-fixes and priority support is included
+   while the subscription is active.
+
+4. Fees & Term
+   This licence is granted for the term and price set out in the purchase
+   order or SaaS agreement.  Non-payment terminates the licence
+   automatically.
+
+5. Dual Licensing
+   PaellaDoc is also available under the GNU AGPL v3.  This commercial
+   licence is an alternative; selection of one licence over the other is
+   at Licensee's sole discretion.
+
+6. Limitation of Liability
+   [standard limitation / warranty disclaimer]
+
+For enquiries contact: legal@paelladoc.com 

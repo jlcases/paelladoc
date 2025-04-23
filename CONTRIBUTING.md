@@ -1,138 +1,55 @@
-# Contributing to PAELLADOC
+# Contributing to PaellaDoc 🚀
 
-Thank you for your interest in contributing to PAELLADOC! This document provides guidelines and important information for contributors.
+Thanks for helping make **PaellaDoc** better!  This guide explains how to
+submit code, docs and bug reports now that the project is licensed under
+the **GNU AGPL v3**.
 
-## License Information
+## TL;DR
+| ✔ You can | ✘ You must not |
+|-----------|---------------|
+| Fork, run, self-host PaellaDoc | Violate the AGPL (e.g. refuse to share source of a public SaaS) |
+| Open pull requests | Merge code without DCO/CLA |
+| Re-distribute unmodified or modified versions | Use our trademarks without permission |
+| Build commercial products on top (under our Commercial Licence) | Re-licence core code under a proprietary licence |
 
-PAELLADOC is licensed under the MIT License with Commons Clause. Before contributing, please understand what this means:
+## 0. Legal prerequisites
 
-### ✅ You CAN:
-- Use PAELLADOC in your projects (personal, commercial, academic)
-- Modify the code and documentation
-- Distribute copies of your modified version
-- Create and sell products BUILT USING PAELLADOC
-- Contribute improvements back to PAELLADOC
+* Every commit **must** carry a `Signed-off-by:` line (Developer
+  Certificate of Origin).  
+* If you are sending more than a drive-by patch, please sign the
+  [CLA](./CLA.md) once; the bot will remind you automatically.
 
-### ❌ You CANNOT:
-- Sell PAELLADOC itself
-- Offer PAELLADOC as a hosted/SaaS service
-- Create competing products based on PAELLADOC
+## 1. Getting started
 
-## How to Contribute
+```bash
+git clone https://github.com/paelladoc/paelladoc
+git checkout -b feat/awesome-feature
+```
 
-1. **Fork the Repository**
-   - Fork the PAELLADOC repository to your GitHub account
-   - Clone your fork locally
+Follow the TDD workflow (RED → GREEN → REFACTOR) exactly as before.
 
-2. **Create a Branch**
-   ```bash
-   git checkout -b feature/your-feature-name
-   ```
+## 2. Coding standards
+TypeScript 5 + ESLint preset
 
-3. **Make Your Changes**
-   - Follow our coding standards
-   - Keep commits atomic and well-described
-   - Add tests if applicable
-   - Update documentation as needed
+Commit prefixes: test(red):, feat(green):, refactor:
 
-4. **Test Your Changes**
-   - Ensure all tests pass
-   - Test your changes thoroughly
-   - Verify documentation accuracy
+Run npm run lint && npm test before pushing.
 
-5. **Submit a Pull Request**
-   - Push your changes to your fork
-   - Create a Pull Request from your branch
-   - Describe your changes in detail
-   - Reference any related issues
+## 3. Pull-request checklist
+ All tests green
 
-## Development Guidelines
+ Docs updated (/docs/ and JSDoc)
 
-### Test-Driven Development (TDD)
+ No failing CI licences scan (reuse lint)
 
-We follow strict TDD practices in this project. Each feature or bug fix MUST follow the RED-GREEN-REFACTOR cycle:
+ CLA signed / DCO line present
 
-1. **RED Phase** 🔴
-   - Write a failing test first
-   - Commit with prefix `test(red):` 
-   - Example: `test(red): add test for MCP server plugin registration`
+## 4. Where does my code end up?
+Core (/packages/core) – always AGPL v3, forever.
 
-2. **GREEN Phase** 💚
-   - Implement minimal code to make the test pass
-   - Commit with prefix `feat(green):` 
-   - Example: `feat(green): implement plugin registration`
+Cloud UI & multi-tenant extras live in a private repo; PaellaDoc SL staff or sponsored contributors work there under NDA.
 
-3. **REFACTOR Phase** 🔄
-   - Clean up and optimize the code
-   - Ensure tests remain green
-   - Commit with prefix `refactor:` 
-   - Example: `refactor: improve plugin registration efficiency`
+## 5. Code of Conduct
+Be kind, inclusive and constructive. We follow the Contributor Covenant v2.1.
 
-Each PR should show this TDD cycle in the commit history. PRs without proper TDD commits will need revision.
-
-### Code Style
-- Use clear, descriptive variable and function names
-- Follow existing code formatting
-- Comment complex logic
-- Keep functions focused and concise
-
-### Documentation
-- Update relevant documentation
-- Add JSDoc comments for new functions
-- Include examples for new features
-- Keep README.md up to date
-
-### Testing
-- Write tests for new features
-- Update existing tests as needed
-- Ensure all tests pass before submitting
-
-## Pull Request Process
-
-1. **Before Submitting**
-   - Rebase your branch on latest main
-   - Resolve any conflicts
-   - Run all tests
-   - Update documentation
-
-2. **PR Description**
-   - Clearly describe the changes
-   - Explain the motivation
-   - List any breaking changes
-   - Include relevant issue numbers
-
-3. **Review Process**
-   - Address review comments promptly
-   - Keep discussions focused
-   - Be open to feedback
-   - Make requested changes
-
-## Community Guidelines
-
-- Be respectful and inclusive
-- Help others when possible
-- Keep discussions constructive
-- Follow our Code of Conduct
-
-## Questions or Problems?
-
-- Check existing issues first
-- Open a new issue if needed
-- Join our discussions
-- Ask in our community channels
-
-## Legal Notes
-
-By contributing to PAELLADOC, you agree that your contributions will be licensed under its MIT License with Commons Clause. You also certify that:
-
-- You have the right to submit the code
-- Your contribution is your original work
-- You understand and agree to our licensing terms
-
-## Additional Resources
-
-- [Documentation](https://paelladoc.com/docs)
-- [Issue Tracker](https://github.com/jlcases/paelladoc/issues)
-- [Discussion Forum](https://github.com/jlcases/paelladoc/discussions)
-
-Thank you for contributing to PAELLADOC! 🚀 
+Happy hacking! 🍤 
