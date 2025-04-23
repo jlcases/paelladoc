@@ -4,7 +4,21 @@ All notable changes to PAELLADOC will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
-## [0.3.3] - 2025-04-23
+## [0.3.4] - 2025-04-23
+### Fixed
+- Corrected `UUID` type usage in Alembic migration `297f102e7967` to resolve CI failures (`AttributeError` for `GUID`).
+
+### Changed
+- Standardized core MCP tool naming convention (using underscores, e.g., `paella_init`).
+- Refactored taxonomies to use `importlib.resources` for better packaging and access.
+- Enhanced `ProjectInfo` serialization and database interactions.
+- Updated core tool documentation and help messages to use Markdown.
+
+### Added
+- Introduced mandatory fields for taxonomy models.
+- Implemented a more robust MECE taxonomy structure.
+
+## [0.3.3] - 2025-04-22
 
 ### Added
 - Added `greenlet` as explicit dependency for SQLModel and aiosqlite
@@ -19,6 +33,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Fixed
 - Fixed missing dependencies in PyPI package that caused installation issues
 - Improved dependency management to ensure all required packages are properly installed
+- Added `greenlet` as an explicit dependency required by `SQLModel` and `aiosqlite` for certain operations, resolving potential runtime errors.
+- Corrected database migration timestamps and cleaned up related comments.
 
 ## [0.3.2] - 2025-04-22
 

@@ -1,14 +1,14 @@
 # 🧠 PAELLADOC: The AI-First Development Framework
 
-![Version](https://img.shields.io/badge/version-0.3.3-blue.svg)
+![Version](https://img.shields.io/badge/version-0.3.4-blue.svg)
 ![Status](https://img.shields.io/badge/status-active-success.svg)
 ![Philosophy](https://img.shields.io/badge/philosophy-AI--First-purple.svg)
 ![MCP](https://img.shields.io/badge/type-MCP-orange.svg)
-![Updated](https://img.shields.io/badge/updated-2025--04--20-brightgreen.svg)
+![Updated](https://img.shields.io/badge/updated-2024--08--17-brightgreen.svg)
 [![GitHub Stars](https://img.shields.io/github/stars/jlcases/paelladoc?style=social)](https://github.com/jlcases/paelladoc)
 [![X Community](https://img.shields.io/badge/X%20Community-PAellaDOC-blue)](https://x.com/i/communities/1907494161458090406)
 
-> **Version 0.3.3**: This release focuses on fixing dependency issues for PyPI packaging and improving configuration documentation for the Model Context Protocol (MCP).
+> **Version 0.3.4**: This release standardizes MCP tools, enhances taxonomy management, and includes critical fixes for Alembic migrations.
 
 > "In the AI era, context isn't supplementary to code—it's the primary creation."
 
@@ -248,7 +248,7 @@ The LLM will handle all the complexity - you just need to express your intent in
 
 3.  **Follow the LLM's lead:** PAELLADOC (via the LLM) will then guide you through the process interactively, asking for project details, template choices, etc.
 
-## ⚙️ Available Commands (v0.3.3)
+## ⚙️ Available Commands (v0.3.4)
 
 This version provides the following core commands, exposed via MCP for interaction with your LLM:
 
