@@ -38,21 +38,17 @@ async def core_continue(
     logging.info(
         f"Executing initial implementation for core.continue for project: {project_name}..."
     )
-
+    
     # --- Get Behavior Config & Bucket Order ---
     try:
-        # TODO: Implement behavior config usage in next iteration
-        # Keeping this to maintain API compatibility
-        _ = await config_port.get_behavior_config(category="continue")
+        behavior_config = await config_port.get_behavior_config(category="continue")
         # Example: Get a specific config value (add more as needed)
         # documentation_first = behavior_config.get("documentation_first", True)
-
+        
         # Get bucket order from DB
         bucket_order_names = await config_port.get_bucket_order(category="default")
         if not bucket_order_names:
-            logger.warning(
-                "No default bucket order found in config DB. Using fallback enum order."
-            )
+            logger.warning("No default bucket order found in config DB. Using fallback enum order.")
             # Fallback to basic Enum order if DB config is missing
             bucket_order = list(Bucket)
         else:
@@ -62,9 +58,7 @@ async def core_continue(
                 try:
                     bucket_order.append(Bucket(name))
                 except ValueError:
-                    logger.warning(
-                        f"Bucket name '{name}' from DB config is not a valid Bucket enum member. Skipping."
-                    )
+                    logger.warning(f"Bucket name '{name}' from DB config is not a valid Bucket enum member. Skipping.")
             # Add any missing standard buckets at the end (optional, depends on desired behavior)
             missing_buckets = [b for b in list(Bucket) if b not in bucket_order]
             bucket_order.extend(missing_buckets)
@@ -72,11 +66,9 @@ async def core_continue(
         logger.info(f"Using bucket order: {[b.value for b in bucket_order]}")
 
     except Exception as e:
-        logger.error(
-            f"Failed to load configuration for core.continue: {e}", exc_info=True
-        )
+        logger.error(f"Failed to load configuration for core.continue: {e}", exc_info=True)
         # Decide on fallback behavior - maybe use hardcoded defaults here? For now, fail hard.
-        return {"status": "error", "message": "Failed to load necessary configuration."}
+        return {"status": "error", "message": "Failed to load necessary configuration."}    
 
     # --- Dependency Injection (Temporary Direct Instantiation) ---
     # TODO: Replace with proper dependency injection
@@ -118,8 +110,8 @@ async def core_continue(
         "No pending artifacts found. Project might be complete or need verification."
     )
     found_pending = False
-
-    for bucket in bucket_order:  # Use the dynamically loaded order
+    
+    for bucket in bucket_order: # Use the dynamically loaded order
         artifacts_in_bucket = memory.artifacts.get(bucket, [])
         for artifact in artifacts_in_bucket:
             if artifact.status == DocumentStatus.PENDING:
@@ -156,4 +148,4 @@ async def core_continue(
         "status": "ok",
         "message": f"Project '{project_name}' loaded. {phase_completion_summary}",
         "next_step": next_step_suggestion,
-    }
+    } 
