@@ -6,7 +6,7 @@ import logging
 # TODO: Review imports and add any other necessary modules
 
 
-@mcp.tool(name="code.generate_doc", description="3. Wait for user selection")
+@mcp.tool(name="generate_doc", description="3. Wait for user selection")
 def code_generate_doc() -> dict:
     """3. Wait for user selection"""
 

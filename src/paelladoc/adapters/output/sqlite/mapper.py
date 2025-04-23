@@ -33,157 +33,157 @@ def _ensure_utc(dt: Optional[datetime.datetime]) -> Optional[datetime.datetime]:
 
 
 def map_db_to_domain(db_memory: ProjectMemoryDB) -> ProjectMemory:
-    """Maps the DB model hierarchy to the domain ProjectMemory model."""
-
-    # Map ProjectInfo (formerly metadata)
+    """Maps a ProjectMemoryDB instance to a ProjectMemory domain model."""
+    # Map ProjectInfo
     domain_project_info = ProjectInfo(
         name=db_memory.name,
         language=db_memory.language,
         purpose=db_memory.purpose,
         target_audience=db_memory.target_audience,
-        objectives=db_memory.objectives
-        if db_memory.objectives
-        else [],  # Handle potential None from DB
+        objectives=db_memory.objectives or [],
         base_path=Path(db_memory.base_path) if db_memory.base_path else None,
         interaction_language=db_memory.interaction_language,
         documentation_language=db_memory.documentation_language,
         taxonomy_version=db_memory.taxonomy_version,
+        # Map taxonomy fields
         platform_taxonomy=db_memory.platform_taxonomy,
         domain_taxonomy=db_memory.domain_taxonomy,
         size_taxonomy=db_memory.size_taxonomy,
         compliance_taxonomy=db_memory.compliance_taxonomy,
-        custom_taxonomy=db_memory.custom_taxonomy
-        if db_memory.custom_taxonomy
-        else {},  # Handle potential None
-        taxonomy_validation=db_memory.taxonomy_validation
-        if db_memory.taxonomy_validation
-        else {},  # Handle potential None
+        lifecycle_taxonomy=db_memory.lifecycle_taxonomy,
+        custom_taxonomy=db_memory.custom_taxonomy or {},
+        taxonomy_validation=db_memory.taxonomy_validation or {},
     )
 
     # Map Artifacts
-    domain_artifacts: Dict[Bucket, List[ArtifactMeta]] = {
-        bucket: []
-        for bucket in Bucket  # Initialize all buckets
-    }
-    if db_memory.artifacts:  # Check if artifacts relationship is loaded/exists
+    domain_artifacts: Dict[Bucket, List[ArtifactMeta]] = {}
+    if db_memory.artifacts:
         for db_artifact in db_memory.artifacts:
-            try:
-                # Attempt to get the bucket enum member; default to UNKNOWN if invalid
-                bucket_enum = Bucket(db_artifact.bucket)
-            except ValueError:
-                logger.warning(
-                    f"Artifact {db_artifact.id} has invalid bucket value '{db_artifact.bucket}' stored in DB. Mapping to UNKNOWN."
+            bucket = db_artifact.bucket
+            if bucket not in domain_artifacts:
+                domain_artifacts[bucket] = []
+            domain_artifacts[bucket].append(
+                ArtifactMeta(
+                    id=db_artifact.id,
+                    name=db_artifact.name,
+                    bucket=bucket,
+                    path=Path(db_artifact.path) if db_artifact.path else None,
+                    created_at=_ensure_utc(db_artifact.created_at),
+                    updated_at=_ensure_utc(db_artifact.updated_at),
+                    created_by=db_artifact.created_by,
+                    modified_by=db_artifact.modified_by,
+                    status=db_artifact.status,
                 )
-                bucket_enum = Bucket.UNKNOWN
-
-            domain_artifact = ArtifactMeta(
-                id=db_artifact.id,
-                name=db_artifact.name,
-                bucket=bucket_enum,
-                path=Path(db_artifact.path),  # Use path string directly
-                created_at=_ensure_utc(db_artifact.created_at),
-                updated_at=_ensure_utc(db_artifact.updated_at),
-                created_by=db_artifact.created_by,
-                modified_by=db_artifact.modified_by,
-                status=db_artifact.status,
             )
-            # Append to the correct bucket list, handle UNKNOWN explicitly if needed elsewhere
-            domain_artifacts[bucket_enum].append(domain_artifact)
 
-    # Remove empty buckets if desired (or keep them as per domain logic)
-    # domain_artifacts = {k: v for k, v in domain_artifacts.items() if v}
-
-    # Assemble the final domain ProjectMemory object
-    domain_memory = ProjectMemory(
+    # Create the domain model
+    return ProjectMemory(
         project_info=domain_project_info,
+        # Assuming the old 'documents' field is not needed or handled separately
+        # documents={}, # If needed, map from a potential documents JSON field
         artifacts=domain_artifacts,
         taxonomy_version=db_memory.taxonomy_version,
         created_at=_ensure_utc(db_memory.created_at),
         last_updated_at=_ensure_utc(db_memory.last_updated_at),
         created_by=db_memory.created_by,
         modified_by=db_memory.modified_by,
-        # Map taxonomy fields from ProjectMemoryDB to ProjectMemory
+        # Map taxonomy fields directly to ProjectMemory as well
         platform_taxonomy=db_memory.platform_taxonomy,
         domain_taxonomy=db_memory.domain_taxonomy,
         size_taxonomy=db_memory.size_taxonomy,
         compliance_taxonomy=db_memory.compliance_taxonomy,
-        custom_taxonomy=db_memory.custom_taxonomy if db_memory.custom_taxonomy else {},
-        taxonomy_validation=db_memory.taxonomy_validation
-        if db_memory.taxonomy_validation
-        else {},
+        lifecycle_taxonomy=db_memory.lifecycle_taxonomy,
+        custom_taxonomy=db_memory.custom_taxonomy or {},
+        taxonomy_validation=db_memory.taxonomy_validation or {},
     )
 
-    return domain_memory
+
+def map_domain_artifact_to_db(
+    domain_artifact: ArtifactMeta, project_memory_id: Optional[uuid.UUID] = None
+) -> ArtifactMetaDB:
+    """Maps a domain ArtifactMeta to a DB ArtifactMetaDB."""
+    return ArtifactMetaDB(
+        id=domain_artifact.id,
+        project_memory_id=project_memory_id,
+        name=domain_artifact.name,
+        bucket=domain_artifact.bucket,
+        path=str(domain_artifact.path),
+        created_at=_ensure_utc(domain_artifact.created_at)
+        if domain_artifact.created_at
+        else datetime.datetime.now(datetime.timezone.utc),
+        updated_at=_ensure_utc(domain_artifact.updated_at)
+        if domain_artifact.updated_at
+        else datetime.datetime.now(datetime.timezone.utc),
+        created_by=domain_artifact.created_by,
+        modified_by=domain_artifact.modified_by,
+        status=domain_artifact.status,
+    )
 
 
 def map_domain_to_db(
-    domain_memory: ProjectMemory, existing_db_memory: Optional[ProjectMemoryDB] = None
+    domain_memory: ProjectMemory, existing_db_model: Optional[ProjectMemoryDB] = None
 ) -> ProjectMemoryDB:
-    """
-    Maps the domain ProjectMemory model to a ProjectMemoryDB model.
-    Handles both creating a new DB object and updating an existing one.
-    """
-    now_utc = datetime.datetime.now(datetime.timezone.utc)
-
-    # --- Map Project Info / Top-Level Fields ---
-    project_info = domain_memory.project_info
-    if existing_db_memory:
-        db_memory = existing_db_memory
-        # Update fields from ProjectInfo
-        db_memory.language = project_info.language
-        db_memory.purpose = project_info.purpose
-        db_memory.target_audience = project_info.target_audience
-        db_memory.objectives = project_info.objectives
-        db_memory.base_path = (
-            str(project_info.base_path) if project_info.base_path else None
-        )
-        db_memory.interaction_language = project_info.interaction_language
-        db_memory.documentation_language = project_info.documentation_language
-        # Update fields from ProjectMemory
-        db_memory.taxonomy_version = domain_memory.taxonomy_version
-        db_memory.last_updated_at = (
-            _ensure_utc(domain_memory.last_updated_at) or now_utc
-        )
-        db_memory.modified_by = domain_memory.modified_by
-        db_memory.platform_taxonomy = domain_memory.platform_taxonomy
-        db_memory.domain_taxonomy = domain_memory.domain_taxonomy
-        db_memory.size_taxonomy = domain_memory.size_taxonomy
-        db_memory.compliance_taxonomy = domain_memory.compliance_taxonomy
-        db_memory.custom_taxonomy = domain_memory.custom_taxonomy
-        db_memory.taxonomy_validation = domain_memory.taxonomy_validation
-
+    """Maps a ProjectMemory domain model to a ProjectMemoryDB instance, excluding artifacts."""
+    if existing_db_model:
+        db_memory = existing_db_model
     else:
-        # Create new ProjectMemoryDB
-        db_memory = ProjectMemoryDB(
-            name=project_info.name,
-            language=project_info.language,
-            purpose=project_info.purpose,
-            target_audience=project_info.target_audience,
-            objectives=project_info.objectives,
-            base_path=str(project_info.base_path) if project_info.base_path else None,
-            interaction_language=project_info.interaction_language,
-            documentation_language=project_info.documentation_language,
-            taxonomy_version=domain_memory.taxonomy_version,
-            created_at=_ensure_utc(domain_memory.created_at) or now_utc,
-            last_updated_at=_ensure_utc(domain_memory.last_updated_at) or now_utc,
-            created_by=domain_memory.created_by,
-            modified_by=domain_memory.modified_by,
-            platform_taxonomy=domain_memory.platform_taxonomy,
-            domain_taxonomy=domain_memory.domain_taxonomy,
-            size_taxonomy=domain_memory.size_taxonomy,
-            compliance_taxonomy=domain_memory.compliance_taxonomy,
-            custom_taxonomy=domain_memory.custom_taxonomy,
-            taxonomy_validation=domain_memory.taxonomy_validation,
-            artifacts=[],  # Initialize relationship list
-        )
+        db_memory = ProjectMemoryDB()
+        # Set ID for new object if domain object has one (e.g., from deserialization)
+        # Otherwise, rely on DB default_factory
+        # db_memory.id = domain_memory.id # Assuming ProjectMemory doesn't have an ID field directly
 
-    # --- Map Artifacts ---
-    # This logic needs the db_memory.id if creating new artifacts,
-    # so it's better handled within the adapter's session context after flushing.
-    # This function will return the populated/updated ProjectMemoryDB *without*
-    # fully resolved artifacts if it's a new object. The adapter will handle artifact sync.
-    # If updating, we can potentially return the artifact list structure needed?
-    # For simplicity, let's return the main object mapping and let the adapter handle artifact sync.
+    # Map fields from ProjectInfo
+    if domain_memory.project_info:
+        db_memory.name = domain_memory.project_info.name
+        db_memory.language = domain_memory.project_info.language
+        db_memory.purpose = domain_memory.project_info.purpose
+        db_memory.target_audience = domain_memory.project_info.target_audience
+        db_memory.objectives = domain_memory.project_info.objectives
+        db_memory.base_path = (
+            str(domain_memory.project_info.base_path)
+            if domain_memory.project_info.base_path
+            else None
+        )
+        db_memory.interaction_language = domain_memory.project_info.interaction_language
+        db_memory.documentation_language = (
+            domain_memory.project_info.documentation_language
+        )
+        db_memory.taxonomy_version = (
+            domain_memory.taxonomy_version
+        )  # Use ProjectMemory version
+        db_memory.platform_taxonomy = domain_memory.project_info.platform_taxonomy
+        db_memory.domain_taxonomy = domain_memory.project_info.domain_taxonomy
+        db_memory.size_taxonomy = domain_memory.project_info.size_taxonomy
+        db_memory.compliance_taxonomy = domain_memory.project_info.compliance_taxonomy
+        db_memory.lifecycle_taxonomy = domain_memory.project_info.lifecycle_taxonomy
+        db_memory.custom_taxonomy = domain_memory.project_info.custom_taxonomy
+        db_memory.taxonomy_validation = domain_memory.project_info.taxonomy_validation
+
+    # Map top-level fields from ProjectMemory (overwriting if needed)
+    db_memory.taxonomy_version = domain_memory.taxonomy_version
+    db_memory.created_at = (
+        _ensure_utc(domain_memory.created_at)
+        if domain_memory.created_at and not existing_db_model  # Only set on creation
+        else (
+            existing_db_model.created_at
+            if existing_db_model
+            else datetime.datetime.now(datetime.timezone.utc)
+        )
+    )
+    db_memory.last_updated_at = datetime.datetime.now(datetime.timezone.utc)
+    db_memory.created_by = domain_memory.created_by
+    db_memory.modified_by = domain_memory.modified_by
+
+    # Map taxonomy fields directly from ProjectMemory (ensure these overwrite ProjectInfo ones)
+    db_memory.platform_taxonomy = domain_memory.platform_taxonomy
+    db_memory.domain_taxonomy = domain_memory.domain_taxonomy
+    db_memory.size_taxonomy = domain_memory.size_taxonomy
+    db_memory.compliance_taxonomy = domain_memory.compliance_taxonomy
+    db_memory.lifecycle_taxonomy = domain_memory.lifecycle_taxonomy
+    db_memory.custom_taxonomy = domain_memory.custom_taxonomy
+    db_memory.taxonomy_validation = domain_memory.taxonomy_validation
+
+    # DO NOT map artifacts here, handled by sync_artifacts_db
 
     return db_memory
 
@@ -191,36 +191,30 @@ def map_domain_to_db(
 def sync_artifacts_db(
     session,  # Pass the SQLAlchemy session
     domain_memory: ProjectMemory,
-    db_memory: ProjectMemoryDB,  # Assumes db_memory exists and has an ID
-) -> None:
+    db_memory: ProjectMemoryDB,  # The DB object being saved (might be new or existing)
+    existing_db_memory: Optional[
+        ProjectMemoryDB
+    ],  # The state loaded from DB (if exists)
+) -> List[ArtifactMetaDB]:  # Return list of artifacts to delete
     """
     Synchronizes the ArtifactMetaDB entries based on the domain model's artifacts.
-    This function should be called within the adapter's session context *after*
-    the ProjectMemoryDB object exists and has an ID (i.e., after adding and flushing if new).
-
-    Args:
-        session: The active SQLAlchemy AsyncSession.
-        domain_memory: The source domain model.
-        db_memory: The target database model (must have an ID).
+    Should be called within the adapter's session context after the ProjectMemoryDB
+    object exists and has an ID.
+    Returns a list of ArtifactMetaDB objects that should be deleted.
     """
 
     if not db_memory.id:
         logger.error("Cannot sync artifacts: ProjectMemoryDB object has no ID.")
-        # Or raise an error?
-        return
+        raise ValueError("ProjectMemoryDB must have an ID before syncing artifacts.")
 
-    # Use eager loading if artifacts aren't already loaded
-    # This check might be redundant depending on how db_memory was obtained
-    if "artifacts" not in db_memory.__dict__:  # Basic check if relationship is loaded
-        logger.warning(
-            "Artifacts relationship not loaded on db_memory. Explicit loading might be needed."
-        )
-        # Potentially load it here if necessary, but ideally it's loaded beforehand
-        # await session.refresh(db_memory, attribute_names=['artifacts'])
+    # Base the current DB state on the eager-loaded existing_db_memory if available
+    if existing_db_memory and existing_db_memory.artifacts is not None:
+        db_artifacts_map: Dict[uuid.UUID, ArtifactMetaDB] = {
+            a.id: a for a in existing_db_memory.artifacts
+        }
+    else:
+        db_artifacts_map: Dict[uuid.UUID, ArtifactMetaDB] = {}  # No existing artifacts
 
-    db_artifacts_map: Dict[uuid.UUID, ArtifactMetaDB] = {
-        a.id: a for a in db_memory.artifacts
-    }
     domain_artifact_ids = set()
     artifacts_to_add = []
     artifacts_to_delete = []
@@ -231,60 +225,42 @@ def sync_artifacts_db(
                 logger.warning(
                     f"Skipping non-ArtifactMeta item found in domain artifacts: {domain_artifact}"
                 )
-                continue  # Skip if somehow a non-artifact is in the list
+                continue
 
             domain_artifact_ids.add(domain_artifact.id)
             db_artifact = db_artifacts_map.get(domain_artifact.id)
 
             if db_artifact:
-                # Update existing artifact
+                # Update existing artifact fields found in the map
                 db_artifact.name = domain_artifact.name
-                db_artifact.bucket = domain_artifact.bucket  # Store enum directly
+                db_artifact.bucket = domain_artifact.bucket
                 db_artifact.path = str(domain_artifact.path)
-                db_artifact.status = domain_artifact.status  # Store enum directly
+                db_artifact.status = domain_artifact.status
                 db_artifact.updated_at = _ensure_utc(
                     domain_artifact.updated_at
                 ) or datetime.datetime.now(datetime.timezone.utc)
                 db_artifact.modified_by = domain_artifact.modified_by
-                # No need to add to session explicitly if object is already managed
+                # IMPORTANT: Add the updated artifact to the session if its state changed
+                # This might be implicitly handled by modifying the object while attached?
+                # session.add(db_artifact) # Usually not needed for updates on attached objects
             else:
-                # Create new artifact DB object
-                new_db_artifact = ArtifactMetaDB(
-                    id=domain_artifact.id,
-                    project_memory_id=db_memory.id,  # Link to parent
-                    name=domain_artifact.name,
-                    bucket=domain_artifact.bucket,
-                    path=str(domain_artifact.path),
-                    created_at=_ensure_utc(domain_artifact.created_at)
-                    or datetime.datetime.now(datetime.timezone.utc),
-                    updated_at=_ensure_utc(domain_artifact.updated_at)
-                    or datetime.datetime.now(datetime.timezone.utc),
-                    created_by=domain_artifact.created_by,
-                    modified_by=domain_artifact.modified_by,
-                    status=domain_artifact.status,
+                # Artifact exists in domain but not in the loaded DB state -> Add it
+                new_db_artifact = map_domain_artifact_to_db(
+                    domain_artifact, project_memory_id=db_memory.id
                 )
                 artifacts_to_add.append(new_db_artifact)
 
-    # Identify artifacts to delete
+    # Identify artifacts to delete (present in DB map but not in domain IDs)
     for db_artifact_id, db_artifact in db_artifacts_map.items():
         if db_artifact_id not in domain_artifact_ids:
             artifacts_to_delete.append(db_artifact)
 
-    # Perform session operations (caller should handle commit/rollback)
+    # Add new artifacts to the session
     if artifacts_to_add:
         session.add_all(artifacts_to_add)
         logger.debug(
             f"Adding {len(artifacts_to_add)} new artifacts to session for project {db_memory.name}."
         )
 
-    # Deleting requires awaiting async session.delete for each
-    # This needs to be done carefully within the async context of the adapter
-    # This function CANNOT await session.delete directly if it's synchronous.
-    # Let's return the list of objects to delete.
-
-    # Instead of deleting here, return the list to the async adapter method
-    # for artifact_to_delete in artifacts_to_delete:
-    #     logger.debug(f"Marking artifact {artifact_to_delete.id} ({artifact_to_delete.name}) for deletion from project {db_memory.name}.")
-    #     # await session.delete(artifact_to_delete) # Cannot do async op here
-
-    return artifacts_to_delete  # Return list of DB objects to be deleted by the caller
+    # Return artifacts to be deleted by the caller (adapter)
+    return artifacts_to_delete

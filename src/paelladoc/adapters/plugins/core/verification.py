@@ -45,36 +45,63 @@ def validate_mece_structure(memory: ProjectMemory) -> dict:
     required_dimensions = ["platform", "domain", "size", "lifecycle"]
 
     # Check that all required dimensions exist in system
-    available_dimensions = TAXONOMY_REPOSITORY.get_available_dimensions()
+    try:
+        available_dimensions = TAXONOMY_REPOSITORY.get_available_dimensions()
+    except Exception as e:
+        validation["is_valid"] = False
+        validation["warnings"].append(f"Failed to load taxonomy dimensions: {str(e)}")
+        return validation
+
     for dim in required_dimensions:
         if dim not in available_dimensions:
             validation["warnings"].append(
                 f"Required dimension '{dim}' not configured in system. Configure JSON files in taxonomies/{dim}/"
             )
 
-    # 1. Verify required dimensions are present with valid values
+    # 1. Verify required dimensions are present with valid values in both ProjectInfo and ProjectMemory
     for dimension in required_dimensions:
         attr_name = f"{dimension}_taxonomy"
-        dimension_value = getattr(memory, attr_name, None)
+        memory_value = getattr(memory, attr_name, None)
+        info_value = getattr(memory.project_info, attr_name, None)
 
-        # Required dimension is missing
-        if not dimension_value:
+        # Required dimension is missing in either place
+        if not memory_value or not info_value:
             validation["missing_dimensions"].append(dimension)
             continue
 
-        # Check if value is valid (exists in JSON files)
-        valid_values = TAXONOMY_REPOSITORY.get_dimension_values(dimension)
-        if dimension_value not in valid_values:
+        # Values must match between ProjectInfo and ProjectMemory
+        if memory_value != info_value:
             validation["invalid_combinations"].append(
-                f"Invalid {dimension} taxonomy: {dimension_value}. Must be one of: {', '.join(valid_values)}"
+                f"Mismatched {dimension} taxonomy between ProjectInfo ({info_value}) and ProjectMemory ({memory_value})"
+            )
+            continue
+
+        # Check if value is valid (exists in JSON files)
+        try:
+            valid_values = TAXONOMY_REPOSITORY.get_dimension_values(dimension)
+            if memory_value not in valid_values:
+                validation["invalid_combinations"].append(
+                    f"Invalid {dimension} taxonomy: {memory_value}. Must be one of: {', '.join(valid_values)}"
+                )
+        except Exception as e:
+            validation["warnings"].append(
+                f"Failed to validate {dimension} taxonomy: {str(e)}"
+            )
+            validation["invalid_combinations"].append(
+                f"Could not validate {dimension} taxonomy due to repository error"
             )
 
     # 2. Check compliance (optional dimension)
     if hasattr(memory, "compliance_taxonomy") and memory.compliance_taxonomy:
-        valid_values = TAXONOMY_REPOSITORY.get_dimension_values("compliance")
-        if memory.compliance_taxonomy not in valid_values:
-            validation["invalid_combinations"].append(
-                f"Invalid compliance taxonomy: {memory.compliance_taxonomy}. Must be one of: {', '.join(valid_values)}"
+        try:
+            valid_values = TAXONOMY_REPOSITORY.get_dimension_values("compliance")
+            if memory.compliance_taxonomy not in valid_values:
+                validation["invalid_combinations"].append(
+                    f"Invalid compliance taxonomy: {memory.compliance_taxonomy}. Must be one of: {', '.join(valid_values)}"
+                )
+        except Exception as e:
+            validation["warnings"].append(
+                f"Failed to validate compliance taxonomy: {str(e)}"
             )
 
     # 3. Reject any non-standard dimensions (strict control)

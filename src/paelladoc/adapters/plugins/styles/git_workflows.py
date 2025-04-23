@@ -7,7 +7,7 @@ import logging
 
 
 @mcp.tool(
-    name="styles.git_workflows",
+    name="git_workflows",
     description="Manages Git workflow methodologies for the project.",
 )
 def styles_git_workflows() -> dict:

@@ -101,6 +101,7 @@ async def test_create_new_project_asks_for_base_path_and_saves_it(
         domain_taxonomy="test_domain",
         size_taxonomy="test_size",
         compliance_taxonomy="test_compliance",
+        lifecycle_taxonomy="test_lifecycle",
     )
     assert init_result["status"] == "ok"
     assert init_result["project_name"] == project_name
@@ -132,6 +133,7 @@ async def test_paella_workflow():
         domain_taxonomy="test_domain",
         size_taxonomy="test_size",
         compliance_taxonomy="test_compliance",
+        lifecycle_taxonomy="test_lifecycle",
     )
     assert init_result["status"] == "ok"
     assert init_result["project_name"] == project_name

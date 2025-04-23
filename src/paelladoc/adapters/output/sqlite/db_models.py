@@ -135,6 +135,7 @@ class ProjectMemoryDB(SQLModel, table=True):
     compliance_taxonomy: Optional[str] = Field(
         index=True
     )  # Selected compliance taxonomy
+    lifecycle_taxonomy: Optional[str] = Field(index=True)  # Added lifecycle taxonomy
 
     # Custom taxonomy configuration for this project
     custom_taxonomy: Optional[dict] = Field(

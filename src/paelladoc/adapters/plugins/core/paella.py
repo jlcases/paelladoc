@@ -26,7 +26,10 @@ from paelladoc.adapters.output.sqlite.sqlite_memory_adapter import SQLiteMemoryA
 # mcp = FastMCP("PAELLADOC")
 
 
-@mcp.tool()
+@mcp.tool(
+    name="paella_init",
+    description="Initiates the conversational workflow to define and document a new PAELLADOC project",
+)
 async def paella_init(
     base_path: str,
     documentation_language: str,
@@ -36,6 +39,7 @@ async def paella_init(
     domain_taxonomy: str,
     size_taxonomy: str,
     compliance_taxonomy: str,
+    lifecycle_taxonomy: str,
     custom_taxonomy: Optional[Dict] = None,  # Still optional
 ) -> Dict:
     """
@@ -59,6 +63,7 @@ async def paella_init(
         domain_taxonomy: Identifier for the project's domain (e.g., "ecommerce", "healthcare").
         size_taxonomy: Identifier for the estimated project size (e.g., "mvp", "enterprise").
         compliance_taxonomy: Identifier for any compliance requirements (e.g., "gdpr", "none").
+        lifecycle_taxonomy: Identifier for the project's lifecycle (e.g., "startup", "growth").
         custom_taxonomy: (Optional) A dictionary for any user-defined taxonomy.
 
     Returns:
@@ -93,6 +98,7 @@ async def paella_init(
                 domain_taxonomy=domain_taxonomy,
                 size_taxonomy=size_taxonomy,
                 compliance_taxonomy=compliance_taxonomy,
+                lifecycle_taxonomy=lifecycle_taxonomy,
                 custom_taxonomy=custom_taxonomy if custom_taxonomy else {},
             ),
             artifacts={
@@ -109,6 +115,7 @@ async def paella_init(
             domain_taxonomy=domain_taxonomy,
             size_taxonomy=size_taxonomy,
             compliance_taxonomy=compliance_taxonomy,
+            lifecycle_taxonomy=lifecycle_taxonomy,
             custom_taxonomy=custom_taxonomy if custom_taxonomy else {},
         )
 
@@ -127,7 +134,10 @@ async def paella_init(
         return {"status": "error", "message": f"Failed to create project: {str(e)}"}
 
 
-@mcp.tool()
+@mcp.tool(
+    name="paella_list",
+    description="Retrieves and lists the names of all PAELLADOC projects stored in the system memory",
+)
 async def paella_list() -> Dict:
     """Retrieves and lists the names of all PAELLADOC projects stored in the system memory.
 
@@ -152,7 +162,10 @@ async def paella_list() -> Dict:
         return {"status": "error", "message": f"Failed to list projects: {str(e)}"}
 
 
-@mcp.tool()
+@mcp.tool(
+    name="paella_select",
+    description="Loads the memory of an existing PAELLADOC project and sets it as the active context",
+)
 async def paella_select(project_name: str) -> Dict:
     """
     Loads the memory of an existing PAELLADOC project and sets it as the active context.

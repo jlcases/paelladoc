@@ -7,7 +7,7 @@ import logging
 
 
 @mcp.tool(
-    name="styles.coding_styles",
+    name="coding_styles",
     description="Manages coding style guides for the project.",
 )
 def styles_coding_styles() -> dict:

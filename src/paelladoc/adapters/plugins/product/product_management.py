@@ -7,7 +7,7 @@ import logging
 
 
 @mcp.tool(
-    name="product.product_management",
+    name="product_management",
     description='Manages product features like stories, tasks, etc. Access: stakeholder: ["read_only"]',
 )
 def product_product_management() -> dict:

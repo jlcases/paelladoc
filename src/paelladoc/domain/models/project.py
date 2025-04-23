@@ -112,6 +112,12 @@ class ProjectMemory(BaseModel):
     custom_taxonomy: Optional[Dict[str, Any]] = Field(default_factory=dict)
     taxonomy_validation: Optional[Dict[str, Any]] = Field(default_factory=dict)
 
+    model_config = {
+        "arbitrary_types_allowed": True,  # Allow Path and other non-JSON types
+        "validate_assignment": True,  # Validate when attributes are set
+        "extra": "forbid",  # Forbid extra attributes not in the model
+    }
+
     def __init__(self, **data):
         # Rename metadata to project_metadata if needed for backward compatibility
         if "metadata" in data and "project_metadata" not in data:

@@ -105,6 +105,7 @@ def _create_sample_memory(name_suffix: str) -> ProjectMemory:
             domain_taxonomy="test_domain_adapter",
             size_taxonomy="test_size_adapter",
             compliance_taxonomy="test_compliance_adapter",
+            lifecycle_taxonomy="test_lifecycle_adapter",
             # Assuming base_path, langs are optional or set elsewhere
         ),
         artifacts=artifacts_dict,
@@ -114,6 +115,7 @@ def _create_sample_memory(name_suffix: str) -> ProjectMemory:
         domain_taxonomy="test_domain_adapter",
         size_taxonomy="test_size_adapter",
         compliance_taxonomy="test_compliance_adapter",
+        lifecycle_taxonomy="test_lifecycle_adapter",
     )
 
     return memory

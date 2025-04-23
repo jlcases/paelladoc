@@ -48,6 +48,7 @@ def _create_sample_memory(name_suffix: str) -> ProjectMemory:
             domain_taxonomy="test_domain",
             size_taxonomy="test_size",
             compliance_taxonomy="test_compliance",
+            lifecycle_taxonomy="test_lifecycle",
         ),
         artifacts={Bucket.UNKNOWN: [artifact]},
         taxonomy_version="0.5",
@@ -55,6 +56,7 @@ def _create_sample_memory(name_suffix: str) -> ProjectMemory:
         domain_taxonomy="test_domain",
         size_taxonomy="test_size",
         compliance_taxonomy="test_compliance",
+        lifecycle_taxonomy="test_lifecycle",
     )
     return memory
 
