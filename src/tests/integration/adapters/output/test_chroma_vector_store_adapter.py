@@ -222,11 +222,13 @@ class TestChromaVectorStoreAdapterIntegration(unittest.IsolatedAsyncioTestCase):
             len(results[0]), 2
         )  # Might return fewer than n_results if filter is strict
 
+        # Corrected: Access metadata via r.metadata, not r.project_info
         returned_sources = [r.metadata.get("source") for r in results[0] if r.metadata]
-        self.assertIn("doc1", returned_sources)
-        self.assertIn("doc3", returned_sources)
-        self.assertNotIn("doc2", returned_sources)
-        self.assertNotIn("doc4", returned_sources)
+
+        # We expect only doc1 and doc3 from year 2023
+        expected_sources = ["doc1", "doc3"]
+
+        self.assertCountEqual(returned_sources, expected_sources)
 
     async def test_search_no_results(self):
         """Test search for text unrelated to the documents."""

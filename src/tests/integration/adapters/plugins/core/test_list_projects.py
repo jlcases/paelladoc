@@ -19,7 +19,7 @@ from paelladoc.adapters.output.sqlite.sqlite_memory_adapter import SQLiteMemoryA
 # Import domain models to create test data
 from paelladoc.domain.models.project import (
     ProjectMemory,
-    ProjectMetadata,
+    ProjectInfo,
     Bucket,
     ArtifactMeta,
 )
@@ -31,23 +31,30 @@ from paelladoc.domain.models.language import SupportedLanguage
 def _create_sample_memory(name_suffix: str) -> ProjectMemory:
     """Helper to create a sample ProjectMemory object."""
     project_name = f"test-project-{name_suffix}-{uuid.uuid4()}"
-    metadata = ProjectMetadata(
-        name=project_name,
-        interaction_language=SupportedLanguage.EN_US,
-        documentation_language=SupportedLanguage.EN_US,
-        base_path=Path(f"./docs/{project_name}").resolve(),
-        purpose="testing list projects",
-        target_audience="devs",
-        objectives=["test list"],
-    )
     # Add a dummy artifact to make it valid
     artifact = ArtifactMeta(
         name="dummy.md", bucket=Bucket.UNKNOWN, path=Path("dummy.md")
     )
     memory = ProjectMemory(
-        metadata=metadata,
+        project_info=ProjectInfo(
+            name=project_name,
+            interaction_language=SupportedLanguage.EN_US,
+            documentation_language=SupportedLanguage.EN_US,
+            base_path=Path(f"./docs/{project_name}").resolve(),
+            purpose="testing list projects",
+            target_audience="devs",
+            objectives=["test list"],
+            platform_taxonomy="test_platform",
+            domain_taxonomy="test_domain",
+            size_taxonomy="test_size",
+            compliance_taxonomy="test_compliance",
+        ),
         artifacts={Bucket.UNKNOWN: [artifact]},
         taxonomy_version="0.5",
+        platform_taxonomy="test_platform",
+        domain_taxonomy="test_domain",
+        size_taxonomy="test_size",
+        compliance_taxonomy="test_compliance",
     )
     return memory
 
@@ -104,7 +111,7 @@ async def test_list_projects_returns_saved_projects(
     await memory_adapter.save_memory(project1_memory)
     await memory_adapter.save_memory(project2_memory)
     expected_project_names = sorted(
-        [project1_memory.metadata.name, project2_memory.metadata.name]
+        [project1_memory.project_info.name, project2_memory.project_info.name]
     )
     print(f"Saved projects: {expected_project_names}")
 
@@ -120,7 +127,13 @@ async def test_list_projects_returns_saved_projects(
     assert result["status"] == "ok", f"Expected status ok, got {result.get('status')}"
     assert "projects" in result, "Response missing 'projects' key"
     assert isinstance(result["projects"], list), "'projects' should be a list"
-    # Sort both lists for comparison
-    assert sorted(result["projects"]) == expected_project_names, (
-        f"Expected projects {expected_project_names}, but got {result['projects']}"
+
+    # Extract names from the ProjectInfo objects returned by the plugin
+    returned_project_names = sorted(
+        [info.name for info in result["projects"] if isinstance(info, ProjectInfo)]
+    )
+
+    # Compare the sorted list of names
+    assert returned_project_names == expected_project_names, (
+        f"Expected project names {expected_project_names}, but got {returned_project_names}"
     )

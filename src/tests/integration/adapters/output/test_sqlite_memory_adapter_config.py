@@ -7,7 +7,10 @@ from pathlib import Path
 import uuid
 
 from paelladoc.adapters.output.sqlite.sqlite_memory_adapter import SQLiteMemoryAdapter
-from paelladoc.domain.models.project import ProjectMemory, ProjectMetadata
+from paelladoc.domain.models.project import (
+    ProjectMemory,
+    ProjectInfo,
+)
 
 
 @pytest.fixture
@@ -116,25 +119,37 @@ async def test_adapter_operations_with_custom_path(temp_adapter):
     """Test basic adapter operations with custom path."""
     # Create test project
     project = ProjectMemory(
-        metadata=ProjectMetadata(
+        project_info=ProjectInfo(
             name=f"test-project-{uuid.uuid4()}",
-            language="python",
+            language="python",  # This might need updating if language model changed
             purpose="Test project",
             target_audience="Developers",
             objectives=["Test database configuration"],
-        )
+            # Add required taxonomy fields
+            platform_taxonomy="test_platform",
+            domain_taxonomy="test_domain",
+            size_taxonomy="test_size",
+            compliance_taxonomy="test_compliance",
+        ),
+        # Add required taxonomy fields also directly to ProjectMemory
+        platform_taxonomy="test_platform",
+        domain_taxonomy="test_domain",
+        size_taxonomy="test_size",
+        compliance_taxonomy="test_compliance",
     )
 
     # Test operations
     await temp_adapter.save_memory(project)
-    assert await temp_adapter.project_exists(project.metadata.name)
+    assert await temp_adapter.project_exists(project.project_info.name)
 
-    loaded = await temp_adapter.load_memory(project.metadata.name)
+    loaded = await temp_adapter.load_memory(project.project_info.name)
     assert loaded is not None
-    assert loaded.metadata.name == project.metadata.name
+    assert loaded.project_info.name == project.project_info.name
 
-    projects = await temp_adapter.list_projects()
-    assert project.metadata.name in projects
+    projects_info = await temp_adapter.list_projects()
+    # Extract names from the returned ProjectInfo objects
+    project_names = [info.name for info in projects_info]
+    assert project.project_info.name in project_names
 
 
 # Helper function to create a unique temporary DB path

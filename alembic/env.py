@@ -2,11 +2,11 @@
 
 import asyncio
 import os
-import sys  # Added from main
-from pathlib import Path # Added from main
+import sys
+from pathlib import Path
 from logging.config import fileConfig
 
-# Add project root to sys.path to allow importing models (from main)
+# Add project root to sys.path to allow importing models
 project_root = Path(__file__).parent.parent.parent.absolute()
 if str(project_root) not in sys.path:
     sys.path.insert(0, str(project_root))
@@ -18,7 +18,7 @@ from sqlalchemy import engine_from_config, pool
 from sqlalchemy.ext.asyncio import AsyncEngine
 
 # Import models just to ensure they are registered with SQLModel.metadata
-import paelladoc.adapters.output.sqlite.models
+from paelladoc.adapters.output.sqlite.db_models import ArtifactMetaDB, ProjectMemoryDB
 from paelladoc.config.database import get_db_path
 
 # this is the Alembic Config object, which provides

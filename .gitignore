@@ -136,3 +136,6 @@ paelladoc_memory.db
 
 # Temporary files
 local_requirements.txt
+
+# Cursor IDE specific
+.cursor/

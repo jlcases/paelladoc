@@ -11,7 +11,7 @@ import datetime
 # Forward references are needed for relationships defined before the target model
 
 
-class ProjectMetadataDB(SQLModel, table=True):
+class ProjectInfoDB(SQLModel, table=True):
     # Represents the metadata associated with a project memory entry
     id: Optional[int] = Field(default=None, primary_key=True)
     # name field is stored in ProjectMemoryDB as it's the primary identifier
@@ -65,8 +65,8 @@ class ProjectMemoryDB(SQLModel, table=True):
     project_meta_id: Optional[int] = Field(
         default=None, foreign_key="projectmetadatadb.id", unique=True
     )
-    # Define the one-to-one relationship to ProjectMetadataDB
-    project_meta: Optional[ProjectMetadataDB] = Relationship(
+    # Define the one-to-one relationship to ProjectInfoDB
+    project_meta: Optional[ProjectInfoDB] = Relationship(
         back_populates="project_memory"
     )
 
