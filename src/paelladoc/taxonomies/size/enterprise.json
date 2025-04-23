@@ -20,5 +20,18 @@
     "Governance documentation"
   ],
   "typical_documentation_volume": "High (200+ pages)",
-  "maintenance_level": "High with formal processes"
+  "maintenance_level": "High with formal processes",
+  "buckets": [
+    "Govern::CoreSystem",
+    "Govern::StandardsMethodologies",
+    "Govern::VerificationValidation",
+    "Govern::MemoryTemplates",
+    "Generate::Deployment",
+    "Generate::Security",
+    "Generate::SupportingElements",
+    "Elaborate::SpecificationAndPlanning",
+    "Generate::Infrastructure",
+    "Generate::EnterpriseIntegration",
+    "Generate::Compliance"
+  ]
 } 

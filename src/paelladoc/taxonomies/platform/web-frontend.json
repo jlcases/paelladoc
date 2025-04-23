@@ -21,5 +21,14 @@
     "Responsive design",
     "Browser compatibility",
     "Performance optimization"
+  ],
+  "buckets": [
+    "Generate::SupportingElements",
+    "Generate::CoreFunctionality",
+    "Generate::Validation",
+    "Generate::Infrastructure",
+    "Elaborate::IdeationAndDesign",
+    "Elaborate::SpecificationAndPlanning",
+    "Generate::Security"
   ]
 } 

@@ -1,5 +1,5 @@
 from paelladoc.domain.core_logic import mcp, logger
-from typing import Dict, Any
+from typing import Dict, Any, Set
 from paelladoc.domain.models.project import ProjectMemory
 
 # Domain models
@@ -11,9 +11,9 @@ from paelladoc.domain.models.project import (
 # Adapter for persistence
 from paelladoc.adapters.output.sqlite.sqlite_memory_adapter import SQLiteMemoryAdapter
 
-# Adapter for taxonomy loading
-from paelladoc.adapters.output.filesystem.taxonomy_provider import (
-    FileSystemTaxonomyProvider,
+# New repository for taxonomy loading
+from paelladoc.adapters.output.filesystem.taxonomy_repository import (
+    FileSystemTaxonomyRepository,
 )
 
 # Behavior configuration
@@ -25,9 +25,9 @@ BEHAVIOR_CONFIG = {
     "taxonomy_version_check": True,
 }
 
-# Instantiate the taxonomy provider
+# Instantiate the taxonomy repository
 # TODO: Replace direct instantiation with Dependency Injection
-TAXONOMY_PROVIDER = FileSystemTaxonomyProvider()
+TAXONOMY_REPOSITORY = FileSystemTaxonomyRepository()
 
 
 def validate_mece_structure(memory: ProjectMemory) -> dict:
@@ -36,70 +36,95 @@ def validate_mece_structure(memory: ProjectMemory) -> dict:
         "is_valid": True,
         "missing_dimensions": [],
         "invalid_combinations": [],
+        "invalid_dimensions": [],  # For dimensions that shouldn't be there
         "warnings": [],
     }
 
-    # Get available taxonomies from the provider
-    try:
-        valid_taxonomies = TAXONOMY_PROVIDER.get_available_taxonomies()
-    except Exception as e:
-        logger.error(f"Failed to load taxonomies for validation: {e}", exc_info=True)
-        validation["warnings"].append(
-            "Could not load taxonomy definitions for validation."
-        )
-        # Mark as invalid if we can't load definitions?
-        validation["is_valid"] = False
-        return validation
+    # Only these dimensions are allowed - strict control
+    allowed_dimensions = ["platform", "domain", "size", "compliance", "lifecycle"]
+    required_dimensions = ["platform", "domain", "size", "lifecycle"]
 
-    # Check required dimensions
-    if not memory.platform_taxonomy:
-        validation["missing_dimensions"].append("platform")
-    elif memory.platform_taxonomy not in valid_taxonomies.get("platform", []):
-        validation["invalid_combinations"].append(
-            f"Invalid platform taxonomy: {memory.platform_taxonomy}"
-        )
+    # Check that all required dimensions exist in system
+    available_dimensions = TAXONOMY_REPOSITORY.get_available_dimensions()
+    for dim in required_dimensions:
+        if dim not in available_dimensions:
+            validation["warnings"].append(
+                f"Required dimension '{dim}' not configured in system. Configure JSON files in taxonomies/{dim}/"
+            )
 
-    if not memory.domain_taxonomy:
-        validation["missing_dimensions"].append("domain")
-    elif memory.domain_taxonomy not in valid_taxonomies.get("domain", []):
-        validation["invalid_combinations"].append(
-            f"Invalid domain taxonomy: {memory.domain_taxonomy}"
-        )
+    # 1. Verify required dimensions are present with valid values
+    for dimension in required_dimensions:
+        attr_name = f"{dimension}_taxonomy"
+        dimension_value = getattr(memory, attr_name, None)
 
-    if not memory.size_taxonomy:
-        validation["missing_dimensions"].append("size")
-    elif memory.size_taxonomy not in valid_taxonomies.get("size", []):
-        validation["invalid_combinations"].append(
-            f"Invalid size taxonomy: {memory.size_taxonomy}"
-        )
+        # Required dimension is missing
+        if not dimension_value:
+            validation["missing_dimensions"].append(dimension)
+            continue
 
-    # Compliance is optional
-    if (
-        memory.compliance_taxonomy
-        and memory.compliance_taxonomy not in valid_taxonomies.get("compliance", [])
-    ):
-        validation["invalid_combinations"].append(
-            f"Invalid compliance taxonomy: {memory.compliance_taxonomy}"
-        )
+        # Check if value is valid (exists in JSON files)
+        valid_values = TAXONOMY_REPOSITORY.get_dimension_values(dimension)
+        if dimension_value not in valid_values:
+            validation["invalid_combinations"].append(
+                f"Invalid {dimension} taxonomy: {dimension_value}. Must be one of: {', '.join(valid_values)}"
+            )
 
-    # Validate specific combinations
-    if memory.platform_taxonomy and memory.domain_taxonomy:
-        # Example: Mobile apps shouldn't use CMS domain
+    # 2. Check compliance (optional dimension)
+    if hasattr(memory, "compliance_taxonomy") and memory.compliance_taxonomy:
+        valid_values = TAXONOMY_REPOSITORY.get_dimension_values("compliance")
+        if memory.compliance_taxonomy not in valid_values:
+            validation["invalid_combinations"].append(
+                f"Invalid compliance taxonomy: {memory.compliance_taxonomy}. Must be one of: {', '.join(valid_values)}"
+            )
+
+    # 3. Reject any non-standard dimensions (strict control)
+    for attr in dir(memory):
+        if attr.endswith("_taxonomy") and not attr.startswith("_"):
+            dimension = attr[:-9]  # Remove "_taxonomy" suffix
+            if (
+                dimension not in allowed_dimensions
+                and dimension != "custom"
+                and dimension != "taxonomy"
+            ):
+                validation["invalid_dimensions"].append(dimension)
+                validation["warnings"].append(
+                    f"Unauthorized dimension: '{dimension}'. Only {', '.join(allowed_dimensions)} are allowed."
+                )
+
+    # 4. Validate specific combinations
+    if hasattr(memory, "platform_taxonomy") and hasattr(memory, "domain_taxonomy"):
+        platform = memory.platform_taxonomy
+        domain = memory.domain_taxonomy
+
+        # Mobile apps shouldn't use CMS domain
         if (
-            memory.platform_taxonomy
-            in ["ios-native", "android-native", "react-native", "flutter"]
-            and memory.domain_taxonomy == "cms"
+            platform in ["ios-native", "android-native", "react-native", "flutter"]
+            and domain == "cms"
         ):
             validation["warnings"].append(
                 "Mobile platforms rarely implement full CMS functionality"
             )
 
-    # Update overall validity
+    # Update overall validity - stricter rules
     validation["is_valid"] = (
-        not validation["missing_dimensions"] and not validation["invalid_combinations"]
+        not validation["missing_dimensions"]
+        and not validation["invalid_combinations"]
+        and not validation["invalid_dimensions"]  # Fail if unauthorized dimensions
     )
 
     return validation
+
+
+def get_relevant_buckets_for_project(memory: ProjectMemory) -> Set[str]:
+    """Get the relevant buckets for a project based on its MECE dimensions."""
+    # Get the intersection of buckets from the taxonomy repository
+    return TAXONOMY_REPOSITORY.get_buckets_for_project(
+        platform=memory.platform_taxonomy,
+        domain=memory.domain_taxonomy,
+        size=memory.size_taxonomy,
+        lifecycle=memory.lifecycle_taxonomy,
+        compliance=memory.compliance_taxonomy,
+    )
 
 
 @mcp.tool(
@@ -182,8 +207,14 @@ async def core_verification(project_name: str) -> dict:
             min_threshold = custom_taxonomy["minimum_coverage_threshold"]
             logger.info(f"Using custom threshold: {min_threshold}")
     else:
-        logger.info("No custom taxonomy found, using all buckets")
-        # Use all buckets except system ones
+        logger.info("No custom taxonomy found, using buckets based on MECE dimensions")
+        # Get buckets based on MECE dimensions of the project
+        relevant_buckets = get_relevant_buckets_for_project(memory)
+        logger.info(f"MECE dimensions suggest {len(relevant_buckets)} relevant buckets")
+
+    # If we don't have any relevant buckets, fall back to all buckets except system ones
+    if not relevant_buckets:
+        logger.info("Falling back to all regular buckets (no MECE buckets found)")
         relevant_buckets = {
             bucket.value for bucket in Bucket if bucket != Bucket.UNKNOWN
         }
@@ -296,6 +327,20 @@ async def core_verification(project_name: str) -> dict:
                 "custom": True,
             }
 
+    # Add relevant MECE buckets not in the standard enum and not processed yet
+    for bucket_name in relevant_buckets:
+        if bucket_name not in bucket_stats:
+            bucket_description = TAXONOMY_REPOSITORY.get_bucket_description(bucket_name)
+            bucket_stats[bucket_name] = {
+                "total": 0,
+                "completed": 0,
+                "in_progress": 0,
+                "pending": 0,
+                "completion_percentage": 0.0,
+                "mece": True,
+                "description": bucket_description,
+            }
+
     # Calculate overall weighted completion percentage
     if total_artifacts > 0:
         # Simple (unweighted) calculation
@@ -368,7 +413,9 @@ async def core_verification(project_name: str) -> dict:
             "domain": memory.domain_taxonomy,
             "size": memory.size_taxonomy,
             "compliance": memory.compliance_taxonomy,
+            "lifecycle": memory.lifecycle_taxonomy,
         },
+        "relevant_buckets": sorted(list(relevant_buckets)),
     }
 
     return result

@@ -24,5 +24,13 @@
     "Data portability mechanisms",
     "Right to be forgotten implementation",
     "Data inventory management"
+  ],
+  "buckets": [
+    "Generate::Privacy",
+    "Generate::Security",
+    "Generate::Compliance",
+    "Generate::DataPipelines",
+    "Govern::StandardsMethodologies",
+    "Elaborate::SpecificationAndPlanning"
   ]
 } 

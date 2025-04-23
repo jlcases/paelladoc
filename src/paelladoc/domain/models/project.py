@@ -41,6 +41,7 @@ class ProjectInfo(BaseModel):
     domain_taxonomy: str
     size_taxonomy: str
     compliance_taxonomy: str  # Consider if this one could truly be optional sometimes?
+    lifecycle_taxonomy: str  # Required field for lifecycle dimension
     custom_taxonomy: Optional[Dict[str, Any]] = Field(default_factory=dict)
     taxonomy_validation: Optional[Dict[str, Any]] = Field(default_factory=dict)
 
@@ -107,6 +108,7 @@ class ProjectMemory(BaseModel):
     domain_taxonomy: str
     size_taxonomy: str
     compliance_taxonomy: str  # Consider if this one could truly be optional sometimes?
+    lifecycle_taxonomy: str  # Required field for lifecycle dimension
     custom_taxonomy: Optional[Dict[str, Any]] = Field(default_factory=dict)
     taxonomy_validation: Optional[Dict[str, Any]] = Field(default_factory=dict)
 

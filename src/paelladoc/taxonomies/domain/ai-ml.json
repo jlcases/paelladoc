@@ -24,5 +24,14 @@
     "Evaluation metrics",
     "Deployment strategies",
     "Monitoring and retraining"
+  ],
+  "buckets": [
+    "Generate::DataPipelines",
+    "Generate::CoreML",
+    "Generate::ModelEvaluation",
+    "Elaborate::DiscoveryAndResearch",
+    "Generate::Infrastructure",
+    "Generate::APIDesign",
+    "Generate::Monitoring"
   ]
 } 

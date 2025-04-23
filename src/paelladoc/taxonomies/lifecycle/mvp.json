@@ -24,5 +24,16 @@
     "System architecture overview",
     "Feedback collection plan",
     "Analytics implementation"
+  ],
+  "buckets": [
+    "Initiate::CoreSetup",
+    "Initiate::InitialProductDocs",
+    "Elaborate::DiscoveryAndResearch",
+    "Elaborate::IdeationAndDesign", 
+    "Elaborate::SpecificationAndPlanning",
+    "Generate::CoreFunctionality",
+    "Generate::Validation",
+    "Generate::SupportingElements", 
+    "Generate::Deployment"
   ]
 } 
