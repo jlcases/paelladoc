@@ -130,12 +130,14 @@ async def test_adapter_operations_with_custom_path(temp_adapter):
             domain_taxonomy="test_domain",
             size_taxonomy="test_size",
             compliance_taxonomy="test_compliance",
+            lifecycle_taxonomy="test_lifecycle",
         ),
         # Add required taxonomy fields also directly to ProjectMemory
         platform_taxonomy="test_platform",
         domain_taxonomy="test_domain",
         size_taxonomy="test_size",
         compliance_taxonomy="test_compliance",
+        lifecycle_taxonomy="test_lifecycle",
     )
 
     # Test operations

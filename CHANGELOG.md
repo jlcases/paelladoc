@@ -4,6 +4,29 @@ All notable changes to PAELLADOC will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.3.5] - 2025-04-24
+### Added
+- Flexible configuration system for customizing tool behavior without code changes
+- Dynamic bucket prioritization allowing projects to define workflow sequences
+- Improved command metadata system with enhanced documentation and examples
+- New Contributor License Agreement (CLA) for managing external contributions
+
+### Changed
+- Enhanced project structure visualization with more intuitive phase completion reporting
+- Standardized command naming convention across all tools
+- Improved error reporting with more actionable messages
+- Updated project license to better align with community needs
+- Added formal contribution process with CLA requirements
+
+### Fixed
+- Corrected compatibility issues that prevented proper operation in Claude Desktop
+- Resolved dependency injection initialization problems in certain environments
+
+### Improved
+- More reliable project initialization and continuation workflows
+- Better taxonomy validation with clearer validation error messages
+- Optimized project listing operation
+
 ## [0.3.4] - 2025-04-23
 ### Fixed
 - Corrected `UUID` type usage in Alembic migration `297f102e7967` to resolve CI failures (`AttributeError` for `GUID`).

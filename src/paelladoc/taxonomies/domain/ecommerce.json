@@ -1,0 +1,28 @@
+{
+  "name": "ecommerce",
+  "description": "Applications focused on online selling and purchasing of goods or services",
+  "key_features": [
+    "Product catalog management",
+    "Shopping cart functionality",
+    "Payment processing",
+    "Order management",
+    "Customer accounts",
+    "Inventory management"
+  ],
+  "typical_components": [
+    "Product listings",
+    "Search and filtering",
+    "Checkout process",
+    "Payment gateway integration",
+    "Order tracking",
+    "User reviews and ratings"
+  ],
+  "documentation_emphasis": [
+    "Product data modeling",
+    "Shopping flow diagrams",
+    "Payment security",
+    "Order processing workflows",
+    "Inventory synchronization",
+    "Analytics integration"
+  ]
+} 

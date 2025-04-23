@@ -7,7 +7,7 @@ import logging
 
 
 @mcp.tool(
-    name="memory.project_memory",
+    name="project_memory",
     description="Manages the project's memory file (.memory.json)",
 )
 def memory_project_memory() -> dict:

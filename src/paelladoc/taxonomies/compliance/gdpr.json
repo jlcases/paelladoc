@@ -1,0 +1,36 @@
+{
+  "name": "gdpr",
+  "description": "Projects requiring compliance with the General Data Protection Regulation for EU data subjects",
+  "key_requirements": [
+    "Privacy by design and default",
+    "Legal basis for processing",
+    "Data subject rights fulfillment",
+    "Data breach notification",
+    "Records of processing activities",
+    "Data Protection Impact Assessments"
+  ],
+  "documentation_requirements": [
+    "Privacy policy",
+    "Data processing agreements",
+    "Data retention policy",
+    "Consent management documentation",
+    "Data subject request procedures",
+    "Data breach response plan"
+  ],
+  "implementation_patterns": [
+    "Data minimization",
+    "Pseudonymization/anonymization",
+    "Consent management",
+    "Data portability mechanisms",
+    "Right to be forgotten implementation",
+    "Data inventory management"
+  ],
+  "buckets": [
+    "Generate::Privacy",
+    "Generate::Security",
+    "Generate::Compliance",
+    "Generate::DataPipelines",
+    "Govern::StandardsMethodologies",
+    "Elaborate::SpecificationAndPlanning"
+  ]
+} 

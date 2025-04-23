@@ -1,0 +1,31 @@
+{
+  "name": "entertainment",
+  "description": "Applications for media consumption, gaming, streaming, and digital entertainment",
+  "key_features": [
+    "Content delivery",
+    "Media playback",
+    "User preferences",
+    "Recommendation systems",
+    "Subscription management",
+    "Interactive experiences",
+    "Digital rights management"
+  ],
+  "typical_components": [
+    "Media libraries",
+    "Player interfaces",
+    "Content discovery systems",
+    "User rating mechanisms",
+    "Playlists/collections",
+    "Streaming infrastructure",
+    "Interactive content controls"
+  ],
+  "documentation_emphasis": [
+    "Media format handling",
+    "Streaming protocols",
+    "Content licensing",
+    "User experience optimization",
+    "Performance for media delivery",
+    "Content recommendation algorithms",
+    "Cross-device experience consistency"
+  ]
+} 

@@ -1,0 +1,37 @@
+{
+  "name": "ai-ml",
+  "description": "Applications that utilize artificial intelligence and machine learning capabilities",
+  "key_features": [
+    "Model training pipelines",
+    "Prediction services",
+    "Data preprocessing",
+    "Feature engineering",
+    "Model evaluation",
+    "Inference optimization"
+  ],
+  "typical_components": [
+    "Data ingestion systems",
+    "Training infrastructure",
+    "Model registry",
+    "Experiment tracking",
+    "Feature stores",
+    "Model serving endpoints"
+  ],
+  "documentation_emphasis": [
+    "Data schemas and preprocessing",
+    "Model architecture",
+    "Training methodology",
+    "Evaluation metrics",
+    "Deployment strategies",
+    "Monitoring and retraining"
+  ],
+  "buckets": [
+    "Generate::DataPipelines",
+    "Generate::CoreML",
+    "Generate::ModelEvaluation",
+    "Elaborate::DiscoveryAndResearch",
+    "Generate::Infrastructure",
+    "Generate::APIDesign",
+    "Generate::Monitoring"
+  ]
+} 

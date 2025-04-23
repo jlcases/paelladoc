@@ -1,0 +1,31 @@
+{
+  "name": "social-media",
+  "description": "Applications focused on social networking, content sharing, and community engagement",
+  "key_features": [
+    "User profile management",
+    "Content creation and sharing",
+    "Social connections/following",
+    "Engagement mechanisms",
+    "Content discovery",
+    "Notification systems",
+    "Privacy controls"
+  ],
+  "typical_components": [
+    "News feeds",
+    "Profile pages",
+    "Messaging systems",
+    "Content recommendation engines",
+    "Notification centers",
+    "Community management tools",
+    "Content moderation systems"
+  ],
+  "documentation_emphasis": [
+    "User experience flows",
+    "Content moderation policies",
+    "Privacy and data usage",
+    "Engagement metrics",
+    "Content distribution algorithms",
+    "Social graph architecture",
+    "Real-time updating mechanisms"
+  ]
+} 

@@ -1,0 +1,25 @@
+{
+  "name": "none",
+  "description": "Projects without specific regulatory compliance requirements",
+  "characteristics": [
+    "Standard security best practices",
+    "No regulated data handling",
+    "No industry-specific requirements",
+    "General privacy considerations",
+    "Standard data protection measures"
+  ],
+  "documentation_recommendations": [
+    "Basic privacy policy",
+    "Data handling guidelines",
+    "Security overview",
+    "User data management",
+    "Cookie policy (if applicable)"
+  ],
+  "implementation_patterns": [
+    "Standard authentication",
+    "Basic logging",
+    "Common encryption practices",
+    "General data protection",
+    "Regular security updates"
+  ]
+} 

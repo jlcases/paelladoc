@@ -1,0 +1,21 @@
+{
+  "name": "micro",
+  "description": "Extremely small projects with minimal scope, typically for individual use or specific utility",
+  "characteristics": [
+    "Single developer",
+    "Extremely focused functionality",
+    "Minimal features (often single-purpose)",
+    "Simple architecture",
+    "Very limited scope",
+    "Short development timeframe"
+  ],
+  "documentation_scope": [
+    "Basic README",
+    "Installation instructions",
+    "Usage examples",
+    "Simple API reference (if applicable)",
+    "Known limitations"
+  ],
+  "typical_documentation_volume": "Minimal (under 10 pages)",
+  "maintenance_level": "Light, ad-hoc maintenance"
+} 

@@ -1,0 +1,28 @@
+{
+  "name": "poc",
+  "description": "Proof of Concept phase where the focus is on demonstrating technical feasibility",
+  "characteristics": [
+    "Limited scope implementation",
+    "Focus on technical feasibility",
+    "Quick, iterative development",
+    "Minimal concern for production quality",
+    "Experimental approach",
+    "Time-constrained exploration"
+  ],
+  "documentation_emphasis": [
+    "Technical discovery findings",
+    "Implementation insights",
+    "Considered alternatives",
+    "Technical limitations",
+    "Next steps recommendations",
+    "Success criteria evaluation"
+  ],
+  "typical_artifacts": [
+    "Demo application",
+    "Technical finding report",
+    "Experiment results",
+    "Technology evaluation",
+    "Architecture sketches",
+    "Decision points"
+  ]
+} 

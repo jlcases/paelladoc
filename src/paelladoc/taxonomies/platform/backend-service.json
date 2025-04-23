@@ -1,0 +1,29 @@
+{
+  "name": "backend-service",
+  "description": "Server-side applications and services that provide APIs, process data, or perform business logic",
+  "characteristics": [
+    "Runs on server infrastructure",
+    "No direct user interface",
+    "Exposes APIs or processes data",
+    "Scales horizontally or vertically",
+    "May run as containers, serverless functions, or traditional servers"
+  ],
+  "typical_frameworks": [
+    "Node.js/Express",
+    "Django/Flask",
+    "Spring Boot",
+    "ASP.NET Core",
+    "Ruby on Rails",
+    "Laravel",
+    "FastAPI"
+  ],
+  "documentation_emphasis": [
+    "API specifications (REST, GraphQL, gRPC)",
+    "Database schema design",
+    "Authentication and authorization",
+    "Performance and scalability",
+    "Deployment architecture",
+    "Error handling and logging",
+    "Service integration patterns"
+  ]
+} 

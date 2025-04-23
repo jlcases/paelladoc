@@ -1,0 +1,31 @@
+{
+  "name": "accessibility",
+  "description": "Projects requiring compliance with accessibility standards like WCAG, ADA, or Section 508",
+  "key_requirements": [
+    "Perceivable content",
+    "Operable interfaces",
+    "Understandable information",
+    "Robust content compatibility",
+    "Keyboard accessibility",
+    "Screen reader compatibility",
+    "Color contrast compliance"
+  ],
+  "documentation_requirements": [
+    "Accessibility conformance report",
+    "VPAT (Voluntary Product Accessibility Template)",
+    "User accessibility guide",
+    "Keyboard navigation documentation",
+    "Alternative text guidelines",
+    "Color usage policies",
+    "Accessibility testing procedures"
+  ],
+  "implementation_patterns": [
+    "Semantic HTML",
+    "ARIA attributes",
+    "Focus management",
+    "Alternative text for images",
+    "Keyboard navigation",
+    "Color contrast ratios",
+    "Responsive design patterns"
+  ]
+} 

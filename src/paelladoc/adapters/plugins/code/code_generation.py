@@ -48,7 +48,7 @@ BEHAVIOR_CONFIG = {
 
 
 @mcp.tool(
-    name="code.code_generation",
+    name="code_generation",
     description="The command uses the script at `.cursor/rules/scripts/extract_repo_content.py` to perform the repository extraction, which leverages repopack-py to convert the codebase to text.",
 )
 def code_code_generation() -> dict:

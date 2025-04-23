@@ -1,0 +1,28 @@
+{
+  "name": "mature",
+  "description": "Mature phase with established market presence, focusing on optimization, stability, and refinement",
+  "characteristics": [
+    "Complete feature set",
+    "Focus on stability and reliability",
+    "Optimization for performance",
+    "Established user base",
+    "Well-defined processes",
+    "Industry recognition"
+  ],
+  "documentation_emphasis": [
+    "Enterprise integration scenarios",
+    "Performance tuning guides",
+    "Advanced customization",
+    "Security hardening",
+    "Compliance documentation",
+    "Migration and upgrade guides"
+  ],
+  "typical_artifacts": [
+    "Complete reference documentation",
+    "Best practices guides",
+    "Case studies",
+    "Certification materials",
+    "Performance benchmarks",
+    "Governance frameworks"
+  ]
+} 

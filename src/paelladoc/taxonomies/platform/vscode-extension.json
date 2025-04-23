@@ -1,1 +1,26 @@
- 
+{
+  "name": "vscode-extension",
+  "description": "Extensions for Visual Studio Code IDE that enhance developer workflows",
+  "characteristics": [
+    "Runs within VS Code environment",
+    "Extends IDE functionality",
+    "Targets developer workflows",
+    "Uses VS Code extension API",
+    "Packaged as VSIX files"
+  ],
+  "typical_frameworks": [
+    "VS Code Extension API",
+    "TypeScript",
+    "Node.js",
+    "WebView API",
+    "Language Server Protocol"
+  ],
+  "documentation_emphasis": [
+    "Command registration",
+    "Extension activation events",
+    "Configuration settings",
+    "Keybinding integration",
+    "UI contributions",
+    "API usage examples"
+  ]
+} 

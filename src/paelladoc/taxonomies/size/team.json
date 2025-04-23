@@ -1,0 +1,23 @@
+{
+  "name": "team",
+  "description": "Medium-scale projects intended for team or department use",
+  "characteristics": [
+    "Moderate number of users (5-1000)",
+    "Modular architecture",
+    "Medium complexity",
+    "Balanced feature set",
+    "Standard infrastructure requirements",
+    "Some integration needs"
+  ],
+  "documentation_scope": [
+    "User guides",
+    "Administrative documentation",
+    "Setup and configuration",
+    "Common workflows",
+    "Basic architectural overview",
+    "Integration guidelines",
+    "Maintenance procedures"
+  ],
+  "typical_documentation_volume": "Medium (50-200 pages)",
+  "maintenance_level": "Moderate with regular updates"
+} 

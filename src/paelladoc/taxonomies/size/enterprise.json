@@ -1,0 +1,37 @@
+{
+  "name": "enterprise",
+  "description": "Large-scale projects intended for organizational use with many users and complex requirements",
+  "characteristics": [
+    "Large number of users (1000+)",
+    "Complex multi-tier architecture",
+    "High scalability requirements",
+    "Extensive feature set",
+    "Sophisticated infrastructure",
+    "Multiple integration points"
+  ],
+  "documentation_scope": [
+    "Comprehensive user manuals",
+    "Technical architecture documentation",
+    "Deployment and operations guides",
+    "Security documentation",
+    "API reference",
+    "Integration specifications",
+    "Training materials",
+    "Governance documentation"
+  ],
+  "typical_documentation_volume": "High (200+ pages)",
+  "maintenance_level": "High with formal processes",
+  "buckets": [
+    "Govern::CoreSystem",
+    "Govern::StandardsMethodologies",
+    "Govern::VerificationValidation",
+    "Govern::MemoryTemplates",
+    "Generate::Deployment",
+    "Generate::Security",
+    "Generate::SupportingElements",
+    "Elaborate::SpecificationAndPlanning",
+    "Generate::Infrastructure",
+    "Generate::EnterpriseIntegration",
+    "Generate::Compliance"
+  ]
+} 

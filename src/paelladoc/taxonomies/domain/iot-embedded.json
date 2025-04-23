@@ -1,0 +1,31 @@
+{
+  "name": "iot-embedded",
+  "description": "Applications for Internet of Things, embedded systems, and connected devices",
+  "key_features": [
+    "Device management",
+    "Sensor data processing",
+    "Remote control capabilities",
+    "Device monitoring",
+    "Firmware updates",
+    "Edge computing",
+    "Connectivity management"
+  ],
+  "typical_components": [
+    "Device dashboards",
+    "Data visualization",
+    "Device configuration interfaces",
+    "Connectivity status monitors",
+    "Automation rule engines",
+    "Alert systems",
+    "Historical data analysis"
+  ],
+  "documentation_emphasis": [
+    "Device onboarding process",
+    "Communication protocols",
+    "Security and authentication",
+    "Power management considerations",
+    "Data collection architecture",
+    "Over-the-air update procedures",
+    "Integration with cloud services"
+  ]
+} 

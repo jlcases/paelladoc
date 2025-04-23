@@ -1,0 +1,30 @@
+{
+  "name": "browser-extension",
+  "description": "Extensions for web browsers like Chrome, Firefox, Edge, and Safari that enhance browsing experience",
+  "characteristics": [
+    "Runs within browser environment",
+    "Extends browser functionality",
+    "Accesses web content",
+    "Uses browser extension APIs",
+    "Distributed through browser extension stores",
+    "Subject to browser security model"
+  ],
+  "typical_frameworks": [
+    "WebExtension API",
+    "Chrome Extension API",
+    "JavaScript/TypeScript",
+    "React/Vue/Svelte for UI",
+    "Browser storage APIs",
+    "Content script patterns",
+    "Message passing architecture"
+  ],
+  "documentation_emphasis": [
+    "Manifest configuration",
+    "Permission model",
+    "Content script injection",
+    "Background script patterns",
+    "Cross-browser compatibility",
+    "Extension lifecycle management",
+    "Store submission guidelines"
+  ]
+} 

@@ -1,5 +1,5 @@
 """
-Integration tests for the core.list_projects plugin.
+Integration tests for the project listing functionality.
 """
 
 import pytest
@@ -25,6 +25,9 @@ from paelladoc.domain.models.project import (
 )
 from paelladoc.domain.models.language import SupportedLanguage
 
+# Import paella_list instead of the deleted module
+from paelladoc.adapters.plugins.core.paella import paella_list
+
 # --- Helper Function to create test data --- #
 
 
@@ -48,6 +51,7 @@ def _create_sample_memory(name_suffix: str) -> ProjectMemory:
             domain_taxonomy="test_domain",
             size_taxonomy="test_size",
             compliance_taxonomy="test_compliance",
+            lifecycle_taxonomy="test_lifecycle",
         ),
         artifacts={Bucket.UNKNOWN: [artifact]},
         taxonomy_version="0.5",
@@ -55,6 +59,7 @@ def _create_sample_memory(name_suffix: str) -> ProjectMemory:
         domain_taxonomy="test_domain",
         size_taxonomy="test_size",
         compliance_taxonomy="test_compliance",
+        lifecycle_taxonomy="test_lifecycle",
     )
     return memory
 
@@ -100,8 +105,8 @@ async def test_list_projects_returns_saved_projects(
     memory_adapter: SQLiteMemoryAdapter,
 ):
     """
-    Verify that core.list_projects correctly lists projects previously saved.
-    THIS TEST WILL FAIL until the tool and adapter method are implemented.
+    Verify that listing projects correctly returns previously saved projects.
+    Now using paella_list instead of the deprecated list_projects function.
     """
     print("\nRunning: test_list_projects_returns_saved_projects")
 
@@ -115,13 +120,24 @@ async def test_list_projects_returns_saved_projects(
     )
     print(f"Saved projects: {expected_project_names}")
 
-    # Act: Call the tool function with our test db_path
-    from paelladoc.adapters.plugins.core.list_projects import list_projects
+    # Create a monkeypatch to temporarily set the DB path for the test
+    # Since we can't pass db_path to paella_list directly, we need to monkeypatch
+    # the SQLiteMemoryAdapter to use our test DB
+    original_init = SQLiteMemoryAdapter.__init__
 
-    # Pass the path to our temporary test database
-    db_path_str = str(memory_adapter.db_path)
-    print(f"Using test DB path: {db_path_str}")
-    result = await list_projects(db_path=db_path_str)
+    def patched_init(self, db_path=None):
+        return original_init(self, db_path=memory_adapter.db_path)
+
+    # Apply the monkeypatch for this test
+    SQLiteMemoryAdapter.__init__ = patched_init
+
+    try:
+        # Act: Call paella_list which now uses our test DB
+        print(f"Using test DB path: {memory_adapter.db_path}")
+        result = await paella_list()
+    finally:
+        # Restore the original init method
+        SQLiteMemoryAdapter.__init__ = original_init
 
     # Assert: Check the response
     assert result["status"] == "ok", f"Expected status ok, got {result.get('status')}"

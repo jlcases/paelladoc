@@ -1,0 +1,29 @@
+{
+  "name": "ios-native",
+  "description": "Native mobile applications developed specifically for Apple iOS devices",
+  "characteristics": [
+    "Runs on iOS devices (iPhone, iPad, iPod touch)",
+    "Written in Swift or Objective-C",
+    "Uses iOS SDK and frameworks",
+    "Direct access to device hardware",
+    "Distributed through App Store"
+  ],
+  "typical_frameworks": [
+    "UIKit",
+    "SwiftUI",
+    "Combine",
+    "CoreData",
+    "ARKit",
+    "HealthKit",
+    "CoreML"
+  ],
+  "documentation_emphasis": [
+    "UI/UX design guidelines",
+    "App lifecycle management",
+    "Data persistence strategies",
+    "Permission handling",
+    "App Store submission process",
+    "Privacy considerations",
+    "Platform-specific optimizations"
+  ]
+} 

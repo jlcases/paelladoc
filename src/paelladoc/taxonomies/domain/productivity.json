@@ -1,0 +1,31 @@
+{
+  "name": "productivity",
+  "description": "Applications for personal and team productivity, task management, and workflow optimization",
+  "key_features": [
+    "Task and project tracking",
+    "Time management",
+    "Document creation/editing",
+    "Collaboration features",
+    "Calendar and scheduling",
+    "Note-taking and organization",
+    "Process automation"
+  ],
+  "typical_components": [
+    "Task boards/lists",
+    "Calendar views",
+    "Document editors",
+    "Collaboration spaces",
+    "Notification systems",
+    "Search functionality",
+    "Integration with productivity ecosystems"
+  ],
+  "documentation_emphasis": [
+    "Workflow optimization",
+    "Keyboard shortcuts and efficiency",
+    "Data synchronization",
+    "Collaboration patterns",
+    "Offline functionality",
+    "Integration capabilities",
+    "Data import/export options"
+  ]
+} 

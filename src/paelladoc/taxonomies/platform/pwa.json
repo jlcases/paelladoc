@@ -1,1 +1,26 @@
- 
+{
+  "name": "pwa",
+  "description": "Progressive Web Applications that combine web and native app capabilities",
+  "characteristics": [
+    "Works offline or with intermittent connectivity",
+    "Installable on home screen",
+    "Push notifications capability",
+    "Responsive across all device types",
+    "Uses service workers for background processing"
+  ],
+  "typical_frameworks": [
+    "Workbox",
+    "Lighthouse",
+    "PWA Builder",
+    "Angular PWA",
+    "React PWA tools"
+  ],
+  "documentation_emphasis": [
+    "Offline capability",
+    "Service worker implementation",
+    "App manifest configuration",
+    "Installation flow",
+    "Background sync strategies",
+    "Push notification management"
+  ]
+} 

@@ -6,9 +6,17 @@ from paelladoc.adapters.output.filesystem.taxonomy_provider import (
     FileSystemTaxonomyProvider,
 )
 
+# Dependency Injection
+from paelladoc.dependencies import get_container
+from paelladoc.ports.output.configuration_port import ConfigurationPort
+
 # Instantiate the taxonomy provider
 # TODO: Replace direct instantiation with Dependency Injection
 TAXONOMY_PROVIDER = FileSystemTaxonomyProvider()
+
+# Get configuration port from container
+container = get_container()
+config_port: ConfigurationPort = container.get_configuration_port()
 
 # Insert behavior config here
 
@@ -19,7 +27,7 @@ TAXONOMY_PROVIDER = FileSystemTaxonomyProvider()
     name="core_help",
     description="Shows help information about available commands",
 )
-def core_help(command: str = None, format: str = "detailed") -> dict:
+async def core_help(command: str = None, format: str = "detailed") -> dict:
     """Provides help information about available PAELLADOC commands.
 
     Args:
@@ -29,160 +37,60 @@ def core_help(command: str = None, format: str = "detailed") -> dict:
     Returns:
         Dictionary with help information
     """
-
     logging.info(f"Executing core.help with command={command}, format={format}")
 
-    # Define available commands
-    commands = {
-        "paella": {
-            "description": "Initiates the documentation process for a new project",
-            "parameters": [
-                {
-                    "name": "project_name",
-                    "type": "string",
-                    "required": True,
-                    "description": "Name of the project to document",
-                },
-                {
-                    "name": "base_path",
-                    "type": "string",
-                    "required": True,
-                    "description": "Base path for project documentation",
-                },
-                {
-                    "name": "documentation_language",
-                    "type": "string",
-                    "required": False,
-                    "description": "Language for documentation (e.g. 'es', 'en')",
-                },
-                {
-                    "name": "interaction_language",
-                    "type": "string",
-                    "required": False,
-                    "description": "Language for interaction (e.g. 'es', 'en')",
-                },
-            ],
-            "example": "PAELLA my_project ~/projects/my_project en en",
-        },
-        "continue": {
-            "description": "Continues working on an existing project",
-            "parameters": [
-                {
-                    "name": "project_name",
-                    "type": "string",
-                    "required": True,
-                    "description": "Name of the project to continue with",
-                },
-            ],
-            "example": "CONTINUE my_project",
-        },
-        "verification": {
-            "description": "Verifies documentation coverage against the MECE taxonomy",
-            "parameters": [
-                {
-                    "name": "project_name",
-                    "type": "string",
-                    "required": True,
-                    "description": "Name of the project to verify",
-                },
-            ],
-            "example": "VERIFY my_project",
-        },
-        "select_taxonomy": {
-            "description": "Guides users through selecting and customizing a project taxonomy",
-            "parameters": [
-                {
-                    "name": "project_name",
-                    "type": "string",
-                    "required": True,
-                    "description": "Name of the project to customize taxonomy for",
-                },
-                {
-                    "name": "size_category",
-                    "type": "string",
-                    "required": False,
-                    "description": "Project size category (personal, hobbyist, mvp, startup, enterprise)",
-                },
-                {
-                    "name": "domain_type",
-                    "type": "string",
-                    "required": False,
-                    "description": "Project domain type (web, mobile, iot, ai/ml, etc.)",
-                },
-                {
-                    "name": "platform_type",
-                    "type": "string",
-                    "required": False,
-                    "description": "Platform implementation type (chrome-extension, ios-native, android-native, etc.)",
-                },
-                {
-                    "name": "compliance_needs",
-                    "type": "string",
-                    "required": False,
-                    "description": "Compliance requirements (none, hipaa, gdpr, etc.)",
-                },
-                {
-                    "name": "custom_threshold",
-                    "type": "float",
-                    "required": False,
-                    "description": "Custom coverage threshold (0.0-1.0)",
-                },
-            ],
-            "example": "SELECT-TAXONOMY my_project --size=mvp --domain=web --platform=chrome-extension",
-        },
-        "taxonomy_info": {
-            "description": "Shows information about available taxonomies and categories",
-            "parameters": [],
-            "example": "TAXONOMY-INFO",
-        },
-        "help": {
-            "description": "Shows help information about available commands",
-            "parameters": [
-                {
-                    "name": "command",
-                    "type": "string",
-                    "required": False,
-                    "description": "Specific command to get help for",
-                },
-                {
-                    "name": "format",
-                    "type": "string",
-                    "required": False,
-                    "description": "Output format (detailed, summary, examples)",
-                },
-            ],
-            "example": "HELP paella",
-        },
-    }
+    # Load commands from DB via ConfigurationPort
+    try:
+        commands_config = await config_port.get_commands_metadata()
+        if not commands_config:
+            logging.warning(
+                "No commands found in config DB. Using fallback empty dict."
+            )
+            commands_config = {}
+
+        logging.info(f"Loaded {len(commands_config)} commands from configuration DB")
+    except Exception as e:
+        logging.error(f"Failed to load commands from DB: {e}", exc_info=True)
+        # Return error if commands can't be loaded (critical)
+        return {
+            "status": "error",
+            "message": "Failed to load commands information from database.",
+        }
 
     # If a specific command is requested
-    if command and command in commands:
-        return {"status": "ok", "command": command, "help": commands[command]}
+    if command and command in commands_config:
+        return {"status": "ok", "command": command, "help": commands_config[command]}
 
     # Otherwise return all commands
     result = {
         "status": "ok",
-        "available_commands": list(commands.keys()),
+        "available_commands": list(commands_config.keys()),
         "format": format,
     }
 
     # Add command information based on format
     if format == "detailed":
-        result["commands"] = commands
+        result["commands"] = commands_config
         try:
             available_taxonomies = TAXONOMY_PROVIDER.get_available_taxonomies()
-            if "select_taxonomy" in commands:
-                commands["select_taxonomy"]["available_options"] = available_taxonomies
-            if "taxonomy_info" in commands:
-                commands["taxonomy_info"]["available_taxonomies"] = available_taxonomies
+            if "select_taxonomy" in commands_config:
+                commands_config["select_taxonomy"]["available_options"] = (
+                    available_taxonomies
+                )
+            if "taxonomy_info" in commands_config:
+                commands_config["taxonomy_info"]["available_taxonomies"] = (
+                    available_taxonomies
+                )
         except Exception as e:
             logging.error(f"Failed to load taxonomies for help: {e}", exc_info=True)
             # Continue without taxonomy info if loading fails
     elif format == "summary":
         result["commands"] = {
-            cmd: info["description"] for cmd, info in commands.items()
+            cmd: info["description"] for cmd, info in commands_config.items()
         }
     elif format == "examples":
-        result["commands"] = {cmd: info["example"] for cmd, info in commands.items()}
+        result["commands"] = {
+            cmd: info.get("example", "") for cmd, info in commands_config.items()
+        }
 
     return result

@@ -84,63 +84,78 @@ class SQLiteMemoryAdapter(MemoryPort):
         await self._create_db_and_tables()
 
         async with self.async_session() as session:
-            try:
-                # Try to load existing DB object
-                statement = (
-                    select(ProjectMemoryDB)
-                    .where(ProjectMemoryDB.name == project_name)
-                    .options(
-                        selectinload(ProjectMemoryDB.artifacts)
-                    )  # Eager load artifacts
-                )
-                results = await session.execute(statement)
-                existing_db_memory = results.scalars().first()
+            async with (
+                session.begin()
+            ):  # Use session.begin() for transaction management
+                try:
+                    # Try to load existing DB object WITH artifacts
+                    statement = (
+                        select(ProjectMemoryDB)
+                        .where(ProjectMemoryDB.name == project_name)
+                        .options(selectinload(ProjectMemoryDB.artifacts))
+                    )
+                    results = await session.execute(statement)
+                    existing_db_memory = results.scalars().first()
 
-                # Use mapper to map domain object to DB object (create or update)
-                db_memory = map_domain_to_db(memory, existing_db_memory)
+                    # Use mapper to map domain object to DB object (create or update fields)
+                    db_memory = map_domain_to_db(memory, existing_db_memory)
 
-                # Add the main object to the session (SQLModel handles INSERT or UPDATE)
-                session.add(db_memory)
+                    # Add the main object to the session (SQLModel handles INSERT or UPDATE)
+                    # If existing_db_memory is None, this adds a new object.
+                    # If existing_db_memory is not None, this adds the *updated* existing object back.
+                    session.add(db_memory)
 
-                # If creating, flush to get the ID before syncing artifacts
-                if not existing_db_memory:
-                    await session.flush()  # Get the db_memory.id
-                    logger.debug(
-                        f"Flushed new project {db_memory.name} with ID {db_memory.id}"
+                    # Flush to get the ID if it's a new project before syncing artifacts
+                    if not existing_db_memory:
+                        await session.flush()
+                        logger.debug(
+                            f"Flushed new project {db_memory.name} with ID {db_memory.id}"
+                        )
+                    elif db_memory.id is None:
+                        # Should not happen if existing_db_memory was found and mapped correctly
+                        await session.flush()
+                        logger.warning(
+                            f"Flushed existing project {db_memory.name} which unexpectedly had no ID before flush."
+                        )
+                    # We need db_memory.id for syncing artifacts below
+                    if db_memory.id is None:
+                        # If ID is still None after potential flush, something is wrong
+                        raise RuntimeError(
+                            f"Could not obtain ID for project {project_name} before syncing artifacts."
+                        )
+
+                    # Sync artifacts using the dedicated function, passing the loaded state
+                    artifacts_to_delete = sync_artifacts_db(
+                        session, memory, db_memory, existing_db_memory
                     )
 
-                # Sync artifacts (add/update/prepare for delete)
-                # The mapper function now returns the list of artifacts to delete
-                artifacts_to_delete = sync_artifacts_db(session, memory, db_memory)
+                    # Perform deletions
+                    if artifacts_to_delete:
+                        logger.debug(
+                            f"Deleting {len(artifacts_to_delete)} artifacts from session for project {project_name}"
+                        )
+                        for artifact_to_del in artifacts_to_delete:
+                            await session.delete(artifact_to_del)
 
-                # Perform deletions if any artifacts were marked
-                if artifacts_to_delete:
-                    logger.debug(
-                        f"Deleting {len(artifacts_to_delete)} artifacts from session for project {project_name}"
+                    # Commit is handled by session.begin() context manager
+                    logger.info(
+                        f"Successfully saved memory for project: {project_name}"
                     )
-                    for artifact_to_del in artifacts_to_delete:
-                        await session.delete(artifact_to_del)
 
-                # Commit all changes (project add/update, artifact add/update/delete)
-                await session.commit()
-                logger.info(f"Successfully saved memory for project: {project_name}")
-
-            except IntegrityError as e:
-                await session.rollback()
-                logger.error(
-                    f"Integrity error saving project '{project_name}': {e}",
-                    exc_info=True,
-                )
-                raise ValueError(
-                    f"Project '{project_name}' might already exist or another integrity issue occurred."
-                ) from e
-            except Exception as e:
-                await session.rollback()
-                logger.error(
-                    f"Unexpected error saving project '{project_name}': {e}",
-                    exc_info=True,
-                )
-                raise
+                except IntegrityError as e:
+                    logger.error(
+                        f"Integrity error saving project '{project_name}': {e}",
+                        exc_info=True,
+                    )
+                    raise ValueError(
+                        f"Project '{project_name}' might already exist or another integrity issue occurred."
+                    ) from e
+                except Exception as e:
+                    logger.error(
+                        f"Unexpected error saving project '{project_name}': {e}",
+                        exc_info=True,
+                    )
+                    raise
 
     async def load_memory(self, project_name: str) -> Optional[ProjectMemory]:
         """Loads project memory (including artifacts) from SQLite using the mapper."""
@@ -214,11 +229,12 @@ class SQLiteMemoryAdapter(MemoryPort):
                     ProjectMemoryDB.base_path,
                     ProjectMemoryDB.interaction_language,
                     ProjectMemoryDB.documentation_language,
-                    ProjectMemoryDB.taxonomy_version,  # Added taxonomy version
+                    ProjectMemoryDB.taxonomy_version,
                     ProjectMemoryDB.platform_taxonomy,
                     ProjectMemoryDB.domain_taxonomy,
                     ProjectMemoryDB.size_taxonomy,
                     ProjectMemoryDB.compliance_taxonomy,
+                    ProjectMemoryDB.lifecycle_taxonomy,  # Ensure lifecycle is selected
                     ProjectMemoryDB.custom_taxonomy,
                     ProjectMemoryDB.taxonomy_validation,
                 )
@@ -226,29 +242,38 @@ class SQLiteMemoryAdapter(MemoryPort):
 
                 for row in results.all():
                     # Manually map row to ProjectInfo domain model
-                    # Consider a dedicated mapper function if this gets complex
-                    info = ProjectInfo(
-                        name=row.name,
-                        language=row.language,
-                        purpose=row.purpose,
-                        target_audience=row.target_audience,
-                        objectives=row.objectives if row.objectives else [],
-                        base_path=Path(row.base_path) if row.base_path else None,
-                        interaction_language=row.interaction_language,
-                        documentation_language=row.documentation_language,
-                        taxonomy_version=row.taxonomy_version,
-                        platform_taxonomy=row.platform_taxonomy,
-                        domain_taxonomy=row.domain_taxonomy,
-                        size_taxonomy=row.size_taxonomy,
-                        compliance_taxonomy=row.compliance_taxonomy,
-                        custom_taxonomy=row.custom_taxonomy
-                        if row.custom_taxonomy
-                        else {},
-                        taxonomy_validation=row.taxonomy_validation
-                        if row.taxonomy_validation
-                        else {},
-                    )
-                    projects_info.append(info)
+                    try:
+                        info = ProjectInfo(
+                            name=row.name,
+                            language=row.language,
+                            purpose=row.purpose,
+                            target_audience=row.target_audience,
+                            objectives=row.objectives if row.objectives else [],
+                            base_path=Path(row.base_path) if row.base_path else None,
+                            interaction_language=row.interaction_language,
+                            documentation_language=row.documentation_language,
+                            taxonomy_version=row.taxonomy_version,
+                            platform_taxonomy=row.platform_taxonomy,
+                            domain_taxonomy=row.domain_taxonomy,
+                            size_taxonomy=row.size_taxonomy,
+                            compliance_taxonomy=row.compliance_taxonomy,
+                            lifecycle_taxonomy=row.lifecycle_taxonomy,  # Map lifecycle
+                            custom_taxonomy=row.custom_taxonomy
+                            if row.custom_taxonomy
+                            else {},
+                            taxonomy_validation=row.taxonomy_validation
+                            if row.taxonomy_validation
+                            else {},
+                        )
+                        projects_info.append(info)
+                    except Exception as map_error:  # Catch validation/mapping errors
+                        logger.error(
+                            f"Error mapping project info for '{row.name}': {map_error}",
+                            exc_info=True,
+                        )
+                        # Optionally skip this project or handle differently
+                        continue  # Skip projects that fail validation
+
                 logger.debug(f"Found {len(projects_info)} projects.")
                 return projects_info
             except Exception as e:

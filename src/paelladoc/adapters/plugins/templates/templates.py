@@ -6,7 +6,7 @@ import logging
 # TODO: Review imports and add any other necessary modules
 
 
-@mcp.tool(name="templates.templates", description="Manages documentation templates.")
+@mcp.tool(name="templates", description="Manages documentation templates.")
 def templates_templates() -> dict:
     """Handles the lifecycle of documentation templates.
 

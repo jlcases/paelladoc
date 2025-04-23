@@ -1,0 +1,23 @@
+{
+  "name": "startup",
+  "description": "Early-stage projects focused on rapid iteration, market validation, and growth",
+  "characteristics": [
+    "Evolving feature set",
+    "Quick adaptation to market feedback",
+    "Scalability considerations from early stages",
+    "Minimal viable infrastructure",
+    "Experimental approach",
+    "Focused on core value proposition"
+  ],
+  "documentation_scope": [
+    "Technical specification essentials",
+    "Product roadmap",
+    "Key API documentation",
+    "Onboarding for new team members",
+    "Architecture decision records",
+    "Feature flag management",
+    "Analytics implementation"
+  ],
+  "typical_documentation_volume": "Low to medium (30-100 pages)",
+  "maintenance_level": "Adaptive with frequent changes"
+} 

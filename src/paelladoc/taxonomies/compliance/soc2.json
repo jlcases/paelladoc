@@ -1,0 +1,31 @@
+{
+  "name": "soc2",
+  "description": "Projects requiring compliance with SOC 2 for security, availability, processing integrity, confidentiality, and privacy controls",
+  "key_requirements": [
+    "Security controls",
+    "Availability management",
+    "Processing integrity",
+    "Confidentiality practices",
+    "Privacy protection",
+    "Risk management",
+    "Vendor management"
+  ],
+  "documentation_requirements": [
+    "Control documentation",
+    "Security policies and procedures",
+    "Incident response plan",
+    "Business continuity plan",
+    "System description documentation",
+    "Risk assessment methodology",
+    "Evidence collection procedures"
+  ],
+  "implementation_patterns": [
+    "Access control matrices",
+    "Continuous monitoring",
+    "Change management workflows",
+    "Encryption standards",
+    "Logging and alerting",
+    "Disaster recovery testing",
+    "Employee training programs"
+  ]
+} 

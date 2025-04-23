@@ -1,0 +1,31 @@
+{
+  "name": "ccpa",
+  "description": "Projects requiring compliance with California Consumer Privacy Act for handling California residents' data",
+  "key_requirements": [
+    "Consumer right to know",
+    "Consumer right to delete",
+    "Consumer right to opt-out of sale",
+    "Non-discrimination protection",
+    "Data inventory and mapping",
+    "Privacy notice requirements",
+    "Verification procedures"
+  ],
+  "documentation_requirements": [
+    "Privacy policy",
+    "Data subject request procedures",
+    "Opt-out mechanisms",
+    "Data inventory",
+    "Employee training materials",
+    "Vendor contract provisions",
+    "Verification method documentation"
+  ],
+  "implementation_patterns": [
+    "Data inventory systems",
+    "Consumer request handling workflows",
+    "Consent management",
+    "Sale opt-out mechanisms",
+    "Identity verification",
+    "Response tracking",
+    "Request handling automation"
+  ]
+} 

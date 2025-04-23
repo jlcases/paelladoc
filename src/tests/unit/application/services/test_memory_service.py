@@ -53,11 +53,13 @@ async def test_update_project_memory_emits_taxonomy_updated_event(
             domain_taxonomy="ecommerce",
             size_taxonomy="smb",
             compliance_taxonomy="none",
+            lifecycle_taxonomy="test_lifecycle_old",
         ),
         platform_taxonomy="web-frontend",
         domain_taxonomy="ecommerce",
         size_taxonomy="smb",
         compliance_taxonomy="none",
+        lifecycle_taxonomy="test_lifecycle_old",
     )
 
     new_memory = ProjectMemory(
@@ -69,11 +71,13 @@ async def test_update_project_memory_emits_taxonomy_updated_event(
             domain_taxonomy="ecommerce",
             size_taxonomy="enterprise",
             compliance_taxonomy="gdpr",
+            lifecycle_taxonomy="test_lifecycle_new",
         ),
         platform_taxonomy="ios-native",
         domain_taxonomy="ecommerce",
         size_taxonomy="enterprise",
         compliance_taxonomy="gdpr",
+        lifecycle_taxonomy="test_lifecycle_new",
     )
 
     # Mock the port methods
@@ -135,11 +139,13 @@ async def test_update_project_memory_no_taxonomy_change_no_event(
             domain_taxonomy="ecommerce",
             size_taxonomy="smb",
             compliance_taxonomy="none",
+            lifecycle_taxonomy="test_lifecycle",
         ),
         platform_taxonomy="web-frontend",
         domain_taxonomy="ecommerce",
         size_taxonomy="smb",
         compliance_taxonomy="none",
+        lifecycle_taxonomy="test_lifecycle",
     )
 
     new_memory = ProjectMemory(
@@ -151,11 +157,13 @@ async def test_update_project_memory_no_taxonomy_change_no_event(
             domain_taxonomy="ecommerce",
             size_taxonomy="smb",
             compliance_taxonomy="none",
+            lifecycle_taxonomy="test_lifecycle",
         ),
         platform_taxonomy="web-frontend",
         domain_taxonomy="ecommerce",
         size_taxonomy="smb",
         compliance_taxonomy="none",
+        lifecycle_taxonomy="test_lifecycle",
     )
     # Make some other change to trigger update
     new_memory.project_info.taxonomy_version = "1.1"

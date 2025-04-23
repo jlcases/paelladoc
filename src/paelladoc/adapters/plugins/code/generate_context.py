@@ -7,7 +7,7 @@ import logging
 
 
 @mcp.tool(
-    name="code.generate_context",
+    name="generate_context",
     description="This automatically creates the context file that will be used by GENERATE-DOC for interactive documentation generation.",
 )
 def code_generate_context() -> dict:

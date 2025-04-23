@@ -1,0 +1,31 @@
+{
+  "name": "iso27001",
+  "description": "Projects requiring compliance with ISO/IEC 27001 Information Security Management System standard",
+  "key_requirements": [
+    "Information security policy",
+    "Risk assessment and treatment",
+    "Security controls implementation",
+    "Information asset management",
+    "Access control framework",
+    "Cryptography implementation",
+    "Operational security"
+  ],
+  "documentation_requirements": [
+    "Statement of Applicability",
+    "Risk treatment plan",
+    "Information security policy",
+    "Asset inventory",
+    "Internal audit documentation",
+    "Management review records",
+    "Incident management procedures"
+  ],
+  "implementation_patterns": [
+    "ISMS framework implementation",
+    "Security control objectives mapping",
+    "Documented risk methodology",
+    "Security awareness programs",
+    "Continuous monitoring and measurement",
+    "Management system integration",
+    "Plan-Do-Check-Act cycle"
+  ]
+} 

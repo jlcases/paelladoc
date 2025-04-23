@@ -1,0 +1,39 @@
+{
+  "name": "mvp",
+  "description": "Minimum Viable Product phase focused on delivering core functionality for initial market validation",
+  "characteristics": [
+    "Core functionality only",
+    "Production-ready quality",
+    "Focused on user value",
+    "Minimal feature set",
+    "Designed for feedback collection",
+    "Releasable to early users"
+  ],
+  "documentation_emphasis": [
+    "User onboarding",
+    "Core feature documentation",
+    "Known limitations",
+    "Roadmap for future features",
+    "Feedback collection mechanisms",
+    "Support processes"
+  ],
+  "typical_artifacts": [
+    "User guides for core features",
+    "Basic API documentation",
+    "Setup instructions",
+    "System architecture overview",
+    "Feedback collection plan",
+    "Analytics implementation"
+  ],
+  "buckets": [
+    "Initiate::CoreSetup",
+    "Initiate::InitialProductDocs",
+    "Elaborate::DiscoveryAndResearch",
+    "Elaborate::IdeationAndDesign", 
+    "Elaborate::SpecificationAndPlanning",
+    "Generate::CoreFunctionality",
+    "Generate::Validation",
+    "Generate::SupportingElements", 
+    "Generate::Deployment"
+  ]
+} 

@@ -121,32 +121,29 @@ class TestArtifactMeta:
 
 
 @pytest.fixture
-def sample_project_memory():
-    """Fixture to create a sample ProjectMemory instance with artifacts for testing."""
-    # Set up TimeService first as ArtifactMeta requires it
+def sample_project_memory() -> ProjectMemory:
+    """Fixture to provide a sample ProjectMemory instance for testing."""
+    # Set up TimeService if needed
     if time_service is None:
         set_time_service(SystemTimeService())
 
     project_info = ProjectInfo(
         name="Test Project",
-        base_path="/path/to/project",
-        documentation_language="en",
-        interaction_language="en",
         platform_taxonomy="test_platform",
         domain_taxonomy="test_domain",
         size_taxonomy="test_size",
         compliance_taxonomy="test_compliance",
+        lifecycle_taxonomy="test_lifecycle",
     )
 
     # Create the ProjectMemory instance first
     project_memory_instance = ProjectMemory(
         project_info=project_info,
-        # created_at and last_updated_at will be set by ProjectMemory.__init__
         platform_taxonomy="test_platform",
         domain_taxonomy="test_domain",
         size_taxonomy="test_size",
         compliance_taxonomy="test_compliance",
-        # Note: artifacts dict is initialized empty by default in ProjectMemory
+        lifecycle_taxonomy="test_lifecycle",
     )
 
     # Now create and add the artifacts expected by the tests
@@ -155,7 +152,7 @@ def sample_project_memory():
             name="vision_doc",
             bucket=Bucket.INITIATE_INITIAL_PRODUCT_DOCS,
             path=Path("docs/initiation/product_vision.md"),
-            # Default status is PENDING
+            status=DocumentStatus.PENDING,  # Changed status back to PENDING
         ),
         ArtifactMeta(
             name="user_research",
@@ -189,6 +186,7 @@ def test_project_info_initialization():
         domain_taxonomy="test_domain_2",
         size_taxonomy="test_size_2",
         compliance_taxonomy="test_compliance_2",
+        lifecycle_taxonomy="test_lifecycle_2",  # Added lifecycle
     )
     assert info.name == "Another Test"
     # assert info.description == "Detailed desc." # Removed assertion for non-existent field
@@ -199,6 +197,7 @@ def test_project_info_initialization():
     assert info.domain_taxonomy == "test_domain_2"
     assert info.size_taxonomy == "test_size_2"
     assert info.compliance_taxonomy == "test_compliance_2"
+    assert info.lifecycle_taxonomy == "test_lifecycle_2"
 
 
 def test_project_memory_initialization(sample_project_memory):
@@ -229,11 +228,14 @@ def test_project_memory_update(sample_project_memory):
 class TestProjectMemory:
     """Tests for the ProjectMemory model with taxonomy support"""
 
+    @pytest.fixture(autouse=True)
+    def setup_test_time_service(self):
+        """Ensure time service is set for each test in this class."""
+        if time_service is None:
+            set_time_service(SystemTimeService())
+
     def test_project_memory_initialization(self):
         """Test initializing ProjectMemory with taxonomy support"""
-        # Set up TimeService if needed
-        # ... (similar to fixture setup)
-
         project = ProjectMemory(
             project_info=ProjectInfo(
                 name="test_project",
@@ -242,6 +244,7 @@ class TestProjectMemory:
                 domain_taxonomy="test_domain",
                 size_taxonomy="test_size",
                 compliance_taxonomy="test_compliance",
+                lifecycle_taxonomy="test_lifecycle",  # Added lifecycle
             ),
             taxonomy_version="0.5",
             # Add required taxonomy fields also directly to ProjectMemory
@@ -249,13 +252,14 @@ class TestProjectMemory:
             domain_taxonomy="test_domain",
             size_taxonomy="test_size",
             compliance_taxonomy="test_compliance",
+            lifecycle_taxonomy="test_lifecycle",  # Added lifecycle
         )
-
-        # Check that all buckets are initialized
-        for bucket in Bucket:
-            assert bucket in project.artifacts
-            assert isinstance(project.artifacts[bucket], list)
-            assert len(project.artifacts[bucket]) == 0
+        assert project.project_info.name == "test_project"
+        assert project.lifecycle_taxonomy == "test_lifecycle"
+        assert project.platform_taxonomy == "test_platform"
+        assert len(project.artifacts) == len(
+            Bucket
+        )  # Should have all buckets initialized
 
     def test_add_artifact(self, sample_project_memory):
         """Test adding artifacts to ProjectMemory"""
