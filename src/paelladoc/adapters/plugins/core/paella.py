@@ -136,17 +136,28 @@ async def paella_init(
 
 @mcp.tool(
     name="paella_list",
-    description="Retrieves and lists the names of all PAELLADOC projects stored in the system memory",
+    description="Retrieves detailed information for all PAELLADOC projects stored in the system memory",
 )
 async def paella_list() -> Dict:
-    """Retrieves and lists the names of all PAELLADOC projects stored in the system memory.
+    """Retrieves detailed information (ProjectInfo objects) for all PAELLADOC projects stored in the system memory.
 
-    This is useful for identifying available projects that can be selected using the
-    'paella_select' or 'core_continue' tools to resume work.
+    This tool provides comprehensive information about each project, including:
+    - Project name and languages
+    - Base path and purpose
+    - Target audience and objectives
+    - All taxonomy configurations
+    - Validation status
+
+    This is useful for:
+    - Getting an overview of all projects
+    - Selecting a project to work on with 'paella_select'
+    - Verifying project configurations
 
     Returns:
-        A dictionary containing the operation status ('ok' or 'error'), a list of
-        project names under the 'projects' key, and a confirmation message.
+        A dictionary containing:
+        - status: 'ok' or 'error'
+        - projects: List[ProjectInfo] - Complete information for each project
+        - message: Description of the operation result
     """
     try:
         memory_adapter = SQLiteMemoryAdapter()
