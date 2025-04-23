@@ -64,6 +64,18 @@ Repository = "https://github.com/jlcases/paelladoc"
 
 [tool.hatch.build.targets.wheel]
 packages = ["src/paelladoc"]
+force-include = {"src/paelladoc/taxonomies" = "paelladoc/taxonomies"}
+
+[tool.hatch.build.targets.sdist]
+include = [
+    "/src",
+    "/tests",
+    "/alembic",
+    "alembic.ini",
+    "pyproject.toml",
+    "README.md",
+    "LICENSE",
+]
 
 [tool.pytest.ini_options]
 asyncio_mode = "auto"
