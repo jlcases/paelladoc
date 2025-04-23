@@ -9,6 +9,7 @@ from typing import Sequence, Union
 
 from alembic import op
 import sqlalchemy as sa
+from sqlalchemy import UUID
 import sqlmodel
 
 
@@ -24,11 +25,11 @@ def upgrade() -> None:
     with op.batch_alter_table('artifactmetadb', schema=None) as batch_op:
         batch_op.alter_column('id',
                existing_type=sa.NUMERIC(),
-               type_=sqlmodel.sql.sqltypes.GUID(),
+               type_=UUID(),
                existing_nullable=False)
         batch_op.alter_column('project_memory_id',
                existing_type=sa.NUMERIC(),
-               type_=sqlmodel.sql.sqltypes.GUID(),
+               type_=UUID(),
                existing_nullable=False)
 
     with op.batch_alter_table('projectmemorydb', schema=None) as batch_op:
@@ -36,7 +37,7 @@ def upgrade() -> None:
         batch_op.add_column(sa.Column('modified_by', sqlmodel.sql.sqltypes.AutoString(), nullable=True))
         batch_op.alter_column('id',
                existing_type=sa.NUMERIC(),
-               type_=sqlmodel.sql.sqltypes.GUID(),
+               type_=UUID(),
                existing_nullable=False)
         batch_op.create_index(batch_op.f('ix_projectmemorydb_created_by'), ['created_by'], unique=False)
         batch_op.create_index(batch_op.f('ix_projectmemorydb_modified_by'), ['modified_by'], unique=False)
@@ -49,7 +50,7 @@ def downgrade() -> None:
         batch_op.drop_index(batch_op.f('ix_projectmemorydb_modified_by'))
         batch_op.drop_index(batch_op.f('ix_projectmemorydb_created_by'))
         batch_op.alter_column('id',
-               existing_type=sqlmodel.sql.sqltypes.GUID(),
+               existing_type=UUID(),
                type_=sa.NUMERIC(),
                existing_nullable=False)
         batch_op.drop_column('modified_by')
@@ -57,11 +58,11 @@ def downgrade() -> None:
 
     with op.batch_alter_table('artifactmetadb', schema=None) as batch_op:
         batch_op.alter_column('project_memory_id',
-               existing_type=sqlmodel.sql.sqltypes.GUID(),
+               existing_type=UUID(),
                type_=sa.NUMERIC(),
                existing_nullable=False)
         batch_op.alter_column('id',
-               existing_type=sqlmodel.sql.sqltypes.GUID(),
+               existing_type=UUID(),
                type_=sa.NUMERIC(),
                existing_nullable=False)
     # ### end Alembic commands ###
