@@ -22,6 +22,10 @@ from paelladoc.adapters.plugins.core.project_crud import (
     get_project,
 )
 from paelladoc.adapters.output.sqlite.sqlite_memory_adapter import SQLiteMemoryAdapter
+from paelladoc.adapters.plugins.core.project_utils import (
+    validate_project_updates,
+    format_project_info,
+)
 
 # --- Test Fixtures --- #
 
@@ -154,6 +158,25 @@ async def test_update_project_validates_fields(test_project):
 
 
 @pytest.mark.asyncio
+async def test_update_project_validates_multiple_fields(test_project):
+    """Test that update_project validates multiple fields correctly."""
+    result = await update_project(
+        project_name=test_project["name"],
+        updates={
+            "documentation_language": "invalid_lang",
+            "interaction_language": "bad_lang",
+            "name": "",  # Empty name
+        },
+    )
+
+    assert result["status"] == "error"
+    assert "validation failed" in result["message"].lower()
+    assert "documentation_language" in result["message"].lower()
+    assert "interaction_language" in result["message"].lower()
+    assert "name" in result["message"].lower()
+
+
+@pytest.mark.asyncio
 async def test_delete_project_removes_project_and_files(test_project):
     """Test that delete_project removes both DB entry and files."""
     # First verify project exists
@@ -161,7 +184,10 @@ async def test_delete_project_removes_project_and_files(test_project):
     assert any(p.name == test_project["name"] for p in list_result["projects"])
 
     # Delete project
-    result = await delete_project(project_name=test_project["name"], confirm=True)
+    result = await delete_project(
+        project_name=test_project["name"],
+        confirm=True,
+    )
 
     assert result["status"] == "ok"
 
@@ -176,7 +202,10 @@ async def test_delete_project_removes_project_and_files(test_project):
 @pytest.mark.asyncio
 async def test_delete_project_requires_confirmation(test_project):
     """Test that delete_project requires explicit confirmation."""
-    result = await delete_project(project_name=test_project["name"], confirm=False)
+    result = await delete_project(
+        project_name=test_project["name"],
+        confirm=False,
+    )
 
     assert result["status"] == "error"
     assert "confirmation required" in result["message"].lower()
@@ -190,7 +219,9 @@ async def test_delete_project_requires_confirmation(test_project):
 async def test_delete_project_creates_backup(test_project):
     """Test that delete_project creates a backup before deletion."""
     result = await delete_project(
-        project_name=test_project["name"], confirm=True, create_backup=True
+        project_name=test_project["name"],
+        confirm=True,
+        create_backup=True,
     )
 
     assert result["status"] == "ok"
@@ -200,3 +231,43 @@ async def test_delete_project_creates_backup(test_project):
     # Clean up backup
     if Path(result["backup_path"]).exists():
         os.remove(result["backup_path"])
+
+
+# --- Utility Function Tests --- #
+
+
+def test_validate_project_updates_checks_languages():
+    """Test that validate_project_updates validates language fields."""
+    updates = {
+        "documentation_language": "invalid",
+        "interaction_language": "bad",
+    }
+
+    errors = validate_project_updates(updates)
+    assert len(errors) == 2
+    assert any("documentation_language" in e.lower() for e in errors)
+    assert any("interaction_language" in e.lower() for e in errors)
+
+
+def test_validate_project_updates_checks_base_path():
+    """Test that validate_project_updates validates base_path."""
+    updates = {"base_path": ""}
+    errors = validate_project_updates(updates)
+    assert len(errors) == 1
+    assert "base_path" in errors[0].lower()
+
+
+def test_format_project_info_converts_paths():
+    """Test that format_project_info converts Path objects to strings."""
+    test_path = Path("/test/path")
+    info = {
+        "base_path": test_path,
+        "other_path": test_path,
+        "normal_field": "value",
+    }
+
+    formatted = format_project_info(info)
+    assert isinstance(formatted["base_path"], str)
+    assert isinstance(formatted["other_path"], str)
+    assert formatted["base_path"] == str(test_path)
+    assert formatted["normal_field"] == "value"

@@ -3,14 +3,16 @@ Core plugin for project CRUD operations.
 """
 
 import logging
-import shutil
-from datetime import datetime
 from pathlib import Path
-from typing import Dict, Any, Optional
+from typing import Dict, Any
 
-from paelladoc.domain.models.language import SupportedLanguage
 from paelladoc.domain.models.project import ProjectInfo
 from paelladoc.adapters.output.sqlite.sqlite_memory_adapter import SQLiteMemoryAdapter
+from .project_utils import (
+    validate_project_updates,
+    create_project_backup,
+    format_project_info,
+)
 
 logger = logging.getLogger(__name__)
 
@@ -35,9 +37,9 @@ async def get_project(project_name: str) -> Dict[str, Any]:
                 "message": f"Project '{project_name}' not found.",
             }
 
-        # Convert project info to dict and ensure base_path is str
+        # Format project info for response
         project_info = project_memory.project_info.model_dump()
-        project_info["base_path"] = str(project_info["base_path"])
+        project_info = format_project_info(project_info)
 
         return {"status": "ok", "project": project_info}
 
@@ -70,21 +72,20 @@ async def update_project(
                 "message": f"Project '{project_name}' not found.",
             }
 
+        # Validate updates
+        validation_errors = validate_project_updates(updates)
+        if validation_errors:
+            return {
+                "status": "error",
+                "message": "Validation failed: " + "; ".join(validation_errors),
+            }
+
         # Create backup if requested
         backup_path = None
         if create_backup:
-            backup_path = _create_backup(project_memory.project_info)
-
-        # Validate updates
-        for field, value in updates.items():
-            if field == "documentation_language" and value not in [
-                lang.value for lang in SupportedLanguage
-            ]:
-                return {
-                    "status": "error",
-                    "message": f"Invalid documentation language: {value}",
-                }
-            # Add more field validations as needed
+            backup_path, error = create_project_backup(project_memory.project_info)
+            if error:
+                return {"status": "error", "message": error}
 
         # Apply updates
         project_info_dict = project_memory.project_info.model_dump()
@@ -94,9 +95,9 @@ async def update_project(
         # Save changes
         await adapter.save_memory(project_memory)
 
-        # Convert project info to dict and ensure base_path is str
+        # Format response
         project_info = project_memory.project_info.model_dump()
-        project_info["base_path"] = str(project_info["base_path"])
+        project_info = format_project_info(project_info)
 
         result = {"status": "ok", "project": project_info}
         if backup_path:
@@ -142,12 +143,20 @@ async def delete_project(
         # Create backup if requested
         backup_path = None
         if create_backup:
-            backup_path = _create_backup(project_memory.project_info)
+            backup_path, error = create_project_backup(project_memory.project_info)
+            if error:
+                return {"status": "error", "message": error}
 
         # Delete project files
         base_path = Path(project_memory.project_info.base_path)
         if base_path.exists():
-            shutil.rmtree(base_path)
+            try:
+                base_path.rmdir()  # Try safe rmdir first
+            except OSError:
+                # If directory not empty, use rmtree
+                import shutil
+
+                shutil.rmtree(base_path)
 
         # Delete from database
         await adapter.delete_memory(project_name)
@@ -161,23 +170,3 @@ async def delete_project(
     except Exception as e:
         logger.error(f"Error deleting project '{project_name}': {e}", exc_info=True)
         return {"status": "error", "message": f"Error deleting project: {str(e)}"}
-
-
-def _create_backup(project_info: ProjectInfo) -> Optional[Path]:
-    """Create a backup of project files."""
-    try:
-        base_path = Path(project_info.base_path)
-        if not base_path.exists():
-            return None
-
-        timestamp = datetime.now().strftime("%Y%m%d_%H%M%S")
-        backup_name = f"{project_info.name}_backup_{timestamp}"
-        backup_path = base_path.parent / f"{backup_name}.zip"
-
-        shutil.make_archive(str(backup_path.with_suffix("")), "zip", base_path)
-
-        return backup_path
-
-    except Exception as e:
-        logger.error(f"Error creating backup for project '{project_info.name}': {e}")
-        return None
