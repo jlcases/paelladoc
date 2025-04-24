@@ -3,7 +3,7 @@
 import logging
 from typing import Optional, List
 from pathlib import Path
-
+import subprocess
 from sqlmodel import SQLModel, select
 from sqlalchemy.ext.asyncio import create_async_engine, AsyncSession
 from sqlalchemy.orm import sessionmaker, selectinload
@@ -69,11 +69,47 @@ class SQLiteMemoryAdapter(MemoryPort):
         )
         logger.info("SQLiteMemoryAdapter initialized.")
 
+    async def _run_migrations(self):
+        """Run database migrations using alembic."""
+        try:
+            logger.info("Running database migrations...")
+            # Get the project root directory where alembic.ini is located
+            project_root = Path(__file__).parent.parent.parent.parent.parent.absolute()
+
+            # Run alembic upgrade
+            result = subprocess.run(
+                ["alembic", "upgrade", "head"],
+                capture_output=True,
+                text=True,
+                check=False,
+                cwd=project_root,  # Run from project root where alembic.ini is
+            )
+
+            if result.returncode == 0:
+                logger.info("Database migrations completed successfully")
+                if result.stdout:
+                    logger.debug(f"Migration output:\n{result.stdout}")
+            else:
+                logger.error(f"Database migration failed with error:\n{result.stderr}")
+                raise RuntimeError("Database migration failed")
+
+        except Exception as e:
+            logger.error(f"Error running migrations: {e}")
+            raise
+
     async def _create_db_and_tables(self):
         """Creates the database and tables if they don't exist."""
-        async with self.async_engine.begin() as conn:
-            await conn.run_sync(SQLModel.metadata.create_all)
-        logger.info("Database tables checked/created.")
+        try:
+            # First run migrations
+            await self._run_migrations()
+
+            # Then ensure all tables exist (in case any are missing)
+            async with self.async_engine.begin() as conn:
+                await conn.run_sync(SQLModel.metadata.create_all)
+            logger.info("Database tables checked/created.")
+        except Exception as e:
+            logger.error(f"Error creating database and tables: {e}")
+            raise
 
     # --- MemoryPort Implementation --- #
 

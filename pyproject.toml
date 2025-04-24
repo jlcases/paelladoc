@@ -40,6 +40,10 @@ dependencies = [
     "markdown>=3.5.0",
 ]
 
+# Add console script entry point
+[project.scripts]
+paelladoc = "paelladoc.cli:main"
+
 [project.optional-dependencies]
 dev = [
     "pytest>=7.0.0",
@@ -64,14 +68,23 @@ Repository = "https://github.com/jlcases/paelladoc"
 
 [tool.hatch.build.targets.wheel]
 packages = ["src/paelladoc"]
+# Include package data (alembic files) in the wheel
+include = [
+    "/src/paelladoc/alembic.ini",
+    "/src/paelladoc/alembic/*",
+]
+# The force-include might not be necessary if structure is standard,
+# but let's keep it for now if it was added for a reason.
 force-include = {"src/paelladoc/taxonomies" = "paelladoc/taxonomies"}
 
 [tool.hatch.build.targets.sdist]
+# Ensure alembic files are included in source distribution
+# (adjust paths relative to project root)
 include = [
     "/src",
     "/tests",
-    "/alembic",
-    "alembic.ini",
+    "/alembic",             # Top-level alembic directory
+    "alembic.ini",          # Top-level alembic.ini
     "pyproject.toml",
     "README.md",
     "LICENSE",
