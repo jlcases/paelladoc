@@ -3,8 +3,10 @@ from uuid import UUID, uuid4
 from datetime import datetime, timezone
 from pathlib import Path
 
-from sqlmodel import Field, Relationship, SQLModel, Column  # Import Column for JSON
-from sqlalchemy.sql.sqltypes import JSON  # Import JSON type
+from sqlmodel import Field, Relationship, SQLModel, Column
+from sqlalchemy.sql.sqltypes import JSON
+from sqlalchemy.schema import Index  # Import Index
+from sqlalchemy.sql import text  # Import text for WHERE clause
 
 from paelladoc.domain.models.project import (
     Bucket,
@@ -65,6 +67,8 @@ MECE Structure Support:
 
 class ArtifactMetaDB(SQLModel, table=True):
     """Database model for ArtifactMeta"""
+
+    __table_args__ = {"extend_existing": True}
 
     # Use the domain UUID as the primary key
     id: UUID = Field(default_factory=uuid4, primary_key=True, index=True)
@@ -159,12 +163,34 @@ class ProjectMemoryDB(SQLModel, table=True):
     # Could be another JSON field temporarily or migrated into ArtifactMetaDB.
     # For now, omitting it, assuming new structure only or migration handles it.
 
+    # Remove the Meta class definition here if it only contained __table_args__ for the index
+    # class Meta:
+    #     __table_args__ = (
+    #         # Add a partial unique index on is_active when it's true
+    #         # This ensures only one project can be active at a time
+    #         UniqueConstraint('is_active', name='uix_active_project',
+    #                         sqlite_where="is_active = 1"),
+    #     )
+    # Define __table_args__ directly in the class body
+    __table_args__ = (
+        # Add a partial unique index on is_active when it's true using Index
+        Index(
+            "uix_active_project",
+            "is_active",
+            unique=True,
+            sqlite_where=text("is_active = 1"),
+        ),
+    )
+
 
 # --- User Model (Minimal for OSS) --- #
 
 
 class UserDB(SQLModel, table=True):
     """Minimal user model for OSS version, primarily for tracking authorship."""
+
+    # Allow extending the existing table definition during test collection
+    __table_args__ = {"extend_existing": True}
 
     id: Optional[int] = Field(default=None, primary_key=True)
     user_identifier: str = Field(unique=True, index=True)

@@ -1,7 +1,7 @@
 """SQLite adapter for project memory persistence."""
 
 import logging
-from typing import Optional, List
+from typing import Optional, List, Dict, Any
 from pathlib import Path
 import subprocess
 import os
@@ -9,7 +9,7 @@ from sqlmodel import SQLModel, select
 from sqlalchemy.ext.asyncio import create_async_engine, AsyncSession
 from sqlalchemy.orm import sessionmaker, selectinload
 from sqlalchemy.exc import IntegrityError
-from sqlalchemy import update
+from sqlalchemy import update, Row
 
 # Ports and Domain Models
 from paelladoc.ports.output.memory_port import MemoryPort
@@ -21,6 +21,8 @@ from paelladoc.domain.models.project import (
 # Database Models for this adapter
 from .db_models import ProjectMemoryDB
 
+# Import UserDB model from the correct location
+
 # Import the new mapper functions
 from .mapper import map_db_to_domain, map_domain_to_db, sync_artifacts_db
 
@@ -28,7 +30,7 @@ from .mapper import map_db_to_domain, map_domain_to_db, sync_artifacts_db
 from paelladoc.config.database import get_db_path
 
 # Dependency Injection for User Management Port
-from paelladoc.dependencies import dependencies  # Assuming dict-based DI
+# from paelladoc.dependencies import dependencies # Assuming dict-based DI
 from paelladoc.ports.output.user_management_port import UserManagementPort
 
 # Default database path (obtained via config logic)
@@ -115,17 +117,89 @@ class SQLiteMemoryAdapter(MemoryPort):
             raise
 
     async def _create_db_and_tables(self):
-        """Creates the database and tables if they don't exist."""
+        """Creates the database and tables if they don't exist and ensures initial admin user."""
+        # Wrap the entire process to catch and log any unexpected errors
         try:
-            # First run migrations
-            await self._run_migrations()
+            # First run migrations - TEMPORARILY COMMENTED OUT due to subprocess issues
+            # logger.info("Attempting to run migrations via adapter...") # Add log
+            # await self._run_migrations()
+            # logger.info("Migrations finished (or skipped if failed/not needed).") # Add log
 
-            # Then ensure all tables exist (in case any are missing)
+            # Ensure all tables exist using SQLModel metadata
+            # This is safe even if migrations didn't run, but relies on external migration for schema updates.
+            logger.info(
+                "Ensuring tables exist via SQLModel.metadata.create_all..."
+            )  # Add log
             async with self.async_engine.begin() as conn:
                 await conn.run_sync(SQLModel.metadata.create_all)
-            logger.info("Database tables checked/created.")
+            logger.info("Database tables checked/created via SQLModel.")
+
+            # --- Add initial OSS admin user ---
+            await self._ensure_initial_admin_user()
+            # --- End add initial OSS admin user ---
+
         except Exception as e:
-            logger.error(f"Error creating database and tables: {e}")
+            # Log the full traceback if anything goes wrong here
+            logger.error(
+                f"Critical error during database/table creation or initial user setup: {e}",
+                exc_info=True,
+            )
+            # Re-raise the exception to allow higher-level handlers to catch it if needed
+            raise
+
+    async def _ensure_initial_admin_user(self):
+        """Checks if any user exists and creates the initial admin user if none are found."""
+        # Import dependencies locally to break circular import
+        from paelladoc.dependencies import dependencies
+
+        # Wrap the core logic to log detailed errors
+        try:
+            logger.debug("Attempting to get UserManagementPort from dependencies...")
+            user_management_port: UserManagementPort = dependencies.get(
+                UserManagementPort
+            )
+            if not user_management_port:
+                logger.error(
+                    "UserManagementPort not found in dependencies. Cannot create initial admin user."
+                )
+                return  # Cannot proceed without the port
+            logger.debug("UserManagementPort obtained.")
+
+            # Check if any user exists directly via the port
+            logger.debug("Checking if any user exists via port...")
+            user_exists = await user_management_port.check_if_any_user_exists()
+            logger.debug(f"Result from check_if_any_user_exists: {user_exists}")
+
+            if not user_exists:
+                admin_user_identifier = os.getenv(
+                    "PAELLADOC_OSS_ADMIN_USER", "admin@paelladoc.default"
+                )
+                logger.info(
+                    f"No users found. Attempting to create initial admin user: {admin_user_identifier}"
+                )
+                try:
+                    # The create_user method should handle hashing and saving
+                    await user_management_port.create_user(admin_user_identifier)
+                    logger.info(
+                        f"Successfully created initial admin user: {admin_user_identifier}"
+                    )
+                except Exception as create_err:
+                    # Log the specific error during user creation
+                    logger.error(
+                        f"Failed to create initial admin user '{admin_user_identifier}': {create_err}",
+                        exc_info=True,
+                    )
+                    # Decide if this should raise an error or just log - re-raising for now
+                    raise create_err
+            else:
+                logger.debug(
+                    "Users already exist in the database. Skipping initial admin user creation."
+                )
+
+        except Exception as e:
+            # Log the full traceback if any error occurs during the process
+            logger.error(f"Error ensuring initial admin user: {e}", exc_info=True)
+            # Re-raise the exception
             raise
 
     # --- MemoryPort Implementation --- #
@@ -135,6 +209,9 @@ class SQLiteMemoryAdapter(MemoryPort):
         project_name = memory.project_info.name
         logger.debug(f"Attempting to save memory for project: {project_name}")
         await self._create_db_and_tables()
+
+        # Import dependencies dictionary *inside* the method to break circular import (already done)
+        from paelladoc.dependencies import dependencies
 
         # Get User Management Port from dependencies
         user_management_port: UserManagementPort = dependencies.get(UserManagementPort)
@@ -290,17 +367,18 @@ class SQLiteMemoryAdapter(MemoryPort):
                 )
                 return False
 
-    async def list_projects(self) -> List[ProjectInfo]:  # Return ProjectInfo objects
-        """Lists basic info for all projects stored in the database."""
+    async def list_projects(self) -> List[Dict[str, Any]]:
+        """Lists info for all projects stored in the database, including active status."""
         logger.debug("Listing all projects info from database.")
         await self._create_db_and_tables()
 
-        projects_info: List[ProjectInfo] = []
+        projects_data: List[Dict[str, Any]] = []
         async with self.async_session() as session:
             try:
-                # Select necessary columns for ProjectInfo
+                # Select necessary columns INCLUDING is_active
                 statement = select(
                     ProjectMemoryDB.name,
+                    ProjectMemoryDB.is_active,
                     ProjectMemoryDB.language,
                     ProjectMemoryDB.purpose,
                     ProjectMemoryDB.target_audience,
@@ -313,48 +391,71 @@ class SQLiteMemoryAdapter(MemoryPort):
                     ProjectMemoryDB.domain_taxonomy,
                     ProjectMemoryDB.size_taxonomy,
                     ProjectMemoryDB.compliance_taxonomy,
-                    ProjectMemoryDB.lifecycle_taxonomy,  # Ensure lifecycle is selected
+                    ProjectMemoryDB.lifecycle_taxonomy,
                     ProjectMemoryDB.custom_taxonomy,
                     ProjectMemoryDB.taxonomy_validation,
+                    # Add audit fields if needed by the list view
+                    ProjectMemoryDB.created_at,
+                    ProjectMemoryDB.created_by,
+                    ProjectMemoryDB.last_updated_at,
+                    ProjectMemoryDB.modified_by,
                 )
                 results = await session.execute(statement)
+                rows: List[Row] = results.all()
 
-                for row in results.all():
-                    # Manually map row to ProjectInfo domain model
+                for row in rows:
+                    # Map row to dictionary
                     try:
-                        info = ProjectInfo(
-                            name=row.name,
-                            language=row.language,
-                            purpose=row.purpose,
-                            target_audience=row.target_audience,
-                            objectives=row.objectives if row.objectives else [],
-                            base_path=Path(row.base_path) if row.base_path else None,
-                            interaction_language=row.interaction_language,
-                            documentation_language=row.documentation_language,
-                            taxonomy_version=row.taxonomy_version,
-                            platform_taxonomy=row.platform_taxonomy,
-                            domain_taxonomy=row.domain_taxonomy,
-                            size_taxonomy=row.size_taxonomy,
-                            compliance_taxonomy=row.compliance_taxonomy,
-                            lifecycle_taxonomy=row.lifecycle_taxonomy,  # Map lifecycle
-                            custom_taxonomy=row.custom_taxonomy
-                            if row.custom_taxonomy
-                            else {},
-                            taxonomy_validation=row.taxonomy_validation
-                            if row.taxonomy_validation
-                            else {},
-                        )
-                        projects_info.append(info)
-                    except Exception as map_error:  # Catch validation/mapping errors
+                        # Use ._mapping to access row data as a dictionary
+                        row_dict = row._mapping
+                        # Create the dictionary, converting Path if necessary
+                        project_dict = {
+                            key: (str(value) if isinstance(value, Path) else value)
+                            for key, value in row_dict.items()
+                        }
+                        # Ensure base_path is string even if None initially (though should be str from DB)
+                        if (
+                            "base_path" in project_dict
+                            and project_dict["base_path"] is not None
+                        ):
+                            project_dict["base_path"] = str(
+                                Path(project_dict["base_path"])
+                            )  # Ensure it's string path
+                        elif "base_path" in project_dict:
+                            project_dict["base_path"] = (
+                                None  # Handle potential None explicitly
+                            )
+
+                        # Clean up None objectives to empty list if needed by consumers
+                        if (
+                            "objectives" in project_dict
+                            and project_dict["objectives"] is None
+                        ):
+                            project_dict["objectives"] = []
+
+                        # Ensure taxonomies are dicts if None
+                        if (
+                            "custom_taxonomy" in project_dict
+                            and project_dict["custom_taxonomy"] is None
+                        ):
+                            project_dict["custom_taxonomy"] = {}
+                        if (
+                            "taxonomy_validation" in project_dict
+                            and project_dict["taxonomy_validation"] is None
+                        ):
+                            project_dict["taxonomy_validation"] = {}
+
+                        projects_data.append(project_dict)
+
+                    except Exception as map_error:  # Catch mapping errors
                         logger.error(
-                            f"Error mapping project info for '{row.name}': {map_error}",
+                            f"Error mapping project dict for '{getattr(row, 'name', 'UNKNOWN')}': {map_error}",
                             exc_info=True,
                         )
-                        # Optionally skip this project or handle differently
-                        continue  # Skip projects that fail validation
+                        continue  # Skip projects that fail mapping
 
-                logger.debug(f"Found {len(projects_info)} projects.")
-                return projects_info
+                logger.debug(f"Found {len(projects_data)} projects.")
+                return projects_data
             except Exception as e:
                 logger.error(f"Error listing projects: {e}", exc_info=True)
                 return []  # Return empty list on error

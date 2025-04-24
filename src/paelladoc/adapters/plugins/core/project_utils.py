@@ -30,6 +30,13 @@ def validate_project_updates(updates: Dict[str, Any]) -> List[str]:
     """
     errors = []
 
+    # Prevent updating base_path directly
+    if "base_path" in updates:
+        errors.append("base_path cannot be updated directly through this function.")
+        # We can potentially remove it from updates to prevent further processing
+        # or just return errors immediately if this is critical.
+        # For now, just record the error.
+
     # Validate documentation_language
     if "documentation_language" in updates:
         value = updates["documentation_language"]
@@ -41,20 +48,6 @@ def validate_project_updates(updates: Dict[str, Any]) -> List[str]:
         value = updates["interaction_language"]
         if value not in [lang.value for lang in SupportedLanguage]:
             errors.append(f"Invalid interaction_language: {value}")
-
-    # Validate base_path
-    if "base_path" in updates:
-        value = updates["base_path"]
-        if not value:  # Check for empty string or None
-            errors.append("base_path cannot be empty")
-        else:
-            try:
-                path = Path(value)
-                if not path.is_absolute():
-                    path = path.resolve()
-                updates["base_path"] = str(path)
-            except Exception as e:
-                errors.append(f"Invalid base_path: {e}")
 
     # Validate name (if present)
     if "name" in updates:

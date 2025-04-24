@@ -12,12 +12,14 @@ from paelladoc.domain.models.project import (
     ProjectInfo,
     Bucket,
     DocumentStatus,
+    ArtifactMeta,
     set_time_service,
 )
 from paelladoc.adapters.services.system_time_service import SystemTimeService
 
 # Adapter for persistence
-from paelladoc.adapters.output.sqlite.sqlite_memory_adapter import SQLiteMemoryAdapter
+from paelladoc.ports.output.memory_port import MemoryPort
+from paelladoc.dependencies import dependencies
 
 # Initialize logger for this module
 # logger is already imported from core_logic
@@ -41,6 +43,8 @@ async def paella_init(
     compliance_taxonomy: str,
     lifecycle_taxonomy: str,
     custom_taxonomy: Optional[Dict] = None,  # Still optional
+    # --- REMOVE Injected Dependencies --- #
+    # memory_adapter: Optional[MemoryPort] = None,
 ) -> Dict:
     """
     Initiates the conversational workflow to define and document a new PAELLADOC project.
@@ -65,6 +69,7 @@ async def paella_init(
         compliance_taxonomy: Identifier for any compliance requirements (e.g., "gdpr", "none").
         lifecycle_taxonomy: Identifier for the project's lifecycle (e.g., "startup", "growth").
         custom_taxonomy: (Optional) A dictionary for any user-defined taxonomy.
+        # REMOVE memory_adapter from Args
 
     Returns:
         A dictionary confirming the project's creation ('status': 'ok') or detailing an error ('status': 'error').
@@ -74,12 +79,19 @@ async def paella_init(
         f"Initializing new project: {new_project_name} with taxonomies: Platform={platform_taxonomy}, Domain={domain_taxonomy}, Size={size_taxonomy}, Compliance={compliance_taxonomy}"
     )
 
+    # --- Get dependencies INSIDE function (WITHOUT abstract type hint) --- #
+    memory_adapter = dependencies.get(MemoryPort)
+    if not memory_adapter:
+        logger.error("MemoryPort not found in dependencies.")
+        return {
+            "status": "error",
+            "message": "Internal configuration error: MemoryPort missing.",
+        }
+    # --- End Dependency Resolution --- #
+
     try:
         # Initialize TimeService with SystemTimeService implementation
         set_time_service(SystemTimeService())
-
-        # Initialize memory adapter
-        memory_adapter = SQLiteMemoryAdapter()
 
         # Create absolute path
         abs_base_path = Path(base_path).expanduser().resolve()
@@ -87,28 +99,32 @@ async def paella_init(
         # Ensure the base directory exists
         abs_base_path.mkdir(parents=True, exist_ok=True)
 
-        # Create project memory - passing required taxonomies directly
+        # Create project memory - project_info now includes audit fields
+        project_info = ProjectInfo(
+            name=new_project_name,
+            interaction_language=interaction_language,
+            documentation_language=documentation_language,
+            base_path=abs_base_path,
+            platform_taxonomy=platform_taxonomy,
+            domain_taxonomy=domain_taxonomy,
+            size_taxonomy=size_taxonomy,
+            compliance_taxonomy=compliance_taxonomy,
+            lifecycle_taxonomy=lifecycle_taxonomy,
+            custom_taxonomy=custom_taxonomy if custom_taxonomy else {},
+            # created_by/at etc will be set by save_memory
+        )
+
+        # Create project memory - directly using fields
         project_memory = ProjectMemory(
-            project_info=ProjectInfo(
-                name=new_project_name,
-                interaction_language=interaction_language,
-                documentation_language=documentation_language,
-                base_path=abs_base_path,
-                platform_taxonomy=platform_taxonomy,
-                domain_taxonomy=domain_taxonomy,
-                size_taxonomy=size_taxonomy,
-                compliance_taxonomy=compliance_taxonomy,
-                lifecycle_taxonomy=lifecycle_taxonomy,
-                custom_taxonomy=custom_taxonomy if custom_taxonomy else {},
-            ),
+            project_info=project_info,
             artifacts={
                 Bucket.INITIATE_INITIAL_PRODUCT_DOCS: [
-                    {
-                        "name": "Project Charter",
-                        "status": DocumentStatus.PENDING,
-                        "bucket": Bucket.INITIATE_INITIAL_PRODUCT_DOCS,
-                        "path": Path("Project_Charter.md"),
-                    }
+                    ArtifactMeta(
+                        name="Project Charter",
+                        status=DocumentStatus.PENDING,
+                        bucket=Bucket.INITIATE_INITIAL_PRODUCT_DOCS,
+                        path=Path("Project_Charter.md"),
+                    )
                 ]
             },
             platform_taxonomy=platform_taxonomy,
@@ -117,9 +133,10 @@ async def paella_init(
             compliance_taxonomy=compliance_taxonomy,
             lifecycle_taxonomy=lifecycle_taxonomy,
             custom_taxonomy=custom_taxonomy if custom_taxonomy else {},
+            # created_by/at etc will be set by save_memory
         )
 
-        # Save to memory
+        # Save to memory using the adapter obtained from dependencies
         await memory_adapter.save_memory(project_memory)
 
         return {
@@ -130,7 +147,9 @@ async def paella_init(
         }
 
     except Exception as e:
-        logger.error(f"Error creating project: {str(e)}")
+        logger.error(
+            f"Error creating project: {str(e)}", exc_info=True
+        )  # Log traceback
         return {"status": "error", "message": f"Failed to create project: {str(e)}"}
 
 
@@ -139,7 +158,8 @@ async def paella_init(
     description="Retrieves detailed information for all PAELLADOC projects stored in the system memory",
 )
 async def paella_list() -> Dict:
-    """Retrieves detailed information (ProjectInfo objects) for all PAELLADOC projects stored in the system memory.
+    """
+    Retrieves detailed information for all PAELLADOC projects stored in the system memory.
 
     This tool provides comprehensive information about each project, including:
     - Project name and languages
@@ -159,8 +179,17 @@ async def paella_list() -> Dict:
         - projects: List[ProjectInfo] - Complete information for each project
         - message: Description of the operation result
     """
+    # --- Get dependencies INSIDE function (WITHOUT abstract type hint) --- #
+    memory_adapter = dependencies.get(MemoryPort)
+    if not memory_adapter:
+        logger.error("MemoryPort not found in dependencies.")
+        return {
+            "status": "error",
+            "message": "Internal configuration error: MemoryPort missing.",
+        }
+    # --- End Dependency Resolution --- #
+
     try:
-        memory_adapter = SQLiteMemoryAdapter()
         projects = await memory_adapter.list_projects()
 
         return {
@@ -169,7 +198,9 @@ async def paella_list() -> Dict:
             "message": "Projects retrieved successfully",
         }
     except Exception as e:
-        logger.error(f"Error listing projects: {str(e)}")
+        logger.error(
+            f"Error listing projects: {str(e)}", exc_info=True
+        )  # Log traceback
         return {"status": "error", "message": f"Failed to list projects: {str(e)}"}
 
 
@@ -194,8 +225,19 @@ async def paella_select(project_name: str) -> Dict:
         if the project is not found.
     """
     logger.info(f"Attempting to select and activate project: '{project_name}'")
+
+    # --- Get dependencies INSIDE function (WITHOUT abstract type hint) --- #
+    memory_adapter = dependencies.get(MemoryPort)
+    if not memory_adapter:
+        logger.error("MemoryPort not found in dependencies.")
+        return {
+            "status": "error",
+            "message": "Internal configuration error: MemoryPort missing.",
+        }
+    # --- End Dependency Resolution --- #
+
     try:
-        memory_adapter = SQLiteMemoryAdapter()
+        # No longer need to instantiate: memory_adapter = SQLiteMemoryAdapter()
         # First, check if the project exists
         exists = await memory_adapter.project_exists(project_name)
 
@@ -207,18 +249,13 @@ async def paella_select(project_name: str) -> Dict:
         success = await memory_adapter.set_active_project(project_name)
 
         if success:
-            # Optionally, load the memory to return base_path (consider performance if large)
-            # For now, let's just confirm activation
             logger.info(f"Successfully activated project '{project_name}'.")
             return {
                 "status": "ok",
                 "message": f"Project '{project_name}' selected and activated",
                 "project_name": project_name,
-                # Add base_path if needed, requires loading memory
-                # "base_path": str(project_memory.project_info.base_path),
             }
         else:
-            # This case might indicate a concurrent modification or DB error
             logger.error(
                 f"Failed to set project '{project_name}' as active, despite existence."
             )

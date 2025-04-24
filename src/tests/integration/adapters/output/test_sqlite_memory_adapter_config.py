@@ -149,8 +149,8 @@ async def test_adapter_operations_with_custom_path(temp_adapter):
     assert loaded.project_info.name == project.project_info.name
 
     projects_info = await temp_adapter.list_projects()
-    # Extract names from the returned ProjectInfo objects
-    project_names = [info.name for info in projects_info]
+    # Extract names from the returned dictionaries
+    project_names = [info["name"] for info in projects_info]
     assert project.project_info.name in project_names
 
 

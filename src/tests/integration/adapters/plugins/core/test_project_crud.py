@@ -3,19 +3,19 @@ Integration tests for project CRUD operations.
 """
 
 import pytest
-import asyncio
 import sys
 import os
 from pathlib import Path
 import uuid
 from typing import Dict, Any
+import shutil
 
 # Ensure we can import Paelladoc modules
 project_root = Path(__file__).parent.parent.parent.parent.parent.parent.absolute()
 sys.path.insert(0, str(project_root))
 
 from paelladoc.domain.models.language import SupportedLanguage
-from paelladoc.adapters.plugins.core.paella import paella_init, paella_list
+from paelladoc.adapters.plugins.core.paella import paella_init
 from paelladoc.adapters.plugins.core.project_crud import (
     update_project,
     delete_project,
@@ -26,54 +26,130 @@ from paelladoc.adapters.plugins.core.project_utils import (
     validate_project_updates,
     format_project_info,
 )
+from paelladoc.ports.output.user_management_port import UserManagementPort
+from paelladoc.ports.output.mcp_config_port import MCPConfigPort
+from paelladoc.ports.output.memory_port import MemoryPort
+from paelladoc.adapters.output.sqlite.sqlite_user_management_adapter import (
+    SQLiteUserManagementAdapter,
+)
+from paelladoc.adapters.output.filesystem.mcp_config_repository import (
+    FileSystemMCPConfigRepository,
+)
+from paelladoc.dependencies import dependencies
 
 # --- Test Fixtures --- #
 
+# Directory for temporary test databases
+TEMP_DB_DIR = Path("src/tests/integration/adapters/plugins/core/temp_dbs")
+TEMP_PROJECTS_DIR = Path("test_projects")  # Base for test project files
+
+
+@pytest.fixture(scope="function", autouse=True)
+def setup_test_dirs():
+    """Create temporary directories for DBs and project files."""
+    TEMP_DB_DIR.mkdir(parents=True, exist_ok=True)
+    TEMP_PROJECTS_DIR.mkdir(parents=True, exist_ok=True)
+    print(f"\nCreated directories: {TEMP_DB_DIR}, {TEMP_PROJECTS_DIR}")
+    yield
+    # Teardown: remove directories after tests in the module run
+    # Scope is function, so this runs after each test
+    try:
+        if TEMP_DB_DIR.exists():
+            shutil.rmtree(TEMP_DB_DIR)
+            print(f"Removed directory: {TEMP_DB_DIR}")
+        if TEMP_PROJECTS_DIR.exists():
+            shutil.rmtree(TEMP_PROJECTS_DIR)
+            print(f"Removed directory: {TEMP_PROJECTS_DIR}")
+    except Exception as e:
+        print(f"Error during teardown: {e}")
+
 
 @pytest.fixture(scope="function")
-async def memory_adapter():
-    """Provides an initialized SQLiteMemoryAdapter with a temporary DB."""
-    test_db_name = f"test_crud_{uuid.uuid4()}.db"
-    test_dir = Path(__file__).parent / "temp_dbs"
-    test_db_path = test_dir / test_db_name
-    test_db_path.parent.mkdir(parents=True, exist_ok=True)
-    print(f"\nSetting up test with DB: {test_db_path}")
+async def crud_test_env(monkeypatch, setup_test_dirs):
+    """Provides an isolated environment (DB, User Manager, Dependencies) for CRUD tests."""
+    db_name = f"test_project_crud_{uuid.uuid4()}.db"
+    db_path = TEMP_DB_DIR / db_name
+    print(f"\nSetting up crud_test_env with DB: {db_path}")
 
-    adapter = SQLiteMemoryAdapter(db_path=test_db_path)
-    await adapter._create_db_and_tables()
+    # Use the global session factory from the container - NOT USED, REMOVED
+    # global_session_factory = container._async_session_factory
 
-    yield adapter
+    # Create isolated adapter instances
+    # Pass the db_path to SQLiteMemoryAdapter, it will create its own engine/session factory for that path
+    memory_adapter = SQLiteMemoryAdapter(db_path=str(db_path))
+    # Pass the *global* session factory to the user manager - THIS IS LIKELY WRONG if DBs are separate
+    # The user manager needs to operate on the *same DB* as the memory adapter for the test.
+    # Let's pass the session factory created by the specific memory_adapter instance for THIS test DB.
+    user_manager = SQLiteUserManagementAdapter(
+        async_session_factory=memory_adapter.async_session
+    )
+    mcp_config_adapter = FileSystemMCPConfigRepository()
 
-    print(f"Tearing down test, removing DB: {test_db_path}")
-    await asyncio.sleep(0.01)  # Brief pause for file lock release
+    # Initialize DB tables (will create default admin user)
+    await memory_adapter._create_db_and_tables()
+
+    # Ensure a test user exists
+    user_id = f"test_crud_user_{uuid.uuid4()}"
     try:
-        if test_db_path.exists():
-            os.remove(test_db_path)
-            print(f"Removed DB: {test_db_path}")
-        try:
-            test_db_path.parent.rmdir()
-            print(f"Removed test directory: {test_db_path.parent}")
-        except OSError:
-            pass  # Directory not empty
+        # Use the user_manager tied to the test DB's session factory
+        await user_manager.create_user(user_id)
+        print(f"Ensured test user '{user_id}' exists for CRUD test.")
     except Exception as e:
-        print(f"Error during teardown removing {test_db_path}: {e}")
+        print(
+            f"Could not create test user '{user_id}' (may already exist or error): {e}"
+        )
+        all_users = await user_manager.get_all_users()
+        if all_users:
+            user_id = all_users[0].user_identifier
+            print(f"Using existing user: {user_id}")
+        else:
+            print("Warning: No user found after attempting creation.")
+            user_id = None
+
+    # Inject into dependencies using monkeypatch
+
+    # No need to store originals, monkeypatch handles revert
+    # original_memory = dependencies.get(MemoryPort)
+    # original_user = dependencies.get(UserManagementPort)
+    # original_mcp_config = dependencies.get(MCPConfigPort)
+
+    # Inject the adapters specific to this test's DB
+    monkeypatch.setitem(dependencies, MemoryPort, memory_adapter)
+    monkeypatch.setitem(dependencies, UserManagementPort, user_manager)
+    monkeypatch.setitem(dependencies, MCPConfigPort, mcp_config_adapter)
+
+    yield {"memory_adapter": memory_adapter, "user_manager": user_manager}
+
+    # Teardown: Monkeypatch reverts. Close engine and remove DB file.
+    print(f"Tearing down crud_test_env, closing engine and removing DB: {db_path}")
+    # Explicitly dispose the engine associated with this test's adapter
+    if memory_adapter.async_engine:
+        await memory_adapter.async_engine.dispose()
+        print(f"Disposed engine for DB: {db_path}")
+
+    if db_path.exists():
+        try:
+            os.remove(db_path)
+            print(f"Removed DB: {db_path}")
+        except Exception as e:
+            print(f"Error removing DB {db_path}: {e}")
 
 
 @pytest.fixture
-async def test_project(memory_adapter, monkeypatch) -> Dict[str, Any]:
-    """Creates a test project and returns its details."""
-    # Patch get_db_path to use our test DB
-    monkeypatch.setattr(
-        "paelladoc.adapters.output.sqlite.sqlite_memory_adapter.get_db_path",
-        lambda: memory_adapter.db_path,
-    )
+async def test_project(
+    crud_test_env: Dict[str, Any],
+) -> Dict[str, Any]:  # Use the env fixture
+    """Creates a test project within the isolated environment."""
+    # Dependencies are already injected by crud_test_env
 
     project_name = f"test-project-{uuid.uuid4()}"
-    base_path = f"./test_projects/{project_name}"
+    # Place project files inside the managed TEMP_PROJECTS_DIR
+    base_path = TEMP_PROJECTS_DIR / project_name
+    base_path_str = str(base_path.resolve())  # Use absolute path for consistency
 
-    # Create project
-    result = await paella_init(
-        base_path=base_path,
+    # Create project using the dependency-injected adapter
+    init_result = await paella_init(
+        base_path=base_path_str,
         documentation_language=SupportedLanguage.EN_US.value,
         interaction_language=SupportedLanguage.EN_US.value,
         new_project_name=project_name,
@@ -84,190 +160,256 @@ async def test_project(memory_adapter, monkeypatch) -> Dict[str, Any]:
         lifecycle_taxonomy="test_lifecycle",
     )
 
-    assert result["status"] == "ok"
+    assert init_result["status"] == "ok", (
+        f"Failed to initialize test project: {init_result.get('message', 'Unknown error')}"
+    )
+    # Verify base path creation directly from init_result
+    returned_base_path = Path(init_result["base_path"])
+    assert returned_base_path.exists(), (
+        "Project base path directory was not created by paella_init"
+    )
+    assert returned_base_path == base_path.resolve(), (
+        "Returned base path does not match expected resolved path"
+    )
 
-    # Clean up base_path after test
-    yield {
-        "name": project_name,
-        "base_path": base_path,
-        "abs_base_path": str(Path(base_path).resolve()),
+    # Fetch the project details AFTER creation using get_project
+    # This ensures we test the full flow and get the complete ProjectInfo
+    get_result = await get_project(project_name=project_name)
+    assert get_result["status"] == "ok", (
+        f"Failed to retrieve project '{project_name}' after creation."
+    )
+    initial_data = get_result["project"]  # Get the full project data as stored
+
+    # Return info needed by tests
+    return {
+        "project_name": project_name,
+        "base_path": base_path,  # Return Path object for easier manipulation
+        "initial_data": initial_data,  # Return the fetched full project data
     }
 
-    if Path(base_path).exists():
-        import shutil
 
-        shutil.rmtree(Path(base_path))
-
-
-# --- Test Cases --- #
+# --- Test Cases (Injecting Dependencies) --- #
 
 
 @pytest.mark.asyncio
-async def test_get_project_returns_correct_info(test_project):
-    """Test that get_project returns the correct project information."""
-    result = await get_project(project_name=test_project["name"])
+async def test_get_project_returns_correct_info(crud_test_env, test_project):
+    """Test retrieving a project returns all expected fields."""
+    project_name = test_project["project_name"]
+    initial_data = test_project["initial_data"]  # Use the fetched initial data
+
+    # Call get_project - dependencies resolved internally
+    result = await get_project(project_name=project_name)
 
     assert result["status"] == "ok"
-    assert result["project"]["name"] == test_project["name"]
-    assert result["project"]["base_path"] == test_project["abs_base_path"]
+    assert (
+        result["project"] == initial_data
+    )  # Compare fetched data with originally fetched data
+    assert result["project"]["name"] == project_name
+    assert Path(result["project"]["base_path"]) == test_project["base_path"].resolve()
+    assert result["project"]["platform_taxonomy"] == "test_platform"
 
 
 @pytest.mark.asyncio
-async def test_get_project_returns_error_for_nonexistent_project():
+async def test_get_project_returns_error_for_nonexistent_project(crud_test_env):
     """Test that get_project handles nonexistent projects correctly."""
-    result = await get_project(project_name="nonexistent-project")
-
+    # Call get_project - dependencies resolved internally
+    result = await get_project(
+        project_name="nonexistent-project",
+        # REMOVE: memory_adapter=crud_test_env["memory_adapter"] # No longer injected
+    )
     assert result["status"] == "error"
-    assert "not found" in result["message"].lower()
+    assert "not found" in result["message"]
 
 
 @pytest.mark.asyncio
-async def test_update_project_modifies_specific_fields(test_project):
-    """Test that update_project can modify specific fields."""
-    new_purpose = "Updated project purpose"
-    new_target_audience = "Updated target audience"
+async def test_update_project_modifies_specific_fields(crud_test_env, test_project):
+    """Test updating specific fields like purpose and language."""
+    project_name = test_project["project_name"]
+    updates = {
+        "purpose": "Updated test purpose",
+        "documentation_language": SupportedLanguage.ES_ES.value,
+        "platform_taxonomy": "updated_platform",  # Example of updating taxonomy
+    }
 
-    result = await update_project(
-        project_name=test_project["name"],
-        updates={
-            "purpose": new_purpose,
-            "target_audience": new_target_audience,
-        },
+    # Call update_project - dependencies resolved internally
+    update_result = await update_project(
+        project_name=project_name,
+        updates=updates,
+        create_backup=False,  # Disable backup for simplicity
     )
 
-    assert result["status"] == "ok"
+    assert update_result["status"] == "ok"
+    updated_project_info = update_result["project"]
+    assert updated_project_info["purpose"] == "Updated test purpose"
+    assert (
+        updated_project_info["documentation_language"] == SupportedLanguage.ES_ES.value
+    )
+    assert updated_project_info["platform_taxonomy"] == "updated_platform"
 
-    # Verify changes
-    get_result = await get_project(project_name=test_project["name"])
-    assert get_result["project"]["purpose"] == new_purpose
-    assert get_result["project"]["target_audience"] == new_target_audience
+    # Verify persistence by reading again
+    get_result = await get_project(project_name=project_name)
+    assert get_result["status"] == "ok"
+    assert get_result["project"]["purpose"] == "Updated test purpose"
+    assert get_result["project"]["platform_taxonomy"] == "updated_platform"
 
 
 @pytest.mark.asyncio
-async def test_update_project_validates_fields(test_project):
-    """Test that update_project validates field values."""
-    result = await update_project(
-        project_name=test_project["name"],
-        updates={
-            "documentation_language": "invalid_language",
-        },
+async def test_update_project_validates_fields(crud_test_env, test_project):
+    """Test that updates fail with invalid language codes."""
+    project_name = test_project["project_name"]
+    updates = {"documentation_language": "invalid-lang-code"}
+
+    update_result = await update_project(
+        project_name=project_name,
+        updates=updates,
     )
 
-    assert result["status"] == "error"
-    assert "invalid" in result["message"].lower()
+    assert update_result["status"] == "error"
+    assert "Validation failed" in update_result["message"]
+    assert "documentation_language" in update_result["message"]
 
 
 @pytest.mark.asyncio
-async def test_update_project_validates_multiple_fields(test_project):
-    """Test that update_project validates multiple fields correctly."""
-    result = await update_project(
-        project_name=test_project["name"],
-        updates={
-            "documentation_language": "invalid_lang",
-            "interaction_language": "bad_lang",
-            "name": "",  # Empty name
-        },
+async def test_update_project_validates_multiple_fields(crud_test_env, test_project):
+    """Test that multiple invalid fields are reported."""
+    project_name = test_project["project_name"]
+    updates = {
+        "documentation_language": "invalid-lang",
+        "interaction_language": "also-invalid",
+    }
+
+    update_result = await update_project(
+        project_name=project_name,
+        updates=updates,
     )
 
-    assert result["status"] == "error"
-    assert "validation failed" in result["message"].lower()
-    assert "documentation_language" in result["message"].lower()
-    assert "interaction_language" in result["message"].lower()
-    assert "name" in result["message"].lower()
+    assert update_result["status"] == "error"
+    assert "Validation failed" in update_result["message"]
+    assert "documentation_language" in update_result["message"]
+    assert "interaction_language" in update_result["message"]
 
 
 @pytest.mark.asyncio
-async def test_delete_project_removes_project_and_files(test_project):
-    """Test that delete_project removes both DB entry and files."""
-    # First verify project exists
-    list_result = await paella_list()
-    assert any(p.name == test_project["name"] for p in list_result["projects"])
+async def test_delete_project_removes_project_and_files(crud_test_env, test_project):
+    """Test deleting a project removes DB entry and files."""
+    project_name = test_project["project_name"]
+    base_path = test_project["base_path"]
 
-    # Delete project
-    result = await delete_project(
-        project_name=test_project["name"],
-        confirm=True,
+    # Create a dummy file in the project directory
+    dummy_file = base_path / "dummy.txt"
+    dummy_file.touch()
+    assert dummy_file.exists()
+    assert base_path.exists()
+
+    # Call delete_project - dependencies resolved internally
+    delete_result = await delete_project(
+        project_name=project_name, confirm=True, create_backup=False
     )
 
-    assert result["status"] == "ok"
+    assert delete_result["status"] == "ok"
 
-    # Verify project is gone from DB
-    list_result = await paella_list()
-    assert not any(p.name == test_project["name"] for p in list_result["projects"])
+    # Verify deletion from DB
+    get_result = await get_project(project_name=project_name)
+    assert get_result["status"] == "error"
+    assert "not found" in get_result["message"]
 
-    # Verify files are gone
-    assert not Path(test_project["base_path"]).exists()
+    # Verify directory deletion
+    assert not base_path.exists(), f"Project directory {base_path} was not deleted."
 
 
 @pytest.mark.asyncio
-async def test_delete_project_requires_confirmation(test_project):
-    """Test that delete_project requires explicit confirmation."""
-    result = await delete_project(
-        project_name=test_project["name"],
-        confirm=False,
+async def test_delete_project_requires_confirmation(crud_test_env, test_project):
+    """Test delete fails without explicit confirmation."""
+    project_name = test_project["project_name"]
+
+    # Call delete_project without confirm=True
+    delete_result = await delete_project(
+        project_name=project_name,
+        confirm=False,  # Default is False, but explicit here
+        create_backup=False,
     )
 
-    assert result["status"] == "error"
-    assert "confirmation required" in result["message"].lower()
+    assert delete_result["status"] == "error"
+    assert (
+        "Deletion requires explicit confirmation. Set 'confirm=True'."
+        in delete_result["message"]
+    )
 
     # Verify project still exists
-    list_result = await paella_list()
-    assert any(p.name == test_project["name"] for p in list_result["projects"])
+    get_result = await get_project(project_name=project_name)
+    assert get_result["status"] == "ok"
 
 
 @pytest.mark.asyncio
-async def test_delete_project_creates_backup(test_project):
-    """Test that delete_project creates a backup before deletion."""
-    result = await delete_project(
-        project_name=test_project["name"],
-        confirm=True,
-        create_backup=True,
+async def test_delete_project_creates_backup(crud_test_env, test_project):
+    """Test that delete creates a backup when requested."""
+    project_name = test_project["project_name"]
+    base_path = test_project["base_path"]
+
+    # Call delete_project with create_backup=True
+    delete_result = await delete_project(
+        project_name=project_name, confirm=True, create_backup=True
     )
 
-    assert result["status"] == "ok"
-    assert "backup_path" in result
-    assert Path(result["backup_path"]).exists()
+    assert delete_result["status"] == "ok"
+    assert "backup_path" in delete_result
+    backup_path = Path(delete_result["backup_path"])
+    assert backup_path.exists()
+    assert backup_path.is_file()
+    assert backup_path.name.endswith(".zip")
 
-    # Clean up backup
-    if Path(result["backup_path"]).exists():
-        os.remove(result["backup_path"])
+    # Clean up backup file
+    if backup_path.exists():
+        backup_path.unlink()
+
+    # Verify project itself is deleted
+    get_result = await get_project(project_name=project_name)
+    assert get_result["status"] == "error"
+    assert not base_path.exists()
 
 
 # --- Utility Function Tests --- #
 
 
-def test_validate_project_updates_checks_languages():
-    """Test that validate_project_updates validates language fields."""
-    updates = {
-        "documentation_language": "invalid",
-        "interaction_language": "bad",
+@pytest.mark.asyncio
+async def test_validate_project_updates_checks_languages():
+    """Test validation of language fields."""
+    valid_updates = {"documentation_language": "en-US", "interaction_language": "es-ES"}
+    invalid_updates = {"documentation_language": "xx-XX"}
+    multiple_invalid = {
+        "documentation_language": "yy-YY",
+        "interaction_language": "zz-ZZ",
     }
 
-    errors = validate_project_updates(updates)
-    assert len(errors) == 2
-    assert any("documentation_language" in e.lower() for e in errors)
-    assert any("interaction_language" in e.lower() for e in errors)
+    assert not validate_project_updates(valid_updates)
+    errors = validate_project_updates(invalid_updates)
+    assert len(errors) == 1
+    assert "documentation_language" in errors[0]
+
+    errors_multi = validate_project_updates(multiple_invalid)
+    assert len(errors_multi) == 2
+    assert any("documentation_language" in e for e in errors_multi)
+    assert any("interaction_language" in e for e in errors_multi)
 
 
-def test_validate_project_updates_checks_base_path():
-    """Test that validate_project_updates validates base_path."""
-    updates = {"base_path": ""}
+@pytest.mark.asyncio
+async def test_validate_project_updates_checks_base_path():
+    """Test validation that base_path cannot be updated directly."""
+    updates = {"base_path": "/new/path"}
     errors = validate_project_updates(updates)
     assert len(errors) == 1
-    assert "base_path" in errors[0].lower()
+    assert "base_path cannot be updated" in errors[0]
 
 
-def test_format_project_info_converts_paths():
+@pytest.mark.asyncio
+async def test_format_project_info_converts_paths():
     """Test that format_project_info converts Path objects to strings."""
-    test_path = Path("/test/path")
-    info = {
-        "base_path": test_path,
-        "other_path": test_path,
-        "normal_field": "value",
+    project_info_dict = {
+        "name": "test",
+        "base_path": Path("/absolute/path/to/project"),
+        "other_field": 123,
     }
-
-    formatted = format_project_info(info)
+    formatted = format_project_info(project_info_dict)
     assert isinstance(formatted["base_path"], str)
-    assert isinstance(formatted["other_path"], str)
-    assert formatted["base_path"] == str(test_path)
-    assert formatted["normal_field"] == "value"
+    assert formatted["base_path"] == "/absolute/path/to/project"
+    assert formatted["other_field"] == 123

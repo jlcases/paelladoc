@@ -19,7 +19,11 @@ logger = logging.getLogger(__name__)
     name="core_register_oss_user",
     description="Registers the single administrative user for this OSS instance.",
 )
-async def register_oss_user(user_identifier: str) -> Dict[str, Any]:
+async def register_oss_user(
+    user_identifier: str,
+    # --- REMOVE Injected Dependencies --- #
+    # session_factory: Optional[sessionmaker] = None
+) -> Dict[str, Any]:
     """
     Registers the single user allowed in the OSS version of PAELLADOC.
 
@@ -42,22 +46,24 @@ async def register_oss_user(user_identifier: str) -> Dict[str, Any]:
 
     Args:
         user_identifier: The identifier for the single OSS user.
+        # REMOVE session_factory from Args
 
     Returns:
         Dict[str, Any]: Dictionary containing operation result or error message.
     """
     logger.info(f"Attempting to register OSS user: {user_identifier}")
 
-    # Get session factory from dependencies
-    async_session_factory = dependencies.get(sessionmaker)
-    if not async_session_factory:
+    # --- Get dependencies INSIDE function (WITHOUT type hint) --- #
+    session_factory = dependencies.get(sessionmaker)
+    if not session_factory:
         logger.error("Session factory not found in dependencies.")
         return {
             "status": "error",
             "message": "Internal configuration error: Session factory missing.",
         }
+    # --- End Dependency Resolution --- #
 
-    async with async_session_factory() as session:
+    async with session_factory() as session:
         async with session.begin():  # Use transaction
             try:
                 # 1. Check if any user already exists

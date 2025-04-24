@@ -1,7 +1,8 @@
 """Port interface for User Management operations."""
 
 from abc import ABC, abstractmethod
-from typing import Optional, Any
+from typing import Optional, Any, List
+from paelladoc.domain.models.user import User
 
 
 class UserManagementPort(ABC):
@@ -42,6 +43,31 @@ class UserManagementPort(ABC):
         Returns:
             True if the user has the necessary permission, False otherwise.
         """
+        pass
+
+    @abstractmethod
+    async def create_user(self, user_identifier: str) -> User:
+        """Creates a new user."""
+        pass
+
+    @abstractmethod
+    async def get_user_by_identifier(self, user_identifier: str) -> Optional[User]:
+        """Retrieves a user by their identifier."""
+        pass
+
+    @abstractmethod
+    async def get_all_users(self) -> List[User]:
+        """Retrieves all users."""
+        pass
+
+    @abstractmethod
+    async def delete_user(self, user_identifier: str) -> bool:
+        """Deletes a user by their identifier."""
+        pass
+
+    @abstractmethod
+    async def check_if_any_user_exists(self) -> bool:
+        """Checks if at least one user exists in the system."""
         pass
 
     # Potential future methods:

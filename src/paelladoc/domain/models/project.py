@@ -6,6 +6,7 @@ import uuid
 from .enums import DocumentStatus, Bucket
 from ..services.time_service import TimeService
 import logging
+from pydantic import ConfigDict
 
 logger = logging.getLogger(__name__)
 
@@ -27,25 +28,40 @@ class ProjectDocument(BaseModel):
 
 
 class ProjectInfo(BaseModel):
+    """Basic project metadata."""
+
+    model_config = ConfigDict(arbitrary_types_allowed=True)
+
     name: str = Field(..., min_length=1)
-    language: Optional[str] = None
+    language: Optional[str] = None  # Should be validated against SupportedLanguage
     purpose: Optional[str] = None
     target_audience: Optional[str] = None
-    objectives: Optional[List[str]] = Field(default_factory=list)
-    base_path: Optional[Path] = None
-    interaction_language: Optional[str] = None
-    documentation_language: Optional[str] = None
-    taxonomy_version: str = "1.0"  # Default or loaded?
-    # Add the new taxonomy fields here as well for the domain model
-    platform_taxonomy: str
-    domain_taxonomy: str
-    size_taxonomy: str
-    compliance_taxonomy: str  # Consider if this one could truly be optional sometimes?
-    lifecycle_taxonomy: str  # Required field for lifecycle dimension
-    custom_taxonomy: Optional[Dict[str, Any]] = Field(default_factory=dict)
-    taxonomy_validation: Optional[Dict[str, Any]] = Field(default_factory=dict)
+    objectives: Optional[List[str]] = []
+    base_path: Optional[Path] = None  # Path is allowed by arbitrary_types_allowed
+    interaction_language: Optional[str] = None  # Should be validated
+    documentation_language: Optional[str] = None  # Should be validated
+    taxonomy_version: str = "1.0"  # Default or fetched from config?
 
-    model_config = {"arbitrary_types_allowed": True, "validate_assignment": True}
+    # MECE Taxonomy Selection
+    platform_taxonomy: Optional[str] = None
+    domain_taxonomy: Optional[str] = None
+    size_taxonomy: Optional[str] = None
+    compliance_taxonomy: Optional[str] = None
+    lifecycle_taxonomy: Optional[str] = None
+
+    # Custom taxonomy configuration
+    custom_taxonomy: Optional[Dict[str, Any]] = {}
+
+    # Validation status (optional, can be populated later)
+    taxonomy_validation: Optional[Dict[str, Any]] = {}
+
+    # KG / Audit Fields (NEW)
+    created_by: Optional[str] = None
+    modified_by: Optional[str] = None
+    created_at: Optional[datetime] = None  # Allow None initially, set by adapter/mapper
+    last_updated_at: Optional[datetime] = (
+        None  # Allow None initially, set by adapter/mapper
+    )
 
 
 class ArtifactMeta(BaseModel):
@@ -96,14 +112,14 @@ class ProjectMemory(BaseModel):
         default_factory=lambda: {bucket: [] for bucket in Bucket}
     )
     # Consider adding: achievements, issues, decisions later?
-    created_at: datetime.datetime = None
-    last_updated_at: datetime.datetime = None
-    created_by: Optional[str] = None
-    modified_by: Optional[str] = None
+    # Ensure KG/Audit fields from ProjectInfo are also present here if needed for direct mapping
+    created_at: Optional[datetime.datetime] = None  # Set by __init__ or adapter
+    last_updated_at: Optional[datetime.datetime] = None  # Set by __init__ or adapter
+    created_by: Optional[str] = None  # Mirrors ProjectInfo, set by adapter
+    modified_by: Optional[str] = None  # Mirrors ProjectInfo, set by adapter
 
     # Add the new taxonomy fields here directly if they belong to the ProjectMemory state
     # Or ensure they are loaded/accessed via metadata if that's the design
-    # Let's add them directly for consistency with the DB model and tests
     platform_taxonomy: str
     domain_taxonomy: str
     size_taxonomy: str

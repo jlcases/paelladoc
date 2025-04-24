@@ -28,9 +28,10 @@ def upgrade() -> None:
     
     # Create a unique partial index to ensure only one active project
     # This index only includes rows where is_active = True
+    # Use the same name as defined in the model: uix_active_project
     op.execute(
         """
-        CREATE UNIQUE INDEX ix_projectmemorydb_single_active 
+        CREATE UNIQUE INDEX uix_active_project 
         ON projectmemorydb (is_active) 
         WHERE is_active = 1
         """
@@ -38,8 +39,8 @@ def upgrade() -> None:
 
 
 def downgrade() -> None:
-    # Drop the unique partial index first
-    op.execute('DROP INDEX ix_projectmemorydb_single_active')
+    # Drop the unique partial index first - use the correct name
+    op.execute('DROP INDEX uix_active_project')
     
     # Drop the regular index
     op.drop_index(op.f('ix_projectmemorydb_is_active'), table_name='projectmemorydb')

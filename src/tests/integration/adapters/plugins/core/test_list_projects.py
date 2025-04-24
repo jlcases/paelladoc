@@ -3,7 +3,6 @@ Integration tests for the project listing functionality.
 """
 
 import pytest
-import asyncio
 import sys
 import os
 from pathlib import Path
@@ -16,6 +15,13 @@ sys.path.insert(0, str(project_root))
 # Adapter is needed to pre-populate the DB for the test
 from paelladoc.adapters.output.sqlite.sqlite_memory_adapter import SQLiteMemoryAdapter
 
+# Import the SQLite adapter instead of the dummy one
+from paelladoc.adapters.output.sqlite.sqlite_user_management_adapter import (
+    SQLiteUserManagementAdapter,
+)
+from paelladoc.ports.output.user_management_port import UserManagementPort
+from paelladoc.ports.output.memory_port import MemoryPort
+
 # Import domain models to create test data
 from paelladoc.domain.models.project import (
     ProjectMemory,
@@ -27,6 +33,97 @@ from paelladoc.domain.models.language import SupportedLanguage
 
 # Import paella_list instead of the deleted module
 from paelladoc.adapters.plugins.core.paella import paella_list
+
+# Directory for temporary test databases
+TEMP_DB_DIR = Path("src/tests/integration/adapters/plugins/core/temp_dbs_list")
+
+
+@pytest.fixture(scope="function", autouse=True)
+def setup_test_db_dir():
+    """Ensure the temporary DB directory exists for each test function."""
+    TEMP_DB_DIR.mkdir(parents=True, exist_ok=True)
+    yield
+    # Cleanup directory if empty
+    try:
+        TEMP_DB_DIR.rmdir()
+    except OSError:
+        pass  # Not empty, other tests might still be using it
+
+
+@pytest.fixture(scope="function")
+async def list_test_env(monkeypatch, setup_test_db_dir):
+    """Provides an isolated environment (DB, User Manager, Dependencies) for list tests."""
+    db_name = f"test_list_projects_{uuid.uuid4()}.db"
+    db_path = TEMP_DB_DIR / db_name
+    print(f"\nSetting up list_test_env with DB: {db_path}")
+
+    # Create isolated adapter instances
+    memory_adapter = SQLiteMemoryAdapter(db_path=str(db_path))
+    # Instantiate SQLiteUserManagementAdapter using the same session factory as memory_adapter
+    user_manager = SQLiteUserManagementAdapter(
+        async_session_factory=memory_adapter.async_session
+    )
+
+    # Initialize DB tables (important for adapter to work)
+    # This will also ensure the default admin user is created if none exist
+    await memory_adapter._create_db_and_tables()
+
+    # Create the specific test user AFTER tables are created
+    user_id = f"test_list_user_{uuid.uuid4()}"
+    # For OSS, we might assume only one user exists or the first one is the current one.
+    # If tests need a specific user context that SQLite adapter doesn't easily provide,
+    # we might need to adjust the adapter or test strategy.
+    # For now, let's ensure at least one user exists (the default admin or our test user)
+    # The existing _ensure_initial_admin_user handles the first user creation.
+    # Let's explicitly create our test user for clarity, though check_permission might not use it directly.
+    try:
+        await user_manager.create_user(user_id)
+        print(f"Ensured test user '{user_id}' exists for test.")
+    except Exception as e:
+        # Handle case where user might already exist (e.g., default admin)
+        print(
+            f"Could not create test user '{user_id}' (may already exist or error): {e}"
+        )
+        # Fetch the first user as the one the adapter will likely use
+        all_users = await user_manager.get_all_users()
+        if all_users:
+            user_id = all_users[0].user_identifier
+            print(f"Using existing user: {user_id}")
+        else:
+            print("Warning: No user found after attempting creation.")
+            user_id = None  # Indicate no user for permission check if needed
+
+    # Inject into dependencies using monkeypatch
+    from paelladoc.dependencies import (
+        dependencies,
+    )  # Import here to avoid early binding
+
+    # No need to store originals, monkeypatch handles revert
+    # original_memory = dependencies.get(MemoryPort)
+    # original_user = dependencies.get(UserManagementPort)
+
+    monkeypatch.setitem(dependencies, MemoryPort, memory_adapter)
+    monkeypatch.setitem(dependencies, UserManagementPort, user_manager)
+
+    # Yield adapters for potential direct use in tests, although not strictly needed
+    # if tests only call the plugin functions which use injected dependencies.
+    yield {"memory_adapter": memory_adapter, "user_manager": user_manager}
+
+    # Teardown: Monkeypatch handles reverting dependencies.
+    # Close engine and remove DB file.
+    print(f"Tearing down list_test_env, closing engine and removing DB: {db_path}")
+    # Explicitly dispose the engine associated with this test's adapter
+    if memory_adapter.async_engine:
+        await memory_adapter.async_engine.dispose()
+        print(f"Disposed engine for DB: {db_path}")
+
+    if db_path.exists():
+        try:
+            os.remove(db_path)
+            print(f"Removed DB: {db_path}")
+        except Exception as e:
+            print(f"Error removing DB {db_path}: {e}")
+
 
 # --- Helper Function to create test data --- #
 
@@ -64,53 +161,20 @@ def _create_sample_memory(name_suffix: str) -> ProjectMemory:
     return memory
 
 
-# --- Pytest Fixture for Temporary DB (copied from test_paella) --- #
-
-
-@pytest.fixture(scope="function")
-async def memory_adapter():
-    """Provides an initialized SQLiteMemoryAdapter with a temporary DB."""
-    test_db_name = f"test_list_projects_{uuid.uuid4()}.db"
-    test_dir = Path(__file__).parent / "temp_dbs_list"
-    test_db_path = test_dir / test_db_name
-    test_db_path.parent.mkdir(parents=True, exist_ok=True)
-    print(f"\nSetting up test with DB: {test_db_path}")
-
-    adapter = SQLiteMemoryAdapter(db_path=test_db_path)
-    await adapter._create_db_and_tables()
-
-    yield adapter  # Provide the adapter to the test function
-
-    # Teardown
-    print(f"Tearing down test, removing DB: {test_db_path}")
-    await asyncio.sleep(0.01)
-    try:
-        if test_db_path.exists():
-            os.remove(test_db_path)
-            print(f"Removed DB: {test_db_path}")
-        try:
-            test_db_path.parent.rmdir()
-            print(f"Removed test directory: {test_db_path.parent}")
-        except OSError:
-            pass
-    except Exception as e:
-        print(f"Error during teardown removing {test_db_path}: {e}")
-
-
 # --- Test Case --- #
 
 
 @pytest.mark.asyncio
 async def test_list_projects_returns_saved_projects(
-    memory_adapter: SQLiteMemoryAdapter,
+    list_test_env: dict,  # Use the new environment fixture
 ):
     """
     Verify that listing projects correctly returns previously saved projects.
-    Now using paella_list instead of the deprecated list_projects function.
     """
     print("\nRunning: test_list_projects_returns_saved_projects")
+    memory_adapter = list_test_env["memory_adapter"]
 
-    # Arrange: Save some projects directly using the adapter
+    # Arrange: Save some projects directly using the adapter from the fixture
     project1_memory = _create_sample_memory("list1")
     project2_memory = _create_sample_memory("list2")
     await memory_adapter.save_memory(project1_memory)
@@ -120,36 +184,19 @@ async def test_list_projects_returns_saved_projects(
     )
     print(f"Saved projects: {expected_project_names}")
 
-    # Create a monkeypatch to temporarily set the DB path for the test
-    # Since we can't pass db_path to paella_list directly, we need to monkeypatch
-    # the SQLiteMemoryAdapter to use our test DB
-    original_init = SQLiteMemoryAdapter.__init__
-
-    def patched_init(self, db_path=None):
-        return original_init(self, db_path=memory_adapter.db_path)
-
-    # Apply the monkeypatch for this test
-    SQLiteMemoryAdapter.__init__ = patched_init
-
-    try:
-        # Act: Call paella_list which now uses our test DB
-        print(f"Using test DB path: {memory_adapter.db_path}")
-        result = await paella_list()
-    finally:
-        # Restore the original init method
-        SQLiteMemoryAdapter.__init__ = original_init
+    # Act: Call paella_list. It will use the dependencies injected by the fixture.
+    result = await paella_list()  # Remove random_string argument
 
     # Assert: Check the response
-    assert result["status"] == "ok", f"Expected status ok, got {result.get('status')}"
-    assert "projects" in result, "Response missing 'projects' key"
-    assert isinstance(result["projects"], list), "'projects' should be a list"
-
-    # Extract names from the ProjectInfo objects returned by the plugin
-    returned_project_names = sorted(
-        [info.name for info in result["projects"] if isinstance(info, ProjectInfo)]
+    assert result["status"] == "ok", (
+        f"Expected status ok, got {result.get('status')}: {result.get('message')}"
     )
+    assert "projects" in result
+    assert isinstance(result["projects"], list)
 
-    # Compare the sorted list of names
-    assert returned_project_names == expected_project_names, (
-        f"Expected project names {expected_project_names}, but got {returned_project_names}"
-    )
+    # Verify project names
+    retrieved_project_names = sorted(
+        [p["name"] for p in result["projects"]]
+    )  # Access name via key again
+    print(f"Retrieved projects: {retrieved_project_names}")
+    assert retrieved_project_names == expected_project_names
