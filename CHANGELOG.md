@@ -4,6 +4,23 @@ All notable changes to PAELLADOC will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [Unreleased 0.3.6] - In Development
+### Added
+- Improved project management with reliable active project tracking
+- Enhanced MCP tools for better project organization and documentation
+- New CRUD operations for managing templates, coding styles, and product documentation
+- Comprehensive test coverage ensuring reliable operation
+
+### Changed
+- Simplified project activation system for better user experience
+- More intuitive MCP tool organization following SOLID principles
+- Better error handling and user feedback in project operations
+
+### Improved
+- More reliable project state management
+- Cleaner and more maintainable codebase
+- Enhanced test coverage for core functionality
+
 ## [0.3.5] - 2025-04-24
 ### Added
 - Flexible configuration system for customizing tool behavior without code changes

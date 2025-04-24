@@ -5,6 +5,11 @@ from pathlib import Path
 import json
 import logging
 
+# Load environment variables from .env file
+from dotenv import load_dotenv
+
+load_dotenv()
+
 logger = logging.getLogger(__name__)
 
 CONFIG_FILE_NAME = "paelladoc_config.json"
