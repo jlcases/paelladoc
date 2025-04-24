@@ -6,6 +6,7 @@ import logging
 from pathlib import Path
 from typing import Dict, Any
 
+from paelladoc.domain.core_logic import mcp
 from paelladoc.domain.models.project import ProjectInfo
 from paelladoc.adapters.output.sqlite.sqlite_memory_adapter import SQLiteMemoryAdapter
 from .project_utils import (
@@ -17,15 +18,33 @@ from .project_utils import (
 logger = logging.getLogger(__name__)
 
 
+@mcp.tool(
+    name="core_get_project",
+    description="Get detailed information about a specific project.",
+)
 async def get_project(project_name: str) -> Dict[str, Any]:
-    """
-    Get detailed information about a specific project.
+    """Get detailed information about a specific project.
+
+    ACTION: Retrieves complete project information for the specified project name.
+
+    INPUT:
+    - project_name: Name of the project to retrieve (required)
+
+    OUTPUT: MUST return ONLY the raw JSON response from the execution.
+    - On success: { "status": "ok", "project": ProjectInfo }
+    - On error: { "status": "error", "message": "Error description" }
+
+    EXECUTION RULES:
+    1. This tool performs ONLY the project retrieval action
+    2. DO NOT add any introductory or explanatory text
+    3. DO NOT interpret the project data or suggest actions
+    4. DO NOT ask any questions
 
     Args:
-        project_name: Name of the project to retrieve.
+        project_name: Name of the project to retrieve
 
     Returns:
-        Dict with status and project information or error message.
+        Dict[str, Any]: Dictionary containing project info or error message
     """
     try:
         adapter = SQLiteMemoryAdapter()
@@ -48,19 +67,38 @@ async def get_project(project_name: str) -> Dict[str, Any]:
         return {"status": "error", "message": f"Error retrieving project: {str(e)}"}
 
 
+@mcp.tool(
+    name="core_update_project", description="Update specific fields of a project."
+)
 async def update_project(
     project_name: str, updates: Dict[str, Any], create_backup: bool = True
 ) -> Dict[str, Any]:
-    """
-    Update specific fields of a project.
+    """Update specific fields of a project.
+
+    ACTION: Updates specified fields of an existing project and optionally creates a backup.
+
+    INPUT:
+    - project_name: Name of the project to update (required)
+    - updates: Dictionary of field names and their new values (required)
+    - create_backup: Whether to create a backup before updating (optional, default: True)
+
+    OUTPUT: MUST return ONLY the raw JSON response from the execution.
+    - On success: { "status": "ok", "project": ProjectInfo, "backup_path": str (if backup created) }
+    - On error: { "status": "error", "message": "Error description" }
+
+    EXECUTION RULES:
+    1. Validate all field updates before applying changes
+    2. Create backup if requested before making changes
+    3. Apply all updates atomically - all succeed or none
+    4. DO NOT add any explanatory text or suggestions
 
     Args:
-        project_name: Name of the project to update.
-        updates: Dictionary of field names and their new values.
-        create_backup: Whether to create a backup before updating.
+        project_name: Name of the project to update
+        updates: Dictionary of field names and their new values
+        create_backup: Whether to create a backup before updating
 
     Returns:
-        Dict with status and updated project info or error message.
+        Dict[str, Any]: Dictionary containing updated project info or error message
     """
     try:
         adapter = SQLiteMemoryAdapter()
@@ -110,19 +148,38 @@ async def update_project(
         return {"status": "error", "message": f"Error updating project: {str(e)}"}
 
 
+@mcp.tool(
+    name="core_delete_project", description="Delete a project and optionally its files."
+)
 async def delete_project(
     project_name: str, confirm: bool = False, create_backup: bool = True
 ) -> Dict[str, Any]:
-    """
-    Delete a project and optionally its files.
+    """Delete a project and optionally its files.
+
+    ACTION: Deletes a project from the database and its associated files, with optional backup.
+
+    INPUT:
+    - project_name: Name of the project to delete (required)
+    - confirm: Explicit confirmation required for deletion (optional, default: False)
+    - create_backup: Whether to create a backup before deletion (optional, default: True)
+
+    OUTPUT: MUST return ONLY the raw JSON response from the execution.
+    - On success: { "status": "ok", "backup_path": str (if backup created) }
+    - On error: { "status": "error", "message": "Error description" }
+
+    EXECUTION RULES:
+    1. Require explicit confirmation before deletion
+    2. Create backup if requested before deletion
+    3. Remove both database entry and associated files
+    4. DO NOT add any explanatory text or suggestions
 
     Args:
-        project_name: Name of the project to delete.
-        confirm: Explicit confirmation required for deletion.
-        create_backup: Whether to create a backup before deletion.
+        project_name: Name of the project to delete
+        confirm: Explicit confirmation required for deletion
+        create_backup: Whether to create a backup before deletion
 
     Returns:
-        Dict with status and optional backup path or error message.
+        Dict[str, Any]: Dictionary containing operation result or error message
     """
     if not confirm:
         return {
