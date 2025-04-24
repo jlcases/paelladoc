@@ -139,3 +139,6 @@ local_requirements.txt
 
 # Cursor IDE specific
 .cursor/
+
+# Test project backups
+test_projects/test-project-*_backup_*.zip

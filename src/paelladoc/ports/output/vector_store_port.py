@@ -1,27 +1,30 @@
 from abc import ABC, abstractmethod
 from typing import List, Dict, Any, Optional
 
+
 class SearchResult(ABC):
     """Represents a single search result from the vector store."""
+
     # Define common attributes for a search result
     id: str
     distance: Optional[float] = None
     metadata: Optional[Dict[str, Any]] = None
     document: Optional[str] = None
 
+
 class VectorStorePort(ABC):
     """Output Port defining operations for a vector store."""
 
     @abstractmethod
     async def add_documents(
-        self, 
-        collection_name: str, 
-        documents: List[str], 
-        metadatas: Optional[List[Dict[str, Any]]] = None, 
-        ids: Optional[List[str]] = None
+        self,
+        collection_name: str,
+        documents: List[str],
+        metadatas: Optional[List[Dict[str, Any]]] = None,
+        ids: Optional[List[str]] = None,
     ) -> List[str]:
         """Adds documents (text) to a specific collection in the vector store.
-        
+
         Embeddings are typically generated automatically by the implementation.
 
         Args:
@@ -43,7 +46,7 @@ class VectorStorePort(ABC):
         n_results: int = 5,
         where: Optional[Dict[str, Any]] = None,
         where_document: Optional[Dict[str, Any]] = None,
-        include: Optional[List[str]] = ["metadatas", "documents", "distances"]
+        include: Optional[List[str]] = ["metadatas", "documents", "distances"],
     ) -> List[List[SearchResult]]:
         """Searches for documents in a collection similar to the query texts.
 
@@ -59,17 +62,17 @@ class VectorStorePort(ABC):
             A list of lists of SearchResult objects, one list per query text.
         """
         pass
-        
+
     @abstractmethod
     async def get_or_create_collection(self, collection_name: str) -> Any:
         """Gets or creates a collection in the vector store.
-        
+
         The return type is Any for now, as it depends on the specific library's
         collection object representation (e.g., Chroma's Collection).
-        
+
         Args:
             collection_name: The name of the collection.
-            
+
         Returns:
             The collection object.
         """
@@ -78,7 +81,7 @@ class VectorStorePort(ABC):
     @abstractmethod
     async def delete_collection(self, collection_name: str) -> None:
         """Deletes a collection from the vector store.
-        
+
         Args:
             collection_name: The name of the collection to delete.
         """
@@ -86,4 +89,4 @@ class VectorStorePort(ABC):
 
     # Add other potential methods like:
     # async def delete_documents(self, collection_name: str, ids: List[str]) -> None: ...
-    # async def update_documents(...) -> None: ... 
+    # async def update_documents(...) -> None: ...

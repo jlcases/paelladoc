@@ -9,6 +9,7 @@ from sqlmodel import SQLModel, select
 from sqlalchemy.ext.asyncio import create_async_engine, AsyncSession
 from sqlalchemy.orm import sessionmaker, selectinload
 from sqlalchemy.exc import IntegrityError
+from sqlalchemy import update
 
 # Ports and Domain Models
 from paelladoc.ports.output.memory_port import MemoryPort
@@ -372,6 +373,76 @@ class SQLiteMemoryAdapter(MemoryPort):
                         f"Error deleting project '{project_name}': {e}", exc_info=True
                     )
                     raise
+
+    async def get_active_project(self) -> Optional[ProjectInfo]:
+        """Gets the currently active project, if any."""
+        await self._create_db_and_tables()  # Ensure DB exists
+        async with self.async_session() as session:
+            statement = select(ProjectMemoryDB).where(ProjectMemoryDB.is_active)
+            results = await session.execute(statement)
+            active_db_project = results.scalars().first()
+            if active_db_project:
+                # Convert only the necessary fields to ProjectInfo
+                # This avoids loading the full ProjectMemory
+                return ProjectInfo(
+                    name=active_db_project.name,
+                    language=active_db_project.language,
+                    purpose=active_db_project.purpose,
+                    target_audience=active_db_project.target_audience,
+                    base_path=active_db_project.base_path,
+                    interaction_language=active_db_project.interaction_language,
+                    documentation_language=active_db_project.documentation_language,
+                    platform_taxonomy=active_db_project.platform_taxonomy,
+                    domain_taxonomy=active_db_project.domain_taxonomy,
+                    size_taxonomy=active_db_project.size_taxonomy,
+                    compliance_taxonomy=active_db_project.compliance_taxonomy,
+                    lifecycle_taxonomy=active_db_project.lifecycle_taxonomy,
+                )
+            return None
+
+    async def set_active_project(self, project_name: str) -> bool:
+        """Sets the specified project as active, deactivating others. Returns True on success."""
+        logger.info(f"Attempting to set project '{project_name}' as active.")
+        await self._create_db_and_tables()  # Ensure DB exists
+        async with self.async_session() as session:
+            async with session.begin():  # Start transaction
+                try:
+                    # Step 1: Deactivate all currently active projects
+                    update_stmt_deactivate = (
+                        update(ProjectMemoryDB)
+                        .where(ProjectMemoryDB.is_active)
+                        .values(is_active=False)
+                    )
+                    await session.execute(update_stmt_deactivate)
+                    logger.debug("Deactivated previously active projects.")
+
+                    # Step 2: Activate the target project
+                    update_stmt_activate = (
+                        update(ProjectMemoryDB)
+                        .where(ProjectMemoryDB.name == project_name)
+                        .values(is_active=True)
+                        .returning(ProjectMemoryDB.id)  # Check if update happened
+                    )
+                    result = await session.execute(update_stmt_activate)
+
+                    if result.scalar_one_or_none() is None:
+                        logger.warning(
+                            f"Project '{project_name}' not found to activate. Rolling back."
+                        )
+                        # Transaction will be rolled back automatically by context manager
+                        return False
+
+                    logger.info(f"Successfully set project '{project_name}' as active.")
+                    # Transaction commits automatically here
+                    return True
+
+                except Exception as e:
+                    logger.error(
+                        f"Error setting active project '{project_name}': {e}",
+                        exc_info=True,
+                    )
+                    # Transaction will be rolled back automatically
+                    return False
 
     # Remove ensure_utc helper method from the adapter (should be in mapper)
     # def ensure_utc(self, dt: datetime.datetime) -> datetime.datetime:

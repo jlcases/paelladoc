@@ -1,6 +1,6 @@
 from typing import List, Optional
 from uuid import UUID, uuid4
-from datetime import datetime
+from datetime import datetime, timezone
 from pathlib import Path
 
 from sqlmodel import Field, Relationship, SQLModel, Column  # Import Column for JSON
@@ -76,8 +76,8 @@ class ArtifactMetaDB(SQLModel, table=True):
     name: str = Field(index=True)
     bucket: Bucket = Field(index=True)  # Store enum value directly
     path: str = Field(index=True)  # Store Path as string
-    created_at: datetime = Field(default_factory=datetime.utcnow)
-    updated_at: datetime = Field(default_factory=datetime.utcnow)
+    created_at: datetime = Field(default_factory=lambda: datetime.now(timezone.utc))
+    updated_at: datetime = Field(default_factory=lambda: datetime.now(timezone.utc))
 
     # KG Node Properties for actor/authorship tracking
     # These fields can be used to create CREATED_BY and MODIFIED_BY edges in a KG
@@ -109,6 +109,7 @@ class ProjectMemoryDB(SQLModel, table=True):
     # Or use metadata.name as PK? For now, using UUID.
     id: UUID = Field(default_factory=uuid4, primary_key=True, index=True)
     name: str = Field(unique=True, index=True)  # From metadata.name
+    is_active: bool = Field(default=False, index=True)  # Track active project
     language: Optional[str] = Field(default=None)
     purpose: Optional[str] = Field(default=None)
     target_audience: Optional[str] = Field(default=None)
@@ -121,8 +122,10 @@ class ProjectMemoryDB(SQLModel, table=True):
     interaction_language: Optional[str] = Field(default=None)
     documentation_language: Optional[str] = Field(default=None)
     taxonomy_version: str
-    created_at: datetime = Field(default_factory=datetime.utcnow)
-    last_updated_at: datetime = Field(default_factory=datetime.utcnow)
+    created_at: datetime = Field(default_factory=lambda: datetime.now(timezone.utc))
+    last_updated_at: datetime = Field(
+        default_factory=lambda: datetime.now(timezone.utc)
+    )
 
     # KG Node Properties for actor/authorship tracking
     created_by: Optional[str] = Field(default=None, index=True)

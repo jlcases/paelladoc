@@ -97,11 +97,15 @@ python_files = ["test_*.py"]
 addopts = "-v --cov=paelladoc --cov-report=term-missing"
 
 [tool.ruff]
-select = ["E", "F", "B", "I"]
+select = ["E", "F", "B", "I", "TID"]
 ignore = ["E501"]
 line-length = 88
 target-version = "py38"
 src = ["src"]
+
+[tool.ruff.lint.flake8-tidy-imports]
+# Ban ALL relative imports (including same-level)
+ban-relative-imports = "all"
 
 [tool.mypy]
 python_version = "3.8"

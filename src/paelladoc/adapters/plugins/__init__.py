@@ -15,7 +15,7 @@ package_name = __name__
 logger.info(f"Dynamically loading plugins from: {package_path}")
 
 for module_info in pkgutil.iter_modules([package_path]):
-    if module_info.ispkg: # Only import potential packages (directories)
+    if module_info.ispkg:  # Only import potential packages (directories)
         sub_package_name = f"{package_name}.{module_info.name}"
         try:
             importlib.import_module(sub_package_name)

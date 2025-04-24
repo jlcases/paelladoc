@@ -193,21 +193,44 @@ async def paella_select(project_name: str) -> Dict:
         and key details of the selected project (name, base path). Returns an error status
         if the project is not found.
     """
+    logger.info(f"Attempting to select and activate project: '{project_name}'")
     try:
         memory_adapter = SQLiteMemoryAdapter()
-        project_memory = await memory_adapter.load_memory(project_name)
+        # First, check if the project exists
+        exists = await memory_adapter.project_exists(project_name)
 
-        if project_memory:
+        if not exists:
+            logger.warning(f"Project '{project_name}' not found during select.")
+            return {"status": "error", "message": f"Project '{project_name}' not found"}
+
+        # If it exists, set it as active
+        success = await memory_adapter.set_active_project(project_name)
+
+        if success:
+            # Optionally, load the memory to return base_path (consider performance if large)
+            # For now, let's just confirm activation
+            logger.info(f"Successfully activated project '{project_name}'.")
             return {
                 "status": "ok",
-                "message": f"Project '{project_name}' selected",
+                "message": f"Project '{project_name}' selected and activated",
                 "project_name": project_name,
-                "base_path": str(project_memory.project_info.base_path),
+                # Add base_path if needed, requires loading memory
+                # "base_path": str(project_memory.project_info.base_path),
             }
         else:
-            return {"status": "error", "message": f"Project '{project_name}' not found"}
+            # This case might indicate a concurrent modification or DB error
+            logger.error(
+                f"Failed to set project '{project_name}' as active, despite existence."
+            )
+            return {
+                "status": "error",
+                "message": f"Failed to activate project '{project_name}'",
+            }
     except Exception as e:
-        logger.error(f"Error selecting project: {str(e)}")
+        logger.error(
+            f"Error selecting/activating project '{project_name}': {str(e)}",
+            exc_info=True,
+        )
         return {"status": "error", "message": f"Failed to select project: {str(e)}"}
 
 
