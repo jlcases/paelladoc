@@ -318,6 +318,49 @@ class SQLiteMemoryAdapter(MemoryPort):
 
     # list_projects_names removed as list_projects now returns ProjectInfo
 
+    async def delete_memory(self, project_name: str) -> None:
+        """Delete a project memory and its artifacts from the database.
+
+        Args:
+            project_name: Name of the project to delete.
+
+        Raises:
+            ValueError: If project doesn't exist.
+        """
+        logger.debug(f"Attempting to delete project: {project_name}")
+        await self._create_db_and_tables()
+
+        async with self.async_session() as session:
+            async with session.begin():
+                try:
+                    # Find the project
+                    statement = (
+                        select(ProjectMemoryDB)
+                        .where(ProjectMemoryDB.name == project_name)
+                        .options(selectinload(ProjectMemoryDB.artifacts))
+                    )
+                    results = await session.execute(statement)
+                    project_db = results.scalars().first()
+
+                    if not project_db:
+                        raise ValueError(f"Project '{project_name}' not found.")
+
+                    # Delete all artifacts first (due to foreign key constraint)
+                    if project_db.artifacts:
+                        for artifact in project_db.artifacts:
+                            await session.delete(artifact)
+
+                    # Delete the project
+                    await session.delete(project_db)
+
+                    logger.info(f"Successfully deleted project: {project_name}")
+
+                except Exception as e:
+                    logger.error(
+                        f"Error deleting project '{project_name}': {e}", exc_info=True
+                    )
+                    raise
+
     # Remove ensure_utc helper method from the adapter (should be in mapper)
     # def ensure_utc(self, dt: datetime.datetime) -> datetime.datetime:
     #     ...
