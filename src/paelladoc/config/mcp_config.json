@@ -1,0 +1,84 @@
+{
+  "version": "1.0",
+  "mcp_configuration": {
+    "core": {
+      "enabled": true,
+      "linked_taxonomies": [
+        "Initiate::CoreSetup",
+        "Initiate::InitialProductDocs",
+        "Elaborate::DiscoveryAndResearch",
+        "Elaborate::IdeationAndDesign"
+      ],
+      "tools": [
+        "core_help",
+        "core_continue",
+        "paella_init",
+        "paella_list",
+        "paella_select"
+      ]
+    },
+    "product": {
+      "enabled": true,
+      "linked_taxonomies": [
+        "Elaborate::SpecificationAndPlanning",
+        "Elaborate::CoreAndSupport"
+      ],
+      "tools": [
+        "core_manage_story",
+        "core_manage_task",
+        "core_manage_sprint"
+      ]
+    },
+    "templates": {
+      "enabled": true,
+      "linked_taxonomies": [
+        "Govern::MemoryTemplates",
+        "Generate::SupportingElements"
+      ],
+      "tools": [
+        "core_manage_template",
+        "core_manage_template_variable",
+        "core_manage_template_instance"
+      ]
+    },
+    "standards": {
+      "enabled": true,
+      "linked_taxonomies": [
+        "Govern::StandardsMethodologies",
+        "Deploy::Security"
+      ],
+      "tools": [
+        "core_manage_coding_style",
+        "core_manage_style_rule",
+        "core_manage_style_validation"
+      ]
+    },
+    "operations": {
+      "enabled": true,
+      "linked_taxonomies": [
+        "Deploy::PipelinesAndAutomation",
+        "Deploy::InfrastructureAndConfig",
+        "Operate::RunbooksAndSOPs",
+        "Operate::MonitoringAndAlerting",
+        "Operate::Maintenance"
+      ],
+      "tools": [
+        "core_manage_deployment",
+        "core_manage_monitoring",
+        "core_manage_maintenance"
+      ]
+    },
+    "iteration": {
+      "enabled": true,
+      "linked_taxonomies": [
+        "Iterate::LearningAndAnalysis",
+        "Iterate::PlanningAndRetrospection"
+      ],
+      "tools": [
+        "core_manage_feedback",
+        "core_manage_experiment",
+        "core_manage_metrics"
+      ]
+    }
+  }
+} 

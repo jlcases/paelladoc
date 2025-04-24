@@ -10,6 +10,16 @@ from paelladoc.ports.output.configuration_port import ConfigurationPort
 from paelladoc.adapters.output.sqlite.configuration_adapter import (
     SQLiteConfigurationAdapter,
 )
+from paelladoc.adapters.output.filesystem.taxonomy_repository import (
+    FileSystemTaxonomyRepository,
+)
+from paelladoc.ports.output.taxonomy_repository import TaxonomyRepository
+from paelladoc.adapters.output.filesystem.mcp_config_repository import (
+    FileSystemMCPConfigRepository,
+)
+from paelladoc.ports.output.mcp_config_port import MCPConfigPort
+from paelladoc.adapters.output.sqlite.sqlite_memory_adapter import SQLiteMemoryAdapter
+from paelladoc.ports.output.memory_port import MemoryPort
 
 logger = logging.getLogger(__name__)
 
@@ -61,3 +71,18 @@ container = Container()
 def get_container() -> Container:
     """Returns the global container instance."""
     return container
+
+
+# Create instances of adapters
+taxonomy_repo = FileSystemTaxonomyRepository()
+mcp_config_repo = FileSystemMCPConfigRepository()
+memory_adapter = SQLiteMemoryAdapter()  # Uses configured DB path
+
+# Dependency mapping
+# For Dependency Injector or manual injection points
+dependencies = {
+    TaxonomyRepository: taxonomy_repo,
+    MCPConfigPort: mcp_config_repo,
+    MemoryPort: memory_adapter,
+    # ... other mappings ...
+}
