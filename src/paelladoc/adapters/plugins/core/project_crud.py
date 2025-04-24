@@ -15,6 +15,10 @@ from .project_utils import (
     format_project_info,
 )
 
+# Dependency Injection for User Management Port
+from paelladoc.dependencies import dependencies  # Assuming dict-based DI
+from paelladoc.ports.output.user_management_port import UserManagementPort
+
 logger = logging.getLogger(__name__)
 
 
@@ -87,10 +91,11 @@ async def update_project(
     - On error: { "status": "error", "message": "Error description" }
 
     EXECUTION RULES:
-    1. Validate all field updates before applying changes
-    2. Create backup if requested before making changes
-    3. Apply all updates atomically - all succeed or none
-    4. DO NOT add any explanatory text or suggestions
+    1. Check user permissions before proceeding.
+    2. Validate all field updates before applying changes
+    3. Create backup if requested before making changes
+    4. Apply all updates atomically - all succeed or none
+    5. DO NOT add any explanatory text or suggestions
 
     Args:
         project_name: Name of the project to update
@@ -101,6 +106,21 @@ async def update_project(
         Dict[str, Any]: Dictionary containing updated project info or error message
     """
     try:
+        # --- Permission Check ---
+        user_management_port: UserManagementPort = dependencies.get(UserManagementPort)
+        if not user_management_port:
+            logger.warning("UserManagementPort not found. Skipping permission check.")
+        else:
+            user_id = await user_management_port.get_current_user_id()
+            if not await user_management_port.check_permission(
+                user_id, "core_update_project", project_name
+            ):
+                return {
+                    "status": "error",
+                    "message": "Permission denied to update this project.",
+                }
+        # --- End Permission Check ---
+
         adapter = SQLiteMemoryAdapter()
         project_memory = await adapter.load_memory(project_name)
 
@@ -130,7 +150,7 @@ async def update_project(
         project_info_dict.update(updates)
         project_memory.project_info = ProjectInfo(**project_info_dict)
 
-        # Save changes
+        # Save changes (this will also set modified_by via the adapter)
         await adapter.save_memory(project_memory)
 
         # Format response
@@ -168,10 +188,11 @@ async def delete_project(
     - On error: { "status": "error", "message": "Error description" }
 
     EXECUTION RULES:
-    1. Require explicit confirmation before deletion
-    2. Create backup if requested before deletion
-    3. Remove both database entry and associated files
-    4. DO NOT add any explanatory text or suggestions
+    1. Check user permissions before proceeding.
+    2. Require explicit confirmation before deletion
+    3. Create backup if requested before deletion
+    4. Remove both database entry and associated files
+    5. DO NOT add any explanatory text or suggestions
 
     Args:
         project_name: Name of the project to delete
@@ -181,6 +202,21 @@ async def delete_project(
     Returns:
         Dict[str, Any]: Dictionary containing operation result or error message
     """
+    # --- Permission Check ---
+    user_management_port: UserManagementPort = dependencies.get(UserManagementPort)
+    if not user_management_port:
+        logger.warning("UserManagementPort not found. Skipping permission check.")
+    else:
+        user_id = await user_management_port.get_current_user_id()
+        if not await user_management_port.check_permission(
+            user_id, "core_delete_project", project_name
+        ):
+            return {
+                "status": "error",
+                "message": "Permission denied to delete this project.",
+            }
+    # --- End Permission Check ---
+
     if not confirm:
         return {
             "status": "error",

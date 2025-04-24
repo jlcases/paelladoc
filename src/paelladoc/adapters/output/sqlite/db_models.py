@@ -158,3 +158,21 @@ class ProjectMemoryDB(SQLModel, table=True):
     # TODO: Decide how to handle the old 'documents' field if migration is needed.
     # Could be another JSON field temporarily or migrated into ArtifactMetaDB.
     # For now, omitting it, assuming new structure only or migration handles it.
+
+
+# --- User Model (Minimal for OSS) --- #
+
+
+class UserDB(SQLModel, table=True):
+    """Minimal user model for OSS version, primarily for tracking authorship."""
+
+    id: Optional[int] = Field(default=None, primary_key=True)
+    user_identifier: str = Field(unique=True, index=True)
+    created_at: datetime = Field(default_factory=lambda: datetime.now(timezone.utc))
+
+    # In SaaS, this model would be significantly more complex, potentially including
+    # relationships to roles, tenants, etc. For OSS, we just need a unique ID
+    # to link to created_by/modified_by fields.
+
+
+# --- Configuration Models --- #

@@ -20,6 +20,10 @@ from paelladoc.adapters.output.filesystem.mcp_config_repository import (
 from paelladoc.ports.output.mcp_config_port import MCPConfigPort
 from paelladoc.adapters.output.sqlite.sqlite_memory_adapter import SQLiteMemoryAdapter
 from paelladoc.ports.output.memory_port import MemoryPort
+from paelladoc.ports.output.user_management_port import UserManagementPort
+from paelladoc.adapters.output.dummy_user_management_adapter import (
+    DummyUserManagementAdapter,
+)
 
 logger = logging.getLogger(__name__)
 
@@ -77,6 +81,8 @@ def get_container() -> Container:
 taxonomy_repo = FileSystemTaxonomyRepository()
 mcp_config_repo = FileSystemMCPConfigRepository()
 memory_adapter = SQLiteMemoryAdapter()  # Uses configured DB path
+# Pass the session factory to the DummyUserManagementAdapter
+user_management_adapter = DummyUserManagementAdapter(container._async_session_factory)
 
 # Dependency mapping
 # For Dependency Injector or manual injection points
@@ -84,5 +90,8 @@ dependencies = {
     TaxonomyRepository: taxonomy_repo,
     MCPConfigPort: mcp_config_repo,
     MemoryPort: memory_adapter,
+    UserManagementPort: user_management_adapter,
+    # Add the session factory itself if needed elsewhere
+    sessionmaker: container._async_session_factory,
     # ... other mappings ...
 }

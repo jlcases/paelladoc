@@ -27,6 +27,10 @@ from .mapper import map_db_to_domain, map_domain_to_db, sync_artifacts_db
 # Configuration
 from paelladoc.config.database import get_db_path
 
+# Dependency Injection for User Management Port
+from paelladoc.dependencies import dependencies  # Assuming dict-based DI
+from paelladoc.ports.output.user_management_port import UserManagementPort
+
 # Default database path (obtained via config logic)
 # DEFAULT_DB_PATH = get_db_path() # No longer needed as constant? __init__ uses get_db_path()
 
@@ -132,6 +136,18 @@ class SQLiteMemoryAdapter(MemoryPort):
         logger.debug(f"Attempting to save memory for project: {project_name}")
         await self._create_db_and_tables()
 
+        # Get User Management Port from dependencies
+        user_management_port: UserManagementPort = dependencies.get(UserManagementPort)
+        if not user_management_port:
+            # Fallback or error handling if port is not registered
+            logger.warning(
+                "UserManagementPort not found in dependencies. Cannot set created_by/modified_by."
+            )
+            current_user_id = None
+        else:
+            current_user_id = await user_management_port.get_current_user_id()
+            logger.debug(f"Retrieved current user ID: {current_user_id}")
+
         async with self.async_session() as session:
             async with (
                 session.begin()
@@ -146,8 +162,22 @@ class SQLiteMemoryAdapter(MemoryPort):
                     results = await session.execute(statement)
                     existing_db_memory = results.scalars().first()
 
+                    # Set created_by only if it's a new project
+                    if not existing_db_memory and current_user_id:
+                        memory.project_info.created_by = current_user_id
+
+                    # Always set modified_by
+                    if current_user_id:
+                        memory.project_info.modified_by = current_user_id
+
                     # Use mapper to map domain object to DB object (create or update fields)
                     db_memory = map_domain_to_db(memory, existing_db_memory)
+
+                    # Ensure DB model also gets the updated user IDs
+                    if not existing_db_memory and current_user_id:
+                        db_memory.created_by = current_user_id
+                    if current_user_id:
+                        db_memory.modified_by = current_user_id
 
                     # Add the main object to the session (SQLModel handles INSERT or UPDATE)
                     # If existing_db_memory is None, this adds a new object.
