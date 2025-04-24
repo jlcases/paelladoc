@@ -35,7 +35,11 @@ async def get_project(project_name: str) -> Dict[str, Any]:
                 "message": f"Project '{project_name}' not found.",
             }
 
-        return {"status": "ok", "project": project_memory.project_info.dict()}
+        # Convert project info to dict and ensure base_path is str
+        project_info = project_memory.project_info.model_dump()
+        project_info["base_path"] = str(project_info["base_path"])
+
+        return {"status": "ok", "project": project_info}
 
     except Exception as e:
         logger.error(f"Error retrieving project '{project_name}': {e}", exc_info=True)
@@ -83,14 +87,18 @@ async def update_project(
             # Add more field validations as needed
 
         # Apply updates
-        project_info_dict = project_memory.project_info.dict()
+        project_info_dict = project_memory.project_info.model_dump()
         project_info_dict.update(updates)
         project_memory.project_info = ProjectInfo(**project_info_dict)
 
         # Save changes
         await adapter.save_memory(project_memory)
 
-        result = {"status": "ok", "project": project_memory.project_info.dict()}
+        # Convert project info to dict and ensure base_path is str
+        project_info = project_memory.project_info.model_dump()
+        project_info["base_path"] = str(project_info["base_path"])
+
+        result = {"status": "ok", "project": project_info}
         if backup_path:
             result["backup_path"] = str(backup_path)
 
@@ -142,7 +150,6 @@ async def delete_project(
             shutil.rmtree(base_path)
 
         # Delete from database
-        # TODO: Implement delete_memory in SQLiteMemoryAdapter
         await adapter.delete_memory(project_name)
 
         result = {"status": "ok"}
