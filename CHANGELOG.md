@@ -4,6 +4,13 @@ All notable changes to PAELLADOC will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+
+## [0.3.7] - 2025-04-25
+### Fixed
+- Restored missing core plugin files (`project_crud.py`, `project_utils.py`) that were inadvertently excluded from the v0.3.6 package build, making tools like `core_get_project`, `core_update_project`, and `core_delete_project` available again.
+
+=======
+
 ## [0.3.6] - 2025-04-25
 ### Added
 - Improved project management with reliable active project tracking.
