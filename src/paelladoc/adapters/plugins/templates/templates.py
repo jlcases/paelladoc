@@ -11,22 +11,9 @@ logger = logging.getLogger(__name__)
 # TODO: Review imports and add any other necessary modules
 
 
-@mcp.tool(
-    name="core_manage_template",
-    description="Manages documentation templates with CRUD operations",
-)
-async def manage_template(
-    operation: str,
-    id: Optional[str] = None,
-    name: Optional[str] = None,
-    category: Optional[str] = None,
-    content: Optional[str] = None,
-    variables: Optional[Dict[str, str]] = None,
-    metadata: Optional[Dict[str, Any]] = None,
-    tags: Optional[List[str]] = None,
-    version: Optional[str] = None,
-) -> Dict[str, Any]:
-    """Manages documentation templates.
+@mcp.tool(name="templates", description="Manages documentation templates.")
+def templates_templates() -> dict:
+    """Handles the lifecycle of documentation templates.
 
     ACTION: Performs CRUD operations on documentation templates.
 

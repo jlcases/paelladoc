@@ -12,8 +12,8 @@ logger = logging.getLogger(__name__)
 
 
 @mcp.tool(
-    name="core_manage_coding_style",
-    description="Manages coding style definitions with CRUD operations",
+    name="coding_styles",
+    description="Manages coding style guides for the project.",
 )
 async def manage_coding_style(
     operation: str,

@@ -116,7 +116,18 @@ async def paella_init(
 
         # Create project memory - directly using fields
         project_memory = ProjectMemory(
-            project_info=project_info,
+            project_info=ProjectInfo(
+                name=new_project_name,
+                interaction_language=interaction_language,
+                documentation_language=documentation_language,
+                base_path=abs_base_path,
+                platform_taxonomy=platform_taxonomy,
+                domain_taxonomy=domain_taxonomy,
+                size_taxonomy=size_taxonomy,
+                compliance_taxonomy=compliance_taxonomy,
+                lifecycle_taxonomy=lifecycle_taxonomy,
+                custom_taxonomy=custom_taxonomy if custom_taxonomy else {},
+            ),
             artifacts={
                 Bucket.INITIATE_INITIAL_PRODUCT_DOCS: [
                     ArtifactMeta(
@@ -158,8 +169,7 @@ async def paella_init(
     description="Retrieves detailed information for all PAELLADOC projects stored in the system memory",
 )
 async def paella_list() -> Dict:
-    """
-    Retrieves detailed information for all PAELLADOC projects stored in the system memory.
+    """Retrieves detailed information (ProjectInfo objects) for all PAELLADOC projects stored in the system memory.
 
     This tool provides comprehensive information about each project, including:
     - Project name and languages

@@ -36,11 +36,19 @@ class ProjectInfo(BaseModel):
     language: Optional[str] = None  # Should be validated against SupportedLanguage
     purpose: Optional[str] = None
     target_audience: Optional[str] = None
-    objectives: Optional[List[str]] = []
-    base_path: Optional[Path] = None  # Path is allowed by arbitrary_types_allowed
-    interaction_language: Optional[str] = None  # Should be validated
-    documentation_language: Optional[str] = None  # Should be validated
-    taxonomy_version: str = "1.0"  # Default or fetched from config?
+    objectives: Optional[List[str]] = Field(default_factory=list)
+    base_path: Optional[Path] = None
+    interaction_language: Optional[str] = None
+    documentation_language: Optional[str] = None
+    taxonomy_version: str = "1.0"  # Default or loaded?
+    # Add the new taxonomy fields here as well for the domain model
+    platform_taxonomy: str
+    domain_taxonomy: str
+    size_taxonomy: str
+    compliance_taxonomy: str  # Consider if this one could truly be optional sometimes?
+    lifecycle_taxonomy: str  # Required field for lifecycle dimension
+    custom_taxonomy: Optional[Dict[str, Any]] = Field(default_factory=dict)
+    taxonomy_validation: Optional[Dict[str, Any]] = Field(default_factory=dict)
 
     # MECE Taxonomy Selection
     platform_taxonomy: Optional[str] = None

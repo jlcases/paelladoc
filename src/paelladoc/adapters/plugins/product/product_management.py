@@ -12,8 +12,8 @@ logger = logging.getLogger(__name__)
 
 
 @mcp.tool(
-    name="core_manage_story",
-    description="Manages user stories in the project with CRUD operations",
+    name="product_management",
+    description='Manages product features like stories, tasks, etc. Access: stakeholder: ["read_only"]',
 )
 async def manage_story(
     operation: str,

@@ -34,66 +34,6 @@ from paelladoc.domain.models.language import SupportedLanguage
 # Import paella_list instead of the deleted module
 from paelladoc.adapters.plugins.core.paella import paella_list
 
-# Directory for temporary test databases
-TEMP_DB_DIR = Path("src/tests/integration/adapters/plugins/core/temp_dbs_list")
-
-
-@pytest.fixture(scope="function", autouse=True)
-def setup_test_db_dir():
-    """Ensure the temporary DB directory exists for each test function."""
-    TEMP_DB_DIR.mkdir(parents=True, exist_ok=True)
-    yield
-    # Cleanup directory if empty
-    try:
-        TEMP_DB_DIR.rmdir()
-    except OSError:
-        pass  # Not empty, other tests might still be using it
-
-
-@pytest.fixture(scope="function")
-async def list_test_env(monkeypatch, setup_test_db_dir):
-    """Provides an isolated environment (DB, User Manager, Dependencies) for list tests."""
-    db_name = f"test_list_projects_{uuid.uuid4()}.db"
-    db_path = TEMP_DB_DIR / db_name
-    print(f"\nSetting up list_test_env with DB: {db_path}")
-
-    # Create isolated adapter instances
-    memory_adapter = SQLiteMemoryAdapter(db_path=str(db_path))
-    # Instantiate SQLiteUserManagementAdapter using the same session factory as memory_adapter
-    user_manager = SQLiteUserManagementAdapter(
-        async_session_factory=memory_adapter.async_session
-    )
-
-    # Inject into dependencies using monkeypatch FIRST
-    from paelladoc.dependencies import dependencies  # Import here if not already at top
-
-    monkeypatch.setitem(dependencies, MemoryPort, memory_adapter)
-    monkeypatch.setitem(dependencies, UserManagementPort, user_manager)
-
-    # NOW Initialize DB tables (important for adapter to work)
-    # This will also ensure the default admin user is created if none exist
-    await memory_adapter._create_db_and_tables()
-
-    # Yield adapters for potential direct use in tests, although not strictly needed
-    # if tests only call the plugin functions which use injected dependencies.
-    yield {"memory_adapter": memory_adapter, "user_manager": user_manager}
-
-    # Teardown: Monkeypatch handles reverting dependencies.
-    # Close engine and remove DB file.
-    print(f"Tearing down list_test_env, closing engine and removing DB: {db_path}")
-    # Explicitly dispose the engine associated with this test's adapter
-    if memory_adapter.async_engine:
-        await memory_adapter.async_engine.dispose()
-        print(f"Disposed engine for DB: {db_path}")
-
-    if db_path.exists():
-        try:
-            os.remove(db_path)
-            print(f"Removed DB: {db_path}")
-        except Exception as e:
-            print(f"Error removing DB {db_path}: {e}")
-
-
 # --- Helper Function to create test data --- #
 
 
@@ -139,6 +79,7 @@ async def test_list_projects_returns_saved_projects(
 ):
     """
     Verify that listing projects correctly returns previously saved projects.
+    Now using paella_list instead of the deprecated list_projects function.
     """
     print("\nRunning: test_list_projects_returns_saved_projects")
     memory_adapter = list_test_env["memory_adapter"]
@@ -153,8 +94,24 @@ async def test_list_projects_returns_saved_projects(
     )
     print(f"Saved projects: {expected_project_names}")
 
-    # Act: Call paella_list. It will use the dependencies injected by the fixture.
-    result = await paella_list()  # Remove random_string argument
+    # Create a monkeypatch to temporarily set the DB path for the test
+    # Since we can't pass db_path to paella_list directly, we need to monkeypatch
+    # the SQLiteMemoryAdapter to use our test DB
+    original_init = SQLiteMemoryAdapter.__init__
+
+    def patched_init(self, db_path=None):
+        return original_init(self, db_path=memory_adapter.db_path)
+
+    # Apply the monkeypatch for this test
+    SQLiteMemoryAdapter.__init__ = patched_init
+
+    try:
+        # Act: Call paella_list which now uses our test DB
+        print(f"Using test DB path: {memory_adapter.db_path}")
+        result = await paella_list()
+    finally:
+        # Restore the original init method
+        SQLiteMemoryAdapter.__init__ = original_init
 
     # Assert: Check the response
     assert result["status"] == "ok", (
