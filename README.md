@@ -11,16 +11,16 @@
   ⭐ If you find PAELLADOC useful, please consider starring the repo! ⭐
 </p>
 
-![Version](https://img.shields.io/badge/version-0.3.5-blue.svg)
+![Version](https://img.shields.io/badge/version-0.3.6-blue.svg)
 ![Status](https://img.shields.io/badge/status-active-success.svg)
 ![Philosophy](https://img.shields.io/badge/philosophy-AI--First-purple.svg)
 ![MCP](https://img.shields.io/badge/type-MCP-orange.svg)
-![Updated](https://img.shields.io/badge/updated-2025--04--24-brightgreen.svg)
+![Updated](https://img.shields.io/badge/updated-2025--04--25-brightgreen.svg)
 [![GitHub Stars](https://img.shields.io/github/stars/jlcases/paelladoc?style=social)](https://github.com/jlcases/paelladoc)
 [![X Community](https://img.shields.io/badge/X%20Community-PAellaDOC-blue)](https://x.com/i/communities/1907494161458090406)
 [![Discord](https://img.shields.io/discord/grKF8EaB?label=Discord&logo=discord&style=social)](https://discord.gg/grKF8EaB)
 
-> **Version 0.3.5**: Latest release includes a flexible configuration system, dynamic bucket prioritization, AGPL licensing, and improved usability. Check the [CHANGELOG](CHANGELOG.md) for details!
+> **Version 0.3.6**: This release focuses on internal improvements and stability, particularly during initial setup and testing. Check the [CHANGELOG](CHANGELOG.md) for details!
 
 > "In the AI era, context isn't supplementary to code—it's the primary creation."
 
@@ -188,7 +188,7 @@ Now, tell your LLM tool (like Cursor) how to find and run PAELLADOC.
 
 #### Cursor IDE Example
 
-Edit your `.cursor/mcp.json` file. This is the **minimum required configuration**:
+Edit your `.cursor/mcp.json` file. Add a server configuration for PAELLADOC. Here's a typical example:
 
 ```json
 {
@@ -200,6 +200,13 @@ Edit your `.cursor/mcp.json` file. This is the **minimum required configuration*
         "paelladoc.ports.input.mcp_server_adapter",
         "--stdio"
       ],
+      "cwd": "/path/to/your/project/directory", // Optional: Set working directory
+      "env": {
+        // Recommended for local dev: Use a DB in your project folder
+        "PAELLADOC_DB_PATH": "/path/to/your/project/directory/paelladoc_memory.db",
+        // Optional: Add src to PYTHONPATH if needed for local development imports
+        "PYTHONPATH": "/path/to/your/project/directory/src:/path/to/your/project/directory" 
+      },
       "disabled": false
     }
   },
@@ -209,21 +216,12 @@ Edit your `.cursor/mcp.json` file. This is the **minimum required configuration*
 
 **Important Notes:**
 
-- The `command` path **must** be the absolute path to the Python executable created in Step 1 (e.g., `/Users/your_username/.paelladoc_venv/bin/python`). This is the only strictly required configuration.
-- By default, PAELLADOC will use `~/.paelladoc/memory.db` for its database. If you need a custom location, you must add an `"env"` section inside the `"Paelladoc": { ... }` block, like this:
-  ```
-=======
-```json
-// Example structure (adapt as needed):
-{
-  // ... platform specific tool definition ...
-  "command": "/Users/your_username/.paelladoc_venv/bin/python",
-  "args": [ "-m", "paelladoc.ports.input.mcp_server_adapter", "--stdio" ],
-  "env": {
-  }
-  // ...
-}
-```
+- The `command` path **must** be the absolute path to the Python executable inside your `.paelladoc_venv` (created in Step 1). Replace `/absolute/path/to/` with the actual path on your system (e.g., `/Users/your_username/`).
+- **Database Path:**
+  - By default (if `PAELLADOC_DB_PATH` is *not* set in `env`), PAELLADOC uses `~/.paelladoc/memory.db`.
+  - For local development where you might want the database alongside your project code, setting `PAELLADOC_DB_PATH` in the `env` section (as shown in the example) is the **recommended and most reliable** approach. Replace `/path/to/your/project/directory/` with the actual path to your project.
+- **Working Directory (`cwd`):** Setting this to your project directory can be helpful but is often optional.
+- **PYTHONPATH:** Setting this in `env` might be necessary if you are doing local development on PAELLADOC itself and need the server to find your source code.
 
 ### 4. Let the LLM Guide You
 
@@ -240,6 +238,8 @@ The LLM will handle all the complexity - you just need to express your intent in
 
 *   **PyPI Version (Stable):** The versions published on PyPI (`pip install paelladoc`) are stable releases recommended for general use.
 *   **GitHub Repository (Development):** The `main` branch (and other branches) on the [GitHub repository](https://github.com/jlcases/paelladoc) contains the latest development code. This version may include new features or changes that are not yet fully tested and should be considered unstable. Use this version if you want to try out cutting-edge features or contribute to development.
+
+> **Note on Current Development:** Active development is currently focused internally on delivering an MVP with significant new capabilities. While the PyPI version remains stable, expect major advancements in future releases as we work towards this goal in a more private setting for now.
 
 ## 🚀 Quick Start
 
@@ -260,7 +260,7 @@ The LLM will handle all the complexity - you just need to express your intent in
 
 3.  **Follow the LLM's lead:** PAELLADOC (via the LLM) will then guide you through the process interactively, asking for project details, template choices, etc.
 
-## ⚙️ Available Commands (v0.3.5)
+## ⚙️ Available Commands (v0.3.6)
 
 This version provides the following core commands, exposed via MCP for interaction with your LLM:
 
@@ -318,6 +318,3 @@ Based on the [Unified Roadmap](instructions/roadmap_unified.md), future versions
 ## 📊 MECE Documentation Structure
 
 Our AI-First taxonomy ensures complete context preservation:
-
-```
->>>>>>> main
