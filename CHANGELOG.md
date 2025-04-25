@@ -4,7 +4,7 @@ All notable changes to PAELLADOC will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
-## [0.3.6] - YYYY-MM-DD
+## [0.3.6] - 2025-04-25
 ### Added
 - Improved project management with reliable active project tracking.
 - Enhanced MCP tools for better project organization and documentation.
@@ -25,6 +25,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Fixed
 - Resolved internal issues that could potentially affect application stability under certain conditions.
 - Corrected problems interfering with internal automated testing, ensuring changes are verified more accurately.
+- Resolved internal issues that could potentially affect application stability under certain conditions, particularly during initial setup or testing.
 
 ## [0.3.5] - 2025-04-24
 ### Added
