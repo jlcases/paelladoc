@@ -135,7 +135,13 @@ class SQLiteMemoryAdapter(MemoryPort):
             logger.info("Database tables checked/created via SQLModel.")
 
             # --- Add initial OSS admin user ---
-            await self._ensure_initial_admin_user()
+            # Get the potentially patched dependency HERE
+            from paelladoc.dependencies import dependencies
+
+            user_port_instance = dependencies.get(UserManagementPort)
+            await self._ensure_initial_admin_user(
+                user_port_instance
+            )  # Pasar la instancia
             # --- End add initial OSS admin user ---
 
         except Exception as e:
@@ -147,23 +153,19 @@ class SQLiteMemoryAdapter(MemoryPort):
             # Re-raise the exception to allow higher-level handlers to catch it if needed
             raise
 
-    async def _ensure_initial_admin_user(self):
+    async def _ensure_initial_admin_user(
+        self, user_management_port: UserManagementPort
+    ):
         """Checks if any user exists and creates the initial admin user if none are found."""
-        # Import dependencies locally to break circular import
-        from paelladoc.dependencies import dependencies
-
         # Wrap the core logic to log detailed errors
         try:
-            logger.debug("Attempting to get UserManagementPort from dependencies...")
-            user_management_port: UserManagementPort = dependencies.get(
-                UserManagementPort
-            )
+            logger.debug("Attempting to use provided UserManagementPort...")
             if not user_management_port:
                 logger.error(
-                    "UserManagementPort not found in dependencies. Cannot create initial admin user."
+                    "UserManagementPort instance was not provided. Cannot create initial admin user."
                 )
-                return  # Cannot proceed without the port
-            logger.debug("UserManagementPort obtained.")
+                return
+            logger.debug("UserManagementPort obtained via argument.")
 
             # Check if any user exists directly via the port
             logger.debug("Checking if any user exists via port...")

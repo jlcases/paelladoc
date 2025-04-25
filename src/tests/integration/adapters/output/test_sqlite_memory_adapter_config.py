@@ -40,19 +40,58 @@ async def temp_adapter():
     test_db_path = test_dir / test_db_name
     test_db_path.parent.mkdir(parents=True, exist_ok=True)
 
+    # 1. Create the Memory Adapter first
     adapter = SQLiteMemoryAdapter(db_path=test_db_path)
+
+    # 2. Create and register the User Adapter
+    from paelladoc.adapters.output.sqlite.sqlite_user_management_adapter import (
+        SQLiteUserManagementAdapter,
+    )
+    from paelladoc.ports.output.user_management_port import UserManagementPort
+    from paelladoc.dependencies import dependencies
+
+    user_adapter = SQLiteUserManagementAdapter(
+        async_session_factory=adapter.async_session
+    )
+    original_user_port = dependencies.get(UserManagementPort, None)
+    dependencies[UserManagementPort] = user_adapter
+    print("(Config Test) Registered SQLiteUserManagementAdapter in dependencies.")
+
+    # 3. Create tables *after* dependency registration
     await adapter._create_db_and_tables()
+    print(f"(Config Test) DB and tables created for {test_db_path}")
 
     yield adapter
 
-    # Cleanup
+    # Restore original dependency or remove if none existed
+    if original_user_port:
+        dependencies[UserManagementPort] = original_user_port
+        print("(Config Test) Restored original UserManagementPort dependency.")
+    elif UserManagementPort in dependencies:
+        del dependencies[UserManagementPort]
+        print("(Config Test) Removed test UserManagementPort dependency.")
+
+    # Dispose engine (optional)
+    # await adapter.async_engine.dispose()
+
+    # Original Cleanup (modified)
     await asyncio.sleep(0.01)  # Brief pause for file lock release
     try:
         if test_db_path.exists():
             os.remove(test_db_path)
-        test_db_path.parent.rmdir()
+            print(f"(Config Test) Removed DB: {test_db_path}")
+        # Attempt to remove parent directory if it exists and is empty
+        if test_dir.exists():
+            try:
+                test_dir.rmdir()
+                print(f"(Config Test) Removed temp directory: {test_dir}")
+            except OSError:
+                print(
+                    f"(Config Test) Temp directory {test_dir} not empty, not removed."
+                )
+                pass  # Directory not empty or other issue
     except Exception as e:
-        print(f"Error during cleanup: {e}")
+        print(f"(Config Test) Error during cleanup: {e}")
 
 
 @pytest.mark.asyncio

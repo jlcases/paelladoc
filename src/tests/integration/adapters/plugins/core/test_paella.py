@@ -55,34 +55,12 @@ async def paella_test_env(monkeypatch, setup_test_db_dir):
         async_session_factory=memory_adapter.async_session
     )
 
-    # Initialize DB tables (will create default admin user)
-    await memory_adapter._create_db_and_tables()
-
-    # Ensure a test user exists (similar logic as other test)
-    user_id = f"test_paella_user_{uuid.uuid4()}"
-    try:
-        await user_manager.create_user(user_id)
-        print(f"Ensured test user '{user_id}' exists for paella test.")
-    except Exception as e:
-        print(
-            f"Could not create test user '{user_id}' (may already exist or error): {e}"
-        )
-        all_users = await user_manager.get_all_users()
-        if all_users:
-            user_id = all_users[0].user_identifier
-            print(f"Using existing user: {user_id}")
-        else:
-            print("Warning: No user found after attempting creation.")
-            user_id = None
-
-    # Inject into dependencies using monkeypatch
-
-    # No need to store originals, monkeypatch handles revert
-    # original_memory = dependencies.get(MemoryPort)
-    # original_user = dependencies.get(UserManagementPort)
-
+    # Inject into dependencies using monkeypatch FIRST
     monkeypatch.setitem(dependencies, MemoryPort, memory_adapter)
     monkeypatch.setitem(dependencies, UserManagementPort, user_manager)
+
+    # NOW Initialize DB tables (will create default admin user via injected dependency)
+    await memory_adapter._create_db_and_tables()
 
     yield {"memory_adapter": memory_adapter, "user_manager": user_manager}
 

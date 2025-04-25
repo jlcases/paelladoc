@@ -20,10 +20,55 @@ async def memory_adapter(tmp_path: Path) -> SQLiteMemoryAdapter:
     # Use a unique name for each test function run to avoid conflicts
     db_name = f"test_active_db_{time.time_ns()}.db"
     db_path = tmp_path / db_name
+
+    # 1. Create the Memory Adapter first (this creates engine and session factory)
     adapter = SQLiteMemoryAdapter(db_path=db_path)
-    # Ensure tables are created *before* the test runs
+
+    # 2. Create the User Adapter using the session factory from the Memory Adapter
+    from paelladoc.adapters.output.sqlite.sqlite_user_management_adapter import (
+        SQLiteUserManagementAdapter,
+    )
+    from paelladoc.ports.output.user_management_port import UserManagementPort
+    from paelladoc.dependencies import dependencies
+    import asyncio
+
+    user_adapter = SQLiteUserManagementAdapter(
+        async_session_factory=adapter.async_session
+    )
+
+    # 3. Register the user adapter in the dependencies dictionary
+    original_user_port = dependencies.get(UserManagementPort, None)
+    dependencies[UserManagementPort] = user_adapter
+    print("(Active Test) Registered SQLiteUserManagementAdapter in dependencies.")
+
+    # Ensure tables are created *after* dependency is registered
     await adapter._create_db_and_tables()
-    return adapter
+    print(f"(Active Test) DB and tables created for {db_path}")
+
+    yield adapter
+
+    # 4. Teardown
+    print(f"(Active Test) Tearing down test, removing DB: {db_path}")
+    # Restore original dependency or remove if none existed
+    if original_user_port:
+        dependencies[UserManagementPort] = original_user_port
+        print("(Active Test) Restored original UserManagementPort dependency.")
+    elif UserManagementPort in dependencies:
+        del dependencies[UserManagementPort]
+        print("(Active Test) Removed test UserManagementPort dependency.")
+
+    # Dispose engine (optional)
+    # await adapter.async_engine.dispose()
+    await asyncio.sleep(0.01)  # Allow async operations to settle
+
+    # Ensure DB file is removed (already handled by tmp_path fixture? Check)
+    # Explicit removal just in case:
+    try:
+        if db_path.exists():
+            db_path.unlink()
+            print(f"(Active Test) Explicitly removed DB: {db_path}")
+    except Exception as e:
+        print(f"(Active Test) Error during teardown removing {db_path}: {e}")
 
 
 @fixture(scope="function")

@@ -64,46 +64,15 @@ async def list_test_env(monkeypatch, setup_test_db_dir):
         async_session_factory=memory_adapter.async_session
     )
 
-    # Initialize DB tables (important for adapter to work)
-    # This will also ensure the default admin user is created if none exist
-    await memory_adapter._create_db_and_tables()
-
-    # Create the specific test user AFTER tables are created
-    user_id = f"test_list_user_{uuid.uuid4()}"
-    # For OSS, we might assume only one user exists or the first one is the current one.
-    # If tests need a specific user context that SQLite adapter doesn't easily provide,
-    # we might need to adjust the adapter or test strategy.
-    # For now, let's ensure at least one user exists (the default admin or our test user)
-    # The existing _ensure_initial_admin_user handles the first user creation.
-    # Let's explicitly create our test user for clarity, though check_permission might not use it directly.
-    try:
-        await user_manager.create_user(user_id)
-        print(f"Ensured test user '{user_id}' exists for test.")
-    except Exception as e:
-        # Handle case where user might already exist (e.g., default admin)
-        print(
-            f"Could not create test user '{user_id}' (may already exist or error): {e}"
-        )
-        # Fetch the first user as the one the adapter will likely use
-        all_users = await user_manager.get_all_users()
-        if all_users:
-            user_id = all_users[0].user_identifier
-            print(f"Using existing user: {user_id}")
-        else:
-            print("Warning: No user found after attempting creation.")
-            user_id = None  # Indicate no user for permission check if needed
-
-    # Inject into dependencies using monkeypatch
-    from paelladoc.dependencies import (
-        dependencies,
-    )  # Import here to avoid early binding
-
-    # No need to store originals, monkeypatch handles revert
-    # original_memory = dependencies.get(MemoryPort)
-    # original_user = dependencies.get(UserManagementPort)
+    # Inject into dependencies using monkeypatch FIRST
+    from paelladoc.dependencies import dependencies  # Import here if not already at top
 
     monkeypatch.setitem(dependencies, MemoryPort, memory_adapter)
     monkeypatch.setitem(dependencies, UserManagementPort, user_manager)
+
+    # NOW Initialize DB tables (important for adapter to work)
+    # This will also ensure the default admin user is created if none exist
+    await memory_adapter._create_db_and_tables()
 
     # Yield adapters for potential direct use in tests, although not strictly needed
     # if tests only call the plugin functions which use injected dependencies.

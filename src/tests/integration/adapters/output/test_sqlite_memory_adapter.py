@@ -17,6 +17,11 @@ sys.path.insert(0, str(project_root))
 
 # Module to test
 from paelladoc.adapters.output.sqlite.sqlite_memory_adapter import SQLiteMemoryAdapter
+from paelladoc.adapters.output.sqlite.sqlite_user_management_adapter import (
+    SQLiteUserManagementAdapter,
+)
+from paelladoc.ports.output.user_management_port import UserManagementPort
+from paelladoc.dependencies import dependencies
 
 # Import updated domain models
 from paelladoc.domain.models.project import (
@@ -38,16 +43,40 @@ async def memory_adapter():
     test_db_path.parent.mkdir(parents=True, exist_ok=True)
     print(f"\nSetting up test with DB: {test_db_path}")
 
+    # 1. Create the Memory Adapter first (this creates engine and session factory)
     adapter = SQLiteMemoryAdapter(db_path=test_db_path)
+
+    # 2. Create the User Adapter using the session factory from the Memory Adapter
+    user_adapter = SQLiteUserManagementAdapter(
+        async_session_factory=adapter.async_session
+    )
+
+    # 3. Register the user adapter in the dependencies dictionary
+    original_user_port = dependencies.get(UserManagementPort, None)
+    dependencies[UserManagementPort] = user_adapter
+    print("Registered SQLiteUserManagementAdapter in dependencies for test.")
+
+    # 4. Now create DB and tables (which will use the registered user_adapter)
     await adapter._create_db_and_tables()
 
-    yield adapter  # Provide the adapter to the test function
+    yield adapter  # Provide the memory adapter to the test function
 
-    # Teardown: clean up the database
+    # Teardown: clean up the database AND dependency registration
     print(f"Tearing down test, removing DB: {test_db_path}")
-    # Dispose engine if needed
+
+    # Restore original dependency or remove if none existed
+    if original_user_port:
+        dependencies[UserManagementPort] = original_user_port
+        print("Restored original UserManagementPort dependency.")
+    elif UserManagementPort in dependencies:
+        del dependencies[UserManagementPort]
+        print("Removed test UserManagementPort dependency.")
+
+    # Dispose engine (optional, depends on how engine is managed)
+    # Both adapters likely share the same engine instance if initialized this way,
+    # so disposing one should be enough, but verify adapter internals if needed.
     # await adapter.async_engine.dispose()
-    await asyncio.sleep(0.01)
+    await asyncio.sleep(0.01)  # Allow async operations to settle
     try:
         if test_db_path.exists():
             os.remove(test_db_path)

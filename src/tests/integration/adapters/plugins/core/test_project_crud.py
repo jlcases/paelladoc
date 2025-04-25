@@ -85,38 +85,16 @@ async def crud_test_env(monkeypatch, setup_test_dirs):
     )
     mcp_config_adapter = FileSystemMCPConfigRepository()
 
-    # Initialize DB tables (will create default admin user)
-    await memory_adapter._create_db_and_tables()
-
-    # Ensure a test user exists
-    user_id = f"test_crud_user_{uuid.uuid4()}"
-    try:
-        # Use the user_manager tied to the test DB's session factory
-        await user_manager.create_user(user_id)
-        print(f"Ensured test user '{user_id}' exists for CRUD test.")
-    except Exception as e:
-        print(
-            f"Could not create test user '{user_id}' (may already exist or error): {e}"
-        )
-        all_users = await user_manager.get_all_users()
-        if all_users:
-            user_id = all_users[0].user_identifier
-            print(f"Using existing user: {user_id}")
-        else:
-            print("Warning: No user found after attempting creation.")
-            user_id = None
-
-    # Inject into dependencies using monkeypatch
-
-    # No need to store originals, monkeypatch handles revert
-    # original_memory = dependencies.get(MemoryPort)
-    # original_user = dependencies.get(UserManagementPort)
-    # original_mcp_config = dependencies.get(MCPConfigPort)
-
-    # Inject the adapters specific to this test's DB
+    # Inject into dependencies using monkeypatch FIRST
     monkeypatch.setitem(dependencies, MemoryPort, memory_adapter)
     monkeypatch.setitem(dependencies, UserManagementPort, user_manager)
     monkeypatch.setitem(dependencies, MCPConfigPort, mcp_config_adapter)
+
+    # NOW initialize DB tables using the correct, injected dependencies
+    # _ensure_initial_admin_user will now get the patched user_manager
+    await memory_adapter._create_db_and_tables()
+
+    # NO need to setitem again here
 
     yield {"memory_adapter": memory_adapter, "user_manager": user_manager}
 
