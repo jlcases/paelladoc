@@ -11,7 +11,7 @@
   ⭐ If you find PAELLADOC useful, please consider starring the repo! ⭐
 </p>
 
-![Version](https://img.shields.io/badge/version-0.3.6-blue.svg)
+![Version](https://img.shields.io/badge/version-0.3.7-blue.svg)
 ![Status](https://img.shields.io/badge/status-active-success.svg)
 ![Philosophy](https://img.shields.io/badge/philosophy-AI--First-purple.svg)
 ![MCP](https://img.shields.io/badge/type-MCP-orange.svg)
@@ -20,7 +20,7 @@
 [![X Community](https://img.shields.io/badge/X%20Community-PAellaDOC-blue)](https://x.com/i/communities/1907494161458090406)
 [![Discord](https://img.shields.io/discord/grKF8EaB?label=Discord&logo=discord&style=social)](https://discord.gg/grKF8EaB)
 
-> **Version 0.3.6**: This release focuses on internal improvements and stability, particularly during initial setup and testing. Check the [CHANGELOG](CHANGELOG.md) for details!
+> **Version 0.3.7**: Hotfix release restoring core project CRUD tools inadvertently omitted in v0.3.6 build. Check the [CHANGELOG](CHANGELOG.md) for details!
 
 > "In the AI era, context isn't supplementary to code—it's the primary creation."
 
@@ -260,7 +260,7 @@ The LLM will handle all the complexity - you just need to express your intent in
 
 3.  **Follow the LLM's lead:** PAELLADOC (via the LLM) will then guide you through the process interactively, asking for project details, template choices, etc.
 
-## ⚙️ Available Commands (v0.3.6)
+## ⚙️ Available Commands (v0.3.7)
 
 This version provides the following core commands, exposed via MCP for interaction with your LLM:
 
