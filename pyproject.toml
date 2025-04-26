@@ -40,6 +40,7 @@ dependencies = [
     "alembic>=1.13.0",
     "greenlet>=3.0.0",
     "markdown>=3.5.0",
+    "chromadb>=1.0.7",
 ]
 
 [project.optional-dependencies]
@@ -50,6 +51,7 @@ dev = [
     "black>=23.0.0",
     "ruff>=0.1.0",
     "mypy>=1.0.0",
+    "pre-commit>=3.0.0",
 ]
 
 docs = [
