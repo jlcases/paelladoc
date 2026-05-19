@@ -1,5 +1,15 @@
 # 🧠 PAELLADOC: The AI-First Development Framework
 
+> **⚠️ Historical — preserved for reference**
+>
+> This repository is **PaellaDoc v0.x** (340+ ⭐, 2024–2025), the original MCP-based framework.
+> The current product is a desktop orchestrator at **[paelladoc.com](https://paelladoc.com)** with native Claude Code, Codex and Gemini integration, Playwright-verified Golden Gate, and a community at **[forum.paelladoc.com](https://forum.paelladoc.com)**.
+>
+> This repo is preserved as historical reference and is no longer actively maintained.
+
+---
+
+
 **[Visit the Official Website](https://paelladoc.com)**
 
 <p align="center">
