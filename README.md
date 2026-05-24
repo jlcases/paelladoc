@@ -1,3 +1,5 @@
+[![MseeP.ai Security Assessment Badge](https://mseep.net/pr/jlcases-paelladoc-badge.png)](https://mseep.ai/app/jlcases-paelladoc)
+
 # 🧠 PAELLADOC: The AI-First Development Framework
 
 > **⚠️ Historical — preserved for reference**
